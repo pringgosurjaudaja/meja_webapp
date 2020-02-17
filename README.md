@@ -2,4 +2,4 @@
 
 ### Instalation
 To setup:
-first `git clone`
+first `git clone` from the repo
