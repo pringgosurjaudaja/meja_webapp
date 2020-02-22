@@ -5,9 +5,9 @@ import {
   Route,
   Link
 } from "react-router-dom";
-import {Home} from './imports/ui/Home'
-import {Login} from './imports/ui/Login'
-import {Register} from './imports/ui/Register'
+import { Home } from './components/Home'
+import { Login } from './components/Login'
+import { Register } from './components/Register'
 
 import './App.css';
 
