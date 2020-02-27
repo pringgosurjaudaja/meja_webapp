@@ -1,13 +1,21 @@
 from flask import Flask
-from flask_restplus import Resource, Api
+from apis import api
+from pymongo import MongoClient
 
+# Setup for the Flask App
 app = Flask(__name__)
-api = Api(app)
 
-@api.route('/hello')
-class HelloWorld(Resource):
-    def get(self):
-        return {'hello': 'world'}
+# Setup for the Database
+db = MongoClient().database
+
 
 if __name__ == '__main__':
+    # client = MongoClient()
+    # menu = client.menu
+    # mains = menu.mains
+    # menu_item = {"name": "Taiwanese Pork Belly", "price": 15}
+    # mains.insert_one(menu_item)
+    # print(client)
+
+    api.init_app(app)
     app.run(debug=True)
