@@ -11,23 +11,18 @@ import 'styles/styles.css';
 export class Register extends React.Component {
     render () {
         return (
-            <div className="container-login">
+            <div className="container-home">
                 <Container>
                     <Row>
-                        <h3 className="title">
+                        <h1 className="title">
                             Register    
-                        </h3>
+                        </h1>
                     </Row>
                     <Row>
                         <Form>
-                            <Form.Group controlId="formBasicEmail">
-                                <Form.Label>Email address</Form.Label>
-                                <Form.Control type="email" placeholder="Enter email" />
-                            </Form.Group>
-    
                             <Form.Group controlId="formBasicUsername">
                                 <Form.Label>Username</Form.Label>
-                                <Form.Control type="username" placeholder="Username" />
+                                <Form.Control type="username" placeholder="Enter username" />
                             </Form.Group>
 
                             <Form.Group controlId="formBasicPassword">
@@ -35,11 +30,6 @@ export class Register extends React.Component {
                                 <Form.Control type="password" placeholder="Password" />
                             </Form.Group>
 
-                            <Form.Group controlId="formBasicConfirmPassword">
-                                <Form.Label>Confirm Password</Form.Label>
-                                <Form.Control type="password" placeholder="Confirm Password" />
-                            </Form.Group>
-                            
                             <Button variant="primary" type="submit">
                                 Submit
                             </Button>
