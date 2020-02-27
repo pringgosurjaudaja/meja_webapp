@@ -5,39 +5,43 @@ import {
     Row,
     Form,
 } from 'react-bootstrap';
-
+import { navigate } from "@reach/router";
 import 'styles/styles.css';
+  
+import { Home } from './Home';
+import { Dashboard } from './Dashboard';
 
 export class Login extends React.Component {
+    constructor(props) {
+        super(props);
+    
+    }
     render() {
         return (
-            <div className="container-login">
+            <div className="container-home">
                 <Container>
                     <Row>
-                        <h3 className="title">
+                        <h1 className="title">
                             Login    
-                        </h3>
+                        </h1>
                     </Row>
                     <Row>
                         <Form>
                             <Form.Group controlId="formBasicUsername">
-                                <Form.Label>Username</Form.Label>
                                 <Form.Control type="username" placeholder="Enter username" />
                             </Form.Group>
 
                             <Form.Group controlId="formBasicPassword">
-                                <Form.Label>Password</Form.Label>
                                 <Form.Control type="password" placeholder="Password" />
                             </Form.Group>
 
-                            <Button variant="primary" type="submit">
+                            <Button variant="primary" onClick={()=>navigate("/dashboard")}>
                                 Submit
                             </Button>
                         </Form>
                     </Row>
-                </Container>    
+                </Container>
             </div>
-            
         );
     }
 }

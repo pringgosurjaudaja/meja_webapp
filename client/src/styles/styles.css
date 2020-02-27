@@ -5,11 +5,40 @@ body {
     font-variant: normal;
 }
 
-.container-login {
+.container-home {
     margin-top: 50px;
 }
 
 .title {
     margin-top: 10px;
     margin-bottom: 10px;
+}
+.l-center {
+    vertical-align: middle;
+    text-align: center;
+    margin: auto;
+}
+
+.l-home--title {
+    font-size: 100px;
+}
+
+.l-home {
+    margin: auto;
+    position: absolute;
+    top: 30%;
+}
+
+.l-home__row {
+    height: 200px;
+    margin-bottom: 50px;
+}
+
+.big-button {
+    height: 200px;
+    width: inherit;
+}
+.big-button--text {
+    font-size: 40px !important;
+    /* font-family: "OpenSans"; */
 }

@@ -1,30 +1,18 @@
 import React from 'react';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
-import { Home } from './components/Home'
-import { Login } from './components/Login'
-import { Register } from './components/Register'
+import { Router, Link } from "@reach/router"
+import  {Home}  from 'components/Home';
+import { Login } from 'components/Login'
+import { Register } from 'components/Register'
+import { Dashboard } from 'components/Dashboard'
+
 
 export default function App() {
   return (
     <Router>
-      {/* A <Switch> looks through its children <Route>s and
-          renders the first one that matches the current URL. */}
-      <Switch>
-        <Route path="/login">
-          <Login />
-        </Route>
-        <Route path="/register">
-          <Register />
-        </Route>
-        <Route path="/">
-          <Home />
-        </Route>
-      </Switch>
+      <Home path="/" />
+      <Login path="/login" />
+      <Register path="/register" />      
+      <Dashboard path="/dashboard" />
     </Router>
   );
 }
