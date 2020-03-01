@@ -1,0 +1,8 @@
+Week 1
+
+The group is formed on week 1. I set up the Jira and Github and also linked them together. Together in week 1 we started brainstorming the main ideas for the project.
+
+Week 2
+We finalized the ideas and turned them into stories. We also started our first sprint and started delegating work to members. I was given the task to create the frontend of the application. Ive also encountered difficulties mainly in the CSS and also blocked because the REST API is not set up yet
+
+Week 3
