@@ -1,10 +1,10 @@
 import React from 'react';
 
-export class Recommend extends React.Component {
+export class Table extends React.Component {
     render () {
         return (
             
-            <h1>rec</h1>
+            <h1>Table in progress</h1>
         );
     }
 }

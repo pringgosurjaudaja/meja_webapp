@@ -61,7 +61,7 @@ export class Login extends React.Component {
                         </h1>
                     </Row>
                     <Row>
-                        <Form onChange={this.handleChange} onSubmit={this.handleSubmit}>
+                        <Form className="layout--padding" onChange={this.handleChange} onSubmit={this.handleSubmit}>
                             <Form.Group controlId="formBasicUsername">
                                 <Form.Control name="username" type="username" placeholder="Enter username" />
                             </Form.Group>

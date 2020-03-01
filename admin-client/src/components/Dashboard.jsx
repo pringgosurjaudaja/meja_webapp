@@ -1,12 +1,8 @@
 import React from 'react';
-import { Router, Link } from "@reach/router"
-import { Nav, NavDropdown, Tabs, Tab } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'
+import { Tabs, Tab } from 'react-bootstrap';
 import 'styles/styles.css';
-import { Recommend } from 'components/Recommend';
+import { Table } from 'components/Table';
 import { Menu } from 'components/Menu';
-import { Checkout } from 'components/Checkout';
 export class Dashboard extends React.Component {
     render () {
         return (
@@ -15,7 +11,7 @@ export class Dashboard extends React.Component {
                 defaultActiveKey="table"
                 >
                     <Tab eventKey="table" title="Table">
-                        <Recommend/>
+                        <Table/>
                     </Tab>
                     <Tab eventKey="menu" title="Menu">
                         <Menu/>
