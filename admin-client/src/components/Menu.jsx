@@ -6,16 +6,7 @@ import 'styles/styles.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
-import {RecommendationDialog} from 'components/RecommendationDialog';
-
-
-function onAfterDeleteRow(rowKeys) {
-    alert('The rowkey you drop: ' + rowKeys);
-  }
-  
-  
-
-  
+import {RecommendationDialog} from 'components/RecommendationDialog';  
 
 export class Menu extends React.Component {
     constructor(props) {
@@ -24,16 +15,25 @@ export class Menu extends React.Component {
             showDialog: false
         }
         this.handleSelectName = this.handleSelectName.bind(this);
+        this.handleDeleteRow = this.handleDeleteRow.bind(this);
+        this.onAfterDeleteRow = this.onAfterDeleteRow.bind(this);
     }
     handleSelectName(event) {
         console.log(event.target.value);
     }
 
+    handleDeleteRow(row) {
+        console.log(row);
+    }
+
+    onAfterDeleteRow(rowKeys) {
+        alert('The rowkey you drop: ' + rowKeys);
+    }
     render () {
         const foodLabels = [
-            { value: 'forest', label: 'Forest' },
-            { value: 'slate', label: 'Slate' },
-            { value: 'silver', label: 'Silver' },  
+            { value: 'vegan', label: 'Vegan' },
+            { value: 'gluten-free', label: 'Gluten Free' },
+            { value: 'vegetarian', label: 'Vegetarian' },  
         ];
 
         const foodTags = [
@@ -56,7 +56,8 @@ export class Menu extends React.Component {
 
 
         const options = {
-            afterDeleteRow: onAfterDeleteRow  // A hook for after droping rows.
+            afterDeleteRow: this.onAfterDeleteRow,   // A hook for after droping rows.
+            onDeleteRow: this.handleDeleteRow,  // Hook for dropping rows
         };
 
           
