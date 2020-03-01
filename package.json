@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "react-bootstrap-table": "^4.3.1",
+    "react-select": "^3.0.8"
+  }
+}

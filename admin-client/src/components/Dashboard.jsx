@@ -12,22 +12,13 @@ export class Dashboard extends React.Component {
         return (
             <div>
                 <Tabs className="justify-content-center"
-                defaultActiveKey="recommend"
+                defaultActiveKey="table"
                 >
-                    <Tab eventKey="recommend" title="Recommend">
+                    <Tab eventKey="table" title="Table">
                         <Recommend/>
                     </Tab>
-                    <Tab eventKey="all" title="All">
+                    <Tab eventKey="menu" title="Menu">
                         <Menu/>
-                    </Tab>
-                    <Tab eventKey="main" title="Mains">
-                        <Menu/>
-                    </Tab>
-                    <Tab eventKey="dessert" title="Desserts">
-                        <Menu/>
-                    </Tab>
-                    <Tab eventKey="checkout" title={<FontAwesomeIcon icon={faShoppingCart}/>}>
-                        <Checkout/>
                     </Tab>
                     
                 </Tabs>
