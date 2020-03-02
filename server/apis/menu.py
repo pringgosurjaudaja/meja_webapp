@@ -16,7 +16,7 @@ MODEL_menu_item = menu.model('Menu Item', {
     'description': fields.String(),
     'media_urls': fields.List(fields.String()),
     'price': fields.Float(),
-    'labels': fields.Integer(),
+    'labels': fields.List(fields.Integer()),
     'tags': fields.List(fields.String())
 })
 
