@@ -25,5 +25,5 @@ After activating your virtual environment, install server dependencies using
 
 To run the Flask server,
 
-    $ export FLASK_APP=server.py
+    $ export FLASK_APP=app.py
     $ python3 -m flask run
