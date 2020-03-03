@@ -8,7 +8,7 @@ export class Dashboard extends React.Component {
         return (
             <div>
                 <Tabs className="justify-content-center"
-                defaultActiveKey="table"
+                defaultActiveKey="menu"
                 >
                     <Tab eventKey="table" title="Table">
                         <Table/>

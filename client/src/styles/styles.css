@@ -24,7 +24,16 @@ body {
     padding-top: 7%;
 }
 
-/* Spacing between menu item*/
+/* Add padding to the container in admin menu tab*/
+.layout--pading--admin-menu {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+.layout--no-padding {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+/* Spacing between menu item in client*/
 .layout--menu {
     margin-bottom: 5%;
 }
@@ -73,15 +82,14 @@ body {
     /* position: relative; */
     border-top-left-radius: 30px !important;
     border-top-right-radius: 30px !important;
-    
+    height: 350px;
 }
-
 
 .menu-item--title {
     font-weight: bold !important;
-    font-size: 32px !important;
+    font-size: 28px !important;
 }
 
 .menu-item--text {
-    font-size: 32px !important;
+    font-size: 20px !important;
 }
