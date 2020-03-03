@@ -1,64 +1,52 @@
 import React from 'react';
-import { Container, Row, Col, Card } from 'react-bootstrap';
-import example from './test.jpg';
+import { Container, Row, Col } from 'react-bootstrap';
+import { MenuItem } from 'components/MenuItem';
+import { MenuItemDialog } from 'components/MenuItemDialog';
+
 export class Menu extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.handleMenuClick = this.handleMenuClick.bind(this);
+        this.state = {
+            showDialog: false,
+        }
+    }
+
+    componentDidMount() {
+        let menuItemList = [];
+        // axios and populate menu Item List
+
+    }
+
+    handleMenuClick() {
+
+    }
+
     render () {
         return (
-            <Container>
-                <Row className="justify-content-md-center" style={{ height: '600px'}}>
-                    <Col xs={5} md={5}>
-                        <Card style={{ width: '95%',  height: '300px' }}>
-                            <Card.Img variant="top" src={example} style={{ height: '400px', width: '100%' }}/>
-                            <Card.Body>
-                                <Card.Title>Card Title</Card.Title>
-                                <Card.Text>
-                                Some quick example text to build on the card title and make up the bulk of
-                                the card's content.
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                    <Col xs="auto" md="auto"></Col>
-                    <Col xs={5} md={5}>
-                        <Card style={{ width: '95%',  height: '300px'}}>
-                            <Card.Img variant="top" src={example} style={{ height: '400px', width: '100%' }}/>
-                            <Card.Body>
-                                <Card.Title>Card Title</Card.Title>
-                                <Card.Text>
-                                Some quick example text to build on the card title and make up the bulk of
-                                the card's content.
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Col>
+            <Container className="layout--padding--menu">
+                <Row className="layout--menu">
+                    <Col>
+                        <MenuItem/>{/*  Later pass in the props*/}
+                     </Col>
+                    
                 </Row>
-                <Row className="justify-content-md-center" style={{ height: '600px'}}>
-                    <Col xs={5} md={5}>
-                        <Card style={{ width: '95%',  height: '300px' }}>
-                            <Card.Img variant="top" src={example} style={{ height: '400px', width: '100%' }}/>
-                            <Card.Body>
-                                <Card.Title>Card Title</Card.Title>
-                                <Card.Text>
-                                Some quick example text to build on the card title and make up the bulk of
-                                the card's content.
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                    <Col xs="auto" md="auto"></Col>
-                    <Col xs={5} md={5}>
-                        <Card style={{ width: '95%',  height: '300px'}}>
-                            <Card.Img variant="top" src={example} style={{ height: '400px', width: '100%' }}/>
-                            <Card.Body>
-                                <Card.Title>Card Title</Card.Title>
-                                <Card.Text>
-                                Some quick example text to build on the card title and make up the bulk of
-                                the card's content.
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Col>
+
+                <Row className="layout--menu">
+                    <Col>
+                        <MenuItem/>{/*  Later pass in the props*/}
+                     </Col>
+                    
                 </Row>
+                <Row className="layout--menu">
+                    <Col>
+                        <MenuItem/>{/*  Later pass in the props*/}
+                     </Col>
+                    
+                </Row>
+                {/* Insert menu item props here */}
+                <MenuItemDialog />
             </Container>
         );
     }
