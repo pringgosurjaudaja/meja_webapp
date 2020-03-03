@@ -12,10 +12,11 @@ class MenuItem:
 class MenuItemSchema(Schema):
     name = fields.String(required=True)
     description = fields.String(required=True)
-    media_urls = fields.List(fields.String())
+    media_urls = fields.List(fields.String())       # URLs for pictures of the menu item
     price = fields.Float(required=True)
-    labels = fields.List(fields.Integer())
-    tags = fields.List(fields.String())
+    labels = fields.List(fields.Integer())          # Vegan, Vegetarian, Gluten-Free
+    category_tags = fields.List(fields.String())    # E.g. Indian, Spicy, Mains, etc.
+    chefs_pick = fields.Boolean                     # Whether it is part of the chef's recommended list
 
     @post_load
     def make_menu_item(self, data, **kwargs):
