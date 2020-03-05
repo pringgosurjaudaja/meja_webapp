@@ -5,19 +5,46 @@ import Select from 'react-select';
 import 'styles/styles.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
-import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
-import {RecommendationDialog} from 'components/RecommendationDialog';  
-
+import { MenuItemCard } from 'components/MenuItemCard';
+import { Dialog } from 'components/Dialog';
 export class Menu extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            showDialog: false
+            menuItemList: [],
+            showAddMenuDialog: false,
         }
         this.handleSelectName = this.handleSelectName.bind(this);
         this.handleDeleteRow = this.handleDeleteRow.bind(this);
         this.onAfterDeleteRow = this.onAfterDeleteRow.bind(this);
+        this.handleAddMenuItem = this.handleAddMenuItem.bind(this);
+        this.handleClose = this.handleClose.bind(this);
     }
+
+    componentDidMount() {
+        // axios and populate menu Item List
+        let obj = {   
+            name: "Nasi Goreng",
+            description: "fried rice with plenty of MSG duh",
+            media_urls: ["https://example.com"],
+            price: 100.0,
+            labels: [],
+            tags: [],
+        }
+
+        let data = [obj, obj, obj];
+        console.log(data);
+        this.setState({ menuItemList: data });
+    }
+
+
+    handleAddMenuItem() {
+        this.setState({ showAddMenuDialog: true });
+    }
+    handleClose() {
+        this.setState({ showAddMenuDialog: false });
+    }
+
     handleSelectName(event) {
         console.log(event.target.value);
     }
@@ -65,138 +92,53 @@ export class Menu extends React.Component {
         const selectRowProp = {
             mode: 'checkbox'
         };
-        return (
-            <Container>
-                <Row>
-                    <div className="layout--padding">
-                        <h3>Add/Edit/Remove Items to/from Menu</h3>
-                        <br/>
-                        <div>
-                            <Tabs
-                            defaultActiveKey="add"
-                            >
-                                <Tab eventKey="add" title="Add">
-                                    <Form className="layout--padding">
-                                        <Form.Group>
-                                            <Form.Label>Name</Form.Label>
-                                            <Form.Control type="text" placeholder="Enter name" />
-                                        </Form.Group>
 
-                                        <Form.Group>
-                                            <Form.Label>Description</Form.Label>
-                                            <Form.Control type="textarea" placeholder="Enter name" />
-                                        </Form.Group>
-                                        <Form.Group>
-                                            <Form.Label>Price</Form.Label>
-                                            <Form.Control type="text" placeholder="Enter name" />
-                                        </Form.Group>
-                                        <Form.Group>
-                                            <Form.Label>Label</Form.Label>
-                                            <Select
-                                                className="basic-single"
-                                                classNamePrefix="select"
-                                                isClearable
-                                                options={foodLabels}
-                                            />
-                                        </Form.Group>
 
-                                        <Form.Group>
-                                            <Form.Label>Tags</Form.Label>
-                                            <Select
-                                                isMulti
-                                                className="basic-single"
-                                                classNamePrefix="select"
-                                                isClearable
-                                                options={foodTags}
-                                            />
-                                        </Form.Group>
-                                        
-                                        <Button variant="primary">
-                                            Add
-                                        </Button>
-                                    </Form>
-                                </Tab>
-                                <Tab eventKey="edit" title="Edit">
-                                    <Form className="layout--padding">
-                                        <Form.Group>
-                                            <Form.Label>Name</Form.Label>
-                                            <Form.Control type="text" placeholder="Enter name" />
-                                        </Form.Group>
-
-                                        <Form.Group>
-                                            <Form.Label>Description</Form.Label>
-                                            <Form.Control type="textarea" placeholder="Enter name" />
-                                        </Form.Group>
-                                        <Form.Group>
-                                            <Form.Label>Price</Form.Label>
-                                            <Form.Control type="text" placeholder="Enter name" />
-                                        </Form.Group>
-                                        <Form.Group>
-                                            <Form.Label>Label</Form.Label>
-                                            <Select
-                                                className="basic-single"
-                                                classNamePrefix="select"
-                                                isClearable
-                                                options={foodLabels}
-                                            />
-                                        </Form.Group>
-
-                                        <Form.Group>
-                                            <Form.Label>Tags</Form.Label>
-                                            <Select
-                                                isMulti
-                                                className="basic-single"
-                                                classNamePrefix="select"
-                                                isClearable
-                                                options={foodTags}
-                                            />
-                                        </Form.Group>
-                                        
-                                        <Button variant="primary">
-                                            Add
-                                        </Button>
-                                    </Form>
-                                </Tab>
-                                <Tab eventKey="remove" title="Remove">
-                                    <BootstrapTable data={products} className="layout--padding"
-                                    deleteRow={ true } selectRow={ selectRowProp } 
-                                        options={ options } pagination  version='4'>
-                                        <TableHeaderColumn isKey dataField='id' hidden={true}>Product ID</TableHeaderColumn>
-                                        <TableHeaderColumn dataField='name'>Product Name</TableHeaderColumn>
-                                        <TableHeaderColumn dataField='price'>Product Price</TableHeaderColumn>
-                                    </BootstrapTable>
-                                </Tab>
-                            </Tabs>
-
-                        </div>
-                    </div>
+        let result = [];
+        this.state.menuItemList.length > 0 && this.state.menuItemList.forEach((item, i) => {
+            let props = {
+                name: item.name,
+                description: item.description,
+                media_urls: item.media_urls,
+                price: item.price,
+                labels: item.labels,
+                tags: item.tags,
+            }
+            let tmp = (
+                <Row key={i} className="menu-item-card--row">
+                    <Col>
+                        <MenuItemCard {...props}/>
+                    </Col>
                 </Row>
+            );
+            result.push(tmp);
+        });
 
-                <hr/>
 
+        return (
+            <Container className="layout--padding--admin-menu">
                 <Row>
-                    <div className="layout--padding">
-                        <h3>Add New Recommendation to Menu</h3>
-                        <div>
-                            <br/>
-                            <Button variant="success" onClick={()=> this.setState({ showDialog: !this.state.showDialog })}>
-                                Add Recommendation</Button>
-                            <br/>
-                            <BootstrapTable data={products}
-                            deleteRow={ true } selectRow={ selectRowProp } 
-                                options={ options } pagination  version='4'>
-                                <TableHeaderColumn isKey dataField='id' hidden={true}>Product ID</TableHeaderColumn>
-                                <TableHeaderColumn dataField='name'>Product Name</TableHeaderColumn>
-                                <TableHeaderColumn dataField='price'>Product Price</TableHeaderColumn>
-                            </BootstrapTable>
-
-                            
-                            <RecommendationDialog
-                                show={this.state.showDialog}
-                                onHide={() => this.setState({ showDialog: !this.state.showDialog })}
-                            />
-                        </div>
-                    </div>
+                    <Col>
+                        <Tabs className="justify-content-center"
+                            defaultActiveKey="appetizers"
+                            >
+                            <Tab eventKey="appetizers" title="Appetizers">
+                                {result}
+                                <Row>
+                                    <Col xs={12} md={12}>
+                                        <Button onClick={this.handleAddMenuItem} size="lg">+</Button>
+                                    </Col>
+                                </Row>
+                                <Dialog show={this.state.showAddMenuDialog} onHide={this.handleClose} />
+                            </Tab>
+                            <Tab eventKey="mains" title="Mains">
+                                
+                            </Tab>
+                            <Tab eventKey="sides" title="Sides">
+                                
+                            </Tab>
+                        </Tabs>
+                    </Col>
                     
                 </Row>
 

@@ -12,7 +12,7 @@ export class Dashboard extends React.Component {
         return (
             <div>
                 <Tabs className="justify-content-center"
-                defaultActiveKey="recommend"
+                defaultActiveKey="all"
                 >
                     {/* <Nav.Item>
                         <Nav.Link href="/dashboard">Meja</Nav.Link>

@@ -1,12 +1,12 @@
 import React from 'react';
 import { Router, Link } from "@reach/router"
-import  {Home}  from 'components/Home';
+import  { Home }  from 'components/Home';
 import { Login } from 'components/Login'
 import { Register } from 'components/Register'
 import { Dashboard } from 'components/Dashboard'
 
 
-export default function App() {
+function App() {
   return (
     <Router>
       <Home path="/" />
@@ -16,3 +16,5 @@ export default function App() {
     </Router>
   );
 }
+
+export default App;

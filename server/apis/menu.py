@@ -17,7 +17,8 @@ MODEL_menu_item = menu.model('Menu Item', {
     'media_urls': fields.List(fields.String()),
     'price': fields.Float(),
     'labels': fields.List(fields.Integer()),
-    'tags': fields.List(fields.String())
+    'tags': fields.List(fields.String()),
+    'chefs_pick': fields.Boolean(default=False)
 })
 
 MODEL_menu_uuid = menu.model('Menu Item ID', {

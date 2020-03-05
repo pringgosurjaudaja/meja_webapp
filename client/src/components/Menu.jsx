@@ -1,64 +1,62 @@
 import React from 'react';
-import { Container, Row, Col, Card } from 'react-bootstrap';
-import example from './test.jpg';
+import { Container, Row, Col } from 'react-bootstrap';
+import { MenuItem } from 'components/MenuItem';
+
 export class Menu extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.handleMenuClick = this.handleMenuClick.bind(this);
+        this.state = {
+            showDialog: false,
+            menuItemList: []
+        }
+    }
+
+    componentDidMount() {
+        // axios and populate menu Item List
+        let obj = {   
+            name: "Nasi Goreng",
+            description: "fried rice with plenty of MSG duh",
+            media_urls: ["https://example.com"],
+            price: 100.0,
+            labels: [],
+            tags: [],
+        }
+
+        let data = [obj, obj, obj];
+        console.log(data);
+        this.setState({ menuItemList: data });
+    }
+
+    handleMenuClick() {
+
+    }
+
     render () {
+        let result = [];
+        this.state.menuItemList.length > 0 && this.state.menuItemList.forEach((item, i) => {
+            let props = {
+                name: item.name,
+                description: item.description,
+                media_urls: item.media_urls,
+                price: item.price,
+                labels: item.labels,
+                tags: item.tags,
+            }
+            let tmp = (
+                <Row key={i} className="layout--menu">
+                    <Col>
+                        <MenuItem className="menu-item" {...props}/>
+                    </Col>
+                </Row>
+            );
+            result.push(tmp);
+        });
+
         return (
-            <Container>
-                <Row className="justify-content-md-center" style={{ height: '600px'}}>
-                    <Col xs={5} md={5}>
-                        <Card style={{ width: '95%',  height: '300px' }}>
-                            <Card.Img variant="top" src={example} style={{ height: '400px', width: '100%' }}/>
-                            <Card.Body>
-                                <Card.Title>Card Title</Card.Title>
-                                <Card.Text>
-                                Some quick example text to build on the card title and make up the bulk of
-                                the card's content.
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                    <Col xs="auto" md="auto"></Col>
-                    <Col xs={5} md={5}>
-                        <Card style={{ width: '95%',  height: '300px'}}>
-                            <Card.Img variant="top" src={example} style={{ height: '400px', width: '100%' }}/>
-                            <Card.Body>
-                                <Card.Title>Card Title</Card.Title>
-                                <Card.Text>
-                                Some quick example text to build on the card title and make up the bulk of
-                                the card's content.
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                </Row>
-                <Row className="justify-content-md-center" style={{ height: '600px'}}>
-                    <Col xs={5} md={5}>
-                        <Card style={{ width: '95%',  height: '300px' }}>
-                            <Card.Img variant="top" src={example} style={{ height: '400px', width: '100%' }}/>
-                            <Card.Body>
-                                <Card.Title>Card Title</Card.Title>
-                                <Card.Text>
-                                Some quick example text to build on the card title and make up the bulk of
-                                the card's content.
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                    <Col xs="auto" md="auto"></Col>
-                    <Col xs={5} md={5}>
-                        <Card style={{ width: '95%',  height: '300px'}}>
-                            <Card.Img variant="top" src={example} style={{ height: '400px', width: '100%' }}/>
-                            <Card.Body>
-                                <Card.Title>Card Title</Card.Title>
-                                <Card.Text>
-                                Some quick example text to build on the card title and make up the bulk of
-                                the card's content.
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                </Row>
+            <Container className="layout--padding--menu">
+                { result }
             </Container>
         );
     }
