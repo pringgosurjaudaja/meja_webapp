@@ -52,7 +52,7 @@ class MenuRoute(Resource):
             }, status.HTTP_400_BAD_REQUEST
 
 
-@menu.route('/category/<category_id>')
+@menu.route('/category/<string:category_id>')
 class MenuCategoryRoute(Resource):
     @menu.doc(description='Get Menu Category Details')
     def get(self, category_id):
@@ -101,7 +101,7 @@ class MenuCategoryRoute(Resource):
             }, status.HTTP_400_BAD_REQUEST
         
 
-@menu.route('/item/<item_id>')
+@menu.route('/item/<string:item_id>')
 class MenuItemRoute(Resource):
     @menu.doc(description='Getting Info on a Menu Item')
     def get(self, item_id):
