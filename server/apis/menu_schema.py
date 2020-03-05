@@ -16,7 +16,7 @@ class MenuItemSchema(Schema):
     price = fields.Float(required=True)
     labels = fields.List(fields.Integer())          # Vegan, Vegetarian, Gluten-Free
     category_tags = fields.List(fields.String())    # E.g. Indian, Spicy, Mains, etc.
-    chefs_pick = fields.Boolean                     # Whether it is part of the chef's recommended list
+    chefs_pick = fields.Boolean(missing=False)      # Whether it is part of the chef's recommended list
 
     @post_load
     def make_menu_item(self, data, **kwargs):
