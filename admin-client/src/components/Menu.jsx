@@ -6,15 +6,19 @@ import 'styles/styles.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 import { MenuItemCard } from 'components/MenuItemCard';
+import { Dialog } from 'components/Dialog';
 export class Menu extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             menuItemList: [],
+            showAddMenuDialog: false,
         }
         this.handleSelectName = this.handleSelectName.bind(this);
         this.handleDeleteRow = this.handleDeleteRow.bind(this);
         this.onAfterDeleteRow = this.onAfterDeleteRow.bind(this);
+        this.handleAddMenuItem = this.handleAddMenuItem.bind(this);
+        this.handleClose = this.handleClose.bind(this);
     }
 
     componentDidMount() {
@@ -31,6 +35,14 @@ export class Menu extends React.Component {
         let data = [obj, obj, obj];
         console.log(data);
         this.setState({ menuItemList: data });
+    }
+
+
+    handleAddMenuItem() {
+        this.setState({ showAddMenuDialog: true });
+    }
+    handleClose() {
+        this.setState({ showAddMenuDialog: false });
     }
 
     handleSelectName(event) {
@@ -112,18 +124,12 @@ export class Menu extends React.Component {
                             >
                             <Tab eventKey="appetizers" title="Appetizers">
                                 {result}
-                                {/* <Row className="menu-item-card--row">
-                                    <Col>
-                                        <MenuItemCard/>
+                                <Row>
+                                    <Col xs={12} md={12}>
+                                        <Button onClick={this.handleAddMenuItem} size="lg">+</Button>
                                     </Col>
                                 </Row>
-                                <Row>
-                                    <Col>
-                                        <MenuItemCard/>
-                                    </Col>
-                                </Row> */}
-
-                                
+                                <Dialog show={this.state.showAddMenuDialog} onHide={this.handleClose} />
                             </Tab>
                             <Tab eventKey="mains" title="Mains">
                                 
@@ -135,42 +141,6 @@ export class Menu extends React.Component {
                     </Col>
                     
                 </Row>
-
-                {/* <hr/>
-
-                <Row>
-                    <div className="layout--padding">
-                        <h3>Add New Recommendation to Menu</h3>
-                        <div>
-                            <br/>
-                            <Button variant="success" onClick={()=> this.setState({ showDialog: !this.state.showDialog })}>
-                                Add Recommendation</Button>
-                            <br/>
-                            <BootstrapTable data={products}
-                            deleteRow={ true } selectRow={ selectRowProp } 
-                                options={ options } pagination  version='4'>
-                                <TableHeaderColumn isKey dataField='id' hidden={true}>Product ID</TableHeaderColumn>
-                                <TableHeaderColumn dataField='name'>Product Name</TableHeaderColumn>
-                                <TableHeaderColumn dataField='price'>Product Price</TableHeaderColumn>
-                            </BootstrapTable>
-
-                            
-                            <RecommendationDialog
-                                show={this.state.showDialog}
-                                onHide={() => this.setState({ showDialog: !this.state.showDialog })}
-                            />
-                        </div>
-                    </div>
-                    
-                </Row> 
-                <BootstrapTable data={products} className="layout--padding"
-                                    deleteRow={ true } selectRow={ selectRowProp } 
-                                        options={ options } pagination  version='4'>
-                                        <TableHeaderColumn isKey dataField='id' hidden={true}>Product ID</TableHeaderColumn>
-                                        <TableHeaderColumn dataField='name'>Product Name</TableHeaderColumn>
-                                        <TableHeaderColumn dataField='price'>Product Price</TableHeaderColumn>
-                                    </BootstrapTable>
-                */}
 
 
                 

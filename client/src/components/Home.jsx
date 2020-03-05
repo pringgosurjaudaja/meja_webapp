@@ -7,6 +7,15 @@ export class Home extends React.Component {
     constructor(props) {
         super(props);
     }
+    componentDidMount() {
+        let tmp = document.getElementsByTagName('body')[0];
+        tmp.setAttribute('class', 'layout--background');
+    }
+
+    componentWillUnmount() {
+        let tmp = document.getElementsByTagName('body')[0];
+        tmp.setAttribute('class', '');
+    }
 
     render() {
         return (

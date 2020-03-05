@@ -14,17 +14,6 @@ export class MenuItemCard extends React.Component {
     render() {
         
         return (
-            // <Card className="menu-item">
-            //     <Card.Img className="menu-item-card--photo" variant="top" src={example}></Card.Img>
-            //     <Card.Body className="menu-item-card--body">
-                    // <Card.Title>Card Title</Card.Title>
-                    
-                    // <Card.Text>
-                    // Some quick example text to build on the card title and make up the bulk of
-                    // the card's content.
-                    // </Card.Text>
-            //     </Card.Body>
-            // </Card>
             <Card className="menu-item" style={{display: 'flex', flexDirection: 'row'}}>
                 <Card.Img className="menu-item-card--photo" variant="top" src={example}></Card.Img>
                 <Card.Body className="menu-item-card--body">

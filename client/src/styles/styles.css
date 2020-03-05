@@ -3,6 +3,9 @@ body {
     font-size: 24px;
     font-style: normal;
     font-variant: normal;
+}
+
+.layout--background {
     background: url(../components/assets/bg-app.png);
 }
 
@@ -42,7 +45,6 @@ body {
     padding-left: 5% !important;
     padding-right: 5% !important;
     margin-top: 5vh !important;
-    font-size: 120px !important;
 }
 .l-center {
     vertical-align: middle;
@@ -130,7 +132,7 @@ body {
     /* position: relative; */
     border-top-left-radius: 30px !important;
     border-top-right-radius: 30px !important;
-    height: 350px;
+    height: 550px !important;
 }
 
 .menu-item--title {
