@@ -1,15 +1,17 @@
-from db import db_client
-from flask import request, jsonify
+from flask import request
 from flask_api import status
-from flask_restplus import Namespace, Resource, fields, marshal_with, reqparse
-from bson.objectid import ObjectId
-import json
-from apis.menu_schema import MenuItem, MenuItemSchema
+from flask_restplus import Namespace, Resource, fields
 from marshmallow import ValidationError
+from bson.objectid import ObjectId
+from db import db_client
+from apis.menu_schema import MenuItemSchema, MenuCategorySchema
 
-menu = Namespace('menu', description='Menu Backend Service')
-parser = reqparse.RequestParser()
 menu_db = db_client.menu
+menu = Namespace('menu', description='Menu Backend Service')
+
+MODEL_menu_category = menu.model('Menu Category', {
+    'name': fields.String()
+})
 
 MODEL_menu_item = menu.model('Menu Item', {
     'name': fields.String(),
@@ -17,7 +19,7 @@ MODEL_menu_item = menu.model('Menu Item', {
     'media_urls': fields.List(fields.String()),
     'price': fields.Float(),
     'labels': fields.List(fields.Integer()),
-    'tags': fields.List(fields.String()),
+    'category_tags': fields.List(fields.String()),
     'chefs_pick': fields.Boolean(default=False)
 })
 
@@ -25,9 +27,9 @@ MODEL_menu_uuid = menu.model('Menu Item ID', {
     'id': fields.String(description="ID of the Menu Item", required=True)
 })
 
-@menu.doc(description='Endpoints for whole Menu Operations')
+
 @menu.route('')
-class Menu(Resource):
+class MenuRoute(Resource):
     @menu.doc(description='Get all items on the Menu')
     def get(self):
         menu_items = list(menu_db.find({}))
@@ -35,29 +37,14 @@ class Menu(Resource):
             menu_item['_id'] = str(menu_item['_id'])
         return menu_items, status.HTTP_200_OK
 
-
-# Menu Item Endpoints
-@menu.route('/item')
-class MenuItemRoute(Resource):
-    @menu.doc(description='Getting Info on a Menu Item')
-    @menu.expect(MODEL_menu_uuid)
-    # @menu.marshal_with(MODEL_menu_item)
-    def get(self):
-        menu_item_id = request.data.get('id')
-        # Gets menu_item and excludes the id from the result
-        menu_item = menu_db.find_one({'_id': ObjectId(menu_item_id)})
-        menu_item['_id'] = str(menu_item['_id'])
-        return menu_item, status.HTTP_200_OK
-
-
-    @menu.doc(description='Inserting a new Menu Item')
-    @menu.expect(MODEL_menu_item)
+    @menu.doc(description='Inserting a new Menu category')
+    @menu.expect(MODEL_menu_category)
     def post(self):
-        schema = MenuItemSchema()
+        schema = MenuCategorySchema()
         try:
-            menu_item = schema.load(request.data)
-            operation = menu_db.insert_one(schema.dump(menu_item))
-            return { 'inserted': str(operation.inserted_id)}, status.HTTP_201_CREATED
+            menu_category = schema.load(request.data)
+            operation = menu_db.insert_one(schema.dump(menu_category))
+            return {'inserted': str(operation.inserted_id)}, status.HTTP_201_CREATED
         except ValidationError as err:
             print(err)
             return { 
@@ -65,31 +52,87 @@ class MenuItemRoute(Resource):
             }, status.HTTP_400_BAD_REQUEST
 
 
-    @menu.doc(description='Deleting a Menu Item')
-    @menu.expect(MODEL_menu_uuid)
-    def delete(self):
-        menu_item_id = request.data.get('id')
-        operation = menu_db.delete_one({'_id': ObjectId(menu_item_id)})
-        if operation.deleted_count == 0:
-            # No menu items deleted
-            return {'result': 'No items deleted'}, 200
-        return {
-            'deleted': operation.raw_result
-        }, status.HTTP_204_NO_CONTENT
+@menu.route('/category/<category_id>')
+class MenuCategoryRoute(Resource):
+    @menu.doc(description='Get Menu Category Details')
+    def get(self, category_id):
+        menu_category = menu_db.find_one({'_id': ObjectId(category_id)})
+        menu_category['_id'] = str(menu_category['_id'])
+        return menu_category, status.HTTP_200_OK
 
-
-    @menu.doc(description=('Replacing a Menu Item. When Editing, expects' 
-                           'a full new menu item with the updated details'))
+    @menu.doc(description='Edit Menu Category Details')
+    @menu.expect(MODEL_menu_category)
+    def patch(self, category_id):
+        schema = MenuCategorySchema()
+        try:
+            new_category = schema.load(request.data)
+            menu_db.find_one_and_update(
+                {'_id': ObjectId(category_id)},
+                {'$set':
+                    {'name': new_category['name']}
+                }
+            )
+            return {'updated': category_id}, status.HTTP_200_OK
+        except ValidationError as err:
+            print(err)
+            return { 
+                'result': 'Missing required fields'
+            }, status.HTTP_400_BAD_REQUEST
+    
+    @menu.doc(description='Add Menu Item to Menu Category')
     @menu.expect(MODEL_menu_item)
-    def put(self):
-        menu_item_id = request.data.get('id')
+    def post(self, category_id):
+        schema = MenuItemSchema()
+        try:
+            menu_item = schema.load(request.data)
+            # Generates a unique id manually for each menu item
+            menu_item['_id'] = str(ObjectId())
+            menu_db.update(
+                {'_id': ObjectId(category_id)},
+                {'$push': {'menu_items': schema.dump(menu_item)}}
+            )
+            return {
+                'inserted': schema.dump(menu_item)
+            }, status.HTTP_201_CREATED
+        except ValidationError as err:
+            print(err)
+            return { 
+                'result': 'Missing required fields'
+            }, status.HTTP_400_BAD_REQUEST
+        
+
+@menu.route('/item/<item_id>')
+class MenuItemRoute(Resource):
+    @menu.doc(description='Getting Info on a Menu Item')
+    def get(self, item_id):
+        menu_item = menu_db.find_one(
+            {'menu_items._id': item_id}
+        )
+        menu_item['_id'] = str(menu_item['_id'])
+        return menu_item, status.HTTP_200_OK
+
+    @menu.doc(description='Deleting a Menu Item')
+    def delete(self, item_id):
+        menu_db.update(
+            {}, 
+            {'$pull': {'menu_items': {'_id': item_id}}}
+        )
+        return {
+            'deleted': 'success'
+        }, status.HTTP_200_OK
+
+
+    @menu.doc(description=('Replacing a Menu Item'))
+    @menu.expect(MODEL_menu_item)
+    def put(self, item_id):
         schema = MenuItemSchema()
         updated_menu_item = schema.load(request.data)
-        updated_json = schema.dump(updated_menu_item)
-        operation = menu_db.replace_one({'_id': ObjectId(menu_item_id)}, updated_json)
-        if operation.matched_count == 0:
-            return {'result': 'Menu item not found'}, 200
-
+        # Ensures we are not losing the id of the original item we are updating
+        updated_menu_item['_id'] = item_id
+        menu_db.update(
+            {'menu_items._id': item_id},
+            {'$set': {'menu_items.$': schema.dump(updated_menu_item)}}
+        )
         return {
-            'updated': 'success',
+            'updated': schema.dump(updated_menu_item),
         }, status.HTTP_200_OK
