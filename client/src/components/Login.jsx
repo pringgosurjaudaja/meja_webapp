@@ -63,7 +63,7 @@ export class Login extends React.Component {
                     <Row>
                         <Form size="lg" className="layout--padding" onSubmit={this.handleSubmit}>
                             <Form.Group controlId="formBasicEmail">
-                                <Form.Control value={this.state.email} onChange={this.handleChange} name="email" type="email" placeholder="Enter username" />
+                                <Form.Control value={this.state.email} onChange={this.handleChange} name="email" type="email" placeholder="Enter email" />
                             </Form.Group>
 
                             <Form.Group controlId="formBasicPassword">
