@@ -30,7 +30,7 @@ export class Menu extends React.Component {
     }
 
     handleMenuClick() {
-
+        
     }
 
     render () {

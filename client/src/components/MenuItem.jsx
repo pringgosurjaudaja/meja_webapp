@@ -8,10 +8,16 @@ export class MenuItem extends React.Component {
     constructor(props) {
         super(props);
         this.handleMenuClick = this.handleMenuClick.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+        this.state = { showDialog: false };
     }
     
     handleMenuClick() {
+        this.setState({ showDialog: true });
+    }
 
+    handleClose() {
+        this.setState({ showDialog: false });
     }
 
     render() {
@@ -26,7 +32,7 @@ export class MenuItem extends React.Component {
                     </Card.Text>
                 </Card.Body>
                 {/* Insert menu item props here */}
-                <MenuItemDialog />
+                <MenuItemDialog show={this.state.showDialog} onHide={this.handleClose} {...this.props}/>
             </Card>
         )
     }
