@@ -44,10 +44,11 @@ export class Register extends React.Component {
             }
             }).then(function(response) {
                 console.log(response);
-                this.setState({ name: '', email: '', password: '' });
                 navigate('/login')
             }).catch(function(error) {
                 console.log(error);
+                alert('Invalid input');
+                this.setState({ name: '', email: '', password: '' });
             });
     }
     render () {
