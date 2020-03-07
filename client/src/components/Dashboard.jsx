@@ -9,33 +9,17 @@ import { Menu } from 'components/Menu';
 import { Checkout } from 'components/Checkout';
 export class Dashboard extends React.Component {
     render () {
+
+        const mainCategories = ['Burgers', 'Chips', 'Pizzas', 'Pasta', 'Steaks', 'Seafood'];
+        const menuProps = {
+            categories: mainCategories
+        }
+
         return (
             <div>
                 <Tabs className="justify-content-center"
                 defaultActiveKey="all"
                 >
-                    {/* <Nav.Item>
-                        <Nav.Link href="/dashboard">Meja</Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                        <Nav.Link href="/dashboard/recommended">Recommended</Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                        <Nav.Link eventKey="all">All</Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                        <Nav.Link eventKey="main">Mains</Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                        <Nav.Link eventKey="dessert">Desserts</Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                        <Nav.Link eventKey="checkout"><FontAwesomeIcon icon={faShoppingCart}/></Nav.Link>
-import { Router, Link } from "@reach/router"
-                    </Nav.Item> */}
-                    {/* <Tab>
-                        <Link href="/dashboard">Meja</Link>
-                    </Tab> */}
                     <Tab eventKey="recommend" title="Recommend">
                         <Recommend/>
                     </Tab>
@@ -43,7 +27,7 @@ import { Router, Link } from "@reach/router"
                         <Menu/>
                     </Tab>
                     <Tab eventKey="main" title="Mains">
-                        <Menu/>
+                        <Menu {...menuProps}/>
                     </Tab>
                     <Tab eventKey="dessert" title="Desserts">
                         <Menu/>

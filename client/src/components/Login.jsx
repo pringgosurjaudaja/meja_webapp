@@ -13,7 +13,7 @@ export class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: '',
+            email: '',
             password: '',
         }
         this.handleChange = this.handleChange.bind(this);
@@ -22,8 +22,8 @@ export class Login extends React.Component {
 
     
     handleChange(event) {
-        if (event.target.name == "username") {
-            this.setState({ username: event.target.value});
+        if (event.target.name == "email") {
+            this.setState({ email: event.target.value});
         } else if (event.target.name == "password") {
             this.setState({ password: event.target.value});
         }
@@ -31,25 +31,24 @@ export class Login extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        // const instance = axios.create({
-        //     baseURL: 'https://google.com',
-        //     timeout: 1000,
-        //     headers: { 
-        //         'Access-Control-Allow-Origin': 'http://localhost:3000',
-        //         'Access-Control-Allow-Methods': 'GET',
-        //         'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        //         'Access-Control-Allow-Credentials': 'true',
-        //     },
-        //   });
-        axios.get('/')
-            .then(function(response) {
+
+        axios({
+            method: 'post',
+            url: 'http://127.0.0.1:5000/auth/login',
+            data: {
+                email: this.state.email,
+                password: this.state.password
+            }
+            }).then(function(response) {
                 console.log(response);
-                // DO SOEMTHING
-                navigate("/dashboard");
-            })
-            .catch(function(error){
+                sessionStorage.setItem('AUTH_KEY', response.data.token);
+                navigate('/dashboard')
+            }).catch(function(error) {
                 console.log(error);
+                alert('Invalid input');
             });
+        
+        this.setState({ email: '', password: ''});
     }
 
     render() {
@@ -62,13 +61,13 @@ export class Login extends React.Component {
                         </h1>
                     </Row>
                     <Row>
-                        <Form size="lg" className="layout--padding" onChange={this.handleChange} onSubmit={this.handleSubmit}>
-                            <Form.Group controlId="formBasicUsername">
-                                <Form.Control name="username" type="username" placeholder="Enter username" />
+                        <Form size="lg" className="layout--padding" onSubmit={this.handleSubmit}>
+                            <Form.Group controlId="formBasicEmail">
+                                <Form.Control value={this.state.email} onChange={this.handleChange} name="email" type="email" placeholder="Enter email" />
                             </Form.Group>
 
                             <Form.Group controlId="formBasicPassword">
-                                <Form.Control name="password" type="password" placeholder="Password" />
+                                <Form.Control value={this.state.password} onChange={this.handleChange} name="password" type="password" placeholder="Password" />
                             </Form.Group>
 
                             <Button  style={{ backgroundColor: "black", color: "white"}} variant="primary" onClick={this.handleSubmit}>

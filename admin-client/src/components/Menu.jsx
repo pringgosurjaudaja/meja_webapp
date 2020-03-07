@@ -7,6 +7,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 import { MenuItemCard } from 'components/MenuItemCard';
 import { Dialog } from 'components/Dialog';
+
+
+import axios from 'utilities/helper'
 export class Menu extends React.Component {
     constructor(props) {
         super(props);
@@ -35,6 +38,18 @@ export class Menu extends React.Component {
         let data = [obj, obj, obj];
         console.log(data);
         this.setState({ menuItemList: data });
+
+
+        axios({
+            method: 'get',
+            url: 'http://127.0.0.1:5000/menu'
+        })
+        .then(function(response) {
+            console.log(response);
+        })
+        .catch(function(error) {
+            console.log(error);
+        })
     }
 
 
@@ -57,42 +72,6 @@ export class Menu extends React.Component {
         alert('The rowkey you drop: ' + rowKeys);
     }
     render () {
-        const foodLabels = [
-            { value: 'vegan', label: 'Vegan' },
-            { value: 'gluten-free', label: 'Gluten Free' },
-            { value: 'vegetarian', label: 'Vegetarian' },  
-        ];
-
-        const foodTags = [
-            { value: 'japanese', label: 'Japanese' },
-            { value: 'western', label: 'Western' },
-            { value: 'spanish', label: 'Spanish' },
-            { value: 'italian', label: 'Italian' },  
-            { value: 'popular', label: 'Popular' },
-        ];
-        
-        const products = [{
-            id: 1,
-            name: "Product1",
-            price: 120
-        }, {
-            id: 2,
-            name: "Product2",
-            price: 80
-        }];
-
-
-        const options = {
-            afterDeleteRow: this.onAfterDeleteRow,   // A hook for after droping rows.
-            onDeleteRow: this.handleDeleteRow,  // Hook for dropping rows
-        };
-
-          
-        // If you want to enable deleteRow, you must enable row selection also.
-        const selectRowProp = {
-            mode: 'checkbox'
-        };
-
 
         let result = [];
         this.state.menuItemList.length > 0 && this.state.menuItemList.forEach((item, i) => {
