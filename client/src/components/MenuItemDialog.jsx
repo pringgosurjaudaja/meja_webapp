@@ -15,7 +15,7 @@ export class MenuItemDialog extends React.Component {
                 <Modal.Header closeButton>
                 </Modal.Header>
                 <Modal.Body>
-                    <Card.Img className="menu-item--photo" variant="top" src={example}/>
+                    <Card.Img variant="top" src={example}/>
                     <Modal.Title>{ this.props.name }</Modal.Title>
                     <p>{ this.props.description }</p>
                     <Button variant="primary">
@@ -23,10 +23,12 @@ export class MenuItemDialog extends React.Component {
                     </Button>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={this.props.onHide} variant="secondary">
-                        Close
-                    </Button>
+
+                <Button onClick={this.props.onHide} variant="secondary">
+                    Close
+                </Button>
                 </Modal.Footer>
+
             </Modal>
         )
     }
