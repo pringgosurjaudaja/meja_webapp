@@ -143,3 +143,16 @@ body {
 .menu-item--text {
     font-size: 20px !important;
 }
+
+.menu-item-dialog {
+    height: 100% !important;
+}
+
+.margin-center
+{
+    margin-left:5% !important;
+}
+
+.price {
+    font-weight : bold;
+}
