@@ -3,7 +3,7 @@ import { Container, Row, Col, Tabs, Tab } from 'react-bootstrap';
 import { MenuItem } from 'components/MenuItem';
 import axios from 'utilities/helper';
 import { _ } from 'lodash';
-export class Menu extends React.Component {
+export class MenuSpecific extends React.Component {
 
     constructor(props) {
         super(props);
@@ -33,15 +33,18 @@ export class Menu extends React.Component {
 
 
     render () {
-        let tabs = [];
+        let entries = [];
 
-        this.state.menuItemList.length > 0 && this.state.menuItemList.forEach((category, i) => {
+        const categoryList = this.props.categories ? this.props.categories: [];
+        console.log(categoryList);
+
+        let indexCount = 0;
+        this.state.menuItemList.length > 0 && this.state.menuItemList.forEach((category) => {
             console.log(category);
-            let entries = [];
 
-
-            category.menu_items.length > 0 
-            && category.menu_items.forEach((item, i) => {
+            categoryList.includes(category.name)
+            && category.menu_items.length > 0 
+            && category.menu_items.forEach((item, index) => {
                 let props = {
                     name: item.name,
                     description: item.description,
@@ -51,7 +54,7 @@ export class Menu extends React.Component {
                     tags: item.tags,
                 }
                 let entry = (
-                    <Row key={i} className="layout--menu">
+                    <Row key={indexCount++} className="layout--menu">
                         <Col>
                             <MenuItem className="menu-item" {...props}/>
                         </Col>
@@ -60,20 +63,11 @@ export class Menu extends React.Component {
                 entries.push(entry);
             })
 
-            let tab = (
-                <Tab key={i} eventKey={category.name} title={category.name}>
-                    {entries}
-                </Tab>
-            )
-
-            tabs.push(tab);
         });
 
         return (
             <Container className="layout--padding--menu">
-                <Tabs defaultActiveKey="burger">
-                    {tabs}
-                </Tabs>
+                {entries}
             </Container>
         );
     }
