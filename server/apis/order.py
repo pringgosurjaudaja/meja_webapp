@@ -12,7 +12,7 @@ order_db = db_client.order
 order_items_db = db_client.order_items
 
 MODEL_order = order.model('Order',{
-    'table_id' : fields.String()
+        'table_id' : fields.String()
 })
 
 MODEL_order_id = order.model('Order ID',{
@@ -23,11 +23,10 @@ MODEL_order_item = order.model('Order Item',{
     'menu_item_id' : fields.String(),
     'amount' : fields.Float(),
     'notes' : fields.String(),
-    'status' : fields.Boolean(),
     'order_id' : fields.String()
 })
 
-@order.route('order/<string:id>')
+@order.route('/<string:id>')
 class OrderManage(Resource):
     @order.doc(description='View the Order Items in the Order, given order ID')
     def get(self, id):
@@ -44,6 +43,7 @@ class Order(Resource):
         schema = OrderSchema()
         # table_id = request.data.get('table_id')
         order = schema.load(request.data)
+        order['status'] = False
         order['orderItems_id'] = []
         operation = order_db.insert_one(schema.dump(order))
         return{'inserted': str(operation.inserted_id)}, status.HTTP_201_CREATED
@@ -78,7 +78,7 @@ class OrderItem(Resource):
             print(error)
             return{'result': 'Missing fields'}, status.HTTP_400_BAD_REQUEST
 
-@order.route('/orderitem/<string:id>')
+@order.route('/item/<string:id>')
 class OrderItemGet(Resource):
     @order.doc(description='Get the Order Item')
     def get(self, id):
