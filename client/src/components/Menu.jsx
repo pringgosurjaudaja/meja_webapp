@@ -63,6 +63,7 @@ export class Menu extends React.Component {
             let entries = [];
             category.menu_items.length > 0 && category.menu_items.forEach((item, i) => {
                 let props = {
+                    id: item._id,
                     name: item.name,
                     description: item.description,
                     media_urls: item.media_urls,
