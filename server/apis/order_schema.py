@@ -11,6 +11,6 @@ class OrderItemSchema(Schema):
 class OrderSchema(Schema):
     orderItems_id= fields.List(fields.String())
     table_id = fields.String(required=True)
-    status = fields.Boolean()
+    status = fields.String()
 
     

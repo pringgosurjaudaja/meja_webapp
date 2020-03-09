@@ -15,6 +15,10 @@ MODEL_order = order.model('Order',{
         'table_id' : fields.String()
 })
 
+MODEL_status = order.model('Order Status', {
+    'status' : fields.String(),
+    'order_id' : fields.String()
+})
 MODEL_order_id = order.model('Order ID',{
     'id': fields.String()
 })
@@ -51,7 +55,7 @@ class Order(Resource):
         schema = OrderSchema()
         # table_id = request.data.get('table_id')
         order = schema.load(request.data)
-        order['status'] = False
+        order['status'] = 'False'
         order['orderItems_id'] = []
         operation = order_db.insert_one(schema.dump(order))
         return{'inserted': str(operation.inserted_id)}, status.HTTP_201_CREATED
@@ -66,8 +70,16 @@ class Order(Resource):
         if op.deleted_count == 0:
             return{'result' : 'No items'}, 200
         return{'deleted':op.raw_result}, status.HTTP_204_NO_CONTENT
-
-
+    @order.doc(description='Edit the status of the Order')
+    @order.expect(MODEL_status)
+    def put(self):
+        status_collection = {'pending', 'cooking', 'done', 'delivering'}
+        new_status = request.data.get('status')
+        if(new_status.lower() in status_collection):
+            order_db.update_one({'_id': ObjectId(request.data.get('order_id'))},{'$set': {'status': new_status}})
+            return{'result': 'Status Changed'}, 200
+        else:
+            return{'result': 'Status Invalid. Valid Status: pending, cooking, done, delivering'}, status.HTTP_400_BAD_REQUEST
 @order.route('/add')
 class OrderItem(Resource):
     @order.doc(description='Putting menu item in the order')
