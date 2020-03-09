@@ -25,6 +25,14 @@ MODEL_order_item = order.model('Order Item',{
     'notes' : fields.String(),
     'order_id' : fields.String()
 })
+@order.route('/all')
+class OrderAll(Resource):
+    @order.doc(description='View all order')
+    def get(self):
+        orders = list(order_db.find({}))
+        for order in orders:
+            order['_id'] = str(order['_id'])
+        return orders, status.HTTP_200_OK
 
 @order.route('/<string:id>')
 class OrderManage(Resource):
