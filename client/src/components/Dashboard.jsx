@@ -1,12 +1,10 @@
 import React from 'react';
-import { Router, Link } from "@reach/router"
-import { Nav, NavDropdown, Tabs, Tab } from 'react-bootstrap';
+import { Tabs, Tab } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 import 'styles/styles.css';
 import { Recommend } from 'components/Recommend';
 import { Menu } from 'components/Menu';
-import { MenuSpecific } from 'components/MenuSpecific';
 import { Checkout } from 'components/Checkout';
 import axios from 'utilities/helper';
 import { _ } from 'lodash';
