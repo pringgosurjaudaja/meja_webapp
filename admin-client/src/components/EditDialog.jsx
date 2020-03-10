@@ -11,7 +11,7 @@ import { _ } from 'lodash';
 import axios from 'utilities/helper';
 
 
-export class Dialog extends React.Component {
+export class EditDialog extends React.Component {
     constructor(props) {
         super(props);
         
@@ -24,55 +24,54 @@ export class Dialog extends React.Component {
             price: '',
             labels: [],
             tags: [],
+            foodLabels: [
+                { value: 0, label: 'Vegan' },
+                { value: 1, label: 'Gluten Free' },
+                { value: 2, label: 'Vegetarian' },  
+            ],
+            foodTags: [
+                { value: 'japanese', label: 'Japanese' },
+                { value: 'western', label: 'Western' },
+                { value: 'spanish', label: 'Spanish' },
+                { value: 'italian', label: 'Italian' },  
+                { value: 'popular', label: 'Popular' },
+            ]
         }
+        
     }
 
     
-    handleAddMenu(e) {
-        e.preventDefault();
-        let labels=[];
-        let tags = [];
-        
-        this.state.labels.forEach((o, i)=> {
-            labels.push(o.value);
+    componentDidMount() {
+        this.setState({
+            name: this.props.item.name,
+            description: this.props.item.description,
+            price: this.props.item.price,
+            labels: this.props.item.labels,
+            tags: this.props.item.category_tags,
         })
-        this.state.tags.forEach((o, i)=> {
-            tags.push(o.value);
-        });
-
-        let category_id="";
-        
-        this.props.menuitemlist && this.props.menuitemlist.forEach((item)=>{
-            if(item.name == this.props.currentcategory) {
-                category_id = item._id;
-            }
-        });
-
-        let url = 'http://127.0.0.1:5000/menu/category/'+category_id;
-  
-        axios({
-            method: 'post',
-            url: url,
-            timeout: 1000,
-            data: {
-                "name": this.state.name,
-                "description": this.state.description,
-                "price": parseFloat(this.state.price),
-            },
-            header: {
-                "x-api-key": sessionStorage.getItem('AUTH_KEY'),
-                "Content-Type": "application/json"
-            }
-        })
-        .then((response) => {
-            console.log(response);
-        })
-        .catch((error)=>{
-            console.log(error.response);
-        });
-        
     }
 
+    componentWillReceiveProps(nextProps) {
+        let tags = [];
+        let labels = [];
+        for(let o in nextProps.item.category_tags) {
+            console.log(nextProps.item.category_tags[o]);
+
+            this.state.foodTags.forEach((o)=>{
+                
+            })
+            let obj = {
+
+            }
+        }
+        
+
+        this.setState({
+            name: nextProps.item.name,
+            description: nextProps.item.description,
+            price: nextProps.item.price,
+        })
+    }
 
     handleChange(e) {
         if(e.target.name === "name") {
@@ -85,6 +84,7 @@ export class Dialog extends React.Component {
     }
 
     handleSelectLabel(chosen) {
+        console.log(chosen);
         this.setState({label: chosen})
     }
 
@@ -93,19 +93,7 @@ export class Dialog extends React.Component {
         this.setState({tags: chosen})
     }
     render () {
-        const foodLabels = [
-            { value: 0, label: 'Vegan' },
-            { value: 1, label: 'Gluten Free' },
-            { value: 2, label: 'Vegetarian' },  
-        ];
 
-        const foodTags = [
-            { value: 'japanese', label: 'Japanese' },
-            { value: 'western', label: 'Western' },
-            { value: 'spanish', label: 'Spanish' },
-            { value: 'italian', label: 'Italian' },  
-            { value: 'popular', label: 'Popular' },
-        ];
 
         return (
             <Modal {...this.props} size="lg"
@@ -113,7 +101,7 @@ export class Dialog extends React.Component {
                 centered>
                 <Modal.Header closeButton>
                     <Modal.Title id="contained-modal-title-vcenter">
-                     Add new Item
+                     Edit Item
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
@@ -152,7 +140,7 @@ export class Dialog extends React.Component {
                                 className="basic-single"
                                 classNamePrefix="select"
                                 isClearable
-                                options={foodLabels}
+                                options={this.state.foodLabels}
                             />
                         </Form.Group>
 
@@ -165,7 +153,7 @@ export class Dialog extends React.Component {
                                 className="basic-single"
                                 classNamePrefix="select"
                                 isClearable
-                                options={foodTags}
+                                options={this.state.foodTags}
                             />
                         </Form.Group>
                         

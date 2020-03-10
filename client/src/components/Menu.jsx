@@ -6,7 +6,6 @@ export class Menu extends React.Component {
 
     constructor(props) {
         super(props);
-        this.handleMenuClick = this.handleMenuClick.bind(this);
         this.state = {
             showDialog: false,
             menuItemList: []
@@ -17,10 +16,6 @@ export class Menu extends React.Component {
         this.setState({ menuItemList: this.props.menuItemList });
     }
     
-
-    handleMenuClick() {
-
-    }
 
 
 

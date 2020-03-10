@@ -9,7 +9,8 @@ export class MenuItemCard extends React.Component {
     constructor(props) {
         super(props);
     }
-    
+    componentDidMount() {
+    }
 
     render() {
         
@@ -23,7 +24,10 @@ export class MenuItemCard extends React.Component {
                     </Card.Text>
                 </Card.Body>
                 <Card.ImgOverlay className="menu-item-card--icon-group">
-                    <FontAwesomeIcon className="menu-item-card--icon-edit" icon={faPencilAlt}/>
+                    <FontAwesomeIcon className="menu-item-card--icon-edit" icon={faPencilAlt} onClick={(e)=>{
+                        this.props.handleeditmenuitem(e);
+                        this.props.geteditmenuitem(this.props);
+                    }}/>
                     <FontAwesomeIcon className="menu-item-card--icon-delete" icon={faTrashAlt}/>
                 </Card.ImgOverlay>    
             </Card>

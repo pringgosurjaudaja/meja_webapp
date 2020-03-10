@@ -10,120 +10,128 @@ import { Dialog } from 'components/Dialog';
 
 
 import axios from 'utilities/helper'
+import { EditDialog } from './EditDialog';
 export class Menu extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             menuItemList: [],
             showAddMenuDialog: false,
+            showEditMenuDialog: false,
+            activeTab: 'Burgers',
+            activeItem: {},
         }
-        this.handleSelectName = this.handleSelectName.bind(this);
-        this.handleDeleteRow = this.handleDeleteRow.bind(this);
-        this.onAfterDeleteRow = this.onAfterDeleteRow.bind(this);
         this.handleAddMenuItem = this.handleAddMenuItem.bind(this);
+        this.handleEditMenuItem = this.handleEditMenuItem.bind(this);
+        this.getEditMenuItem = this.getEditMenuItem.bind(this);
         this.handleClose = this.handleClose.bind(this);
+        this.handleTabChange = this.handleTabChange.bind(this);
     }
 
     componentDidMount() {
-        // axios and populate menu Item List
-        let obj = {   
-            name: "Nasi Goreng",
-            description: "fried rice with plenty of MSG duh",
-            media_urls: ["https://example.com"],
-            price: 100.0,
-            labels: [],
-            tags: [],
-        }
-
-        let data = [obj, obj, obj];
-        console.log(data);
-        this.setState({ menuItemList: data });
-
-
-        axios({
-            method: 'get',
-            url: 'http://127.0.0.1:5000/menu'
-        })
-        .then(function(response) {
-            console.log(response);
-        })
-        .catch(function(error) {
-            console.log(error);
-        })
+        this.setState({ menuItemList: this.props.menuItemList });
     }
 
 
     handleAddMenuItem() {
         this.setState({ showAddMenuDialog: true });
     }
+
+    handleEditMenuItem() {
+        this.setState({ 
+            showEditMenuDialog: true,
+        });
+    }
+
+
+    // Get the details of the specific item from each individual Menu Item Card
+    getEditMenuItem(item) {
+        console.log(item);
+        this.setState({ activeItem: item })
+    }
+
     handleClose() {
-        this.setState({ showAddMenuDialog: false });
+        this.setState({ 
+            showAddMenuDialog: false,
+            showEditMenuDialog: false,
+        });
     }
 
-    handleSelectName(event) {
-        console.log(event.target.value);
-    }
 
-    handleDeleteRow(row) {
-        console.log(row);
-    }
-
-    onAfterDeleteRow(rowKeys) {
-        alert('The rowkey you drop: ' + rowKeys);
+    handleTabChange(event) {
+        this.setState({ activeTab: event });
     }
     render () {
 
-        let result = [];
-        this.state.menuItemList.length > 0 && this.state.menuItemList.forEach((item, i) => {
-            let props = {
-                name: item.name,
-                description: item.description,
-                media_urls: item.media_urls,
-                price: item.price,
-                labels: item.labels,
-                tags: item.tags,
-            }
-            let tmp = (
-                <Row key={i} className="menu-item-card--row">
-                    <Col>
-                        <MenuItemCard {...props}/>
-                    </Col>
-                </Row>
-            );
-            result.push(tmp);
-        });
+        let tabs = [];
 
+        let categories = {};
+
+        let defaultKey = this.props.menuItemList.length == 0 ? "Burgers" : this.props.menuItemList[0].name;
+        this.props.menuItemList.length > 0 && this.props.menuItemList.forEach((category, i) => {
+            let entries = [];
+            categories[category.name] = category.name;
+            category.menu_items.length > 0 
+            && category.menu_items.forEach((item, i) => {
+                let props = {
+                    name: item.name,
+                    description: item.description,
+                    media_urls: item.media_urls,
+                    price: item.price,
+                    labels: item.labels,
+                    category_tags: item.category_tags,
+                    handleeditmenuitem: this.handleEditMenuItem,
+                    geteditmenuitem: this.getEditMenuItem,
+                }
+                let entry = (
+                    <Row key={i} className="layout--menu">
+                        <Col>
+                            <MenuItemCard className="menu-item" {...props}/>
+                        </Col>
+                    </Row>
+                );
+                entries.push(entry);
+            })
+
+            let tab = (
+                <Tab key={category.name} eventKey={category.name} title={category.name}>
+                    {entries}
+                </Tab>
+            )
+
+            tabs.push(tab);
+        });
+        
+        let dialogProps ={
+            categories: categories,
+            currentcategory : this.state.activeTab,
+            menuitemlist: this.props.menuItemList,
+        }
+
+        let editDialogProps={
+            item: this.state.activeItem,
+        }
 
         return (
             <Container className="layout--padding--admin-menu">
                 <Row>
                     <Col>
                         <Tabs className="justify-content-center"
-                            defaultActiveKey="appetizers"
+                            defaultActiveKey={defaultKey} onSelect={this.handleTabChange}
                             >
-                            <Tab eventKey="appetizers" title="Appetizers">
-                                {result}
-                                <Row>
-                                    <Col xs={12} md={12}>
-                                        <Button onClick={this.handleAddMenuItem} size="lg">+</Button>
-                                    </Col>
-                                </Row>
-                                <Dialog show={this.state.showAddMenuDialog} onHide={this.handleClose} />
-                            </Tab>
-                            <Tab eventKey="mains" title="Mains">
-                                
-                            </Tab>
-                            <Tab eventKey="sides" title="Sides">
-                                
-                            </Tab>
+                            {tabs}
                         </Tabs>
                     </Col>
                     
                 </Row>
 
-
-                
-
+                <Row>
+                    <Col xs={12} md={12}>
+                        <Button onClick={this.handleAddMenuItem} size="lg">+</Button>
+                    </Col>
+                </Row>
+                <Dialog show={this.state.showAddMenuDialog} onHide={this.handleClose} {...dialogProps}/>
+                <EditDialog show={this.state.showEditMenuDialog} onHide={this.handleClose} {...editDialogProps}/>
             </Container>
         );
     }
