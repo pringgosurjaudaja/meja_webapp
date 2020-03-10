@@ -35,9 +35,7 @@ MODEL_order_item = order.model('Order Item',{
 class OrderManage(Resource):
     @order.doc(description='View Order, given order ID')
     def get(self, id):
-        order_items = list(order_items_db.find({'order_id': id}))
-        for order_item in order_items:
-            order_item['_id'] = str(order_item['_id'])
+        order_items = list(order_db.find({'_id': ObjectId(id)}))
         return order_items, status.HTTP_200_OK
 
 @order.route('')

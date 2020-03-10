@@ -13,41 +13,42 @@ export class Register extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: '',
+            name: '',
             password: '',
+            email: '',
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleChange(event) {
-        if (event.target.name == "username") {
-            this.setState({ username: event.target.value});
+        
+        if (event.target.name == "name") {
+            this.setState({ name: event.target.value});
         } else if (event.target.name == "password") {
             this.setState({ password: event.target.value});
+        } else if (event.target.name == "email") {
+            this.setState({ email: event.target.value});
         }
     }
 
     handleSubmit(event) {
         event.preventDefault();
-        // const instance = axios.create({
-        //     baseURL: 'https://google.com',
-        //     timeout: 1000,
-        //     headers: { 
-        //         'Access-Control-Allow-Origin': 'http://localhost:3000',
-        //         'Access-Control-Allow-Methods': 'GET',
-        //         'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        //         'Access-Control-Allow-Credentials': 'true',
-        //     },
-        //   });
-        axios.get('/')
-            .then(function(response) {
+        axios({
+            method: 'post',
+            url: 'http://127.0.0.1:5000/auth/signup',
+            data: {
+                name: this.state.name,
+                email: this.state.email,
+                password: this.state.password
+            }
+            }).then(function(response) {
                 console.log(response);
-                // DO SOEMTHING
-                navigate("/dashboard");
-            })
-            .catch(function(error){
+                navigate('/login')
+            }).catch(function(error) {
                 console.log(error);
+                alert('Invalid input');
+                this.setState({ name: '', email: '', password: '' });
             });
     }
     render () {
@@ -60,13 +61,15 @@ export class Register extends React.Component {
                         </h1>
                     </Row>
                     <Row>
-                        <Form className="layout--padding" onChange={this.handleChange} onSubmit={this.handleSubmit}>
-                            <Form.Group controlId="formBasicUsername">
-                                <Form.Control name="username" type="username" placeholder="Enter username" />
+                        <Form className="layout--padding" onSubmit={this.handleSubmit}>
+                            <Form.Group controlId="formBasicName">
+                                <Form.Control value={this.state.name} onChange={this.handleChange}  name="name" type="name" placeholder="Fullname" />
                             </Form.Group>
-
+                            <Form.Group controlId="formBasicEmail">
+                                <Form.Control  value={this.state.email} onChange={this.handleChange} name="email" type="email" placeholder="Email" />
+                            </Form.Group>
                             <Form.Group controlId="formBasicPassword">
-                                <Form.Control name="password" type="password" placeholder="Password" />
+                                <Form.Control value={this.state.password} onChange={this.handleChange} name="password" type="password" placeholder="Password" />
                             </Form.Group>
                             <Button variant="primary" onClick={this.handleSubmit}>
                                 Submit

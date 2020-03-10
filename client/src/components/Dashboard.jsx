@@ -1,52 +1,50 @@
 import React from 'react';
-import { Router, Link } from "@reach/router"
-import { Nav, NavDropdown, Tabs, Tab } from 'react-bootstrap';
+import { Tabs, Tab } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 import 'styles/styles.css';
 import { Recommend } from 'components/Recommend';
 import { Menu } from 'components/Menu';
 import { Checkout } from 'components/Checkout';
+import axios from 'utilities/helper';
+import { _ } from 'lodash';
+
 export class Dashboard extends React.Component {
+    
+    constructor(props) {
+        super(props);
+        this.state = {
+            menuItemList: []
+        }
+    }
+
+    componentDidMount() {
+        // Populate the menuItemList
+        axios({
+            method: 'get',
+            url: 'http://127.0.0.1:5000/menu',
+            timeout: 1000,
+        })
+        .then((response) => {
+            this.setState({ menuItemList: response.data });
+        });
+    }
+    
     render () {
+        const menuProps = {
+            menuItemList: this.state.menuItemList
+        }
+        
         return (
             <div>
                 <Tabs className="justify-content-center"
                 defaultActiveKey="recommend"
                 >
-                    {/* <Nav.Item>
-                        <Nav.Link href="/dashboard">Meja</Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                        <Nav.Link href="/dashboard/recommended">Recommended</Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                        <Nav.Link eventKey="all">All</Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                        <Nav.Link eventKey="main">Mains</Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                        <Nav.Link eventKey="dessert">Desserts</Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                        <Nav.Link eventKey="checkout"><FontAwesomeIcon icon={faShoppingCart}/></Nav.Link>
-import { Router, Link } from "@reach/router"
-                    </Nav.Item> */}
-                    {/* <Tab>
-                        <Link href="/dashboard">Meja</Link>
-                    </Tab> */}
                     <Tab eventKey="recommend" title="Recommend">
-                        <Recommend/>
+                        <Recommend {...menuProps}/>
                     </Tab>
                     <Tab eventKey="all" title="All">
-                        <Menu/>
-                    </Tab>
-                    <Tab eventKey="main" title="Mains">
-                        <Menu/>
-                    </Tab>
-                    <Tab eventKey="dessert" title="Desserts">
-                        <Menu/>
+                        <Menu display="all" {...menuProps}/>
                     </Tab>
                     <Tab eventKey="checkout" title={<FontAwesomeIcon icon={faShoppingCart}/>}>
                         <Checkout/>
