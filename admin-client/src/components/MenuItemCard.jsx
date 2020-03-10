@@ -9,7 +9,8 @@ export class MenuItemCard extends React.Component {
     constructor(props) {
         super(props);
     }
-    
+    componentDidMount() {
+    }
 
     render() {
         
