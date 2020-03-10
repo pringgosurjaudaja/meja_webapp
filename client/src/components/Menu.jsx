@@ -1,7 +1,6 @@
 import React from 'react';
 import { Container, Row, Col, Tabs, Tab } from 'react-bootstrap';
 import { MenuItem } from 'components/MenuItem';
-import axios from 'utilities/helper';
 import { _ } from 'lodash';
 export class Menu extends React.Component {
 
@@ -15,16 +14,9 @@ export class Menu extends React.Component {
     }
 
     componentDidMount() {
-        // Populate the menuItemList
-        axios({
-            method: 'get',
-            url: 'http://127.0.0.1:5000/menu',
-            timeout: 1000,
-        })
-        .then((response) => {
-            this.setState({ menuItemList: response.data });
-        });
+        this.setState({ menuItemList: this.props.menuItemList });
     }
+    
 
     handleMenuClick() {
 
@@ -34,12 +26,9 @@ export class Menu extends React.Component {
 
     render () {
         let tabs = [];
-
-        this.state.menuItemList.length > 0 && this.state.menuItemList.forEach((category, i) => {
-            console.log(category);
+        let defaultKey = this.state.menuItemList.length == 0 ? "Burgers" : this.state.menuItemList[0].name;
+        this.props.menuItemList.length > 0 && this.props.menuItemList.forEach((category, i) => {
             let entries = [];
-
-
             category.menu_items.length > 0 
             && category.menu_items.forEach((item, i) => {
                 let props = {
@@ -61,7 +50,7 @@ export class Menu extends React.Component {
             })
 
             let tab = (
-                <Tab key={i} eventKey={category.name} title={category.name}>
+                <Tab key={category.name} eventKey={category.name} title={category.name}>
                     {entries}
                 </Tab>
             )
@@ -71,7 +60,7 @@ export class Menu extends React.Component {
 
         return (
             <Container className="layout--padding--menu">
-                <Tabs defaultActiveKey="burger">
+                <Tabs defaultActiveKey={defaultKey}>
                     {tabs}
                 </Tabs>
             </Container>
