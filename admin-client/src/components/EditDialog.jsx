@@ -18,7 +18,9 @@ export class EditDialog extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSelectLabel = this.handleSelectLabel.bind(this);
         this.handleSelectTag = this.handleSelectTag.bind(this);
+        this.handleEditMenu = this.handleEditMenu.bind(this);
         this.state = {
+            id: '',
             name: '',
             description: '',
             price: '',
@@ -43,6 +45,7 @@ export class EditDialog extends React.Component {
     
     componentDidMount() {
         this.setState({
+            id: this.props.item._id,
             name: this.props.item.name,
             description: this.props.item.description,
             price: this.props.item.price,
@@ -52,24 +55,13 @@ export class EditDialog extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        let tags = [];
-        let labels = [];
-        for(let o in nextProps.item.category_tags) {
-            console.log(nextProps.item.category_tags[o]);
-
-            this.state.foodTags.forEach((o)=>{
-                
-            })
-            let obj = {
-
-            }
-        }
-        
-
         this.setState({
+            id: nextProps.item._id,
             name: nextProps.item.name,
             description: nextProps.item.description,
             price: nextProps.item.price,
+            labels: nextProps.labels,
+            tags: nextProps.category_tags,
         })
     }
 
@@ -92,6 +84,33 @@ export class EditDialog extends React.Component {
     handleSelectTag(chosen) {
         this.setState({tags: chosen})
     }
+
+    handleEditMenu(e) {
+        console.log(this.props);
+        
+        let url = 'http://127.0.0.1:5000/menu/item/'+this.state.id;
+        axios({
+            method: 'put',
+            url: url,
+            timeout: 1000,
+            data: {
+                "name": this.state.name,
+                "description": this.state.description,
+                "price": parseFloat(this.state.price),
+            },
+            header: {
+                "x-api-key": sessionStorage.getItem('AUTH_KEY'),
+                "Content-Type": "application/json"
+            }
+        })
+        .then((response) => {
+            console.log(response);
+        })
+        .catch((error)=>{
+            console.log(error.response);
+        });
+    }
+
     render () {
 
 
@@ -105,7 +124,7 @@ export class EditDialog extends React.Component {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form className="layout--padding"  onSubmit={(e)=>this.handleAddMenu(e)}>
+                    <Form className="layout--padding"  onSubmit={(e)=>this.handleEditMenu(e)}>
                         <Form.Group>
                             <Form.Label>Name</Form.Label>
                             <Form.Control
@@ -134,7 +153,7 @@ export class EditDialog extends React.Component {
                         <Form.Group>
                             <Form.Label>Label</Form.Label>
                             <Select onChange={this.handleSelectLabel}
-                                value={this.state.label}
+                                value={this.state.labels}
                                 name="label"
                                 isMulti
                                 className="basic-single"

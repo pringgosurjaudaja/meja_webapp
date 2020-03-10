@@ -16,9 +16,6 @@ export class Menu extends React.Component {
         this.setState({ menuItemList: this.props.menuItemList });
     }
     
-
-
-
     render () {
         let tabs = [];
         let defaultKey = this.state.menuItemList.length == 0 ? "Burgers" : this.state.menuItemList[0].name;

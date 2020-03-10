@@ -29,7 +29,6 @@ export class Dialog extends React.Component {
 
     
     handleAddMenu(e) {
-        e.preventDefault();
         let labels=[];
         let tags = [];
         
