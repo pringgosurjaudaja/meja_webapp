@@ -10,15 +10,20 @@ import { Dialog } from 'components/Dialog';
 
 
 import axios from 'utilities/helper'
+import { EditDialog } from './EditDialog';
 export class Menu extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             menuItemList: [],
             showAddMenuDialog: false,
+            showEditMenuDialog: false,
             activeTab: 'Burgers',
+            activeItem: {},
         }
         this.handleAddMenuItem = this.handleAddMenuItem.bind(this);
+        this.handleEditMenuItem = this.handleEditMenuItem.bind(this);
+        this.getEditMenuItem = this.getEditMenuItem.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleTabChange = this.handleTabChange.bind(this);
     }
@@ -31,8 +36,25 @@ export class Menu extends React.Component {
     handleAddMenuItem() {
         this.setState({ showAddMenuDialog: true });
     }
+
+    handleEditMenuItem() {
+        this.setState({ 
+            showEditMenuDialog: true,
+        });
+    }
+
+
+    // Get the details of the specific item from each individual Menu Item Card
+    getEditMenuItem(item) {
+        console.log(item);
+        this.setState({ activeItem: item })
+    }
+
     handleClose() {
-        this.setState({ showAddMenuDialog: false });
+        this.setState({ 
+            showAddMenuDialog: false,
+            showEditMenuDialog: false,
+        });
     }
 
 
@@ -57,7 +79,9 @@ export class Menu extends React.Component {
                     media_urls: item.media_urls,
                     price: item.price,
                     labels: item.labels,
-                    tags: item.tags,
+                    category_tags: item.category_tags,
+                    handleeditmenuitem: this.handleEditMenuItem,
+                    geteditmenuitem: this.getEditMenuItem,
                 }
                 let entry = (
                     <Row key={i} className="layout--menu">
@@ -84,6 +108,9 @@ export class Menu extends React.Component {
             menuitemlist: this.props.menuItemList,
         }
 
+        let editDialogProps={
+            item: this.state.activeItem,
+        }
 
         return (
             <Container className="layout--padding--admin-menu">
@@ -104,7 +131,7 @@ export class Menu extends React.Component {
                     </Col>
                 </Row>
                 <Dialog show={this.state.showAddMenuDialog} onHide={this.handleClose} {...dialogProps}/>
-
+                <EditDialog show={this.state.showEditMenuDialog} onHide={this.handleClose} {...editDialogProps}/>
             </Container>
         );
     }
