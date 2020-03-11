@@ -1,8 +1,14 @@
 import React from 'react';
-import { Tabs, Tab } from 'react-bootstrap';
+import { Tabs, Tab, Nav } from 'react-bootstrap';
 import 'styles/styles.css';
 import { Table } from 'components/Table';
 import { Menu } from 'components/Menu';
+
+import { navigate } from "@reach/router";
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
+
 import axios from 'utilities/helper';
 
 export class Dashboard extends React.Component {
@@ -11,6 +17,7 @@ export class Dashboard extends React.Component {
         this.state = {
             menuItemList: []
         }
+        this.handleSelect = this.handleSelect.bind(this);
     }
 
     componentDidMount() {
@@ -25,12 +32,28 @@ export class Dashboard extends React.Component {
         });
     }
 
+    handleSelect(event) {
+        console.log(event);
+        if(event === 'logout') {
+            navigate('/login');
+            sessionStorage.removeItem('AUTH_KEY');
+        }
+    }
+
     render () {
         const menuProps = {
             menuItemList: this.state.menuItemList
         }
         return (
             <div>
+                <Nav className="justify-content-end" onSelect={this.handleSelect}>
+                    <Nav.Item>
+                        <Nav.Link eventKey="logout">
+                            <FontAwesomeIcon icon={faSignOutAlt} transform="grow-10" color="black"/>
+                        </Nav.Link>
+                    </Nav.Item>
+                    
+                </Nav>
                 <Tabs className="justify-content-center"
                 defaultActiveKey="menu"
                 >
