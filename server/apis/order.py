@@ -1,35 +1,39 @@
 from db import db_client
-from flask import request, jsonify
+from flask import request, jsonify, render_template
 from flask_api import status
 from flask_restplus import Namespace, Resource, fields, marshal_with, reqparse
 from bson.objectid import ObjectId
 import json
 from marshmallow import ValidationError
 from apis.order_schema import OrderSchema, OrderItemSchema
+from helpers.email_sender import EmailSender
 # from apis.menu import menu_db
+
 
 order = Namespace('orders', description='Order Backend Service')
 order_db = db_client.order
 order_items_db = db_client.order_items
 menu_db = db_client.menu
 
-MODEL_order = order.model('Order',{
-        'table_id' : fields.String()
+MODEL_order = order.model('Order', {
+    'table_id' : fields.String()
+})
+
+MODEL_order_id = order.model('Order ID', {
+    'id': fields.String()
 })
 
 MODEL_status = order.model('Order Status', {
     'status' : fields.String(),
     'order_id' : fields.String()
 })
-MODEL_order_id = order.model('Order ID',{
-    'id': fields.String()
-})
 
-MODEL_order_item = order.model('Order Item',{
+MODEL_order_item = order.model('Order Item', {
     'menu_item_id' : fields.String(),
     'amount' : fields.Float(),
     'notes' : fields.String()
 })
+
 
 @order.route('/<string:id>')
 class OrderManage(Resource):
@@ -46,6 +50,7 @@ class Order(Resource):
         for order in orders:
             order['_id'] = str(order['_id'])
         return orders, status.HTTP_200_OK
+
     @order.doc(description='Creating new Order')
     @order.expect(MODEL_order)
     def post(self):
@@ -55,6 +60,7 @@ class Order(Resource):
         order['status'] = 'pending'
         operation = order_db.insert_one(schema.dump(order))
         return{'inserted': str(operation.inserted_id)}, status.HTTP_201_CREATED
+
     @order.doc(description='Deleting an order and  the  order items in it')
     @order.expect(MODEL_order_id)
     def delete(self):
@@ -64,6 +70,7 @@ class Order(Resource):
         if op.deleted_count == 0:
             return{'result' : 'No items'}, 200
         return{'status':'deleted'}, status.HTTP_204_NO_CONTENT
+
     @order.doc(description='Edit the status of the Order')
     @order.expect(MODEL_status)
     def put(self):
@@ -74,6 +81,8 @@ class Order(Resource):
             return{'result': 'Status Changed'}, 200
         else:
             return{'result': 'Status Invalid. Valid Status: pending, cooking, done, delivering'}, status.HTTP_400_BAD_REQUEST
+
+
 @order.route('/<string:order_id>')
 class OrderItem(Resource):
     @order.doc(description='Putting menu item in the order')
@@ -115,3 +124,38 @@ class OrderItem(Resource):
 #     def get(self, id):
 #         order_item = order_items_db.find_one({'_id': id})
 #         return order_item, status.HTTP_200_OK
+
+
+@order.route('/receipt')
+class OrderReceiptRoute(Resource):
+    @order.expect(MODEL_order_id)
+    def post(self):
+        # Get order details from database
+        order_item = order_db.find_one({ '_id': ObjectId(request.data['order_id'])})
+
+        # Populate Email Context using Order Details
+        email_context = {
+            'name': 'Sebastian Chua',
+            'restaurant': 'Cho Cho San',
+            'order_id': '12345',
+            'order_items': [
+                {
+                    'name': 'Chicken Schnitzel',
+                    'quantity': 2,
+                    'unit_price': 12.50
+                }
+            ],
+            'total_price': 45
+        }
+
+        email = {
+            'text': '''\
+                    Hi,
+                    How are you?
+                    Real Python has many great tutorials:
+                    www.realpython.com\
+                ''',
+            'html': render_template('receipt.html', context=email_context)
+        }
+
+        # EmailSender().send_email('artemisproject28+test@gmail.com', email['text'], email['html'])
