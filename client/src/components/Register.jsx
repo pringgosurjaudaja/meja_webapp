@@ -7,7 +7,7 @@ import {
 } from 'react-bootstrap';
 import { navigate } from "@reach/router";
 import 'styles/styles.css';
-import axios from 'utilities/helper';
+import { axios } from 'utilities/helper';
 
 export class Register extends React.Component {
     constructor(props) {
@@ -23,11 +23,11 @@ export class Register extends React.Component {
 
     handleChange(event) {
         
-        if (event.target.name == "name") {
+        if (event.target.name === "name") {
             this.setState({ name: event.target.value});
-        } else if (event.target.name == "password") {
+        } else if (event.target.name === "password") {
             this.setState({ password: event.target.value});
-        } else if (event.target.name == "email") {
+        } else if (event.target.name === "email") {
             this.setState({ email: event.target.value});
         }
     }

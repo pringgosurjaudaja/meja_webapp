@@ -11,46 +11,86 @@ import { _ } from 'lodash';
 import axios from 'utilities/helper';
 
 
-export class Dialog extends React.Component {
+export class EditDialog extends React.Component {
     constructor(props) {
         super(props);
         
         this.handleChange = this.handleChange.bind(this);
         this.handleSelectLabel = this.handleSelectLabel.bind(this);
         this.handleSelectTag = this.handleSelectTag.bind(this);
+        this.handleEditMenu = this.handleEditMenu.bind(this);
         this.state = {
+            id: '',
             name: '',
             description: '',
             price: '',
             labels: [],
             tags: [],
+            foodLabels: [
+                { value: 0, label: 'Vegan' },
+                { value: 1, label: 'Gluten Free' },
+                { value: 2, label: 'Vegetarian' },  
+            ],
+            foodTags: [
+                { value: 'japanese', label: 'Japanese' },
+                { value: 'western', label: 'Western' },
+                { value: 'spanish', label: 'Spanish' },
+                { value: 'italian', label: 'Italian' },  
+                { value: 'popular', label: 'Popular' },
+            ]
         }
+        
     }
 
     
-    handleAddMenu(e) {
-        let labels=[];
-        let tags = [];
-        
-        this.state.labels.forEach((o, i)=> {
-            labels.push(o.value);
+    componentDidMount() {
+        this.setState({
+            id: this.props.item._id,
+            name: this.props.item.name,
+            description: this.props.item.description,
+            price: this.props.item.price,
+            labels: this.props.item.labels,
+            tags: this.props.item.category_tags,
         })
-        this.state.tags.forEach((o, i)=> {
-            tags.push(o.value);
-        });
+    }
 
-        let category_id="";
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            id: nextProps.item._id,
+            name: nextProps.item.name,
+            description: nextProps.item.description,
+            price: nextProps.item.price,
+            labels: nextProps.labels,
+            tags: nextProps.category_tags,
+        })
+    }
+
+    handleChange(e) {
+        if(e.target.name === "name") {
+            this.setState({ name: e.target.value });
+        } else if(e.target.name === "description") {
+            this.setState({ description: e.target.value });
+        } else  if(e.target.name === "price") {
+            this.setState({ price: e.target.value });
+        }
+    }
+
+    handleSelectLabel(chosen) {
+        console.log(chosen);
+        this.setState({label: chosen})
+    }
+
+
+    handleSelectTag(chosen) {
+        this.setState({tags: chosen})
+    }
+
+    handleEditMenu(e) {
+        console.log(this.props);
         
-        this.props.menuitemlist && this.props.menuitemlist.forEach((item)=>{
-            if(item.name == this.props.currentcategory) {
-                category_id = item._id;
-            }
-        });
-
-        let url = 'http://127.0.0.1:5000/menu/category/'+category_id;
-  
+        let url = 'http://127.0.0.1:5000/menu/item/'+this.state.id;
         axios({
-            method: 'post',
+            method: 'put',
             url: url,
             timeout: 1000,
             data: {
@@ -69,42 +109,10 @@ export class Dialog extends React.Component {
         .catch((error)=>{
             console.log(error.response);
         });
-        
     }
 
-
-    handleChange(e) {
-        if(e.target.name === "name") {
-            this.setState({ name: e.target.value });
-        } else if(e.target.name === "description") {
-            this.setState({ description: e.target.value });
-        } else  if(e.target.name === "price") {
-            this.setState({ price: e.target.value });
-        }
-    }
-
-    handleSelectLabel(chosen) {
-        this.setState({label: chosen})
-    }
-
-
-    handleSelectTag(chosen) {
-        this.setState({tags: chosen})
-    }
     render () {
-        const foodLabels = [
-            { value: 0, label: 'Vegan' },
-            { value: 1, label: 'Gluten Free' },
-            { value: 2, label: 'Vegetarian' },  
-        ];
 
-        const foodTags = [
-            { value: 'japanese', label: 'Japanese' },
-            { value: 'western', label: 'Western' },
-            { value: 'spanish', label: 'Spanish' },
-            { value: 'italian', label: 'Italian' },  
-            { value: 'popular', label: 'Popular' },
-        ];
 
         return (
             <Modal {...this.props} size="lg"
@@ -112,11 +120,11 @@ export class Dialog extends React.Component {
                 centered>
                 <Modal.Header closeButton>
                     <Modal.Title id="contained-modal-title-vcenter">
-                     Add new Item
+                     Edit Item
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form className="layout--padding"  onSubmit={(e)=>this.handleAddMenu(e)}>
+                    <Form className="layout--padding"  onSubmit={(e)=>this.handleEditMenu(e)}>
                         <Form.Group>
                             <Form.Label>Name</Form.Label>
                             <Form.Control
@@ -145,13 +153,13 @@ export class Dialog extends React.Component {
                         <Form.Group>
                             <Form.Label>Label</Form.Label>
                             <Select onChange={this.handleSelectLabel}
-                                value={this.state.label}
+                                value={this.state.labels}
                                 name="label"
                                 isMulti
                                 className="basic-single"
                                 classNamePrefix="select"
                                 isClearable
-                                options={foodLabels}
+                                options={this.state.foodLabels}
                             />
                         </Form.Group>
 
@@ -164,7 +172,7 @@ export class Dialog extends React.Component {
                                 className="basic-single"
                                 classNamePrefix="select"
                                 isClearable
-                                options={foodTags}
+                                options={this.state.foodTags}
                             />
                         </Form.Group>
                         

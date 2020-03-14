@@ -1,10 +1,10 @@
 import React from 'react';
-import { Router, Link } from "@reach/router"
-import  { Home }  from 'components/Home';
-import { Login } from 'components/Login'
-import { Register } from 'components/Register'
-import { Dashboard } from 'components/Dashboard'
-
+import { Router } from "@reach/router";
+import { Home }  from 'components/Home';
+import { Login } from 'components/Login';
+import { Register } from 'components/Register';
+import { Dashboard } from 'components/Dashboard';
+import { Reservation } from 'components/Reservation';
 
 function App() {
   return (
@@ -13,6 +13,7 @@ function App() {
       <Login path="/login" />
       <Register path="/register" />      
       <Dashboard path="/dashboard" />
+      <Reservation path="/reservation" />
     </Router>
   );
 }

@@ -7,7 +7,7 @@ import {
 } from 'react-bootstrap';
 import { navigate } from "@reach/router";
 import 'styles/styles.css';
-import axios from 'utilities/helper';
+import { axios } from 'utilities/helper';
 
 export class Login extends React.Component {
     constructor(props) {
@@ -22,9 +22,9 @@ export class Login extends React.Component {
 
     
     handleChange(event) {
-        if (event.target.name == "email") {
+        if (event.target.name === "email") {
             this.setState({ email: event.target.value});
-        } else if (event.target.name == "password") {
+        } else if (event.target.name === "password") {
             this.setState({ password: event.target.value});
         }
     }

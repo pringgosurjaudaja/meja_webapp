@@ -1,6 +1,7 @@
 from flask_restplus import Api
 from apis.menu import menu 
 from apis.table import table 
+from apis.about import about
 from apis.auth import auth, authorizations
 # from .auth import api as auth_service
 # from .order import api as order_service
@@ -12,5 +13,6 @@ api = Api(
 )
 
 api.add_namespace(menu)
+api.add_namespace(about)
 api.add_namespace(auth)
 api.add_namespace(table)
