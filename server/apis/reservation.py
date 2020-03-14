@@ -52,7 +52,27 @@ class Reservation(Resource):
                 'result': 'Missing required fields'
             }, status.HTTP_400_BAD_REQUEST     
 
-                
+@reservation.route('/<string:reservation_id>')
+class ReservationRoute(Resource):
+    @reservation.doc(description='Edit Reservation Status')
+    @reservation.expect(MODEL_reservation_status)
+    def patch(self, reservation_id):
+        try:
+            new_status = request.data.get('status')
+            reservation_db.find_one_and_update(
+                {'_id': ObjectId(reservation_id)},
+                {'$set':
+                    {'status': new_status}
+                 }
+            )
+            return {'updated': reservation_id}, status.HTTP_200_OK
+        except ValidationError as err:
+            print(err)
+            return {
+                'result': 'Missing required fields'
+            }, status.HTTP_400_BAD_REQUEST       
+
+             
 
 # @reservation.route('/<string:reservation_id>')
 # class ReservationRoute(Resource):
