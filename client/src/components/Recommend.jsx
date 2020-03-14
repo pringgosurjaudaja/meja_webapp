@@ -16,27 +16,29 @@ export class Recommend extends React.Component {
 
     render () {
         let entries = [];
-        
+        let indexCount = 0;
         this.props.menuItemList.length > 0 && this.props.menuItemList.forEach((category) => {
             
             category.menu_items.length > 0 
                 && category.menu_items.forEach((item, i) => {
-                let props = {
-                    name: item.name,
-                    description: item.description,
-                    media_urls: item.media_urls,
-                    price: item.price,
-                    labels: item.labels,
-                    tags: item.tags,
+                if(item.chefs_pick === true) {
+                    let props = {
+                        name: item.name,
+                        description: item.description,
+                        media_urls: item.media_urls,
+                        price: item.price,
+                        labels: item.labels,
+                        tags: item.tags,
+                    }
+                    let entry = (
+                        <Row key={indexCount++} className="layout--menu">
+                            <Col>
+                                <MenuItem className="menu-item" {...props}/>
+                            </Col>
+                        </Row>
+                    );
+                    entries.push(entry);
                 }
-                let entry = (
-                    <Row key={i} className="layout--menu">
-                        <Col>
-                            <MenuItem className="menu-item" {...props}/>
-                        </Col>
-                    </Row>
-                );
-                entries.push(entry);
             })
 
         });
