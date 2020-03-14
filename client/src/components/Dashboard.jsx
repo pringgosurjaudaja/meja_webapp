@@ -1,41 +1,67 @@
 import React from 'react';
-import { Router, Link } from "@reach/router"
-import { Nav, NavDropdown, Tabs, Tab } from 'react-bootstrap';
+import { Tabs, Tab, Nav } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 import 'styles/styles.css';
 import { Recommend } from 'components/Recommend';
 import { Menu } from 'components/Menu';
-import { MenuSpecific } from 'components/MenuSpecific';
 import { Checkout } from 'components/Checkout';
+import { axios } from 'utilities/helper';
+import { navigate } from "@reach/router";
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
+
 export class Dashboard extends React.Component {
+    
+    constructor(props) {
+        super(props);
+        this.state = {
+            menuItemList: []
+        }
+        this.handleSelect = this.handleSelect.bind(this);
+    }
+
+    componentDidMount() {
+        // Populate the menuItemList
+        axios({
+            method: 'get',
+            url: 'http://127.0.0.1:5000/menu',
+            timeout: 1000,
+        })
+        .then((response) => {
+            this.setState({ menuItemList: response.data });
+        });
+    }
+    
+    handleSelect(event) {
+        console.log(event);
+        if(event === 'logout') {
+            navigate('/login');
+            sessionStorage.removeItem('AUTH_KEY');
+        }
+    }
     render () {
-
-        const mainCategories = ['Burgers', 'Chips', 'Pizzas', 'Pasta', 'Steaks', 'Seafood'];
-        const mainProps = {
-            categories: mainCategories
+        const menuProps = {
+            menuItemList: this.state.menuItemList
         }
-
-        const dessertCategories = ['Gelato', 'Bingsoo'];
-        const dessertProps = {
-            categories: dessertCategories
-        }
+        
         return (
             <div>
+                <Nav className="justify-content-end" onSelect={this.handleSelect}>
+                    <Nav.Item>
+                        <Nav.Link eventKey="logout">
+                            <FontAwesomeIcon icon={faSignOutAlt} transform="grow-10" color="black"/>
+                        </Nav.Link>
+                    </Nav.Item>
+                    
+                </Nav>
                 <Tabs className="justify-content-center"
-                defaultActiveKey="all"
+                defaultActiveKey="recommend"
                 >
                     <Tab eventKey="recommend" title="Recommend">
-                        <Recommend/>
+                        <Recommend {...menuProps}/>
                     </Tab>
                     <Tab eventKey="all" title="All">
-                        <Menu display="all"/>
-                    </Tab>
-                    <Tab eventKey="main" title="Mains">
-                        <MenuSpecific {...mainProps} display=""/>
-                    </Tab>
-                    <Tab eventKey="dessert" title="Desserts">
-                        <MenuSpecific {...dessertProps} display=""/>
+                        <Menu display="all" {...menuProps}/>
                     </Tab>
                     <Tab eventKey="checkout" title={<FontAwesomeIcon icon={faShoppingCart}/>}>
                         <Checkout/>

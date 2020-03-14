@@ -61,6 +61,11 @@ body {
     position: absolute;
     top: 30%;
 }
+.l-reserve {
+    /* margin: auto; */
+    position: absolute;
+    top: 20%;
+}
 
 .l-home__row {
     height: 200px;
@@ -72,9 +77,27 @@ body {
     background: url(../components/assets/logo.png) !important;
     /* z-index: -20; */
 }
+
+.l-reserve__row {
+    height: 100px;
+    padding-left: 50px;
+    padding-right: 50px;
+    word-wrap: normal;
+}
+.l-reserve__row--small {
+    padding-left: 50px;
+    padding-right: 50px;
+    word-wrap: normal;
+}
+
+.l-reserve-details__row {
+    font-size: 20px;
+}
+
+
 .big-button {
     height: 200px;
-    width: inherit;
+    width: 120%;
 }
 .big-button--text {
     font-size: 40px !important;
@@ -142,4 +165,14 @@ body {
 
 .menu-item--text {
     font-size: 20px !important;
+}
+
+.small-button-row {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.small-button {
+    width: 100%;
+    height: 60px;
 }

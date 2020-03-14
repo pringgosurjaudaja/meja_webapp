@@ -7,6 +7,7 @@ from db import db_client
 from apis.menu_schema import MenuItemSchema, MenuCategorySchema
 import json
 from bson import json_util
+import pprint
 
 menu_db = db_client.menu
 menu = Namespace('menu', description='Menu Backend Service')
@@ -115,6 +116,7 @@ class MenuItemRoute(Resource):
             {'menu_items._id': item_id}
         )
         menu_item['_id'] = str(menu_item['_id'])
+        pprint.pprint(menu_item)
         return menu_item, status.HTTP_200_OK
 
     @menu.doc(description='Deleting a Menu Item')
