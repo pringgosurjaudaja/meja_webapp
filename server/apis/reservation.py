@@ -72,7 +72,16 @@ class ReservationRoute(Resource):
                 'result': 'Missing required fields'
             }, status.HTTP_400_BAD_REQUEST       
 
-             
+    @reservation.doc(description='Cancelling/Deleting a Reservation')
+    def delete(self, reservation_id):
+        try:
+            reservation_db.delete_one({"_id" : ObjectId(reservation_id)})
+            return { 'result': 'reservation has been cancelled'}, status.HTTP_200_OK
+        except ValidationError as err:
+            print(err)
+            return { 
+                'result': 'Missing required fields'
+            }, status.HTTP_400_BAD_REQUEST                  
 
 # @reservation.route('/<string:reservation_id>')
 # class ReservationRoute(Resource):
