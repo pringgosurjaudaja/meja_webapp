@@ -35,6 +35,23 @@ class Reservation(Resource):
                 reservation['_id'] = str(reservation['_id'])
             return reservations, status.HTTP_200_OK
 
+    @reservation.doc(description='Create New Reservation')
+    @reservation.expect(MODEL_reservation)
+    def post(self):
+        schema = ReservationSchema()
+        try:
+            res = schema.load(request.data)
+            # print(res['datetime'].date())
+            # print(res['datetime'].time())
+            res['status'] = "In-Progress"
+            operation = reservation_db.insert_one(schema.dump(res))
+            return { 'result': 'new reservation has been created'}, status.HTTP_201_CREATED
+        except ValidationError as err:
+            print(err)
+            return { 
+                'result': 'Missing required fields'
+            }, status.HTTP_400_BAD_REQUEST     
+
                 
 
 # @reservation.route('/<string:reservation_id>')
