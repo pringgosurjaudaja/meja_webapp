@@ -14,6 +14,7 @@ table_db = db_client.table
 
 MODEL_table = table.model('Table', {
     'number' : fields.Integer(),
+    'seat' : fields.Integer(),
 })
 
 @table.doc(description='Endpoint for whole Table Operations')
