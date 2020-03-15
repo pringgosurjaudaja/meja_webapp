@@ -21,7 +21,7 @@ export class Recommend extends React.Component {
             
             category.menu_items.length > 0 
                 && category.menu_items.forEach((item, i) => {
-                if(item.chefs_pick == true) {
+                if(item.chefs_pick === true) {
                     let props = {
                         name: item.name,
                         description: item.description,

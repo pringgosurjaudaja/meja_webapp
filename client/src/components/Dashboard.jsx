@@ -6,9 +6,7 @@ import 'styles/styles.css';
 import { Recommend } from 'components/Recommend';
 import { Menu } from 'components/Menu';
 import { Checkout } from 'components/Checkout';
-import axios from 'utilities/helper';
-import { _ } from 'lodash';
-
+import { axios } from 'utilities/helper';
 import { navigate } from "@reach/router";
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 
