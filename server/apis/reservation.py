@@ -21,6 +21,11 @@ MODEL_reservation_status = reservation.model('Reservation Status',{
     'status': fields.String()
 })
 
+MODEL_reservation_search = reservation.model('Reservation Search',{
+    'date': fields.DateTime(),
+    'number_diner': fields.Integer()
+})
+
 @reservation.route('')
 class Reservation(Resource):
     @reservation.doc(description='Get all reservation in db')
@@ -51,6 +56,25 @@ class Reservation(Resource):
             return { 
                 'result': 'Missing required fields'
             }, status.HTTP_400_BAD_REQUEST     
+
+@reservation.route('/search')
+class ReservationSearch(Resource):     
+    @reservation.doc(description='Search Reservations')
+    @reservation.expect(MODEL_reservation_search)
+    def post(self):
+        try:
+            date = request.data.get('date')
+            diner = request.data.get('number_diner')
+            # print(res['datetime'].date())
+            # print(res['datetime'].time())
+            res['status'] = "In-Progress"
+            operation = reservation_db.insert_one(schema.dump(res))
+            return { 'result': 'new reservation has been created'}, status.HTTP_201_CREATED
+        except ValidationError as err:
+            print(err)
+            return { 
+                'result': 'Missing required fields'
+            }, status.HTTP_400_BAD_REQUEST            
 
 @reservation.route('/<string:reservation_id>')
 class ReservationRoute(Resource):
