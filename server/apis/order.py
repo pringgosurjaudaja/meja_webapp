@@ -34,6 +34,9 @@ MODEL_order_item = order.model('Order Item', {
     'notes' : fields.String()
 })
 
+MODEL_order_receipt = order.model('Order Receipt',{
+
+})
 
 @order.route('/<string:id>')
 class OrderManage(Resource):
@@ -131,23 +134,32 @@ class OrderReceiptRoute(Resource):
     @order.expect(MODEL_order_id)
     def post(self):
         # Get order details from database
-        order = order_db.find_one({ '_id': ObjectId(request.data['order_id'])})
-
+        order = order_db.find_one({ '_id': ObjectId(request.data['id'])})
+        
+        # {
+        #             'name': 'Chicken Schnitzel',
+        #             'quantity': 2,
+        #             'unit_price': 12.50
+        #         }
         # Populate Email Context using Order Details
         email_context = {
             'name': 'Sebastian Chua',
             'restaurant': 'Cho Cho San',
-            'order_id': '12345',
+            'order_id': order['_id'],
             'order_items': [
-                {
-                    'name': 'Chicken Schnitzel',
-                    'quantity': 2,
-                    'unit_price': 12.50
-                }
+                
             ],
-            'total_price': 45
+            'total_price': 0
         }
-
+        for x in order['orderItems']:
+            dict= {}
+            dict['name'] = x['menu_item_name']
+            dict['quantity'] = x['amount']
+            dict['unit_price']= x['menu_item_price']
+            email_context['order_items'].append(dict.copy())
+        for z in email_context['order_items']:
+            email_context['total_price'] = email_context['total_price'] + (z['quantity'] * z['unit_price'])
+        print(email_context)
         email = {
             'text': '', # Insert the text version of the receipt we want to send
             'html': render_template('receipt.html', context=email_context)
