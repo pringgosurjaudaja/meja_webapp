@@ -8,9 +8,9 @@ from apis.reservation_schema import ReservationSchema
 
 reservation = Namespace('reservation', description="Reservation Backend Service")
 reservation_db = db_client.reservation
+table_db = db_client.table
 
 MODEL_reservation = reservation.model('Reservation',{
-    'table_id': fields.String(),
     'email': fields.String(),
     'datetime': fields.DateTime(),
     'number_diner': fields.Integer(),
@@ -46,9 +46,21 @@ class Reservation(Resource):
         schema = ReservationSchema()
         try:
             res = schema.load(request.data)
-            # print(res['datetime'].date())
-            # print(res['datetime'].time())
+            date = res['datetime'].date()
+            time = res['datetime'].time()
             res['status'] = "In-Progress"
+            # Logic to allocate table
+            tables = list(table_db.find({'seat': res['number_diner']}))
+            for table in tables:
+                reservations = list(reservation_db.find({'datetime': '%sT%s'%(date,time), 'number_diner': res['number_diner'], 'table_number': table['number']}))
+                print(res['datetime'])
+                print(res['number_diner'])
+                print(table['number'])
+                print(reservations)
+                if not reservations:
+                    res['table_number'] = table['number']
+                    break
+
             operation = reservation_db.insert_one(schema.dump(res))
             return { 'result': 'new reservation has been created'}, status.HTTP_201_CREATED
         except ValidationError as err:
@@ -57,19 +69,22 @@ class Reservation(Resource):
                 'result': 'Missing required fields'
             }, status.HTTP_400_BAD_REQUEST     
 
-@reservation.route('/search')
+@reservation.route('/availability')
 class ReservationSearch(Resource):     
-    @reservation.doc(description='Search Reservations')
+    @reservation.doc(description='Available Time')
     @reservation.expect(MODEL_reservation_search)
     def post(self):
         try:
             date = request.data.get('date')
             diner = request.data.get('number_diner')
-            # print(res['datetime'].date())
-            # print(res['datetime'].time())
-            res['status'] = "In-Progress"
-            operation = reservation_db.insert_one(schema.dump(res))
-            return { 'result': 'new reservation has been created'}, status.HTTP_201_CREATED
+            tables = list(table_db.find({'seat': diner}))
+            times = ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00"]
+            res = []
+            for time in times:
+                reservations = list(reservation_db.find({'datetime': '%sT%s:00'%(date,time), 'number_diner': diner}))
+                if len(reservations) < len(tables):
+                    res.append(time)
+            return res
         except ValidationError as err:
             print(err)
             return { 
