@@ -121,13 +121,6 @@ class OrderItem(Resource):
             print(error)
             return{'result': 'Missing fields'}, status.HTTP_400_BAD_REQUEST
 
-# @order.route('/item/<string:id>')
-# class OrderItemGet(Resource):
-#     @order.doc(description='Get the Order Item')
-#     def get(self, id):
-#         order_item = order_items_db.find_one({'_id': id})
-#         return order_item, status.HTTP_200_OK
-
 
 @order.route('/receipt')
 class OrderReceiptRoute(Resource):
@@ -136,30 +129,23 @@ class OrderReceiptRoute(Resource):
         # Get order details from database
         order = order_db.find_one({ '_id': ObjectId(request.data['id'])})
         
-        # {
-        #             'name': 'Chicken Schnitzel',
-        #             'quantity': 2,
-        #             'unit_price': 12.50
-        #         }
         # Populate Email Context using Order Details
         email_context = {
             'name': 'Sebastian Chua',
             'restaurant': 'Cho Cho San',
             'order_id': order['_id'],
-            'order_items': [
-                
-            ],
+            'order_items': [],
             'total_price': 0
         }
-        for x in order['orderItems']:
-            dict= {}
-            dict['name'] = x['menu_item_name']
-            dict['quantity'] = x['amount']
-            dict['unit_price']= x['menu_item_price']
-            email_context['order_items'].append(dict.copy())
-        for z in email_context['order_items']:
-            email_context['total_price'] = email_context['total_price'] + (z['quantity'] * z['unit_price'])
-        print(email_context)
+
+        email_context['order_items'] = [{
+            'name': order_item['menu_item_name'],
+            'quantity': order_item['amount'],
+            'unit_price': order_item['menu_item_price']
+        } for order_item in order['orderItems']]
+
+        email_context['total_price'] = sum(order_item['quantity'] * order_item['unit_price'] for order_item in email_context['order_items'])
+
         email = {
             'text': '', # Insert the text version of the receipt we want to send
             'html': render_template('receipt.html', context=email_context)
