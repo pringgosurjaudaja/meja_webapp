@@ -1,11 +1,15 @@
 from flask_api import FlaskAPI
-from flask_restplus import Api, Resource, fields, marshal_with, reqparse
+from flask_cors import CORS
+from flask_socketio import SocketIO
 from apis import api
 from json_encoder import MongoJSONEncoder
 
+app = FlaskAPI(__name__)
+CORS(app)
+socketio = SocketIO(app)
+app.json_encoder = MongoJSONEncoder
+
 if __name__ == '__main__':
     # Setup for the Flask App
-    app = FlaskAPI(__name__)
-    app.json_encoder = MongoJSONEncoder
     api.init_app(app)
-    app.run(debug=True)
+    socketio.run(app, debug=True)
