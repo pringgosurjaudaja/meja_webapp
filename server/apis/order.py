@@ -131,7 +131,7 @@ class OrderReceiptRoute(Resource):
     @order.expect(MODEL_order_id)
     def post(self):
         # Get order details from database
-        order_item = order_db.find_one({ '_id': ObjectId(request.data['order_id'])})
+        order = order_db.find_one({ '_id': ObjectId(request.data['order_id'])})
 
         # Populate Email Context using Order Details
         email_context = {
@@ -149,13 +149,8 @@ class OrderReceiptRoute(Resource):
         }
 
         email = {
-            'text': '''\
-                    Hi,
-                    How are you?
-                    Real Python has many great tutorials:
-                    www.realpython.com\
-                ''',
+            'text': '', # Insert the text version of the receipt we want to send
             'html': render_template('receipt.html', context=email_context)
         }
 
-        # EmailSender().send_email('artemisproject28+test@gmail.com', email['text'], email['html'])
+        EmailSender().send_email('artemisproject28+test@gmail.com', email['text'], email['html'])

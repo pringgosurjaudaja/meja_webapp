@@ -24,7 +24,7 @@ class EmailSender:
         message.attach(MIMEText(html_email, 'html'))
 
         # Config setup for SMTP server
-        password = input('Type your password: ')
+        password = 'Artemis123'     # Need to hash and store this somewhere else (SECURITY RISK)
         port = 465
         context = ssl.create_default_context()
 
