@@ -1,7 +1,6 @@
 import React from 'react';
 import { Container, Row, Col, Tabs, Tab } from 'react-bootstrap';
 import { MenuItem } from 'components/MenuItem';
-import { _ } from 'lodash';
 export class Menu extends React.Component {
 
     constructor(props) {
@@ -19,7 +18,7 @@ export class Menu extends React.Component {
     render () {
         let tabs = [];
         let indexCount = 0;
-        let defaultKey = this.state.menuItemList.length == 0 ? "Burgers" : this.state.menuItemList[0].name;
+        let defaultKey = this.state.menuItemList.length === 0 ? "Burgers" : this.state.menuItemList[0].name;
         this.props.menuItemList.length > 0 && this.props.menuItemList.forEach((category, index) => {
             let entries = [];
             category.menu_items.length > 0 
