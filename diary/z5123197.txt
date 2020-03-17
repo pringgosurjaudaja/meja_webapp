@@ -1,0 +1,18 @@
+Week 1
+The group is formed on week 1. Help setting flask-restplus up.
+
+Week 2
+We decided to do the waiter project and start making the tickets. 
+We also started our first sprint and started delegating work to members.
+I set up the authentication for the backend.
+
+Week 3
+Continuing on the authentication and setting up the user database.
+Finalizing the proposal as well.
+
+Week 4
+Starting on a new sprint, working on the basic routes for tables and reservations.
+
+Week 5
+Had a talk with the frontend side to see how to best approach the reservation and
+continuing on that.
