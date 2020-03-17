@@ -5,8 +5,9 @@ from flask_restplus import Namespace, Resource, fields, marshal_with, reqparse
 from bson.objectid import ObjectId
 import json
 from marshmallow import ValidationError
-from apis.order_schema import OrderSchema, OrderItemSchema
+from apis.order_schema import OrderSchema, OrderItemSchema, SessionSchema
 from helpers.email_sender import EmailSender
+import random
 # from apis.menu import menu_db
 
 
@@ -14,9 +15,15 @@ order = Namespace('orders', description='Order Backend Service')
 order_db = db_client.order
 order_items_db = db_client.order_items
 menu_db = db_client.menu
+session_db = db_client.session
+auth_db = db_client.auth
 
 MODEL_order = order.model('Order', {
     'table_id' : fields.String()
+})
+
+MODEL_order_session = order.model('Schema',{
+    'session_id': fields.String()
 })
 
 MODEL_order_id = order.model('Order ID', {
@@ -31,66 +38,61 @@ MODEL_status = order.model('Order Status', {
 MODEL_order_item = order.model('Order Item', {
     'menu_item_id' : fields.String(),
     'amount' : fields.Float(),
-    'notes' : fields.String()
+    'notes' : fields.String(),
+    'order_id': fields.String()
 })
 
 MODEL_order_receipt = order.model('Order Receipt',{
 
 })
 
-@order.route('/<string:id>')
+@order.route('/<string:session_id>')
 class OrderManage(Resource):
-    @order.doc(description='View Order, given order ID')
-    def get(self, id):
-        order_items = list(order_db.find({'_id': ObjectId(id)}))
-        return order_items, status.HTTP_200_OK
+    @order.doc(description='View Order, given session ID')
+    def get(self, session_id):
+        orders = list(session_db.find({'_id': ObjectId(session_id)}))
+        for x in orders:
+            x['_id'] = str(x['_id'])
+        # orders['_id'] = str(orders['_id'])
+        return orders, status.HTTP_200_OK
 
 @order.route('')
 class Order(Resource):
-    @order.doc(description='View all order')
-    def get(self):
-        orders = list(order_db.find({}))
-        for order in orders:
-            order['_id'] = str(order['_id'])
-        return orders, status.HTTP_200_OK
+    # @order.doc(description='View all order in current session')
+    # def get(self):
+    #     orders = session_db.find({'_id': ObjectId(request.data.get('session_id'))})
+    #     orders['_id'] = str(orders['_id'])
+    #     return orders, status.HTTP_200_OK
 
     @order.doc(description='Creating new Order')
-    @order.expect(MODEL_order)
+    @order.expect(MODEL_order_session)
     def post(self):
         schema = OrderSchema()
         # table_id = request.data.get('table_id')
-        order = schema.load(request.data)
-        order['status'] = 'pending'
-        operation = order_db.insert_one(schema.dump(order))
-        return{'inserted': str(operation.inserted_id)}, status.HTTP_201_CREATED
+        session = session_db.find_one({'_id': ObjectId(request.data.get('session_id'))})
+        order = schema.load({'_id': str(random.randint(1,1000)),'table_id': session['table_id'] })
+        operation = session_db.update_one({'_id': ObjectId(request.data.get('session_id'))},
+        {'$push': {'orderList': schema.dump(order)}})
+        # operation = order_db.insert_one(schema.dump(order))
+        return{'inserted': str(operation.upserted_id)}, status.HTTP_201_CREATED
 
-    @order.doc(description='Deleting an order and  the  order items in it')
-    @order.expect(MODEL_order_id)
-    def delete(self):
-        order_id = request.data.get('id')
-        # order_deleted = order_db.find({'_id':ObjectId(order_id)})
-        op = order_db.delete_one({'_id':ObjectId(order_id)})
-        if op.deleted_count == 0:
-            return{'result' : 'No items'}, 200
-        return{'status':'deleted'}, status.HTTP_204_NO_CONTENT
+    # @order.doc(description='Deleting an order and  the  order items in it')
+    # @order.expect(MODEL_order_id)
+    # def delete(self):
+    #     order_id = request.data.get('id')
+    #     # order_deleted = order_db.find({'_id':ObjectId(order_id)})
+    #     # op = order_db.delete_one({'_id':ObjectId(order_id)})
+    #     op = session_db.update_one({'_id': ObjectId(order_id)},
+    #     {'$pull':{'orderList': {'_id': ObjectId(order_id)}}})
+    #     if op.deleted_count == 0:
+    #         return{'result' : 'No items'}, 200
+    #     return{'status':'deleted'}, status.HTTP_204_NO_CONTENT
 
-    @order.doc(description='Edit the status of the Order')
-    @order.expect(MODEL_status)
-    def put(self):
-        status_collection = {'pending', 'cooking', 'done', 'delivering'}
-        new_status = request.data.get('status')
-        if(new_status.lower() in status_collection):
-            order_db.update_one({'_id': ObjectId(request.data.get('order_id'))},{'$set': {'status': new_status}})
-            return{'result': 'Status Changed'}, 200
-        else:
-            return{'result': 'Status Invalid. Valid Status: pending, cooking, done, delivering'}, status.HTTP_400_BAD_REQUEST
-
-
-@order.route('/<string:order_id>')
+@order.route('/<string:session_id>')
 class OrderItem(Resource):
     @order.doc(description='Putting menu item in the order')
     @order.expect(MODEL_order_item)
-    def post(self, order_id):
+    def post(self, session_id):
         schema = OrderItemSchema()
         try:
        
@@ -110,56 +112,48 @@ class OrderItem(Resource):
             menu_item = menu_item_queried.next()
             
             # print(order_item['menu_item_id'])
-            order_item['order_id'] = order_id
             order_item['menu_item_name'] = menu_item['name']
             order_item['menu_item_price']= menu_item['price']
-            order_db.update_one({'_id': ObjectId(order_id)},
-                {"$push":{'orderItems':schema.dump(order_item)}})
+            # order_db.update_one({'_id': ObjectId(order_id)},
+            #     {"$push":{'orderItems':schema.dump(order_item)}})
+            session_db.update_one({'_id': ObjectId(session_id),'orderList._id': order_item['order_id']},{'$push':{'orderList.$.orderItems': schema.dump(order_item)}})
             return order_item, status.HTTP_201_CREATED
        
         except ValidationError as error:
             print(error)
             return{'result': 'Missing fields'}, status.HTTP_400_BAD_REQUEST
 
-# @order.route('/item/<string:id>')
-# class OrderItemGet(Resource):
-#     @order.doc(description='Get the Order Item')
-#     def get(self, id):
-#         order_item = order_items_db.find_one({'_id': id})
-#         return order_item, status.HTTP_200_OK
-
 
 @order.route('/receipt')
 class OrderReceiptRoute(Resource):
-    @order.expect(MODEL_order_id)
+    @order.expect(MODEL_order_session)
     def post(self):
         # Get order details from database
-        order = order_db.find_one({ '_id': ObjectId(request.data['id'])})
-        
-        # {
-        #             'name': 'Chicken Schnitzel',
-        #             'quantity': 2,
-        #             'unit_price': 12.50
-        #         }
+        # order = order_db.find_one({ '_id': ObjectId(request.data['id'])})
+        session = session_db.find_one({'_id': ObjectId(request.data['session_id'])})
+        user = auth_db.find_one({'email': session['user']})
         # Populate Email Context using Order Details
         email_context = {
-            'name': 'Sebastian Chua',
+            'name': user['name'],
             'restaurant': 'Cho Cho San',
-            'order_id': order['_id'],
-            'order_items': [
-                
-            ],
+            'order_id': session['_id'],
+            'order_items': [],
             'total_price': 0
         }
-        for x in order['orderItems']:
-            dict= {}
-            dict['name'] = x['menu_item_name']
-            dict['quantity'] = x['amount']
-            dict['unit_price']= x['menu_item_price']
-            email_context['order_items'].append(dict.copy())
-        for z in email_context['order_items']:
-            email_context['total_price'] = email_context['total_price'] + (z['quantity'] * z['unit_price'])
-        print(email_context)
+
+        for orders in session['orderList']:
+            for x in orders['orderItems']:
+                email_context['order_items'].append({'name': x['menu_item_name'],
+                'quantity': x['amount'], 'unit_price': x['menu_item_price']})
+
+        # email_context['order_items'] = [{
+        #     'name': order_item['menu_item_name'],
+        #     'quantity': order_item['amount'],
+        #     'unit_price': order_item['menu_item_price']
+        # } for order_item in order['orderItems']]
+
+        email_context['total_price'] = sum(order_item['quantity'] * order_item['unit_price'] for order_item in email_context['order_items'])
+
         email = {
             'text': '', # Insert the text version of the receipt we want to send
             'html': render_template('receipt.html', context=email_context)
