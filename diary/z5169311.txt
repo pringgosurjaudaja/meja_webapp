@@ -1,0 +1,23 @@
+Week 1
+
+I was absent during week 1, but was aware to form group of 5 and was briefd what we will do. 
+I participated in the brainstorming online as I wasn't able to attend physically.
+
+Week 2
+Decided to choose the waiter app. We had a meeting to discuss the requirements and the user stories. I had to add the stories into Jira.
+We also discussed the architecture of the software (database, api, frameworks, etc). 
+I was given the backend part of the software, mainly REST APIs. Started to impement very basic order
+
+Week 3
+
+Worked on the proposal as each member was assigned different parts. 
+I was in charge of the software architecture with Ganang.
+Made the order REST API endpoints. 
+Schema changes means that I needed to change bits of the API
+
+
+Week 4
+Completed the order APIs. Moved on to the status of the order. 
+Fixed the schema so it fits more on the document base MongoDB.
+Instead of having references to another collection, we embed it all in one document so it's easier to fetch.
+
