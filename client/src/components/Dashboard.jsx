@@ -9,6 +9,7 @@ import { Checkout } from 'components/Checkout';
 import { axios } from 'utilities/helper';
 import { navigate } from "@reach/router";
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
+import { About } from 'components/About';
 
 export class Dashboard extends React.Component {
     
@@ -62,6 +63,9 @@ export class Dashboard extends React.Component {
                     </Tab>
                     <Tab eventKey="all" title="All">
                         <Menu display="all" {...menuProps}/>
+                    </Tab>
+                    <Tab eventKey="about" title="About">
+                        <About/>
                     </Tab>
                     <Tab eventKey="checkout" title={<FontAwesomeIcon icon={faShoppingCart}/>}>
                         <Checkout/>
