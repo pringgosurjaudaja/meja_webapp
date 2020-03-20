@@ -3,6 +3,7 @@ from flask_cors import CORS
 from flask_socketio import SocketIO
 from apis import api
 from json_encoder import MongoJSONEncoder
+import hooks
 
 app = FlaskAPI(__name__)
 CORS(app)
