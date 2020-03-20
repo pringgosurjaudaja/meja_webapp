@@ -12,7 +12,7 @@ import {
     Form,
     Col,
 } from 'react-bootstrap';
-import { DateTime, moment, axios } from 'utilities/helper';
+import { DateTime, moment, axios, _ } from 'utilities/helper';
 import 'styles/react-datetime.css';
 import { ReservationDialog } from 'components/ReservationDialog';
 
@@ -26,14 +26,17 @@ export class Reservation extends React.Component {
                 month: 0,
                 date: 0,
             },
-            reserved: true,
-            edit: false,
+            reserved: false,
             showDialog: false,
             ready: false, // shows when the date and diner is input
             diner: 0,
             timeAvailability: [],
             notes: "",
             time: "",
+            user: {
+                email: "",
+            },
+            reservation: {}
         }
         this.handleSelect = this.handleSelect.bind(this); // logout
         this.handleChange = this.handleChange.bind(this); // select date
@@ -41,17 +44,38 @@ export class Reservation extends React.Component {
         this.handleChangeTime = this.handleChangeTime.bind(this); // select time
         this.handleChangeNote = this.handleChangeNote.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
     }
 
     componentDidMount() {
-        
+        this.setState({ user: {email: sessionStorage.getItem("email")} });
+        let url = 'http://127.0.0.1:5000/reservation';
+        axios({
+            method: 'get',
+            url: url,
+            timeout: 1000,
+            header: {
+                "x-api-key": sessionStorage.getItem('AUTH_KEY'),
+                "Content-Type": "application/json"
+            }
+        })
+        .then((response)=>{
+            console.log(response.data);
+            for(let r in response.data) {
+                if(response.data[r].email === sessionStorage.getItem('email')) {
+                    this.setState({ reservation: response.data[r] });
+                    this.setState({ reserved: true });
+                }
+            }
+        })
     }
 
     handleSelect(event) {
         console.log(event);
         if(event === 'logout') {
+            sessionStorage.clear();
             navigate('/login');
-            sessionStorage.removeItem('AUTH_KEY');
+            
         }
     }
 
@@ -104,7 +128,7 @@ export class Reservation extends React.Component {
                     let tmp = (<option key={i} value={response.data[i]}>{response.data[i]}</option>)
                     res.push(tmp);
                 }
-
+                this.setState({ time: response.data[0] });
                 this.setState({ timeAvailability :res });
             })
             .catch((error)=>{
@@ -128,9 +152,9 @@ export class Reservation extends React.Component {
             url: url,
             timeout: 2000,
             data: {
-                "email": "dummy@gmail.com",
+                "email": this.state.user.email,
+                "datetime": datetime.toString(),
                 "number_diner": this.state.diner,
-                "datetime": datetime,
                 "reservation_notes": this.state.notes
             },
             header: {
@@ -143,8 +167,30 @@ export class Reservation extends React.Component {
             this.setState({ show: true });
         })
         .catch((error)=>{
-            alert(error.response)
+            alert(error)
         });
+    }
+
+    handleCancel() {
+        let url = 'http://127.0.0.1:5000/reservation/';
+        let id = _.get(this.state.reservation, "_id", "");
+        axios({
+            method: 'delete',
+            url: url+id,
+            timeout: 1000,
+            header: {
+                "x-api-key": sessionStorage.getItem('AUTH_KEY'),
+                "Content-Type": "application/json"
+            }
+        })
+        .then((response) => {
+            console.log(response);
+            window.location.reload();
+        })
+        .catch((error)=>{
+            alert(error)
+        });
+        
     }
 
     render () {
@@ -154,14 +200,16 @@ export class Reservation extends React.Component {
             return current.isAfter( yesterday );
         };
 
-        const numPeople = 2;
-        const date = "31/03/2020";
-        const time = "7:30 pm"
+        const numPeople = _.get(this.state.reservation, "number_diner", "");
+        const datetime = _.get(this.state.reservation, "datetime", "").split("T");
+        const email = _ .get(this.state.reservation, "email", "");
+        const date = datetime[0];
+        const time = datetime[1];
 
         let dialogProps = {
-            edit: this.state.edit.toString(),
+            cancelreservation: this.handleCancel,
         }
-
+        console.log(this.state.reservation);
         return (
             <div>
                 <Nav className="justify-content-end" onSelect={this.handleSelect}>
@@ -248,12 +296,12 @@ export class Reservation extends React.Component {
                         <Col>at <strong>{time}</strong> </Col>
                     </Row>
                     <Row className="l-reserve__row--small l-reserve-details__row">
-                        <Col>An email confirmation will be sent to you shortly  </Col>
+                        <Col>An email confirmation will be sent to <strong>{ email }</strong> shortly  </Col>
                     </Row>
                     <Row className='small-button-row'>
                         <Col>
                             <Button className="small-button" variant="secondary"
-                            onClick={()=> this.setState({ edit: false, showDialog: true })}
+                            onClick={()=> this.setState({ showDialog: true })}
                             >Cancel Booking</Button>
                         </Col>
                     </Row>

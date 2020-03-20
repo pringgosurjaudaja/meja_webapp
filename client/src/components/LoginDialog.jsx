@@ -31,8 +31,7 @@ export class LoginDialog extends React.Component {
     }
 
     handleSubmit(event) {
-        event.preventDefault();
-
+        const email = this.state.email.toString();
         axios({
             method: 'post',
             url: 'http://127.0.0.1:5000/auth/login',
@@ -43,7 +42,10 @@ export class LoginDialog extends React.Component {
             }).then(function(response) {
                 console.log(response);
                 sessionStorage.setItem('AUTH_KEY', response.data.token);
-                navigate('/reservation')
+                sessionStorage.setItem('session_id', response.data.session_id);
+                sessionStorage.setItem('table_id', response.data.table_id);
+                sessionStorage.setItem('email', email);
+                navigate('/reservation');
             }).catch(function(error) {
                 console.log(error);
                 alert('Invalid input');

@@ -36,8 +36,8 @@ export class Dashboard extends React.Component {
     handleSelect(event) {
         console.log(event);
         if(event === 'logout') {
+            sessionStorage.clear();
             navigate('/login');
-            sessionStorage.removeItem('AUTH_KEY');
         }
     }
     render () {
