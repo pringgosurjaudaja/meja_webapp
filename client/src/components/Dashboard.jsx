@@ -56,7 +56,7 @@ export class Dashboard extends React.Component {
                     
                 </Nav>
                 <Tabs className="justify-content-center"
-                defaultActiveKey="recommend"
+                defaultActiveKey="about"
                 >
                     <Tab eventKey="recommend" title="Recommend">
                         <Recommend {...menuProps}/>

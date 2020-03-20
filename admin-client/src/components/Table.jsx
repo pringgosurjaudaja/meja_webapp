@@ -8,6 +8,8 @@ import {
 } from 'react-bootstrap';
 import axios from 'utilities/helper';
 import { ReservationDialog } from 'components/ReservationDialog';
+import FullCalendar from '@fullcalendar/react';
+import dayGridPlugin from '@fullcalendar/daygrid';
 
 export class Table extends React.Component {
 
@@ -150,7 +152,8 @@ export class Table extends React.Component {
 
         return (
             <Container className="layout--padding--admin-table">
-                {rows}
+                {/* {rows} */}
+                <FullCalendar defaultView="dayGridMonth" plugins={[ dayGridPlugin ]} />
                 <ReservationDialog show={this.state.showReservationDialog} onHide={this.handleClose} {...reservationProps}/>
             </Container>
         );

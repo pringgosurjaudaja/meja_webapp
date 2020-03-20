@@ -11,6 +11,7 @@ import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 
 import axios from 'utilities/helper';
 
+import FullCalendar from '@fullcalendar/react';
 export class Dashboard extends React.Component {
     constructor(props) {
         super(props);
