@@ -1,51 +1,62 @@
 import React from 'react';
-import { Modal, Button, Card, Alert } from 'react-bootstrap';
+import { Modal, Button, Card, Alert, InputGroup, FormControl } from 'react-bootstrap';
 import InputNumber from 'rc-input-number';
 import 'rc-input-number/assets/index.css';
 import 'styles/styles.css';
-import axios from 'utilities/helper';
 import example from './assets/test.jpg';
 
 export class MenuItemDialog extends React.Component {
     constructor(props) {
         super(props);
-        this.handleAddCart = this.handleAddCart.bind(this);
+        this.handleAddToCart = this.handleAddToCart.bind(this);
         this.handleQuantityChange = this.handleQuantityChange.bind(this);
+        this.handleNotesChange = this.handleNotesChange.bind(this);
         this.state = {
+            // keep array reference in variable whole time page is active
+            cartArray: [],
             addCart: false,
-            quantity: 0,
-            amount: 0,
-            notes: '',
-            order_id: null
+            quantity: 1,
+            notes: ''
         }
     }
 
-    handleQuantityChange(e) {
-        this.setState({ value: e.value });
-        console.log("QUANTITY: " + e.value);
+    componentDidMount() {
+        let cartArray = JSON.parse(sessionStorage.getItem('cart') || '[]');
+        this.setState({ cartArray: cartArray});
     }
 
-    handleAddCart(e) {
-        e.preventDefault();
-        let obj = {};
+    handleQuantityChange(val) {
+        this.setState({ value: val });
+    }
 
-        obj["menu_item_id"] = this.props.id;
-        obj["amount"] = this.state.quantity * this.props.price;
-        obj["notes"] = this.state.notes;
-        obj["order_id"] = 1;
-        console.log(obj);
+    handleNotesChange(val) {
+        this.setState({ notes: val.toString() });
+    }
 
-        axios.post('/user', { obj })
-            .then(function (response) {
-                console.log(response);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-
+    handleAddToCart() {
         this.setState({ addCart: true });
-        console.log("added to cart");
-        return this.props.onHide;
+
+        var values = {
+            [this.props.id]: {
+                name: this.props.name,
+                price: this.props.price,
+                quantity: this.state.quantity,
+                notes: this.state.notes.toString()
+            }
+        };
+
+        // console.log(values);
+
+        var cartObj = JSON.parse(sessionStorage.getItem('cart'));
+        console.log('Before');
+        console.log(cartObj);
+        cartObj.push(values);
+        console.log('Pushed');
+        console.log(cartObj);
+        sessionStorage.setItem("cart", JSON.stringify(cartObj)); 
+        this.setState({ cartArray: cartObj });
+        console.log('ADDED ITEM');
+
     }
 
     render() {
@@ -56,11 +67,18 @@ export class MenuItemDialog extends React.Component {
                     </Modal.Header>
                     <Modal.Body>
                         <Card.Img variant="top" src={example} />
+
                         <Modal.Title>{this.props.name}</Modal.Title>
                         <p>{this.props.description}</p>
+
+                        Add notes
+                        <InputGroup onChange={this.handleNotesChange}>
+                            <FormControl as="textarea" aria-label="With textarea" />
+                        </InputGroup>
+
                         <InputNumber onChange={this.handleQuantityChange} focusOplaceholder="Quantity" min={1} defaultValue={1} />
                         <p></p>
-                        <Button onClick={this.handleAddCart} data-dismiss="modal" variant="primary">
+                        <Button onClick={this.handleAddToCart} disabled={this.state.addCart} data-dismiss="modal" variant="primary">
                             Add to cart
                         </Button>
                         {this.state.addCart &&
