@@ -1,5 +1,6 @@
-Week 1
+Jansen Malem
 
+Week 1
 The group is formed on week 1. I set up the Jira and Github and also linked them together. Together in week 1 we started brainstorming the main ideas for the project.
 
 Week 2
@@ -17,3 +18,12 @@ Week 4
 Week 4 I managed to complete all the tickets that was carried over from last sprint
 due to the blockage, now I am starting to work on the frontend side of the
 reservation
+
+Week 5
+Worked on reservation and connected the frontend to the backend. 
+The reservation backend also has some design changes in order to support the frontend
+that requires the task to be delayed
+The team also added new task such as about page
+
+Week 6
+I finished the front end of reservation for client however admin part is still in progress due to design changes. By this time the team realises that the mock up created was not enough to cover all aspect of the app, so the team has to change the front end design. Also I finished the About page in the client side
