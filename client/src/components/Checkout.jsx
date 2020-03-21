@@ -9,54 +9,85 @@ import 'rc-input-number/assets/index.css';
 export class Checkout extends React.Component {
     constructor(props) {
         super(props);
+        this.handleDeleteItem = this.handleDeleteItem.bind(this);
         this.handleQuantityChange = this.handleQuantityChange.bind(this);
-        this.state={
+        this.state = {
             cartArray: []
         };
-        
+
     }
 
     componentDidMount() {
         let cartArray = JSON.parse(sessionStorage.getItem('cart') || '[]');
-        this.setState({ cartArray: cartArray});
+        this.setState({ cartArray: cartArray });
     }
 
-    handleQuantityChange(val) {
-        this.setState({ value: val });
-        console.log("QUANTITY: " + val);
+    handleDeleteItem(index) {
+        let cartObj = this.state.cartArray;
+        console.log('BEFORE');
+        console.log(cartObj);
+
+        cartObj.forEach((item, i) => {
+            if (i === index) {
+                cartObj.splice(index, 1);
+            }
+        });
+
+        console.log('AFTER');
+        console.log(cartObj);
+        sessionStorage.setItem("cart", JSON.stringify(cartObj));
+        this.setState({ cartArray: cartObj });
+        console.log('DELETED ITEM');
     }
 
-    render () {
+    handleQuantityChange(index, val) {
+        console.log(index);
+        console.log(val);
+        let cartObj = this.state.cartArray;
+        console.log('BEFORE');
+        console.log(cartObj);
+
+        cartObj.forEach((item, i) => {
+            if (i === index) {
+                Object.assign(Object.values(item)[0], { quantity: val })
+            }
+        });
+
+
+        console.log('AFTER');
+        console.log(cartObj);
+        sessionStorage.setItem("cart", JSON.stringify(cartObj));
+        this.setState({ cartArray: cartObj });
+        console.log('ADDED ITEM');
+    }
+
+    render() {
         let entries = [];
-        this.state.cartArray.length > 0 && this.state.cartArray.forEach((item, key) => {
-            // let item = this.state.cartArray.get(keyStr);
-
-            console.log('HERE');
-            console.log(key);
-            console.log(Object.values(item)[0].name);
-
-            // let entry = (
-            //         <Card {...this.props} style={{ width: '95%' }}>
-            //             <Card.Body>
-            //                 <Card.Text>
-            //                     <div align="right"><FontAwesomeIcon icon={faTrash}/></div>
-            //                     {item.name}
-            //                     <br></br>
-            //                     <small className="text-muted">{item.notes}</small>
-            //                     <br></br>
-            //                     <InputNumber focusOplaceholder="Quantity" min={1} defaultValue={item.quantity}/>
-            //                     <div className="price" align="right">{item.price}</div>
-            //                 </Card.Text>
-            //             </Card.Body>
-            //         </Card>
-            // );
-            // entries.push(entry);
+        this.state.cartArray.length > 0 && this.state.cartArray.forEach((item, index) => {
+            // console.log(Object.keys(item)[0]); // item_id
+            let val = Object.values(item)[0];
+            let entry = (
+                <Card {...this.props} style={{ width: '95%' }}>
+                    <Card.Body>
+                        <Card.Text>
+                            <div align="right"><FontAwesomeIcon onClick={this.handleDeleteItem(index)} icon={faTrash} /></div>
+                            {val.name}
+                            <br></br>
+                            <small className="text-muted">{val.notes}</small>
+                            <br></br>
+                            <InputNumber onChange={value => this.handleQuantityChange(index, value)} focusOplaceholder="Quantity" min={1} defaultValue={val.quantity} />
+                            <div className="price" align="right">$ {val.price}</div>
+                        </Card.Text>
+                    </Card.Body>
+                </Card>
+            );
+            entries.push(entry);
         });
         return (
-            <div className="margin-center">         
+            <div className="margin-center">
                 <h1>Order</h1>
-                { this.state.cartArray.length > 0 && entries}
-                { this.state.cartArray.length == 0 && 'Empty cart' }
+                {this.state.cartArray.length > 0 && entries}
+                {this.state.cartArray.length === 0 && 'Empty cart'}
                 <br></br>
                 <p align="center"><Button>Back to menu</Button></p>
                 <p align="center"><Button>Order now</Button></p>
