@@ -33,7 +33,8 @@ export class Checkout extends React.Component {
 
             console.log('HERE');
             console.log(key);
-            console.log(item);
+            console.log(Object.values(item)[0].name);
+
             // let entry = (
             //         <Card {...this.props} style={{ width: '95%' }}>
             //             <Card.Body>
@@ -44,7 +45,7 @@ export class Checkout extends React.Component {
             //                     <small className="text-muted">{item.notes}</small>
             //                     <br></br>
             //                     <InputNumber focusOplaceholder="Quantity" min={1} defaultValue={item.quantity}/>
-            //                     <div class="price" align="right">{item.price}</div>
+            //                     <div className="price" align="right">{item.price}</div>
             //                 </Card.Text>
             //             </Card.Body>
             //         </Card>
@@ -52,7 +53,7 @@ export class Checkout extends React.Component {
             // entries.push(entry);
         });
         return (
-            <div class="margin-center">         
+            <div className="margin-center">         
                 <h1>Order</h1>
                 { this.state.cartArray.length > 0 && entries}
                 { this.state.cartArray.length == 0 && 'Empty cart' }

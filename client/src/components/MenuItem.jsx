@@ -21,9 +21,6 @@ export class MenuItem extends React.Component {
     }   
 
     render() {
-        const props = {
-            
-        };
         return (
             <div>
                 <Card className="menu-item" onClick={this.handleMenuClick}>
