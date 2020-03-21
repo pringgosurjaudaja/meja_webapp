@@ -47,7 +47,7 @@ export class MenuItemDialog extends React.Component {
 
         // console.log(values);
 
-        var cartObj = JSON.parse(sessionStorage.getItem('cart'));
+        var cartObj = this.state.cartArray;
         console.log('Before');
         console.log(cartObj);
         cartObj.push(values);
