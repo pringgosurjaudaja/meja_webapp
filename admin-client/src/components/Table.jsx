@@ -6,10 +6,10 @@ import {
     Col,
     Container,
 } from 'react-bootstrap';
-import axios from 'utilities/helper';
+import { axios } from 'utilities/helper';
 import { ReservationDialog } from 'components/ReservationDialog';
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
+// import FullCalendar from '@fullcalendar/react';
+// import dayGridPlugin from '@fullcalendar/daygrid';
 
 export class Table extends React.Component {
 
@@ -18,87 +18,35 @@ export class Table extends React.Component {
         this.state = {
             reservation: [],
             showReservationDialog: false,
-            data: {}
+            table: 0,
         }
         this.handleShowReservation = this.handleShowReservation.bind(this);
         this.handleClose = this.handleClose.bind(this);
     }
 
     componentDidMount() {
-
-        this.setState({
-            reservation: [
-                {
-                    "_id": "5e6ce03240c1525e0f221d2e",
-                    "table_number": "t01",
-                    "email": "something@gmail.com",
-                    "datetime": "2020-03-14T13:00:00",
-                    "number_diner": 2,
-                    "status": "Pending",
-                    "reservation_notes": "outdoor seating"
-                },
-                {
-                    "_id": "5e6ce03240cg5z5e0f221d2e",
-                    "table_number": "t02",
-                    "email": "something@gmail.com",
-                    "datetime": "2020-03-14T13:00:00",
-                    "number_diner": 3,
-                    "status": "Pending",
-                    "reservation_notes": "outdoor seating"
-                },
-                {
-                    "_id": "5e6ce03240c4525x0f221d2e",
-                    "table_number": "t03",
-                    "email": "something@gmail.com",
-                    "datetime": "2020-03-14T13:00:00",
-                    "number_diner": 1,
-                    "status": "Pending",
-                    "reservation_notes": "indoor seating"
-                },
-                {
-                    "_id": "5e6ce03240c1525e0fj21d2e",
-                    "table_number": "t04",
-                    "email": "something@gmail.com",
-                    "datetime": "2020-03-14T13:00:00",
-                    "number_diner": 6,
-                    "status": "Pending",
-                    "reservation_notes": ""
-                },
-                {
-                    "_id": "5e6ce03240c1525e0f12fd2e",
-                    "table_number": "t05",
-                    "email": "something@gmail.com",
-                    "datetime": "2020-03-14T13:00:00",
-                    "number_diner": 6,
-                    "status": "Pending",
-                    "reservation_notes": ""
-                },
-                {
-                    "_id": "5e6ce03240c1525e0f221d3e",
-                    "table_number": "t06",
-                    "email": "something@gmail.com",
-                    "datetime": "2020-03-14T13:00:00",
-                    "number_diner": 6,
-                    "status": "Pending",
-                    "reservation_notes": ""
-                }
-            ]
+        axios({
+            method: 'get',
+            url: 'http://127.0.0.1:5000/reservation',
+            timeout: 1000,
         })
-        // axios({
-        //     method: 'get',
-        //     url: 'http://127.0.0.1:5000/reservation',
-        //     timeout: 1000,
-        // })
-        // .then((response) => {
-
-        // });
+        .then((response) => {
+            this.setState({ reservation: response.data })
+        });
     }
 
-    handleShowReservation(event, data) {
+    handleShowReservation(event, table) {
+        console.log(table);
         this.setState({
             showReservationDialog: true,
         })
-        this.setState({ data: data });
+
+        // const data = this.state.reservation.filter((r)=>{
+        //     return r.table_num == table;
+        // })
+        this.setState({ 
+            table: table,
+        });
     }
 
     handleClose() {
@@ -108,16 +56,18 @@ export class Table extends React.Component {
     }
 
     render () {
+        const table_num = 12;
         let cols = [];
-        for(let r in this.state.reservation) {
+        for(let r = 0; r<table_num; ++r) {
+            let num = r+1;
             let col = (<Button variant="primary"
             onClick={(e)=>{
-                this.handleShowReservation(e, this.state.reservation[r]);
+                this.handleShowReservation(e, num);
             }}>
-                {this.state.reservation[r].table_number}</Button>);
+                {r+1}
+            </Button>);
             cols.push(col);
         }
-
 
         let rows=[];
         let row=[];
@@ -146,14 +96,15 @@ export class Table extends React.Component {
             }
         }
         
-        const reservationProps = {
-            data: this.state.data,
+        let reservationProps = {
+            table: this.state.table,
+            reservation: this.state.reservation,
         }
 
         return (
             <Container className="layout--padding--admin-table">
-                {/* {rows} */}
-                <FullCalendar defaultView="dayGridMonth" plugins={[ dayGridPlugin ]} />
+                {rows}
+                {/* <FullCalendar defaultView="dayGridWeek" plugins={[ dayGridPlugin ]} /> */}
                 <ReservationDialog show={this.state.showReservationDialog} onHide={this.handleClose} {...reservationProps}/>
             </Container>
         );

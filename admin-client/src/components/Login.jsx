@@ -7,7 +7,7 @@ import {
 } from 'react-bootstrap';
 import { navigate } from "@reach/router";
 import 'styles/styles.css';
-import axios from 'utilities/helper';
+import { axios } from 'utilities/helper';
 
 export class Login extends React.Component {
     constructor(props) {

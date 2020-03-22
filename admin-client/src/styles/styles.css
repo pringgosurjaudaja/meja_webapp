@@ -143,4 +143,20 @@ body {
 
 @import '~@fullcalendar/core/main.css';
 @import '~@fullcalendar/daygrid/main.css';
+@import '~@fullcalendar/timegrid/main.css';
 
+
+.fc-axis {
+    width: 70px !important;
+}
+
+.fc-left h2 {
+    font-size: 1.2em !important;
+}
+
+.modal-body {
+    overflow:scroll !important;
+}
+.modal-calendar {
+    overflow: scroll !important;
+}

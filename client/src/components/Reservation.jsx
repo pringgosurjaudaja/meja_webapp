@@ -95,7 +95,7 @@ export class Reservation extends React.Component {
 
     handleChange(event) {
         const year = event.year();
-        const month = event.month();
+        const month = event.month()+1;
         const date = event.date();
         let url = 'http://127.0.0.1:5000/reservation/availability';
         this.setState({

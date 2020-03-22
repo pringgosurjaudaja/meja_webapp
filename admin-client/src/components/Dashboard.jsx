@@ -9,7 +9,7 @@ import { navigate } from "@reach/router";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 
-import axios from 'utilities/helper';
+import { axios } from 'utilities/helper';
 
 import FullCalendar from '@fullcalendar/react';
 export class Dashboard extends React.Component {
