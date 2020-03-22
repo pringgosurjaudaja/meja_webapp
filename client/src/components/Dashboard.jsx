@@ -40,6 +40,7 @@ export class Dashboard extends React.Component {
             navigate('/login');
         }
     }
+
     render () {
         const menuProps = {
             menuItemList: this.state.menuItemList
@@ -56,7 +57,7 @@ export class Dashboard extends React.Component {
                     
                 </Nav>
                 <Tabs className="justify-content-center"
-                defaultActiveKey="about"
+                      defaultActiveKey="about"
                 >
                     <Tab eventKey="recommend" title="Recommend">
                         <Recommend {...menuProps}/>
@@ -68,7 +69,8 @@ export class Dashboard extends React.Component {
                         <About/>
                     </Tab>
                     <Tab eventKey="checkout" title={<FontAwesomeIcon icon={faShoppingCart}/>}>
-                        <Checkout/>
+                        <Checkout cart={this.props.cart} 
+                                  updateCart={this.props.updateCart} />
                     </Tab>
                     
                 </Tabs>
