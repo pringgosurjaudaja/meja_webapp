@@ -64,13 +64,12 @@ export class Checkout extends React.Component {
     render() {
         let entries = [];
         this.state.cartArray.length > 0 && this.state.cartArray.forEach((item, index) => {
-            // console.log(Object.keys(item)[0]); // item_id
             let val = Object.values(item)[0];
             let entry = (
-                <Card {...this.props} style={{ width: '95%' }}>
+                <Card key={Object.keys(item)[0]} {...this.props} style={{ width: '95%' }}>
                     <Card.Body>
                         <Card.Text>
-                            <div align="right"><FontAwesomeIcon onClick={this.handleDeleteItem(index)} icon={faTrash} /></div>
+                            <div align="right"><FontAwesomeIcon onClick={() => this.handleDeleteItem(index)} icon={faTrash} /></div>
                             {val.name}
                             <br></br>
                             <small className="text-muted">{val.notes}</small>

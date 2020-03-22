@@ -29,19 +29,17 @@ export class MenuItemDialog extends React.Component {
         this.setState({ value: val });
     }
 
-    handleNotesChange(val) {
-        this.setState({ notes: val.toString() });
+    handleNotesChange(e) {
+        this.setState({ notes: e.target.value.toString() });
     }
 
     handleAddToCart() {
-        this.setState({ addCart: true });
-
         var values = {
             [this.props.id]: {
                 name: this.props.name,
                 price: this.props.price,
                 quantity: this.state.quantity,
-                notes: this.state.notes.toString()
+                notes: this.state.notes
             }
         };
 
@@ -55,6 +53,7 @@ export class MenuItemDialog extends React.Component {
         console.log(cartObj);
         sessionStorage.setItem("cart", JSON.stringify(cartObj)); 
         this.setState({ cartArray: cartObj });
+        this.setState({ addCart: true });
         console.log('ADDED ITEM');
 
     }
@@ -72,8 +71,8 @@ export class MenuItemDialog extends React.Component {
                         <p>{this.props.description}</p>
 
                         Add notes
-                        <InputGroup onChange={this.handleNotesChange}>
-                            <FormControl as="textarea" aria-label="With textarea" />
+                        <InputGroup>
+                            <FormControl  onChange={this.handleNotesChange} as="textarea" aria-label="With textarea" />
                         </InputGroup>
 
                         <InputNumber onChange={this.handleQuantityChange} focusOplaceholder="Quantity" min={1} defaultValue={1} />
