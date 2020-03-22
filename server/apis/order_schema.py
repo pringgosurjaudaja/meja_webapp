@@ -8,12 +8,15 @@ class OrderItemSchema(Schema):
     amount = fields.Float(required=True)
     notes = fields.String()
     order_id = fields.String()
-    menu_item_id = fields.String()
 
 
 class OrderSchema(Schema):
+    _id = fields.String()
     orderItems= fields.List(fields.Nested(OrderItemSchema), missing=[])
     table_id = fields.String(required=True)
-    status = fields.String()
 
-    
+class SessionSchema(Schema):
+    table_id = fields.String()
+    user = fields.String()
+    orderList = fields.List(fields.Nested(OrderSchema), missing = [])
+    datetime_visit = fields.DateTime(format= '%d-%m-%YT%H:%M:%S')

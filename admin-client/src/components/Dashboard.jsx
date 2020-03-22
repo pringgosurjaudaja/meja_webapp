@@ -11,6 +11,7 @@ import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 
 import axios from 'utilities/helper';
 
+import FullCalendar from '@fullcalendar/react';
 export class Dashboard extends React.Component {
     constructor(props) {
         super(props);
@@ -55,7 +56,7 @@ export class Dashboard extends React.Component {
                     
                 </Nav>
                 <Tabs className="justify-content-center"
-                defaultActiveKey="menu"
+                defaultActiveKey="table"
                 >
                     <Tab eventKey="table" title="Table">
                         <Table/>
@@ -63,7 +64,9 @@ export class Dashboard extends React.Component {
                     <Tab eventKey="menu" title="Menu">
                         <Menu {...menuProps}/>
                     </Tab>
-                    
+                    <Tab eventKey="order" title="Orders">
+                        
+                    </Tab>
                 </Tabs>
 
             </div>
