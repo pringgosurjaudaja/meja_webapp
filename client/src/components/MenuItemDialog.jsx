@@ -54,6 +54,7 @@ export class MenuItemDialog extends React.Component {
         sessionStorage.setItem("cart", JSON.stringify(cartObj)); 
         this.setState({ cartArray: cartObj });
         this.setState({ addCart: true });
+        window.location.reload(true);
         console.log('ADDED ITEM');
 
     }

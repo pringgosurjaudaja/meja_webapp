@@ -11,8 +11,10 @@ export class Checkout extends React.Component {
         super(props);
         this.handleDeleteItem = this.handleDeleteItem.bind(this);
         this.handleQuantityChange = this.handleQuantityChange.bind(this);
+        this.handleUpdateTotal = this.handleUpdateTotal.bind(this);
         this.state = {
-            cartArray: []
+            cartArray: [],
+            total: 0
         };
 
     }
@@ -20,6 +22,7 @@ export class Checkout extends React.Component {
     componentDidMount() {
         let cartArray = JSON.parse(sessionStorage.getItem('cart') || '[]');
         this.setState({ cartArray: cartArray });
+        this.handleUpdateTotal();
     }
 
     handleDeleteItem(index) {
@@ -38,6 +41,7 @@ export class Checkout extends React.Component {
         sessionStorage.setItem("cart", JSON.stringify(cartObj));
         this.setState({ cartArray: cartObj });
         console.log('DELETED ITEM');
+        this.handleUpdateTotal();
     }
 
     handleQuantityChange(index, val) {
@@ -59,6 +63,18 @@ export class Checkout extends React.Component {
         sessionStorage.setItem("cart", JSON.stringify(cartObj));
         this.setState({ cartArray: cartObj });
         console.log('ADDED ITEM');
+        this.handleUpdateTotal();
+    }
+
+
+    handleUpdateTotal() {
+        let sum = 0;
+        this.state.cartArray.length > 0 && this.state.cartArray.forEach((item, index) => {
+            let i = Object.values(item)[0];
+            let val = i.price * i.quantity;
+            sum = sum + val;
+        });
+        this.setState({ total: sum });
     }
 
     render() {
@@ -88,6 +104,7 @@ export class Checkout extends React.Component {
                 {this.state.cartArray.length > 0 && entries}
                 {this.state.cartArray.length === 0 && 'Empty cart'}
                 <br></br>
+                <div className="price">Total: $ {this.state.total}</div>
                 <p align="center"><Button>Back to menu</Button></p>
                 <p align="center"><Button>Order now</Button></p>
             </div>
