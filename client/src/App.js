@@ -9,16 +9,20 @@ import { Reservation } from 'components/Reservation';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    
+    this.updateCart = this.updateCart.bind(this);
     this.state = {
       cart: []
     }
   }
 
   updateCart(newCart) {
+    console.log("CART BEFORE");
+    console.log(this.state.cart);
     this.setState({
       cart: newCart
     });
+    console.log("CART UPDATED!!");
+    console.log(this.state.cart);
   }
   
   render() {

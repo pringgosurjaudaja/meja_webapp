@@ -13,7 +13,7 @@ export class MenuItemDialog extends React.Component {
         this.handleNotesChange = this.handleNotesChange.bind(this);
         this.state = {
             // keep array reference in variable whole time page is active
-            cartArray: [],
+            cart: [],
             addCart: false,
             quantity: 1,
             notes: ''
@@ -21,12 +21,12 @@ export class MenuItemDialog extends React.Component {
     }
 
     componentDidMount() {
-        let cartArray = JSON.parse(sessionStorage.getItem('cart') || '[]');
-        this.setState({ cartArray: cartArray});
+        let cartArray = this.props.cart;
+        this.setState({ cart: cartArray});
     }
 
     handleQuantityChange(val) {
-        this.setState({ value: val });
+        this.setState({ quantity: val });
     }
 
     handleNotesChange(e) {
@@ -45,16 +45,14 @@ export class MenuItemDialog extends React.Component {
 
         // console.log(values);
 
-        var cartObj = this.state.cartArray;
+        var cartObj = this.state.cart;
         console.log('Before');
         console.log(cartObj);
         cartObj.push(values);
         console.log('Pushed');
         console.log(cartObj);
-        sessionStorage.setItem("cart", JSON.stringify(cartObj)); 
-        this.setState({ cartArray: cartObj });
+        this.props.updateCart(cartObj);
         this.setState({ addCart: true });
-        // window.location.reload(true);
         console.log('ADDED ITEM');
 
     }

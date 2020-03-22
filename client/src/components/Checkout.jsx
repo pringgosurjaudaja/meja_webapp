@@ -12,15 +12,16 @@ export class Checkout extends React.Component {
         this.handleDeleteItem = this.handleDeleteItem.bind(this);
         this.handleQuantityChange = this.handleQuantityChange.bind(this);
         this.handleUpdateTotal = this.handleUpdateTotal.bind(this);
+        this.handleConfirmOrder = this.handleConfirmOrder.bind(this);
         this.state = {
-            cartArray: [],
+            cartArray: this.props.cart,
             total: 0
         };
 
     }
 
     componentDidMount() {
-        let cartArray = JSON.parse(sessionStorage.getItem('cart') || '[]');
+        let cartArray = this.props.cart;
         this.setState({ cartArray: cartArray });
         this.handleUpdateTotal();
     }
@@ -38,7 +39,7 @@ export class Checkout extends React.Component {
 
         console.log('AFTER');
         console.log(cartObj);
-        sessionStorage.setItem("cart", JSON.stringify(cartObj));
+        this.props.updateCart(cartObj);
         this.setState({ cartArray: cartObj });
         console.log('DELETED ITEM');
         this.handleUpdateTotal();
@@ -60,12 +61,11 @@ export class Checkout extends React.Component {
 
         console.log('AFTER');
         console.log(cartObj);
-        sessionStorage.setItem("cart", JSON.stringify(cartObj));
+        this.props.updateCart(cartObj);
         this.setState({ cartArray: cartObj });
         console.log('ADDED ITEM');
         this.handleUpdateTotal();
     }
-
 
     handleUpdateTotal() {
         let sum = 0;
@@ -75,6 +75,32 @@ export class Checkout extends React.Component {
             sum = sum + val;
         });
         this.setState({ total: sum });
+    }
+
+    handleConfirmOrder() {
+        // Create new order
+        // let url = 'http://127.0.0.1:5000/orders/';
+        // axios({
+        //     method: 'post',
+        //     url: url,
+        //     timeout: 1000,
+        //     header: {
+        //         "x-api-key": sessionStorage.getItem('AUTH_KEY'),
+        //     }
+        // })
+        // .then((response) => {
+        //     console.log(response);
+        // })
+        // .catch((error)=>{
+        //     console.log(error.response);
+        // });
+        // window.location.reload();
+
+        // Then dont forget to add menu items
+
+        //  Dont forget to check for empty cart
+
+        console.log('Order submitted');
     }
 
     render() {
@@ -90,7 +116,7 @@ export class Checkout extends React.Component {
                             <br></br>
                             <small className="text-muted">{val.notes}</small>
                             <br></br>
-                            <InputNumber onChange={value => this.handleQuantityChange(index, value)} focusOplaceholder="Quantity" min={1} defaultValue={val.quantity} />
+                            <InputNumber onChange={(value) => this.handleQuantityChange(index, value)} focusOplaceholder="Quantity" min={1} defaultValue={val.quantity} />
                             <div className="price" align="right">$ {val.price}</div>
                         </Card.Text>
                     </Card.Body>
@@ -104,9 +130,8 @@ export class Checkout extends React.Component {
                 {this.state.cartArray.length > 0 && entries}
                 {this.state.cartArray.length === 0 && 'Empty cart'}
                 <br></br>
-                <div className="price">Total: $ {this.state.total}</div>
-                <p align="center"><Button>Back to menu</Button></p>
-                <p align="center"><Button>Order now</Button></p>
+                Total: $ {this.state.total}
+                <p align="center"><Button onClick={this.handleConfirmOrder}>Order now</Button></p>
             </div>
         );
     }
