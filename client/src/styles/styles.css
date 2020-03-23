@@ -167,6 +167,19 @@ body {
     font-size: 20px !important;
 }
 
+.menu-item-dialog {
+    height: 100% !important;
+}
+
+.margin-center
+{
+    margin-left:5% !important;
+}
+
+.boldText {
+    font-weight : bold;
+}
+
 .small-button-row {
     margin-top: 20px;
     margin-bottom: 20px;

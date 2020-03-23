@@ -13,7 +13,7 @@ import { About } from 'components/About';
 import io from 'socket.io-client';
 
 export class Dashboard extends React.Component {
-    
+
     constructor(props) {
         super(props);
         this.state = {
@@ -36,50 +36,52 @@ export class Dashboard extends React.Component {
 
         this.socket = io.connect('http://127.0.0.1:5000/');
     }
-    
+
     handleSelect(event) {
         console.log(event);
-        if(event === 'logout') {
+        if (event === 'logout') {
             sessionStorage.clear();
             navigate('/login');
         }
     }
-    render () {
+
+    render() {
         const menuProps = {
             menuItemList: this.state.menuItemList
         }
-        
+
         return (
             <div>
                 <Nav className="justify-content-end" onSelect={this.handleSelect}>
                     <Nav.Item>
                         <Nav.Link eventKey="logout">
-                            <FontAwesomeIcon icon={faSignOutAlt} transform="grow-10" color="black"/>
+                            <FontAwesomeIcon icon={faSignOutAlt} transform="grow-10" color="black" />
                         </Nav.Link>
                     </Nav.Item>
-                    
+
                 </Nav>
                 <Tabs className="justify-content-center"
-                defaultActiveKey="about"
+                    defaultActiveKey="about"
                 >
                     <Tab eventKey="recommend" title="Recommend">
-                        <Recommend {...menuProps}/>
+                        <Recommend {...menuProps} />
                     </Tab>
                     <Tab eventKey="all" title="All">
-                        <Menu display="all" {...menuProps}/>
+                        <Menu cart={this.props.cart} updateCart={this.props.updateCart} display="all" {...menuProps} />
                     </Tab>
                     <Tab eventKey="about" title="About">
-                        <About/>
+                        <About />
                     </Tab>
-                    <Tab eventKey="checkout" title={<FontAwesomeIcon icon={faShoppingCart}/>}>
-                        <Checkout/>
+                    <Tab eventKey="checkout" title={<FontAwesomeIcon icon={faShoppingCart} />}>
+                        <Checkout cart={this.props.cart}
+                            updateCart={this.props.updateCart} />
                     </Tab>
-                    
+
                 </Tabs>
 
             </div>
-            
-            
+
+
         );
     }
 }

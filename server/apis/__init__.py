@@ -5,7 +5,6 @@ from apis.table import table
 from apis.about import about
 from apis.reservation import reservation
 from apis.auth import auth, authorizations
-
 # from .auth import api as auth_service
 # from .order import api as order_service
 
