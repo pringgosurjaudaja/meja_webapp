@@ -7,27 +7,36 @@ import InputNumber from 'rc-input-number';
 import 'rc-input-number/assets/index.css';
 
 export class Checkout extends React.Component {
-    constructor(props) {
-        super(props);
-        this.handleDeleteItem = this.handleDeleteItem.bind(this);
-        this.handleQuantityChange = this.handleQuantityChange.bind(this);
-        this.handleUpdateTotal = this.handleUpdateTotal.bind(this);
-        this.handleConfirmOrder = this.handleConfirmOrder.bind(this);
-        this.state = {
-            cartArray: this.props.cart,
-            total: 0
-        };
+    // constructor(props) {
+    //     super(props);
+    //     this.handleDeleteItem = this.handleDeleteItem.bind(this);
+    //     this.handleQuantityChange = this.handleQuantityChange.bind(this);
+    //     this.handleUpdateTotal = this.handleUpdateTotal.bind(this);
+    //     this.handleConfirmOrder = this.handleConfirmOrder.bind(this);
+    //     this.state = {
+    //         cartArray: this.props.cart,
+    //         total: 0
+    //     };
 
-    }
+    // }
 
-    componentDidMount() {
-        let cartArray = this.props.cart;
-        this.setState({ cartArray: cartArray });
-        this.handleUpdateTotal();
+    // componentDidMount() {
+    //     let cartArray = this.props.cart;
+    //     this.setState({ cartArray: cartArray });
+    //     this.handleUpdateTotal();
+    // }
+
+    getTotal() {
+        let total = 0;
+        this.props.cart.forEach(item => {
+            let cart_item = Object.values(item)[0];
+            total += cart_item.price * cart_item.quantity;
+        });
+        return total;
     }
 
     handleDeleteItem(index) {
-        let cartObj = this.state.cartArray;
+        let cartObj = this.props.cart;
         console.log('BEFORE');
         console.log(cartObj);
 
@@ -48,7 +57,7 @@ export class Checkout extends React.Component {
     handleQuantityChange(index, val) {
         console.log(index);
         console.log(val);
-        let cartObj = this.state.cartArray;
+        let cartObj = this.props.cart;
         console.log('BEFORE');
         console.log(cartObj);
 
@@ -69,7 +78,7 @@ export class Checkout extends React.Component {
 
     handleUpdateTotal() {
         let sum = 0;
-        this.state.cartArray.length > 0 && this.state.cartArray.forEach((item, index) => {
+        this.props.cart.length > 0 && this.props.cart.forEach((item, index) => {
             let i = Object.values(item)[0];
             let val = i.price * i.quantity;
             sum = sum + val;
@@ -104,14 +113,20 @@ export class Checkout extends React.Component {
     }
 
     render() {
+        const { cart } = this.props;
         let entries = [];
-        this.state.cartArray.length > 0 && this.state.cartArray.forEach((item, index) => {
+
+        cart.length > 0 && cart.forEach((item, index) => {
+            console.log(item);
             let val = Object.values(item)[0];
+            console.log(val);
             let entry = (
                 <Card key={Object.keys(item)[0]} {...this.props} style={{ width: '95%' }}>
                     <Card.Body>
                         <Card.Text>
-                            <div align="right"><FontAwesomeIcon onClick={() => this.handleDeleteItem(index)} icon={faTrash} /></div>
+                            <div align="right">
+                                <FontAwesomeIcon onClick={() => this.handleDeleteItem(index)} icon={faTrash} />
+                            </div>
                             {val.name}
                             <br></br>
                             <small className="text-muted">{val.notes}</small>
@@ -127,10 +142,10 @@ export class Checkout extends React.Component {
         return (
             <div className="margin-center">
                 <h1>Order</h1>
-                {this.state.cartArray.length > 0 && entries}
-                {this.state.cartArray.length === 0 && 'Empty cart'}
+                {this.props.cart.length > 0 && entries}
+                {this.props.cart.length === 0 && 'Empty cart'}
                 <br></br>
-                Total: $ {this.state.total}
+                Total: $ {this.getTotal()}
                 <p align="center"><Button onClick={this.handleConfirmOrder}>Order now</Button></p>
             </div>
         );
