@@ -17,13 +17,17 @@ export class Dashboard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            menuItemList: []
+            menuItemList: [],
+            cart: []
         }
         this.handleSelect = this.handleSelect.bind(this);
+        this.updateCart = this.updateCart.bind(this);
     }
 
     componentDidMount() {
-        console.log('Dashboard Mounted');
+        console.log('Mounting dashboard');
+        this.socket = io.connect('http://127.0.0.1:5000/');
+
         // Populate the menuItemList
         axios({
             method: 'get',
@@ -31,11 +35,24 @@ export class Dashboard extends React.Component {
             timeout: 1000,
         })
         .then((response) => {
-            this.setState({ menuItemList: response.data });
+            this.setState({
+                menuItemList: response.data 
+            });
+            console.log(this.state);
         });
 
-        this.socket = io.connect('http://127.0.0.1:5000/');
+        
     }
+
+    updateCart(newCart) {
+        console.log("CART BEFORE");
+        console.log(this.state.cart);
+        this.setState({
+            cart: newCart
+        });
+        console.log("CART UPDATED!!");
+        console.log(this.state.cart);
+      }
 
     handleSelect(event) {
         console.log(event);
@@ -58,8 +75,8 @@ export class Dashboard extends React.Component {
                             <FontAwesomeIcon icon={faSignOutAlt} transform="grow-10" color="black" />
                         </Nav.Link>
                     </Nav.Item>
-
                 </Nav>
+
                 <Tabs className="justify-content-center"
                     defaultActiveKey="about"
                 >
@@ -67,18 +84,16 @@ export class Dashboard extends React.Component {
                         <Recommend {...menuProps} />
                     </Tab>
                     <Tab eventKey="all" title="All">
-                        <Menu cart={this.props.cart} updateCart={this.props.updateCart} display="all" {...menuProps} />
+                        <Menu cart={this.state.cart} updateCart={this.updateCart} display="all" {...menuProps} />
                     </Tab>
                     <Tab eventKey="about" title="About">
                         <About />
                     </Tab>
                     <Tab eventKey="checkout" title={<FontAwesomeIcon icon={faShoppingCart} />}>
-                        <Checkout cart={this.props.cart}
-                            updateCart={this.props.updateCart} />
+                        <Checkout cart={this.state.cart}
+                            updateCart={this.updateCart} />
                     </Tab>
-
                 </Tabs>
-
             </div>
 
 
