@@ -1,97 +1,98 @@
 import React from 'react';
-import { Modal, Button, Card, Alert, InputGroup, FormControl } from 'react-bootstrap';
+import { Modal, Button, Card, Alert, InputGroup, FormControl, FormLabel } from 'react-bootstrap';
 import InputNumber from 'rc-input-number';
 import 'rc-input-number/assets/index.css';
 import 'styles/styles.css';
 import example from './assets/test.jpg';
+import { cartOps } from 'components/Dashboard';
 
 export class MenuItemDialog extends React.Component {
     constructor(props) {
         super(props);
-        this.handleAddToCart = this.handleAddToCart.bind(this);
-        this.handleQuantityChange = this.handleQuantityChange.bind(this);
-        this.handleNotesChange = this.handleNotesChange.bind(this);
+
         this.state = {
-            // keep array reference in variable whole time page is active
-            cart: [],
-            addCart: false,
+            addedToCart: false,
             quantity: 1,
             notes: ''
         }
     }
 
-    componentDidMount() {
-        let cartArray = this.props.cart;
-        this.setState({ cart: cartArray});
-    }
-
-    handleQuantityChange(val) {
+    handleQuantityChange = (val) => {
         this.setState({ quantity: val });
     }
 
-    handleNotesChange(e) {
+    handleNotesChange = (e) => {
         this.setState({ notes: e.target.value.toString() });
     }
 
-    handleAddToCart() {
-        var values = {
-            [this.props.id]: {
-                name: this.props.name,
-                price: this.props.price,
-                quantity: this.state.quantity,
-                notes: this.state.notes
-            }
-        };
-
-        // console.log(values);
-
-        var cartObj = this.state.cart;
-        console.log('Before');
-        console.log(cartObj);
-        cartObj.push(values);
-        console.log('Pushed');
-        console.log(cartObj);
-        this.props.updateCart(cartObj);
-        this.setState({ addCart: true });
-        console.log('ADDED ITEM');
-
+    handleAddToCart = () => {
+        const orderItem = {
+            menuItem: this.props.item,
+            quantity: this.state.quantity,
+            notes: this.state.notes
+        }
+        this.props.updateCart(orderItem, cartOps.ADD)
+        this.setState({ addedToCart: true });
     }
 
     render() {
+        const { item, show, onHide } = this.props;
+
         return (
             <div>
-                <Modal dialogClassName='menu-item-dialog' {...this.props}>
-                    <Modal.Header closeButton>
-                    </Modal.Header>
+                <Modal 
+                    dialogClassName='menu-item-dialog' 
+                    show={show} 
+                    onHide={onHide}
+                >
+                    <Modal.Header closeButton />
+
                     <Modal.Body>
                         <Card.Img variant="top" src={example} />
 
-                        <Modal.Title>{this.props.name}</Modal.Title>
-                        <p>{this.props.description}</p>
-
-                        Add notes
+                        {/* Title & Description */}
+                        <Modal.Title>{item.name}</Modal.Title>
+                        <p>{item.description}</p>
+                        
+                        {/* Notes for Menu Item */}
+                        <FormLabel>Add notes</FormLabel>
                         <InputGroup>
-                            <FormControl  onChange={this.handleNotesChange} as="textarea" aria-label="With textarea" />
+                            <FormControl 
+                                onChange={this.handleNotesChange} 
+                                as="textarea" 
+                                aria-label="With textarea" 
+                            />
                         </InputGroup>
 
-                        <InputNumber onChange={this.handleQuantityChange} focusOplaceholder="Quantity" min={1} defaultValue={1} />
-                        <p></p>
-                        <Button onClick={this.handleAddToCart} disabled={this.state.addCart} data-dismiss="modal" variant="primary">
+                        {/* Quantity of Menu Item */}
+                        <InputNumber 
+                            onChange={this.handleQuantityChange} 
+                            focusOplaceholder="Quantity" 
+                            min={1} 
+                            defaultValue={1} 
+                        />
+
+                        <Button 
+                            onClick={this.handleAddToCart} 
+                            disabled={this.state.addedToCart} 
+                            data-dismiss="modal" 
+                            variant="primary"
+                        >
                             Add to cart
                         </Button>
-                        {this.state.addCart &&
+
+                        {/* Successfully Added Alert */}
+                        {this.state.addedToCart &&
                             <Alert variant="success">
                                 Added to cart.
-                            </Alert>
-                        }
+                            </Alert>}
                     </Modal.Body>
-                    <Modal.Footer>
 
+                    <Modal.Footer>
                         <Button onClick={this.props.onHide} variant="secondary">
                             Close
-                    </Button>
+                        </Button>
                     </Modal.Footer>
-
                 </Modal>
             </div>
         )

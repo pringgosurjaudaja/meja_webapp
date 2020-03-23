@@ -6,54 +6,62 @@ import 'styles/styles.css';
 import { Recommend } from 'components/Recommend';
 import { Menu } from 'components/Menu';
 import { Checkout } from 'components/Checkout';
-import { axios } from 'utilities/helper';
 import { navigate } from "@reach/router";
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 import { About } from 'components/About';
 
-export class Dashboard extends React.Component {
+export const cartOps = {
+    ADD: 'add',
+    DELETE: 'delete',
+    UPDATE: 'update'
+}
 
+export class Dashboard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            menuItemList: [],
-            cart: []
+            session: {
+                table_id: '123',
+                user: 'Guest'
+            },
+            cart: new Map()
         }
-        this.handleSelect = this.handleSelect.bind(this);
-        this.updateCart = this.updateCart.bind(this);
     }
 
-    componentDidMount() {
-        console.log('Mounting dashboard');
-
-        // Populate the menuItemList
-        axios({
-            method: 'get',
-            url: 'http://127.0.0.1:5000/menu',
-            timeout: 1000,
-        })
-        .then((response) => {
-            this.setState({
-                menuItemList: response.data 
-            });
-            console.log(this.state);
-        });
-
+    updateCart = (orderItem, operation) => {
+        console.log('Updating Cart with order item:');
+        console.log(orderItem);
+        console.log(operation);
+        let oldCart = this.state.cart;
+        let newCart = new Map(oldCart);
         
-    }
+        switch(operation) {
+            case cartOps.ADD:
+                let cartItem = newCart.get(orderItem.menuItem._id);
+                if (cartItem) {
+                    // Item already in cart and can just update quantity
+                    cartItem.quantity += orderItem.quantity;
+                    newCart.set(orderItem.menuItem._id, cartItem);
+                } else {
+                    newCart.set(orderItem.menuItem._id, orderItem);
+                }
+                break;
 
-    updateCart(newCart) {
-        console.log("CART BEFORE");
-        console.log(this.state.cart);
+            case cartOps.DELETE:
+                newCart.delete(orderItem.menuItem._id);
+                break;
+
+            case cartOps.UPDATE:
+                newCart.set(orderItem.menuItem._id, orderItem)
+                break;
+        }
+
         this.setState({
             cart: newCart
         });
-        console.log("CART UPDATED!!");
-        console.log(this.state.cart);
-      }
+    }
 
-    handleSelect(event) {
-        console.log(event);
+    handleSelect = (event) => {
         if (event === 'logout') {
             sessionStorage.clear();
             navigate('/login');
@@ -61,16 +69,15 @@ export class Dashboard extends React.Component {
     }
 
     render() {
-        const menuProps = {
-            menuItemList: this.state.menuItemList
-        }
-
         return (
             <div>
                 <Nav className="justify-content-end" onSelect={this.handleSelect}>
                     <Nav.Item>
                         <Nav.Link eventKey="logout">
-                            <FontAwesomeIcon icon={faSignOutAlt} transform="grow-10" color="black" />
+                            <FontAwesomeIcon 
+                                icon={faSignOutAlt} 
+                                transform="grow-10" 
+                                color="black" />
                         </Nav.Link>
                     </Nav.Item>
                 </Nav>
@@ -78,11 +85,14 @@ export class Dashboard extends React.Component {
                 <Tabs className="justify-content-center"
                     defaultActiveKey="about"
                 >
-                    <Tab eventKey="recommend" title="Recommend">
-                        <Recommend {...menuProps} />
-                    </Tab>
+                    {/* <Tab eventKey="recommend" title="Recommend">
+                        <Recommend {...this.props} />
+                    </Tab> */}
                     <Tab eventKey="all" title="All">
-                        <Menu cart={this.state.cart} updateCart={this.updateCart} display="all" {...menuProps} />
+                        <Menu 
+                            updateCart={this.updateCart} 
+                            display="all"
+                        />
                     </Tab>
                     <Tab eventKey="about" title="About">
                         <About />

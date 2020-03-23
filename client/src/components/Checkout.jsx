@@ -3,6 +3,7 @@ import { Card } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
+import { cartOps } from 'components/Dashboard';
 import io from 'socket.io-client';
 import InputNumber from 'rc-input-number';
 import 'rc-input-number/assets/index.css';
@@ -23,61 +24,18 @@ export class Checkout extends React.Component {
     getTotal() {
         let total = 0;
         this.props.cart.forEach(item => {
-            let cart_item = Object.values(item)[0];
-            total += cart_item.price * cart_item.quantity;
+            total += item.menuItem.price * item.quantity;
         });
         return total;
     }
 
-    handleDeleteItem(index) {
-        let cartObj = this.props.cart;
-        console.log('BEFORE');
-        console.log(cartObj);
-
-        cartObj.forEach((item, i) => {
-            if (i === index) {
-                cartObj.splice(index, 1);
-            }
-        });
-
-        console.log('AFTER');
-        console.log(cartObj);
-        this.props.updateCart(cartObj);
-        this.setState({ cartArray: cartObj });
-        console.log('DELETED ITEM');
-        this.handleUpdateTotal();
+    handleDeleteItem = (orderItem) => {
+        this.props.updateCart(orderItem, cartOps.DELETE);
     }
 
-    handleQuantityChange(index, val) {
-        console.log(index);
-        console.log(val);
-        let cartObj = this.props.cart;
-        console.log('BEFORE');
-        console.log(cartObj);
-
-        cartObj.forEach((item, i) => {
-            if (i === index) {
-                Object.assign(Object.values(item)[0], { quantity: val })
-            }
-        });
-
-
-        console.log('AFTER');
-        console.log(cartObj);
-        this.props.updateCart(cartObj);
-        this.setState({ cartArray: cartObj });
-        console.log('ADDED ITEM');
-        this.handleUpdateTotal();
-    }
-
-    handleUpdateTotal() {
-        let sum = 0;
-        this.props.cart.length > 0 && this.props.cart.forEach((item, index) => {
-            let i = Object.values(item)[0];
-            let val = i.price * i.quantity;
-            sum = sum + val;
-        });
-        this.setState({ total: sum });
+    handleQuantityChange = (orderItem, newQuantity) => {
+        orderItem.quantity = newQuantity;
+        this.props.updateCart(orderItem, cartOps.UPDATE);
     }
 
     handleConfirmOrder() {
@@ -103,45 +61,50 @@ export class Checkout extends React.Component {
 
         //  Dont forget to check for empty cart
         console.log('Order submitted');
-        const order = {
-            // Insert session information here
-            order_id: '123',
-            cart: this.props.cart
-        }
-        this.socket.emit('new_order', order);
+        // const order = {
+        //     // Insert session information here
+        //     table_id:
+        //     user_name:
+        //     new_order:
+        // }
+
+        // this.socket.emit('new_order', order);
     }
 
     render() {
         const { cart } = this.props;
         let entries = [];
 
-        cart.length > 0 && cart.forEach((item, index) => {
+        cart.size > 0 && cart.forEach((item, i) => {
             console.log(item);
-            let val = Object.values(item)[0];
-            console.log(val);
-            let entry = (
-                <Card key={Object.keys(item)[0]} {...this.props} style={{ width: '95%' }}>
+            entries.push(
+                <Card key={i} style={{ width: '95%' }}>
                     <Card.Body>
-                        <Card.Text>
-                            <div align="right">
-                                <FontAwesomeIcon onClick={() => this.handleDeleteItem(index)} icon={faTrash} />
-                            </div>
-                            {val.name}
-                            <br></br>
-                            <small className="text-muted">{val.notes}</small>
-                            <br></br>
-                            <InputNumber onChange={(value) => this.handleQuantityChange(index, value)} focusOplaceholder="Quantity" min={1} defaultValue={val.quantity} />
-                            <div className="price" align="right">$ {val.price}</div>
-                        </Card.Text>
+                        <div align="right">
+                            <FontAwesomeIcon 
+                                icon={faTrash} 
+                                onClick={() => this.handleDeleteItem(item)} 
+                            />
+                        </div>
+                        <Card.Title>{item.menuItem.name}</Card.Title>
+                        <Card.Subtitle>$ {item.menuItem.price}</Card.Subtitle>
+                        <Card.Text>{item.notes}</Card.Text>
+                        <br></br>
+                        <InputNumber 
+                            onChange={(value) => this.handleQuantityChange(item, value)} 
+                            focusOplaceholder="Quantity" 
+                            min={1} 
+                            defaultValue={item.quantity} 
+                        />
                     </Card.Body>
                 </Card>
             );
-            entries.push(entry);
         });
+
         return (
             <div className="margin-center">
                 <h1>Order</h1>
-                {this.props.cart.length > 0 ? entries : 'Empty Cart'}
+                {entries.length > 0 ? entries : 'Empty Cart'}
                 <br />
 
                 <p>Total: $ {this.getTotal()}</p>
