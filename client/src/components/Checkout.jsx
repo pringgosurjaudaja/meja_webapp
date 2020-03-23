@@ -3,28 +3,22 @@ import { Card } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
+import io from 'socket.io-client';
 import InputNumber from 'rc-input-number';
 import 'rc-input-number/assets/index.css';
 
 export class Checkout extends React.Component {
-    // constructor(props) {
-    //     super(props);
-    //     this.handleDeleteItem = this.handleDeleteItem.bind(this);
-    //     this.handleQuantityChange = this.handleQuantityChange.bind(this);
-    //     this.handleUpdateTotal = this.handleUpdateTotal.bind(this);
-    //     this.handleConfirmOrder = this.handleConfirmOrder.bind(this);
-    //     this.state = {
-    //         cartArray: this.props.cart,
-    //         total: 0
-    //     };
+    constructor(props) {
+        super(props);
+        this.socket = io.connect('http://127.0.0.1:5000/customer');
+    }
 
-    // }
-
-    // componentDidMount() {
-    //     let cartArray = this.props.cart;
-    //     this.setState({ cartArray: cartArray });
-    //     this.handleUpdateTotal();
-    // }
+    componentDidMount() {
+        this.socket.on('orderReceived', (data) => {
+            console.log('Received your order!');
+            console.log(data);
+        });
+    }
 
     getTotal() {
         let total = 0;
@@ -108,8 +102,13 @@ export class Checkout extends React.Component {
         // Then dont forget to add menu items
 
         //  Dont forget to check for empty cart
-
         console.log('Order submitted');
+        const order = {
+            // Insert session information here
+            order_id: '123',
+            cart: this.props.cart
+        }
+        this.socket.emit('new_order', order);
     }
 
     render() {
@@ -142,11 +141,14 @@ export class Checkout extends React.Component {
         return (
             <div className="margin-center">
                 <h1>Order</h1>
-                {this.props.cart.length > 0 && entries}
-                {this.props.cart.length === 0 && 'Empty cart'}
-                <br></br>
-                Total: $ {this.getTotal()}
-                <p align="center"><Button onClick={this.handleConfirmOrder}>Order now</Button></p>
+                {this.props.cart.length > 0 ? entries : 'Empty Cart'}
+                <br />
+
+                <p>Total: $ {this.getTotal()}</p>
+
+                <Button align='center' onClick={() => this.handleConfirmOrder()}>
+                    Order Now
+                </Button>
             </div>
         );
     }

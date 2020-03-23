@@ -9,6 +9,7 @@ EVENT-NAMING CONVENTIONS:
 class CustomerNamespace(Namespace):
     def on_new_order(self, data):
         '''Inform admin-clients of the customer's order.'''
+        print(data)
         room = data['order_id']
         join_room(room)
         emit('new_order', data, namespace='/admin')
