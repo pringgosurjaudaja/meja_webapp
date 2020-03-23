@@ -12,6 +12,7 @@ class CustomerNamespace(Namespace):
         print(data)
         room = data['order_id']
         join_room(room)
+        print('Hello world')
         emit('new_order', data, namespace='/admin')
     
     def on_complete_order(self, data):

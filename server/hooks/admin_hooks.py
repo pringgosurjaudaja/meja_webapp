@@ -8,6 +8,7 @@ EVENT-NAMING CONVENTIONS:
 
 class AdminNamespace(Namespace):
     def on_new_order(self, data):
+        print('HELLO WORLLDLDD')
         room = data['order_id']
         print('Received customer order')
         # Inform order room that order has been received
