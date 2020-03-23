@@ -10,6 +10,7 @@ import { axios } from 'utilities/helper';
 import { navigate } from "@reach/router";
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 import { About } from 'components/About';
+import io from 'socket.io-client';
 
 export class Dashboard extends React.Component {
     
@@ -22,6 +23,7 @@ export class Dashboard extends React.Component {
     }
 
     componentDidMount() {
+        console.log('Dashboard Mounted');
         // Populate the menuItemList
         axios({
             method: 'get',
@@ -31,6 +33,8 @@ export class Dashboard extends React.Component {
         .then((response) => {
             this.setState({ menuItemList: response.data });
         });
+
+        this.socket = io.connect('http://127.0.0.1:5000/');
     }
     
     handleSelect(event) {
