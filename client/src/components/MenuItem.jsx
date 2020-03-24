@@ -4,30 +4,43 @@ import { Card } from 'react-bootstrap';
 import example from './assets/test.jpg';
 
 export class MenuItem extends React.Component {
-    
     constructor(props) {
         super(props);
-        this.handleMenuClick = this.handleMenuClick.bind(this);
+        this.state = { showDialog: false };
     }
-    
-    handleMenuClick() {
 
+    handleMenuClick = () => {
+        this.setState({ showDialog: true });
+    }
+
+    handleClose = () => {
+        this.setState({ showDialog: false });
     }
 
     render() {
-        
+        const { item } = this.props;
+
         return (
-            <Card className="menu-item" onClick={this.handleMenuClick}>
-                <Card.Img className="menu-item--photo" variant="top" src={example}/>
-                <Card.Body>
-                    <Card.Title className="menu-item--title">{ this.props.name }</Card.Title>
-                    <Card.Text className="menu-item--text">
-                        { this.props.description }
-                    </Card.Text>
-                </Card.Body>
+            <div>
+                <Card className="menu-item" onClick={this.handleMenuClick}>
+                    <Card.Img className="menu-item--photo" variant="top" src={example} />
+                    <Card.Body>
+                        <Card.Title className="menu-item--title">{item.name}</Card.Title>
+                        <Card.Text className="menu-item--text">
+                            {item.description}
+                        </Card.Text>
+                    </Card.Body>
+
+                </Card>
                 {/* Insert menu item props here */}
-                <MenuItemDialog />
-            </Card>
+                <MenuItemDialog 
+                    item={item} 
+                    updateCart={this.props.updateCart} 
+                    show={this.state.showDialog} 
+                    onHide={this.handleClose} 
+                />
+            </div>
+
         )
     }
 }
