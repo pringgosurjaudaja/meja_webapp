@@ -16,8 +16,7 @@ export class Menu extends React.Component {
         // Get menu items from the backend
         axios({
             method: 'get',
-            url: 'http://127.0.0.1:5000/menu',
-            timeout: 1000,
+            url: 'http://127.0.0.1:5000/menu'
         })
         .then((response) => {
             this.setState({
