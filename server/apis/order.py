@@ -45,6 +45,12 @@ MODEL_order_item = order.model('Order Item', {
 MODEL_order_receipt = order.model('Order Receipt',{
 
 })
+MODEL_session = order.model('Session', {
+    'table_id' : fields.String(),
+    'user' : fields.String(),
+    'orderList' : fields.List(fields.Nested(OrderSchema), missing = []),
+    'datetime_visit' : fields.DateTime(format= '%d-%m-%YT%H:%M:%S')
+})
 
 @order.route('/<string:session_id>')
 class OrderManage(Resource):
@@ -91,37 +97,47 @@ class Order(Resource):
 @order.route('/<string:session_id>')
 class OrderItem(Resource):
     @order.doc(description='Putting menu item in the order')
-    @order.expect(MODEL_order_item)
+    @order.expect(MODEL_session)
     def post(self, session_id):
-        schema = OrderItemSchema()
+        schema = SessionSchema()
         try:
+            session_item = schema.load(request.data)
+            operation = session_db.insert_one(schema.dump(session_item))
+            return{'inserted': str(operation.inserted_id)},status.HTTP_201_CREATED
+        except ValidationError as err:
+            print(err)
+            return{
+                'result': 'Missing required fields'
+            }, status.HTTP_400_BAD_REQUEST
+        # schema = OrderItemSchema()
+        # try:
        
         
-            order_item = schema.load(request.data)
-            menu_item_id = order_item['menu_item_id']
+        #     order_item = schema.load(request.data)
+        #     menu_item_id = order_item['menu_item_id']
 
-            menu_item_queried = menu_db.aggregate([
-                {'$unwind': '$menu_items'},
-                {'$match':{"menu_items._id": menu_item_id}},
+        #     menu_item_queried = menu_db.aggregate([
+        #         {'$unwind': '$menu_items'},
+        #         {'$match':{"menu_items._id": menu_item_id}},
                 
-                {'$project': {'_id':"$menu_items._id",
-                            'name': '$menu_items.name',
-                            'price': '$menu_items.price'
-                }}
-        ])
-            menu_item = menu_item_queried.next()
+        #         {'$project': {'_id':"$menu_items._id",
+        #                     'name': '$menu_items.name',
+        #                     'price': '$menu_items.price'
+        #         }}
+        # ])
+        #     menu_item = menu_item_queried.next()
             
-            # print(order_item['menu_item_id'])
-            order_item['menu_item_name'] = menu_item['name']
-            order_item['menu_item_price']= menu_item['price']
-            # order_db.update_one({'_id': ObjectId(order_id)},
-            #     {"$push":{'orderItems':schema.dump(order_item)}})
-            session_db.update_one({'_id': ObjectId(session_id),'orderList._id': order_item['order_id']},{'$push':{'orderList.$.orderItems': schema.dump(order_item)}})
-            return order_item, status.HTTP_201_CREATED
+        #     # print(order_item['menu_item_id'])
+        #     order_item['menu_item_name'] = menu_item['name']
+        #     order_item['menu_item_price']= menu_item['price']
+        #     # order_db.update_one({'_id': ObjectId(order_id)},
+        #     #     {"$push":{'orderItems':schema.dump(order_item)}})
+        #     session_db.update_one({'_id': ObjectId(session_id),'orderList._id': order_item['order_id']},{'$push':{'orderList.$.orderItems': schema.dump(order_item)}})
+        #     return order_item, status.HTTP_201_CREATED
        
-        except ValidationError as error:
-            print(error)
-            return{'result': 'Missing fields'}, status.HTTP_400_BAD_REQUEST
+        # except ValidationError as error:
+        #     print(error)
+        #     return{'result': 'Missing fields'}, status.HTTP_400_BAD_REQUEST
 
 
 @order.route('/receipt')
