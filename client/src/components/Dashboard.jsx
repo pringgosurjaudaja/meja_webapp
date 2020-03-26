@@ -24,6 +24,13 @@ const tabs = {
     CHECKOUT: 'checkout'
 }
 
+export const orderStatus = {
+    ORDERED: 'Ordered',
+    PROGRESS: 'In Progress',
+    COMPLETED: 'Completed',
+    CANCELLED: 'Cancelled'
+}
+
 export class Dashboard extends React.Component {
     constructor(props) {
         super(props);
@@ -64,7 +71,10 @@ export class Dashboard extends React.Component {
     }
 
     handleOrderCart = () => {
-        const order = [...this.state.cart.values()];
+        const order = {
+            orderItems: [...this.state.cart.values()],
+            status: orderStatus.ORDERED
+        };
         let newOrderList = [...this.state.orderList];
         newOrderList.push(order);
 
@@ -79,6 +89,8 @@ export class Dashboard extends React.Component {
     handleCloseOrder = () => {
         console.log('Closing Order and Paying');
         console.log(this.state.orderList);
+
+        // Send entire session info to the backend to be stored in db
     }
 
     render() {
