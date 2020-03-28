@@ -10,6 +10,7 @@ import { navigate } from "@reach/router";
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 import { About } from 'components/About';
 import { Orders } from 'components/Orders';
+import { axios } from 'utilities/helper';
 import io from 'socket.io-client';
 
 export const cartOps = {
@@ -45,6 +46,10 @@ export class Dashboard extends React.Component {
         this.socket = io.connect('http://127.0.0.1:5000/')
     }
 
+    itemInCart = (menuItem) => {
+        return this.state.cart.has(menuItem._id);
+    }
+
     updateCart = (orderItem, operation) => {
         console.log('Updating Cart with order item:');
         console.log(orderItem);
@@ -54,11 +59,11 @@ export class Dashboard extends React.Component {
         
         switch(operation) {
             case cartOps.ADD || cartOps.UPDATE:
-                newCart.set(orderItem.menuItem._id, orderItem);
+                newCart.set(orderItem.menu_item._id, orderItem);
                 break;
 
             case cartOps.DELETE:
-                newCart.delete(orderItem.menuItem._id);
+                newCart.delete(orderItem.menu_item._id);
                 break;
         }
 
@@ -72,13 +77,25 @@ export class Dashboard extends React.Component {
         }
     }
 
-    handleOrderCart = () => {
+    handleOrderCart = async () => {
         const order = {
-            orderItems: [...this.state.cart.values()],
+            order_items: [...this.state.cart.values()],
             status: orderStatus.ORDERED
         };
         let newOrderList = [...this.state.orderList];
         newOrderList.push(order);
+
+        // Send order to be stored in database
+        await axios({
+            method: 'post',
+            url: 'http://127.0.0.1:5000/order',
+            data: {
+                table_id: '123',
+                ...order
+            }
+        }).catch(err => {
+            console.error(err);
+        });
 
         // Add order to order list, empty cart and navigate to order list
         this.setState({ 
@@ -86,8 +103,6 @@ export class Dashboard extends React.Component {
             cart: new Map(),
             activeTab: tabs.ORDERS
         });
-
-        this.updateRestaurantStaff(order);
     }
 
     handleCloseOrder = () => {
@@ -95,16 +110,7 @@ export class Dashboard extends React.Component {
         console.log(this.state.orderList);
 
         // Send entire session info to the backend to be stored in db
-    }
-
-    updateRestaurantStaff = (order) => {
-        const customer_order = {
-            table: '123',
-            customer_name: 'Test Name',
-            order: order
-        }
-        this.socket.emit('customer_order', customer_order);
-    }
+    }    
 
     render() {
         return (
@@ -128,21 +134,25 @@ export class Dashboard extends React.Component {
                     {/* <Tab eventKey="recommend" title="Recommend">
                         <Recommend {...this.props} />
                     </Tab> */}
+                    <Tab eventKey={tabs.ABOUT} title="About">
+                        <About />
+                    </Tab>
+
                     <Tab eventKey={tabs.ALL} title="All">
                         <Menu 
+                            itemInCart={this.itemInCart}
                             updateCart={this.updateCart} 
                             display="all"
                         />
                     </Tab>
-                    <Tab eventKey={tabs.ABOUT} title="About">
-                        <About />
-                    </Tab>
+                    
                     <Tab eventKey={tabs.ORDERS} title={"Orders"}>
                         <Orders 
                             orderList={this.state.orderList}
                             handleCloseOrder={this.handleCloseOrder}
                         />
                     </Tab>
+                    
                     <Tab eventKey={tabs.CHECKOUT} title={<FontAwesomeIcon icon={faShoppingCart} />}>
                         <Checkout 
                             cart={this.state.cart}

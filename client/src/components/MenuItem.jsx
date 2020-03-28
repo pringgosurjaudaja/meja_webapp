@@ -35,6 +35,7 @@ export class MenuItem extends React.Component {
                 {/* Insert menu item props here */}
                 <MenuItemDialog 
                     item={item} 
+                    itemInCart={this.props.itemInCart}
                     updateCart={this.props.updateCart}
                     handleClose={this.handleClose}
                     show={this.state.showDialog} 

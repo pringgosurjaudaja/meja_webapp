@@ -9,8 +9,8 @@ export class Orders extends React.Component {
 
     getTotal = (order) => {
         let total = 0;
-        order.orderItems.forEach(orderItem => {
-            total += orderItem.quantity * orderItem.menuItem.price;
+        order.order_items.forEach(orderItem => {
+            total += orderItem.quantity * orderItem.menu_item.price;
         });
         return total;
     }
@@ -56,18 +56,18 @@ export class Orders extends React.Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {order.orderItems.map((orderItem, j) => {
+                        {order.order_items.map((orderItem, j) => {
                             return (<tr key={j}>
                                 <th>{orderItem.quantity}</th>
                                 <th>
                                     <Card.Title>
-                                        {orderItem.menuItem.name}
+                                        {orderItem.menu_item.name}
                                     </Card.Title>
                                     <Card.Text>
                                         {orderItem.notes}
                                     </Card.Text>
                                 </th>
-                                <th>${orderItem.menuItem.price}</th>
+                                <th>${orderItem.menu_item.price}</th>
                             </tr>)
                         })}
                     </tbody>

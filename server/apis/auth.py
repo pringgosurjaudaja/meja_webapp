@@ -5,7 +5,7 @@ from flask_restplus import Namespace, Resource, fields, marshal_with, reqparse
 from bson.objectid import ObjectId
 import json
 from apis.auth_schema import Auth, AuthSchema
-from apis.order_schema import SessionSchema
+from apis.session_schema import SessionSchema
 from apis.table_schema import TableSchema
 from marshmallow import ValidationError
 from werkzeug.security import generate_password_hash, check_password_hash
