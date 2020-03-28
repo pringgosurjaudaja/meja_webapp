@@ -30,8 +30,9 @@ export class MenuItemDialog extends React.Component {
             menuItem: this.props.item,
             quantity: this.state.quantity,
             notes: this.state.notes
-        }
-        this.props.updateCart(orderItem, cartOps.ADD)
+        };
+        this.props.updateCart(orderItem, cartOps.ADD);
+        this.props.handleClose();
         this.setState({ addedToCart: true });
     }
 

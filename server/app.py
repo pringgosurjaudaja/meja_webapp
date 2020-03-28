@@ -28,10 +28,10 @@ class CustomerNamespace(Namespace):
         socketio.emit('complete_order', data, namespace='/admin')
 
 @socketio.on('customer_order')
-def on_customer_order(self, data):
-    print('HELLO WORLLDLDD')
-    room = data['order_id']
+def on_customer_order(data):
+    room = data['table_id']
     print('Received customer order')
+    print()
     # Inform order room that order has been received
     emit('orderReceived', data, room=room)
 

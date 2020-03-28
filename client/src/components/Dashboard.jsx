@@ -10,6 +10,7 @@ import { navigate } from "@reach/router";
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 import { About } from 'components/About';
 import { Orders } from 'components/Orders';
+import io from 'socket.io-client';
 
 export const cartOps = {
     ADD: 'add',
@@ -40,7 +41,8 @@ export class Dashboard extends React.Component {
             user: 'Guest',
             orderList: [],
             cart: new Map()
-        }
+        };
+        this.socket = io.connect('http://127.0.0.1:5000/')
     }
 
     updateCart = (orderItem, operation) => {
@@ -84,6 +86,8 @@ export class Dashboard extends React.Component {
             cart: new Map(),
             activeTab: tabs.ORDERS
         });
+
+        this.updateRestaurantStaff(order);
     }
 
     handleCloseOrder = () => {
@@ -91,6 +95,15 @@ export class Dashboard extends React.Component {
         console.log(this.state.orderList);
 
         // Send entire session info to the backend to be stored in db
+    }
+
+    updateRestaurantStaff = (order) => {
+        const customer_order = {
+            table: '123',
+            customer_name: 'Test Name',
+            order: order
+        }
+        this.socket.emit('customer_order', customer_order);
     }
 
     render() {
