@@ -1,10 +1,10 @@
 import React from 'react';
 import { Router } from "@reach/router";
-import { Home }  from 'components/Home';
-import { Login } from 'components/Login';
-import { Register } from 'components/Register';
-import { Dashboard } from 'components/Dashboard';
-import { Reservation } from 'components/Reservation';
+import { Home }  from 'src/components/Home';
+import { Login } from 'src/components/Login';
+import { Register } from 'src/components/Register';
+import { Dashboard } from 'src/components/Dashboard';
+import { Reservation } from 'src/components/Reservation';
 
 class App extends React.Component {  
   render() {
@@ -14,7 +14,6 @@ class App extends React.Component {
         <Login path="/login" />
         <Register path="/register" />      
         <Dashboard path="/dashboard" />
-        <Reservation path="/reservation" />
       </Router>
     )
   }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import { MenuItem } from 'components/MenuItem';
+import { MenuItem } from 'src/components/MenuItem';
 export class Recommend extends React.Component {
     constructor(props) {
         super(props);

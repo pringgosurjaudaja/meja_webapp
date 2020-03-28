@@ -7,11 +7,13 @@ import {
     Col,
     Container,
     Alert,
+    Card,
 } from 'react-bootstrap';
-import { axios, _ } from 'utilities/helper';
+import { axios, _ } from 'src/utilities/helper';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
+import StarRatings from 'node_modules/react-star-ratings';
 
 export class About extends React.Component {
     
@@ -21,10 +23,57 @@ export class About extends React.Component {
             phone: '',
             message: '',
             showNotif: false,
+            zomato: [],
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.showNotification = this.showNotification.bind(this);
+    }
+
+    componentDidMount() {
+        let rows = [];
+        axios({
+            method: 'get',
+            url: 'http://127.0.0.1:5000/about/reviews',
+            timeout: 1000,
+        })
+        .then((response)=> {
+            response.data.forEach((item, index)=> {
+                
+                const row = (
+                    <Row key={index}>
+                        <Col>
+                        <Card style={{ width: '100%' }}>
+                            <Card.Body>
+                                <Card.Title>{item.review.user.name}</Card.Title>
+                                <Card.Subtitle>{item.review.review_time_friendly}</Card.Subtitle>
+                                <Card.Text>
+                                 {item.review.review_text}
+                                </Card.Text>
+                                <StarRatings
+                                    rating={item.review.rating}
+                                    starRatedColor="yellow"
+                                    starDimension="25px"
+                                    changeRating={this.changeRating}
+                                    numberOfStars={5}
+                                    name='rating'
+                                    />
+                            </Card.Body>
+                            </Card>
+                        </Col>
+                    </Row>
+                );
+
+                rows.push(row);
+                
+            })
+        })
+        .then(()=>{
+            this.setState({ zomato: rows });
+        })
+        .catch((error)=>{
+            console.log(error);
+        })
     }
     
     handleChange(event) {
@@ -67,10 +116,11 @@ export class About extends React.Component {
     }
 
     render() {
-
         const phone = _.get(this.state, "phone", '0000000000');
         const message = encodeURI(_.get(this.state, "message", ''));
         const url = 'https://api.whatsapp.com/send?phone='+phone+'&text='+encodeURI(message);
+
+        // const starRatings = require('node_modules/react-star-ratings');
         return (
             <Container className="layout--padding--menu">
                 <Row>
@@ -127,7 +177,31 @@ export class About extends React.Component {
                         </Form>
                     </Col>
                 </Row>
-                
+                <Row className="zomato-review--title">
+                    <Col> <h3><img className="br3" src="https://b.zmtcdn.com/images/logo/zomato_flat_bg_logo.svg" alt="Find the best restaurants, cafés, and bars in Sydney" width="60px"/> Zomato Reviews</h3></Col>
+                </Row>
+                {/* <Row>
+                    <Col>
+                      <Card style={{ width: '100%' }}>
+                        <Card.Body>
+                            <Card.Title>Card Title</Card.Title>
+                            <Card.Subtitle>Date</Card.Subtitle>
+                            <Card.Text>
+                            Some quick example text to build on the card title and make up the bulk of
+                            the card's content.
+                            </Card.Text>
+                            <StarRatings
+                                rating={4}
+                                starRatedColor="yellow"
+                                changeRating={this.changeRating}
+                                numberOfStars={5}
+                                name='rating'
+                                />
+                        </Card.Body>
+                        </Card>
+                    </Col>
+                </Row> */}
+                {this.state.zomato}
             </Container>
         );
     }
