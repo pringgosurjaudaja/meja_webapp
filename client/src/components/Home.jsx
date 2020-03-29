@@ -64,7 +64,7 @@ export class Home extends React.Component {
                         <hr className="divider"/>
                     </Col>
 
-                    <Col style={{ textAlign: "center", fontSize: "40px", marginBottom: "25px" }} xs={2} md={2}>
+                    <Col style={{ textAlign: "center", fontSize: "14px", marginBottom: "25px" }} xs={2} md={2}>
                         OR
                     </Col>
 
