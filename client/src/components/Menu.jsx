@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Row, Col, Tabs, Tab } from 'react-bootstrap';
-import { MenuItem } from 'components/MenuItem';
-import { axios } from 'utilities/helper';
+import { MenuItem } from 'src/components/MenuItem';
+import { axios } from 'src/utilities/helper';
 
 export class Menu extends React.Component {
     constructor(props) {

@@ -161,16 +161,18 @@ body {
     /* position: relative; */
     border-top-left-radius: 30px !important;
     border-top-right-radius: 30px !important;
-    height: 550px !important;
+    height: 375px !important;
 }
 
 .menu-item--title {
     font-weight: bold !important;
-    font-size: 28px !important;
+    font-size: 20px !important;
+    margin-bottom: 0px !important;
 }
 
 .menu-item--text {
-    font-size: 20px !important;
+    font-size: 18px !important;
+    margin-bottom: 10px !important;
 }
 
 .menu-item-dialog {
@@ -218,6 +220,11 @@ body {
   }
   
   .alert-hidden {
+    display: none;
     opacity: 0;
     transition: all 250ms linear;
   }
+
+.zomato-review--title {
+    margin-top: 5%;
+}

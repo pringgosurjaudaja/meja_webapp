@@ -1,9 +1,8 @@
 import React from 'react';
 import { Button, Container, Row, Col } from 'react-bootstrap';
 import { navigate } from "@reach/router"
-import 'styles/styles.css';
-import logo from "components/assets/logo.png";
-import { LoginDialog } from './LoginDialog';
+import 'src/styles/styles.css';
+import logo from "src/components/assets/logo.png";
 export class Home extends React.Component {
 
     constructor(props) {
@@ -84,7 +83,7 @@ export class Home extends React.Component {
                     <Col xs={3} md={3}></Col>
                 </Row>
 
-                <Row className="l-home__row">
+                {/* <Row className="l-home__row">
                     <Col xs={3} md={3}></Col>
                     <Col xs={6} md={6}>
                     <Button variant="secondary" 
@@ -95,7 +94,7 @@ export class Home extends React.Component {
                     </Col>
                     <Col xs={3} md={3}></Col>
                 </Row>
-                <LoginDialog show={this.state.showLoginDialog} onHide={()=>this.setState({ showLoginDialog:false })}/>
+                <LoginDialog show={this.state.showLoginDialog} onHide={()=>this.setState({ showLoginDialog:false })}/> */}
             </Container>
             
         );

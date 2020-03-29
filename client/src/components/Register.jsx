@@ -6,8 +6,8 @@ import {
     Form,
 } from 'react-bootstrap';
 import { navigate } from "@reach/router";
-import 'styles/styles.css';
-import { axios } from 'utilities/helper';
+import 'src/styles/styles.css';
+import { axios } from 'src/utilities/helper';
 
 export class Register extends React.Component {
     constructor(props) {

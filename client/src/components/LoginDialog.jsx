@@ -7,8 +7,8 @@ import {
     Modal,
 } from 'react-bootstrap';
 import { navigate } from "@reach/router";
-import 'styles/styles.css';
-import { axios } from 'utilities/helper';
+import 'src/styles/styles.css';
+import { axios } from 'src/utilities/helper';
 
 export class LoginDialog extends React.Component {
     constructor(props) {
@@ -45,7 +45,7 @@ export class LoginDialog extends React.Component {
                 sessionStorage.setItem('session_id', response.data.session_id);
                 sessionStorage.setItem('table_id', response.data.table_id);
                 sessionStorage.setItem('email', email);
-                navigate('/reservation');
+                window.location.reload();
             }).catch(function(error) {
                 console.log(error);
                 alert('Invalid input');
