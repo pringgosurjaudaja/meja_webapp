@@ -8745,6 +8745,11 @@ react-star-ratings@^2.3.0:
     prop-types "^15.6.0"
     react "^16.1.0"
 
+react-sticky-nav@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/react-sticky-nav/-/react-sticky-nav-4.0.3.tgz#57f3427ab455cdbe07d32dd16734ce41936ed4a9"
+  integrity sha512-C9N5Xh42Aim19QHm+aEicDZ7GBONlJiRlu0d0RIgsHAZO1L9+zHCtIsrp5P2VUJo8EKBbNE1S159s8cOusoNYw==
+
 react-transition-group@^4.0.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-4.3.0.tgz#fea832e386cf8796c58b61874a3319704f5ce683"

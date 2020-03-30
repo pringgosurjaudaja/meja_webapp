@@ -49,7 +49,7 @@ export class MenuItemDialog extends React.Component {
 
                     <Modal.Body>
                         <Card.Img variant="top" src={example} />
-
+                        
                         {/* Title & Description */}
                         <Modal.Title>{item.name}</Modal.Title>
                         <p>{item.description}</p>
@@ -71,7 +71,7 @@ export class MenuItemDialog extends React.Component {
                             min={1} 
                             defaultValue={1} 
                         />
-
+                        <br></br>
                         <Button 
                             onClick={this.handleAddToCart} 
                             disabled={this.state.addedToCart} 
