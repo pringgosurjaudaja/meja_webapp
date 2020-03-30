@@ -38,14 +38,40 @@ export class Dashboard extends React.Component {
         super(props);
         this.state = {
             activeTab: tabs.ABOUT,
-            tableId: '123',
             user: 'Guest',
             orderList: [],
             cart: new Map()
         };
-        this.socket = io.connect('http://127.0.0.1:5000/')
+        this.socket = io.connect('http://127.0.0.1:5000/');
+        this.setupSockets();
     }
 
+    setupSockets = () => {
+        this.socket.on('updateOrders', async (order) => {
+            // Update the status of the order that has been changed
+            try {
+                const request = await axios({
+                    method: 'get',
+                    url: 'http://127.0.0.1:5000/order/' + order._id
+                });
+                const updatedOrder = request.data;
+                const newOrderList = [...this.state.orderList];
+                for (let i = 0; i < newOrderList.length; i++) {
+                    if (newOrderList[i]._id === order._id) {
+                        newOrderList[i] = updatedOrder;
+                        break;
+                    }
+                }
+                this.setState({
+                    orderList: newOrderList
+                });
+            } catch(err) {
+                console.error(err);
+            }
+        });
+    }
+
+    // #region Cart Operations
     itemInCart = (menuItem) => {
         return this.state.cart.has(menuItem._id);
     }
@@ -69,7 +95,9 @@ export class Dashboard extends React.Component {
 
         this.setState({ cart: newCart });
     }
+    // #endregion
 
+    // #region Event Handlers
     handleSelect = (event) => {
         if (event === 'logout') {
             sessionStorage.clear();
@@ -79,30 +107,39 @@ export class Dashboard extends React.Component {
 
     handleOrderCart = async () => {
         const order = {
+            session_id: '123',
+            table_id: '123',
             order_items: [...this.state.cart.values()],
             status: orderStatus.ORDERED
-        };
-        let newOrderList = [...this.state.orderList];
-        newOrderList.push(order);
+        }
 
         // Send order to be stored in database
-        await axios({
-            method: 'post',
-            url: 'http://127.0.0.1:5000/order',
-            data: {
-                table_id: '123',
-                ...order
-            }
-        }).catch(err => {
-            console.error(err);
-        });
+        try {
+            const request = await axios({
+                method: 'post',
+                url: 'http://127.0.0.1:5000/order',
+                data: order
+            });
 
-        // Add order to order list, empty cart and navigate to order list
-        this.setState({ 
-            orderList: newOrderList, 
-            cart: new Map(),
-            activeTab: tabs.ORDERS
-        });
+            // Add given generated order id
+            order['_id'] = request.data.inserted;
+
+            // Add order to order list, empty cart and navigate to order list
+            let newOrderList = [...this.state.orderList];
+            newOrderList.push(order);
+
+            this.setState({ 
+                orderList: newOrderList, 
+                cart: new Map(),
+                activeTab: tabs.ORDERS
+            });
+
+            // Inform staff of new customer order
+            this.socket.emit('customer_order', order);
+
+        } catch(err) {
+            console.error(err);
+        }
     }
 
     handleCloseOrder = () => {
@@ -110,7 +147,8 @@ export class Dashboard extends React.Component {
         console.log(this.state.orderList);
 
         // Send entire session info to the backend to be stored in db
-    }    
+    }
+    // #endregion
 
     render() {
         return (
@@ -138,7 +176,7 @@ export class Dashboard extends React.Component {
                         <About />
                     </Tab>
 
-                    <Tab eventKey={tabs.ALL} title="All">
+                    <Tab eventKey={tabs.ALL} title="Menu">
                         <Menu 
                             itemInCart={this.itemInCart}
                             updateCart={this.updateCart} 

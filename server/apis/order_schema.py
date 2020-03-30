@@ -8,6 +8,7 @@ class OrderItemSchema(Schema):
     notes = fields.String(missing='')
 
 class OrderSchema(Schema):
+    session_id = fields.String(required=True)
     table_id = fields.String(required=True)
     status = fields.String(required=True)
     timestamp = fields.DateTime(default=dt.datetime.now())

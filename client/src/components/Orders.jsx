@@ -22,9 +22,12 @@ export class Orders extends React.Component {
                     .reduce((a, b) => a + b, 0);
     }
 
-    orderStatusIndicator = (order) => {
-        let variant = 'outline-warning';
-        switch (order.status) {
+    orderStatusIndicator = (currOrderStatus) => {
+        let variant;
+        switch (currOrderStatus) {
+            case orderStatus.ORDERED:
+                variant = 'outline-warning';
+                break;
             case orderStatus.PROGRESS:
                 variant = 'outline-primary';
                 break;
@@ -35,16 +38,16 @@ export class Orders extends React.Component {
                 variant = 'outline-danger';
                 break;
         }
-
-        return (<Button disabled variant={variant}>{order.status}</Button>)
+        return (<Button disabled variant={variant}>{currOrderStatus}</Button>)
     }
 
     // #region Component Rendering
     orderCard = (order, i) => {
         return (<Card key={i} style={{ width: '95%' }}>
             <Card.Header>
-                <Card.Title>Order #{i + 1}</Card.Title>
-                {this.orderStatusIndicator(order)}
+                <Card.Title>Order</Card.Title>
+                <Card.Subtitle>#{order._id}</Card.Subtitle>
+                {this.orderStatusIndicator(order.status)}
             </Card.Header>
             <Card.Body>
                 <Table>

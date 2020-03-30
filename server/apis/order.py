@@ -1,3 +1,4 @@
+from enum import Enum
 from db import db_client
 from flask import request
 from flask_api import status
@@ -9,6 +10,14 @@ from apis.order_schema import OrderSchema, OrderItemSchema
 
 order = Namespace('order', description='Order Backend Service')
 order_db = db_client.order
+
+# Matched to order status enum from frontend
+ORDER_STATUS = {
+    'ORDERED': 'Ordered',
+    'PROGRESS': 'In Progress',
+    'COMPLETED': 'Completed',
+    'CANCELLED': 'Cancelled'
+}
 
 
 MODEL_order_item = order.model('Order Item Schema', {
@@ -30,6 +39,15 @@ MODEL_order_status = order.model('Order Status Schema', {
 
 @order.route('')
 class OrderRoute(Resource):
+    @order.doc(description='Get all orders')
+    def get(self):
+        orders = []
+        for order in order_db.find():
+            order['_id'] = str(order['_id'])
+            orders.append(order)
+
+        return orders, status.HTTP_200_OK
+
     @order.doc(description='Adding a New Order')
     @order.expect(MODEL_order)
     def post(self):
@@ -37,7 +55,6 @@ class OrderRoute(Resource):
         schema = OrderSchema()
         try:
             order = schema.load(request.data)
-            print(order)
             operation = order_db.insert_one(schema.dump(order))
             return {
                 'inserted': str(operation.inserted_id)
@@ -47,6 +64,7 @@ class OrderRoute(Resource):
             return {
                 'result': 'Error in given order data'
             }, status.HTTP_400_BAD_REQUEST
+
 
 @order.route('/<string:order_id>')
 class OrderInfo(Resource):
