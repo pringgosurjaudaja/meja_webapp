@@ -2,7 +2,7 @@ from flask_api import FlaskAPI
 from flask_cors import CORS
 from flask_socketio import SocketIO, Namespace, emit, send, join_room, leave_room
 from apis import api
-from flask import render_template, jsonify, request
+from flask import render_template, jsonify, request, make_response
 import dialogflow_v2 as dialogflow
 import requests
 import json
@@ -86,49 +86,89 @@ def get_menu_category():
     category = menu_db.find_one({'name': menu_category})
     category['_id'] = str(category['_id'])
     reply = {
-        'fulfillmentText': "category",
+        'fulfillmentText': str(category),
     }
     # print(reply)
     return jsonify(reply)
+def results():
+    # build a request object
+    req = request.get_json(force=True)
 
-@app.route('/webhook', methods=['POST'])
+    # fetch action from json
+    action = req.get('queryResult').get('action')
+
+    # return a fulfillment response
+    return {'fulfillmentText': 'This is a response from webhook.'}
+
+# create a route for webhook
+@app.route('/webhook', methods=['GET', 'POST'])
 def webhook():
-    data = request.get_json(silent=True)
-    if data['queryResult']['queryText'] == 'yes':
-        reply = {
-            "fulfillmentText": "Ok. Tickets booked successfully.",
-        }
-        return jsonify(reply)
+    # return response
+    return make_response(jsonify(results()))
 
-    elif data['queryResult']['queryText'] == 'no':
-        reply = {
-            "fulfillmentText": "Ok. Booking cancelled.",
-        }
-        return jsonify(reply)
 def detect_intent_texts(project_id, session_id, text, language_code):
-    session_client = dialogflow.SessionsClient()
-    session = session_client.session_path(project_id, session_id)
-    print(session)
-    if text:
-        text_input = dialogflow.types.TextInput(
-            text=text, language_code=language_code)
-        query_input = dialogflow.types.QueryInput(text=text_input)
-        response = session_client.detect_intent(
-            session=session, query_input=query_input)
-        print(response)
-        return response.query_result.fulfillment_text
+        session_client = dialogflow.SessionsClient()
+        session = session_client.session_path(project_id, session_id)
+        print("Session Client:")
+        print(session_client)
+        print("Session")
+        print(session)
+        print("Text:")
+        print(text)
+        if text:
+            text_input = dialogflow.types.TextInput(
+                text=text, language_code=language_code)
+            print("Text input:")
+            print(text_input)
+            query_input = dialogflow.types.QueryInput(text=text_input)
+            print("Query Input")
+            print(query_input)
+            print("Response")
+            
+            response = session_client.detect_intent(
+                session=session, query_input=query_input)
+            print(response)
+            return response.query_result.fulfillment_text
 
 @app.route('/send_message', methods=['POST'])
 def send_message():
     message = request.form['message']
-    project_id = "meja-bot-slqewr"
-    fulfillment_text = detect_intent_texts(project_id, "unique", message, 'en')
-    response_text = { "message":  fulfillment_text }
-    print("SEND_MESSAGE")
-    print(response_text)
+    project_id = os.getenv('DIALOGFLOW_PROJECT_ID')
+    session_client = dialogflow.SessionsClient()
+    session = session_client.session_path(project_id, "unique")
+    text_input = dialogflow.types.TextInput(
+                    text=message, language_code="en")
+    query_input = dialogflow.types.QueryInput(text=text_input)
+    response = session_client.detect_intent(
+                    session=session, query_input=query_input) 
+    print(response)
+    # fulfillment_text = detect_intent_texts(project_id, "unique", message, 'en')
+    response_text = { "message":  response.query_result.fulfillment_text }
+
     return jsonify(response_text)
 if __name__ == '__main__':
     # Setup for the Flask App
     api.init_app(app)
     # from hooks import socketio
     socketio.run(app, debug=True)
+
+@app.route('/get_movie_detail', methods=['POST'])
+def get_movie_detail():
+    data = request.get_json(silent=True)
+    movie = data['queryResult']['parameters']['movie']
+    api_key = "e4625d08"
+
+    movie_detail = requests.get('http://www.omdbapi.com/?t={0}&apikey={1}'.format(movie, api_key)).content
+    movie_detail = json.loads(movie_detail)
+    response =  """
+        Title : 0
+        Released: 1
+        Actors: 2
+        Plot: 3
+    """
+    print(response)
+    reply = {
+        "fulfillmentText": response,
+    }
+
+    return jsonify(reply)
