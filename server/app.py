@@ -2,6 +2,17 @@ from flask_api import FlaskAPI
 from flask_cors import CORS
 from flask_socketio import SocketIO, Namespace, emit, send, join_room, leave_room
 from apis import api
+from flask import render_template, jsonify, request
+import dialogflow_v2 as dialogflow
+import requests
+import json
+from db import db_client
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+menu_db = db_client.menu
 # from hooks.admin_hooks import AdminNamespace
 # from hooks.customer_hooks import CustomerNamespace
 
@@ -62,6 +73,60 @@ customer_namespace = CustomerNamespace('/customer')
 socketio.on_namespace(admin_namespace)
 socketio.on_namespace(customer_namespace)
 
+
+@app.route('/test')
+def index():
+    print(os.getenv('DIALOGFLOW_PROJECT_ID'))
+    return render_template('chatbot.html')
+
+@app.route('/get_menu_category', methods=['POST'])
+def get_menu_category():
+    data = request.get_json(silent=True)
+    menu_category = data['queryResult']['parameters']['menu_category']
+    category = menu_db.find_one({'name': menu_category})
+    category['_id'] = str(category['_id'])
+    reply = {
+        'fulfillmentText': "category",
+    }
+    # print(reply)
+    return jsonify(reply)
+
+@app.route('/webhook', methods=['POST'])
+def webhook():
+    data = request.get_json(silent=True)
+    if data['queryResult']['queryText'] == 'yes':
+        reply = {
+            "fulfillmentText": "Ok. Tickets booked successfully.",
+        }
+        return jsonify(reply)
+
+    elif data['queryResult']['queryText'] == 'no':
+        reply = {
+            "fulfillmentText": "Ok. Booking cancelled.",
+        }
+        return jsonify(reply)
+def detect_intent_texts(project_id, session_id, text, language_code):
+    session_client = dialogflow.SessionsClient()
+    session = session_client.session_path(project_id, session_id)
+    print(session)
+    if text:
+        text_input = dialogflow.types.TextInput(
+            text=text, language_code=language_code)
+        query_input = dialogflow.types.QueryInput(text=text_input)
+        response = session_client.detect_intent(
+            session=session, query_input=query_input)
+        print(response)
+        return response.query_result.fulfillment_text
+
+@app.route('/send_message', methods=['POST'])
+def send_message():
+    message = request.form['message']
+    project_id = "meja-bot-slqewr"
+    fulfillment_text = detect_intent_texts(project_id, "unique", message, 'en')
+    response_text = { "message":  fulfillment_text }
+    print("SEND_MESSAGE")
+    print(response_text)
+    return jsonify(response_text)
 if __name__ == '__main__':
     # Setup for the Flask App
     api.init_app(app)
