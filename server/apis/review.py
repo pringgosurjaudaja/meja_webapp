@@ -5,7 +5,7 @@ from flask_restplus import Namespace, Resource, fields, marshal_with, reqparse
 from bson.objectid import ObjectId
 import json
 from marshmallow import ValidationError
-from apis.review_schema import ReviewSchema
+from apis.review_schema import ReviewSchema, ReviewReply
 from datetime import datetime
 
 review = Namespace('review', description='Review Backend Service')
@@ -17,7 +17,10 @@ MODEL_review = review.model('Review', {
     'rating': fields.Integer(),
     'user': fields.String()  
 })
-
+MODEL_reply = review.model('Review Reply',{
+    'reply': fields.String(),
+    'user' : fields.String()
+})
 @review.route('')
 class Review(Resource):
     @review.doc(description='Get all review')
@@ -44,7 +47,7 @@ class Review(Resource):
             }, status.HTTP_400_BAD_REQUEST
 
 @review.route('/<string:review_id>')
-class ReviewDelete(Resource):
+class ReviewAction(Resource):
     @review.doc(description='Delete a review')
     def delete(self, review_id):
         try:
@@ -55,3 +58,20 @@ class ReviewDelete(Resource):
             return{
                 'result': 'Missing required fields'
             }, status.HTTP_400_BAD_REQUEST
+    @review.doc(description='Reply to a review')
+    @review.expect(MODEL_reply)
+    def post(self, review_id):
+        schema = ReviewReply()
+        try:
+            review_reply = schema.load(request.data)
+            now = datetime.now()
+            review_reply['date_time'] = now
+            review_db.update(
+                {'_id': ObjectId(review_id)},
+                {'$push': {'replies': schema.dump(review_reply)}})
+            return{
+                'inserted': schema.dump(review_reply)
+            }, status.HTTP_201_CREATED
+        except ValidationError as err:
+            print(err)
+            return{'result': 'Missing required fields'}, status.HTTP_400_BAD_REQUEST
