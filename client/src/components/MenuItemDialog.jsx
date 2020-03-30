@@ -11,7 +11,6 @@ export class MenuItemDialog extends React.Component {
         super(props);
 
         this.state = {
-            addedToCart: false,
             quantity: 1,
             notes: ''
         }
@@ -27,20 +26,20 @@ export class MenuItemDialog extends React.Component {
 
     handleAddToCart = () => {
         const orderItem = {
-            menuItem: this.props.item,
+            menu_item: this.props.item,
             quantity: this.state.quantity,
             notes: this.state.notes
-        }
-        this.props.updateCart(orderItem, cartOps.ADD)
-        this.setState({ addedToCart: true });
+        };
+        this.props.updateCart(orderItem, cartOps.ADD);
+        this.props.handleClose();
     }
 
     render() {
-        const { item, show, onHide } = this.props;
+        const { item, show, onHide, itemInCart } = this.props;
 
         return (
             <div>
-                <Modal 
+                {item && <Modal 
                     dialogClassName='menu-item-dialog' 
                     show={show} 
                     onHide={onHide}
@@ -75,7 +74,7 @@ export class MenuItemDialog extends React.Component {
                         <br></br>
                         <Button 
                             onClick={this.handleAddToCart} 
-                            disabled={this.state.addedToCart} 
+                            disabled={itemInCart(item)} 
                             data-dismiss="modal" 
                             variant="primary"
                         >
@@ -83,7 +82,7 @@ export class MenuItemDialog extends React.Component {
                         </Button>
 
                         {/* Successfully Added Alert */}
-                        {this.state.addedToCart &&
+                        {itemInCart(item) &&
                             <Alert variant="success">
                                 Added to cart.
                             </Alert>}
@@ -94,7 +93,7 @@ export class MenuItemDialog extends React.Component {
                             Close
                         </Button>
                     </Modal.Footer>
-                </Modal>
+                </Modal>}
             </div>
         )
     }

@@ -1,22 +1,15 @@
-from marshmallow import Schema, fields, post_load
+from marshmallow import Schema, fields
 from apis.menu_schema import MenuItemSchema
+import datetime as dt
 
 class OrderItemSchema(Schema):
-    menu_item_id = fields.String(required=True)
-    menu_item_name = fields.String()
-    menu_item_price = fields.Float()
-    amount = fields.Float(required=True)
-    notes = fields.String()
-    order_id = fields.String()
-
+    menu_item = fields.Nested(MenuItemSchema, required=True)
+    quantity = fields.Integer(required=True)
+    notes = fields.String(missing='')
 
 class OrderSchema(Schema):
-    _id = fields.String()
-    orderItems= fields.List(fields.Nested(OrderItemSchema), missing=[])
+    session_id = fields.String(required=True)
     table_id = fields.String(required=True)
-
-class SessionSchema(Schema):
-    table_id = fields.String()
-    user = fields.String()
-    orderList = fields.List(fields.Nested(OrderSchema), missing = [])
-    datetime_visit = fields.DateTime(format= '%d-%m-%YT%H:%M:%S')
+    status = fields.String(required=True)
+    timestamp = fields.DateTime(default=dt.datetime.now())
+    order_items = fields.List(fields.Nested(OrderItemSchema), missing=[])

@@ -40,6 +40,7 @@ export class Menu extends React.Component {
                         <Col>
                             <MenuItem 
                                 item={menuItem}
+                                itemInCart={this.props.itemInCart}
                                 updateCart={this.props.updateCart} 
                                 className="menu-item"
                             />
