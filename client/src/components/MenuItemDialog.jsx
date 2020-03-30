@@ -53,6 +53,7 @@ export class MenuItemDialog extends React.Component {
                         {/* Title & Description */}
                         <Modal.Title>{item.name}</Modal.Title>
                         <p>{item.description}</p>
+                        <p>$ {item.price}</p>
                         
                         {/* Notes for Menu Item */}
                         <FormLabel>Add notes</FormLabel>

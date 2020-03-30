@@ -28,6 +28,8 @@ export class MenuItem extends React.Component {
                         <Card.Title className="menu-item--title">{item.name}</Card.Title>
                         <Card.Text className="menu-item--text">
                             {item.description}
+                            <br></br>
+                            <div align="right">$ {item.price}</div>
                         </Card.Text>
                     </Card.Body>
 

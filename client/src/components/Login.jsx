@@ -1,5 +1,5 @@
 import React from 'react';
-import { 
+import {
     Button,
     Container,
     Row,
@@ -8,6 +8,8 @@ import {
 import { navigate } from "@reach/router";
 import 'src/styles/styles.css';
 import { axios } from 'src/utilities/helper';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
 export class Login extends React.Component {
     constructor(props) {
@@ -20,12 +22,12 @@ export class Login extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    
+
     handleChange(event) {
         if (event.target.name === "email") {
-            this.setState({ email: event.target.value});
+            this.setState({ email: event.target.value });
         } else if (event.target.name === "password") {
-            this.setState({ password: event.target.value});
+            this.setState({ password: event.target.value });
         }
     }
 
@@ -39,29 +41,36 @@ export class Login extends React.Component {
                 email: this.state.email,
                 password: this.state.password
             }
-            }).then(function(response) {
-                console.log(response);
-                sessionStorage.setItem('AUTH_KEY', response.data.token);
-                sessionStorage.setItem('session_id', response.data.session_id);
-                sessionStorage.setItem('table_id', response.data.table_id);
-                sessionStorage.setItem('email', email);
-                
-                navigate('/dashboard')
-            }).catch(function(error) {
-                console.log(error);
-                alert('Invalid input');
-            });
-        
-        this.setState({ email: '', password: ''});
+        }).then(function (response) {
+            console.log(response);
+            sessionStorage.setItem('AUTH_KEY', response.data.token);
+            sessionStorage.setItem('session_id', response.data.session_id);
+            sessionStorage.setItem('table_id', response.data.table_id);
+            sessionStorage.setItem('email', email);
+
+            navigate('/dashboard')
+        }).catch(function (error) {
+            console.log(error);
+            alert('Invalid input');
+        });
+
+        this.setState({ email: '', password: '' });
     }
 
     render() {
-        
+
         return (
-                <Container className="container-home">
+            <div className="container-home">
+                <Container>
+                    <Row>
+                        <FontAwesomeIcon
+                            icon={faChevronLeft}
+                            onClick={() => navigate("/")}
+                        />
+                    </Row>
                     <Row>
                         <h1 className="title">
-                            Login    
+                            Login
                         </h1>
                     </Row>
                     <Row>
@@ -74,12 +83,13 @@ export class Login extends React.Component {
                                 <Form.Control value={this.state.password} onChange={this.handleChange} name="password" type="password" placeholder="Password" />
                             </Form.Group>
 
-                            <Button  style={{ backgroundColor: "black", color: "white"}} variant="primary" onClick={this.handleSubmit}>
+                            <Button style={{ backgroundColor: "black", color: "white" }} variant="primary" onClick={this.handleSubmit}>
                                 SIGN IN
                             </Button>
                         </Form>
                     </Row>
                 </Container>
+            </div>
         );
     }
 }
