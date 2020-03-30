@@ -2,16 +2,17 @@ import React from 'react';
 import { Tabs, Tab, Nav } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'
-import 'styles/styles.css';
-import { Recommend } from 'components/Recommend';
-import { Menu } from 'components/Menu';
-import { Checkout } from 'components/Checkout';
+import { Menu } from 'src/components/Menu';
+import { Checkout } from 'src/components/Checkout';
 import { navigate } from "@reach/router";
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 import { About } from 'components/About';
 import { Orders } from 'components/Orders';
+import { Reservation } from 'src/components/Reservation';
+import { LoginDialog } from 'src/components/LoginDialog';
 import { axios } from 'utilities/helper';
 import io from 'socket.io-client';
+import 'src/styles/styles.css';
 
 export const cartOps = {
     ADD: 'add',
@@ -23,7 +24,8 @@ const tabs = {
     ALL: 'all',
     ABOUT: 'about',
     ORDERS: 'orders',
-    CHECKOUT: 'checkout'
+    CHECKOUT: 'checkout',
+    RESERVATION: 'reservation',
 }
 
 export const orderStatus = {
@@ -37,6 +39,7 @@ export class Dashboard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+<<<<<<< HEAD
             activeTab: tabs.ABOUT,
             user: 'Guest',
             orderList: [],
@@ -74,6 +77,15 @@ export class Dashboard extends React.Component {
     // #region Cart Operations
     itemInCart = (menuItem) => {
         return this.state.cart.has(menuItem._id);
+=======
+            activeTab: tabs.RESERVATION,
+            tableId: '123',
+            user: 'Guest',
+            orderList: [],
+            cart: new Map(),
+            showLoginDialog: false,
+        }
+>>>>>>> master
     }
 
     updateCart = (orderItem, operation) => {
@@ -97,11 +109,18 @@ export class Dashboard extends React.Component {
     }
     // #endregion
 
+<<<<<<< HEAD
     // #region Event Handlers
+=======
+    showLogin = ()=> {
+        this.setState({ showLoginDialog: true });
+    }
+
+>>>>>>> master
     handleSelect = (event) => {
         if (event === 'logout') {
             sessionStorage.clear();
-            navigate('/login');
+            navigate('/');
         }
     }
 
@@ -151,6 +170,11 @@ export class Dashboard extends React.Component {
     // #endregion
 
     render() {
+
+        const reservationProps = {
+            showLogin: this.showLogin,
+        }
+
         return (
             <div>
                 <Nav className="justify-content-end" onSelect={this.handleSelect}>
@@ -198,7 +222,11 @@ export class Dashboard extends React.Component {
                             handleOrderCart={this.handleOrderCart}
                         />
                     </Tab>
+                    <Tab eventKey={tabs.RESERVATION} title="Reservation">
+                        <Reservation {...reservationProps}/>
+                    </Tab>
                 </Tabs>
+                <LoginDialog show={this.state.showLoginDialog} onHide={()=>this.setState({ showLoginDialog:false })}/>
             </div>
 
 

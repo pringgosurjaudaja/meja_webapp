@@ -2,9 +2,9 @@ import React from 'react';
 import { Modal, Button, Card, Alert, InputGroup, FormControl, FormLabel } from 'react-bootstrap';
 import InputNumber from 'rc-input-number';
 import 'rc-input-number/assets/index.css';
-import 'styles/styles.css';
+import 'src/styles/styles.css';
 import example from './assets/test.jpg';
-import { cartOps } from 'components/Dashboard';
+import { cartOps } from 'src/components/Dashboard';
 
 export class MenuItemDialog extends React.Component {
     constructor(props) {
@@ -48,10 +48,11 @@ export class MenuItemDialog extends React.Component {
 
                     <Modal.Body>
                         <Card.Img variant="top" src={example} />
-
+                        
                         {/* Title & Description */}
                         <Modal.Title>{item.name}</Modal.Title>
                         <p>{item.description}</p>
+                        <p>$ {item.price}</p>
                         
                         {/* Notes for Menu Item */}
                         <FormLabel>Add notes</FormLabel>
@@ -70,7 +71,7 @@ export class MenuItemDialog extends React.Component {
                             min={1} 
                             defaultValue={1} 
                         />
-
+                        <br></br>
                         <Button 
                             onClick={this.handleAddToCart} 
                             disabled={itemInCart(item)} 

@@ -7,9 +7,8 @@ import {
     Modal,
 } from 'react-bootstrap';
 import { navigate } from "@reach/router";
-import 'styles/styles.css';
-import { axios } from 'utilities/helper';
-import { DateTime, moment } from 'utilities/helper';
+import 'src/styles/styles.css';
+import { axios, DateTime, moment } from 'src/utilities/helper';
 
 export class ReservationDialog extends React.Component {
     constructor(props) {

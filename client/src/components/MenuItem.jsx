@@ -1,5 +1,5 @@
 import React from 'react';
-import { MenuItemDialog } from 'components/MenuItemDialog';
+import { MenuItemDialog } from 'src/components/MenuItemDialog';
 import { Card } from 'react-bootstrap';
 import example from './assets/test.jpg';
 
@@ -28,6 +28,8 @@ export class MenuItem extends React.Component {
                         <Card.Title className="menu-item--title">{item.name}</Card.Title>
                         <Card.Text className="menu-item--text">
                             {item.description}
+                            <br></br>
+                            <div align="right">$ {item.price}</div>
                         </Card.Text>
                     </Card.Body>
 

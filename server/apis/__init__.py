@@ -6,6 +6,7 @@ from apis.table import table
 from apis.about import about
 from apis.reservation import reservation
 from apis.auth import auth, authorizations
+from apis.review import review
 
 api = Api(
     title= 'Meja Backend Service',
@@ -20,3 +21,4 @@ api.add_namespace(about)
 api.add_namespace(auth)
 api.add_namespace(table)
 api.add_namespace(reservation)
+api.add_namespace(review)

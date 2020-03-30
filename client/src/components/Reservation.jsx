@@ -3,7 +3,7 @@ import { navigate } from "@reach/router";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
-import 'styles/styles.css';
+import 'src/styles/styles.css';
 import { 
     Container,
     Row,
@@ -12,9 +12,9 @@ import {
     Form,
     Col,
 } from 'react-bootstrap';
-import { DateTime, moment, axios, _ } from 'utilities/helper';
-import 'styles/react-datetime.css';
-import { ReservationDialog } from 'components/ReservationDialog';
+import { DateTime, moment, axios, _ } from 'src/utilities/helper';
+import 'src/styles/react-datetime.css';
+import { ReservationDialog } from 'src/components/ReservationDialog';
 
 export class Reservation extends React.Component {
     constructor(props) {
@@ -38,7 +38,6 @@ export class Reservation extends React.Component {
             },
             reservation: {}
         }
-        this.handleSelect = this.handleSelect.bind(this); // logout
         this.handleChange = this.handleChange.bind(this); // select date
         this.handleChangeSelect = this.handleChangeSelect.bind(this); // select diner
         this.handleChangeTime = this.handleChangeTime.bind(this); // select time
@@ -70,15 +69,6 @@ export class Reservation extends React.Component {
         })
     }
 
-    handleSelect(event) {
-        console.log(event);
-        if(event === 'logout') {
-            sessionStorage.clear();
-            navigate('/login');
-            
-        }
-    }
-
     handleChangeSelect(event) {
         console.log(event.target.value);
         this.setState({ diner: parseInt(event.target.value) })
@@ -95,7 +85,7 @@ export class Reservation extends React.Component {
 
     handleChange(event) {
         const year = event.year();
-        const month = event.month();
+        const month = event.month()+1;
         const date = event.date();
         let url = 'http://127.0.0.1:5000/reservation/availability';
         this.setState({
@@ -139,6 +129,11 @@ export class Reservation extends React.Component {
     }
 
     handleSubmit(e) {
+        e.preventDefault();
+        if(_.isNull(sessionStorage.getItem('AUTH_KEY'))) {
+            this.props.showLogin();
+            return;
+        }
         const year = this.state.date.year;
         const month = this.state.date.month;
         const date = this.state.date.date;
@@ -212,14 +207,6 @@ export class Reservation extends React.Component {
         console.log(this.state.reservation);
         return (
             <div>
-                <Nav className="justify-content-end" onSelect={this.handleSelect}>
-                    <Nav.Item>
-                        <Nav.Link eventKey="logout">
-                            <FontAwesomeIcon icon={faSignOutAlt} transform="grow-10" color="black"/>
-                        </Nav.Link>
-                    </Nav.Item>
-                    
-                </Nav>
                 { !this.state.reserved ?
                 <Container className="l-reserve">
                     <Row className="l-reserve__row">
