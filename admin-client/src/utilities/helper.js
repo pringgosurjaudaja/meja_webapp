@@ -1,2 +1,3 @@
-const axios = require('axios');
-export default axios;
+export const axios = require('axios');
+
+export const moment = require('moment');

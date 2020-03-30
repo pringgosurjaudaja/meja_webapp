@@ -5,6 +5,7 @@ from marshmallow import ValidationError
 from bson.objectid import ObjectId
 from db import db_client
 from apis.reservation_schema import ReservationSchema
+from datetime import datetime, date
 
 reservation = Namespace('reservation', description="Reservation Backend Service")
 reservation_db = db_client.reservation
@@ -31,6 +32,7 @@ class Reservation(Resource):
     @reservation.doc(description='Get all reservation in db')
     def get(self):
         reservations = list(reservation_db.find({}))
+        result = []
         if not reservations:
             return {
                 'result': 'No Reservation'
@@ -38,7 +40,10 @@ class Reservation(Resource):
         else:
             for reservation in reservations:
                 reservation['_id'] = str(reservation['_id'])
-            return reservations, status.HTTP_200_OK
+                datetime_res = datetime.strptime(reservation['datetime'], "%Y-%m-%dT%H:%M:%S")
+                if (datetime_res.date() >= date.today()):
+                    result.append(reservation)
+            return result, status.HTTP_200_OK
 
     @reservation.doc(description='Create New Reservation')
     @reservation.expect(MODEL_reservation)

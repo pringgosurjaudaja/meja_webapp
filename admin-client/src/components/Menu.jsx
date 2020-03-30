@@ -7,10 +7,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 import { MenuItemCard } from 'components/MenuItemCard';
 import { Dialog } from 'components/Dialog';
-
-
 import axios from 'utilities/helper'
 import { EditDialog } from './EditDialog';
+import { CategoryDialog } from './CategoryDialog';
+
 export class Menu extends React.Component {
     constructor(props) {
         super(props);
@@ -18,6 +18,7 @@ export class Menu extends React.Component {
             menuItemList: [],
             showAddMenuDialog: false,
             showEditMenuDialog: false,
+            showCategoryDialog: false,
             activeTab: 'Burgers',
             activeItem: {},
         }
@@ -26,6 +27,7 @@ export class Menu extends React.Component {
         this.getEditMenuItem = this.getEditMenuItem.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleTabChange = this.handleTabChange.bind(this);
+        this.handleAddCategory = this.handleAddCategory.bind(this);
     }
 
     componentDidMount() {
@@ -36,6 +38,11 @@ export class Menu extends React.Component {
     handleAddMenuItem() {
         this.setState({ showAddMenuDialog: true });
     }
+
+    handleAddCategory() {
+        this.setState({ showCategoryDialog: true });
+    }
+
 
     handleEditMenuItem() {
         this.setState({ 
@@ -54,6 +61,7 @@ export class Menu extends React.Component {
         this.setState({ 
             showAddMenuDialog: false,
             showEditMenuDialog: false,
+            showCategoryDialog: false,
         });
     }
 
@@ -116,6 +124,15 @@ export class Menu extends React.Component {
         return (
             <Container className="layout--padding--admin-menu">
                 <Row>
+                    <Col xs={6} md={6}>
+                        <Button onClick={this.handleAddMenuItem} size="lg">+</Button>
+                    </Col>
+                    <Col xs={6} md={6}>
+                        <Button onClick={this.handleAddCategory} size="lg">Add new category</Button>
+                    </Col>
+                    
+                </Row>
+                <Row>
                     <Col>
                         <Tabs className="justify-content-center"
                             defaultActiveKey={defaultKey} onSelect={this.handleTabChange}
@@ -126,13 +143,9 @@ export class Menu extends React.Component {
                     
                 </Row>
 
-                <Row>
-                    <Col xs={12} md={12}>
-                        <Button onClick={this.handleAddMenuItem} size="lg">+</Button>
-                    </Col>
-                </Row>
                 <Dialog show={this.state.showAddMenuDialog} onHide={this.handleClose} {...dialogProps}/>
                 <EditDialog show={this.state.showEditMenuDialog} onHide={this.handleClose} {...editDialogProps}/>
+                <CategoryDialog show={this.state.showCategoryDialog} onHide={this.handleClose} />
             </Container>
         );
     }

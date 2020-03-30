@@ -167,6 +167,19 @@ body {
     font-size: 20px !important;
 }
 
+.menu-item-dialog {
+    height: 100% !important;
+}
+
+.margin-center
+{
+    margin-left:5% !important;
+}
+
+.boldText {
+    font-weight : bold;
+}
+
 .small-button-row {
     margin-top: 20px;
     margin-bottom: 20px;
@@ -176,3 +189,29 @@ body {
     width: 100%;
     height: 60px;
 }
+
+
+.icon-whatsapp {
+    font-size: 34px;
+    color: #25D366;
+}
+
+/* #notif {
+    transition: 900ms all ease;
+    opacity: 0;
+    will-change: opacity;
+}
+
+.show-notif {
+    opacity: 1;
+} */
+
+.alert-shown {
+    opacity: 1;
+    transition: all 250ms linear;
+  }
+  
+  .alert-hidden {
+    opacity: 0;
+    transition: all 250ms linear;
+  }

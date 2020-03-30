@@ -29,6 +29,20 @@ body {
     padding-left: 0 !important;
     padding-right: 0 !important;
 }
+
+.layout--pading--admin-table {
+    vertical-align: middle;
+    margin: auto;
+    position: absolute;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.layout--margin--admin-table {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
 .layout--no-padding {
     padding-left: 0 !important;
     padding-right: 0 !important;
@@ -81,8 +95,8 @@ body {
 .menu-item-card--photo {
     border-top-left-radius: 20px !important;
     border-bottom-left-radius: 20px !important;
-    width: 40% !important;
-    height: 40vw;
+    width: 25% !important;
+    height: 15vw;
     float: left;
     flex-direction: column;
 }
@@ -90,7 +104,7 @@ body {
     border-top-right-radius: 20px !important;
     border-bottom-right-radius: 20px !important;
     width: auto;
-    height: 40vw;
+    height: 15vw;
     flex-direction: column;
     padding-top: 2% !important;
     padding-bottom: 2% important;
@@ -125,4 +139,24 @@ body {
     position: absolute;
     right: calc(4% + 25px);
     top: 5%;
+}
+
+@import '~@fullcalendar/core/main.css';
+@import '~@fullcalendar/daygrid/main.css';
+@import '~@fullcalendar/timegrid/main.css';
+
+
+.fc-axis {
+    width: 70px !important;
+}
+
+.fc-left h2 {
+    font-size: 1.2em !important;
+}
+
+.modal-body {
+    overflow:scroll !important;
+}
+.modal-calendar {
+    overflow: scroll !important;
 }

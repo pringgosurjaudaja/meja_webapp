@@ -4,7 +4,7 @@ import example from 'components/assets/test.jpg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-import axios from 'utilities/helper';
+import { axios } from 'utilities/helper';
 
 export class MenuItemCard extends React.Component {
     

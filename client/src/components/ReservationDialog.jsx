@@ -22,7 +22,6 @@ export class ReservationDialog extends React.Component {
             }
         }
         this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     
@@ -47,25 +46,6 @@ export class ReservationDialog extends React.Component {
         }
     }
 
-    handleSubmit(event) {
-        if(this.props.edit) {
-            axios({
-                method: 'post',
-                url: '',
-                data: {
-                }
-                }).then(function(response) {
-                    console.log(response);
-                }).catch(function(error) {
-                    console.log(error);
-                });
-            
-        } else {
-
-        }
-        
-    }
-
     render() {
         var yesterday = moment().subtract( 1, 'day' );
         var valid = function( current ){
@@ -73,59 +53,6 @@ export class ReservationDialog extends React.Component {
         };  
         return (
             <div>
-                {this.props.edit === 'true' ?
-                <Modal
-                {...this.props}
-                centered
-                    >
-                    <Modal.Header closeButton>
-                        <Modal.Title>Edit Reservation</Modal.Title>
-                    </Modal.Header>
-                    
-                    <Modal.Body>
-                        <Form size="lg" className="layout--padding" onSubmit={this.handleSubmit}>
-                            <Form.Group>
-                                <Form.Label>Pick Date</Form.Label>
-                                <DateTime timeFormat={false}
-                                isValidDate={valid}
-                                onChange={this.handleChange}
-                                />
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label>Pick Time</Form.Label>
-                                <Form.Control as="select">
-                                    <option>select time</option>
-                                    <option>6.15 pm</option>
-                                    <option>7.15 pm</option>
-                                    <option>9.30 pm</option>
-                                </Form.Control>
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label>Number of Diners</Form.Label>
-                                <Form.Control as="select">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                    <option>6</option>
-                                    <option>7</option>
-                                    <option>8</option>
-                                    <option>9</option>
-                                    <option>10</option>
-                                    <option>11</option>
-                                    <option>12</option>
-                                    
-                                </Form.Control>
-                            </Form.Group>
-                            <Button>Confirm Reservation</Button>
-                        </Form>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button onClick={this.props.onHide}>Close</Button>
-                    </Modal.Footer>
-                </Modal>:''}
-                {this.props.edit !== 'true' ?
                 <Modal
                 {...this.props}
                 centered
@@ -138,13 +65,14 @@ export class ReservationDialog extends React.Component {
                         <Form size="lg" className="layout--padding" onSubmit={this.handleSubmit}>
                             Are you sure?
                             You cannot recover your booking after a cancellation
-                            <Button>Confirm cancellation</Button>
                         </Form>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button onClick={this.props.onHide}>Close</Button>
+                        <Button type="submit" variant="danger" onClick={this.props.cancelreservation}>Confirm Cancellation</Button>
+                        
                     </Modal.Footer>
-                </Modal>:''}
+                </Modal>
             </div>
             
         );
