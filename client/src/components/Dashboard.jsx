@@ -10,7 +10,7 @@ import { About } from 'src/components/About';
 import { Orders } from 'src/components/Orders';
 import { Reservation } from 'src/components/Reservation';
 import { LoginDialog } from 'src/components/LoginDialog';
-import { axios } from 'utilities/helper';
+import { axios } from 'src/utilities/helper';
 import io from 'socket.io-client';
 import 'src/styles/styles.css';
 
