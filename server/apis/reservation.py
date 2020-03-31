@@ -18,8 +18,12 @@ MODEL_reservation = reservation.model('Reservation',{
     'reservation_notes': fields.String()
 })
 
-MODEL_reservation_status = reservation.model('Reservation Status',{
-    'status': fields.String()
+MODEL_reservation_update = reservation.model('Reservation Update',{
+    'table_number': fields.Integer(),
+    'email': fields.String(),
+    'datetime': fields.DateTime(),
+    'number_diner': fields.Integer(),
+    'reservation_notes': fields.String()
 })
 
 MODEL_reservation_search = reservation.model('Reservation Search',{
@@ -53,15 +57,10 @@ class Reservation(Resource):
             res = schema.load(request.data)
             date = res['datetime'].date()
             time = res['datetime'].time()
-            res['status'] = "In-Progress"
             # Logic to allocate table
             tables = list(table_db.find({'seat': res['number_diner']}))
             for table in tables:
                 reservations = list(reservation_db.find({'datetime': '%sT%s'%(date,time), 'number_diner': res['number_diner'], 'table_number': table['number']}))
-                print(res['datetime'])
-                print(res['number_diner'])
-                print(table['number'])
-                print(reservations)
                 if not reservations:
                     res['table_number'] = table['number']
                     break
@@ -98,15 +97,19 @@ class ReservationSearch(Resource):
 
 @reservation.route('/<string:reservation_id>')
 class ReservationRoute(Resource):
-    @reservation.doc(description='Edit Reservation Status')
-    @reservation.expect(MODEL_reservation_status)
+    @reservation.doc(description='Edit Reservation')
+    @reservation.expect(MODEL_reservation_update)
     def patch(self, reservation_id):
         try:
-            new_status = request.data.get('status')
             reservation_db.find_one_and_update(
                 {'_id': ObjectId(reservation_id)},
                 {'$set':
-                    {'status': new_status}
+                    {'table_number': request.data.get('table_number'),
+                     'email': request.data.get('email'),
+                     'datetime': request.data.get('datetime'),
+                     'number_diner': request.data.get('number_diner'),
+                     'reservation_notes': request.data.get('reservation_notes')
+                    }
                  }
             )
             return {'updated': reservation_id}, status.HTTP_200_OK
