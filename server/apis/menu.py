@@ -109,10 +109,8 @@ class MenuCategoryRoute(Resource):
 
     @menu.doc(description='Deleting a Menu Category')
     def delete(self, category_id):
-        menu_db.update(
-            {},
-            {'$pull': {'_id': ObjectId(category_id)}}
-        )
+        menu_db.delete_one({'_id': ObjectId(category_id)})
+        
         return {
             'deleted': 'success'
         }, status.HTTP_200_OK
