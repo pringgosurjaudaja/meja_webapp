@@ -1,15 +1,14 @@
 import React from 'react';
 import { Container, Row, Col, Form, Button, Tab, Tabs } from 'react-bootstrap';
-
-import Select from 'react-select';
 import 'styles/styles.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 import { MenuItemCard } from 'components/MenuItemCard';
 import { Dialog } from 'components/Dialog';
-import axios from 'utilities/helper'
+import {axios} from 'utilities/helper'
 import { EditDialog } from './EditDialog';
 import { CategoryDialog } from './CategoryDialog';
+// import { menuListCSS } from 'react-select/src/components/Menu';
 
 export class Menu extends React.Component {
     constructor(props) {
@@ -22,12 +21,7 @@ export class Menu extends React.Component {
             activeTab: 'Burgers',
             activeItem: {},
         }
-        this.handleAddMenuItem = this.handleAddMenuItem.bind(this);
-        this.handleEditMenuItem = this.handleEditMenuItem.bind(this);
-        this.getEditMenuItem = this.getEditMenuItem.bind(this);
-        this.handleClose = this.handleClose.bind(this);
-        this.handleTabChange = this.handleTabChange.bind(this);
-        this.handleAddCategory = this.handleAddCategory.bind(this);
+        
     }
 
     componentDidMount() {
@@ -35,16 +29,35 @@ export class Menu extends React.Component {
     }
 
 
-    handleAddMenuItem() {
+    handleAddMenuItem = () => {
         this.setState({ showAddMenuDialog: true });
     }
 
-    handleAddCategory() {
+    handleAddCategory = () => {
         this.setState({ showCategoryDialog: true });
     }
 
+    handleDeleteCategory = () => {
+        let category = this.props.menuItemList.filter((menu)=>{
+            // console.log(menu);
+            return menu.name === this.state.activeTab;
+        })
+        console.log(category[0]._id);
+        axios({
+            method: 'delete',
+            url: 'http://127.0.0.1:5000/menu/category/'+category[0]._id,
+            timeout: 1000,
+        })
+        .then((response)=>{
+            console.log(response);
+        })
+        .catch((error)=>{
+            console.log(error);
+        })
+        window.location.reload();
+    }
 
-    handleEditMenuItem() {
+    handleEditMenuItem = () => {
         this.setState({ 
             showEditMenuDialog: true,
         });
@@ -52,12 +65,12 @@ export class Menu extends React.Component {
 
 
     // Get the details of the specific item from each individual Menu Item Card
-    getEditMenuItem(item) {
+    getEditMenuItem = (item) => {
         console.log(item);
         this.setState({ activeItem: item })
     }
 
-    handleClose() {
+    handleClose = () => {
         this.setState({ 
             showAddMenuDialog: false,
             showEditMenuDialog: false,
@@ -66,7 +79,7 @@ export class Menu extends React.Component {
     }
 
 
-    handleTabChange(event) {
+    handleTabChange = (event) => {
         this.setState({ activeTab: event });
     }
     render () {
@@ -124,11 +137,14 @@ export class Menu extends React.Component {
         return (
             <Container className="layout--padding--admin-menu">
                 <Row>
-                    <Col xs={6} md={6}>
+                    <Col xs={4} md={4}>
                         <Button onClick={this.handleAddMenuItem} size="lg">+</Button>
                     </Col>
-                    <Col xs={6} md={6}>
+                    <Col xs={4} md={4}>
                         <Button onClick={this.handleAddCategory} size="lg">Add new category</Button>
+                    </Col>
+                    <Col xs={4} md={4}>
+                        <Button onClick={this.handleDeleteCategory} size="lg">Delete Current category</Button>
                     </Col>
                     
                 </Row>
