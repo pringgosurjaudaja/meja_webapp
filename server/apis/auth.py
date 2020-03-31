@@ -110,22 +110,20 @@ class LoginRoute(Resource):
             # generate token for now just use user id
             token = str(auth['_id'])
 
-            # Create table, with sample numbers
-            table_schema = TableSchema()
-            table = table_schema.load({'number': 1, 'seat': 4})
-            table_inserted = table_db.insert_one(table_schema.dump(table))
-            now = datetime.now()
-            datet = now.strftime("%d-%m-%YT%H:%M:%S")
-            session_schema = SessionSchema()
-            print(datet)
-            session = session_schema.load({'table_id': str(table_inserted.inserted_id),'user': auth['email'],'datetime_visit': datet})
+            # # Create table, with sample numbers
+            # table_schema = TableSchema()
+            # table = table_schema.load({'number': 1, 'seat': 4})
+            # table_inserted = table_db.insert_one(table_schema.dump(table))
+            # now = datetime.now()
+            # datet = now.strftime("%d-%m-%YT%H:%M:%S")
+            # session_schema = SessionSchema()
+            # print(datet)
+            # session = session_schema.load({'table_id': str(table_inserted.inserted_id),'user': auth['email'],'datetime_visit': datet})
             
-            session_inserted = session_db.insert_one(session_schema.dump(session))
+            # session_inserted = session_db.insert_one(session_schema.dump(session))
             return {'token': token,
                 'email': auth['email'],
-                'admin': auth['admin'],
-                'session_id': str(session_inserted.inserted_id),
-                'table_id': str(table_inserted.inserted_id)}, status.HTTP_200_OK
+                'admin': auth['admin'],}
 
         return {'result': 'Could not verify'}, 401  
 
