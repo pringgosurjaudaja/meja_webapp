@@ -107,6 +107,16 @@ class MenuCategoryRoute(Resource):
                 'result': 'Missing required fields'
             }, status.HTTP_400_BAD_REQUEST
 
+    @menu.doc(description='Deleting a Menu Category')
+    def delete(self, category_id):
+        menu_db.update(
+            {},
+            {'$pull': {'_id': category_id}}
+        )
+        return {
+            'deleted': 'success'
+        }, status.HTTP_200_OK
+
 
 @menu.route('/item/<string:item_id>')
 class MenuItemRoute(Resource):
