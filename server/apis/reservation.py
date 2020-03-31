@@ -99,7 +99,7 @@ class ReservationSearch(Resource):
 class ReservationRoute(Resource):
     @reservation.doc(description='Edit Reservation')
     @reservation.expect(MODEL_reservation_update)
-    def patch(self, reservation_id):
+    def put(self, reservation_id):
         try:
             reservation_db.find_one_and_update(
                 {'_id': ObjectId(reservation_id)},
