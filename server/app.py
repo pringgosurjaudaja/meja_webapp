@@ -107,15 +107,6 @@ def get_menu_category():
     }
     # print(reply)
     return jsonify(reply)
-def results():
-    # build a request object
-    req = request.get_json(force=True)
-
-    # fetch action from json
-    action = req.get('queryResult').get('action')
-
-    # return a fulfillment response
-    return {'fulfillmentText': 'This is a response from webhook.'}
 
 @app.route('/send_message', methods=['POST'])
 def send_message():
@@ -138,24 +129,3 @@ if __name__ == '__main__':
     api.init_app(app)
     # from hooks import socketio
     socketio.run(app, debug=True)
-
-@app.route('/get_movie_detail', methods=['POST'])
-def get_movie_detail():
-    data = request.get_json(silent=True)
-    movie = data['queryResult']['parameters']['movie']
-    api_key = "e4625d08"
-
-    movie_detail = requests.get('http://www.omdbapi.com/?t={0}&apikey={1}'.format(movie, api_key)).content
-    movie_detail = json.loads(movie_detail)
-    response =  """
-        Title : 0
-        Released: 1
-        Actors: 2
-        Plot: 3
-    """
-    print(response)
-    reply = {
-        "fulfillmentText": response,
-    }
-
-    return jsonify(reply)
