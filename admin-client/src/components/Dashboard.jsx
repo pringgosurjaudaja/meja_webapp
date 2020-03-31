@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 import { axios } from 'utilities/helper';
 import io from 'socket.io-client';
+import { Reservation } from './Reservation';
 
 export const orderStatus = {
     ORDERED: 'Ordered',
@@ -121,7 +122,7 @@ export class Dashboard extends React.Component {
                     defaultActiveKey="order"
                 >
                     <Tab eventKey="table" title="Table">
-                        <Table/>
+                        <Reservation/>
                     </Tab>
                     <Tab eventKey="menu" title="Menu">
                         <Menu {...menuProps}/>
