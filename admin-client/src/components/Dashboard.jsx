@@ -7,7 +7,7 @@ import { Order } from 'components/Order';
 import { navigate } from "@reach/router";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
-import axios from 'utilities/helper';
+import { axios } from 'utilities/helper';
 import io from 'socket.io-client';
 
 export const orderStatus = {
