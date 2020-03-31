@@ -9,11 +9,11 @@ import {
     Alert,
     Card,
 } from 'react-bootstrap';
-import { axios, _ } from 'src/utilities/helper';
+import { axios, _ } from 'utilities/helper';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
-import StarRatings from 'node_modules/react-star-ratings';
+import StarRatings from 'react-star-ratings';
 
 export class About extends React.Component {
     

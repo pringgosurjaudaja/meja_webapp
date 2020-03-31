@@ -6,8 +6,8 @@ import { Menu } from 'src/components/Menu';
 import { Checkout } from 'src/components/Checkout';
 import { navigate } from "@reach/router";
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
-import { About } from 'components/About';
-import { Orders } from 'components/Orders';
+import { About } from 'src/components/About';
+import { Orders } from 'src/components/Orders';
 import { Reservation } from 'src/components/Reservation';
 import { LoginDialog } from 'src/components/LoginDialog';
 import { axios } from 'utilities/helper';
@@ -39,11 +39,11 @@ export class Dashboard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-<<<<<<< HEAD
             activeTab: tabs.ABOUT,
             user: 'Guest',
             orderList: [],
-            cart: new Map()
+            cart: new Map(),
+            showLoginDialog: false,
         };
         this.socket = io.connect('http://127.0.0.1:5000/');
         this.setupSockets();
@@ -77,15 +77,6 @@ export class Dashboard extends React.Component {
     // #region Cart Operations
     itemInCart = (menuItem) => {
         return this.state.cart.has(menuItem._id);
-=======
-            activeTab: tabs.RESERVATION,
-            tableId: '123',
-            user: 'Guest',
-            orderList: [],
-            cart: new Map(),
-            showLoginDialog: false,
-        }
->>>>>>> master
     }
 
     updateCart = (orderItem, operation) => {
@@ -109,14 +100,11 @@ export class Dashboard extends React.Component {
     }
     // #endregion
 
-<<<<<<< HEAD
-    // #region Event Handlers
-=======
     showLogin = ()=> {
         this.setState({ showLoginDialog: true });
     }
 
->>>>>>> master
+    // #region Event Handlers
     handleSelect = (event) => {
         if (event === 'logout') {
             sessionStorage.clear();
