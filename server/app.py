@@ -82,6 +82,23 @@ def index():
 @app.route('/get_menu_category', methods=['POST'])
 def get_menu_category():
     data = request.get_json(silent=True)
+    print(data['queryResult']['parameters'])
+    if 'menu_item' in data['queryResult']['parameters']:
+        menu_item = data['queryResult']['parameters']['menu_item']
+        menu_item_queried = menu_db.aggregate([
+                {'$unwind': '$menu_items'},
+                {'$match':{"menu_items.name": menu_item}},
+                
+                {'$project': {
+                            'name': '$menu_items.name',
+                            'price': '$menu_items.price'
+                }}
+        ])
+        item = menu_item_queried.next()
+        reply = {
+            'fulfillmentText': str(item),
+        }
+        return jsonify(reply)
     menu_category = data['queryResult']['parameters']['menu_category']
     category = menu_db.find_one({'name': menu_category})
     category['_id'] = str(category['_id'])
@@ -99,36 +116,6 @@ def results():
 
     # return a fulfillment response
     return {'fulfillmentText': 'This is a response from webhook.'}
-
-# create a route for webhook
-@app.route('/webhook', methods=['GET', 'POST'])
-def webhook():
-    # return response
-    return make_response(jsonify(results()))
-
-def detect_intent_texts(project_id, session_id, text, language_code):
-        session_client = dialogflow.SessionsClient()
-        session = session_client.session_path(project_id, session_id)
-        print("Session Client:")
-        print(session_client)
-        print("Session")
-        print(session)
-        print("Text:")
-        print(text)
-        if text:
-            text_input = dialogflow.types.TextInput(
-                text=text, language_code=language_code)
-            print("Text input:")
-            print(text_input)
-            query_input = dialogflow.types.QueryInput(text=text_input)
-            print("Query Input")
-            print(query_input)
-            print("Response")
-            
-            response = session_client.detect_intent(
-                session=session, query_input=query_input)
-            print(response)
-            return response.query_result.fulfillment_text
 
 @app.route('/send_message', methods=['POST'])
 def send_message():
