@@ -121,9 +121,11 @@ class LoginRoute(Resource):
             # session = session_schema.load({'table_id': str(table_inserted.inserted_id),'user': auth['email'],'datetime_visit': datet})
             
             # session_inserted = session_db.insert_one(session_schema.dump(session))
-            return {'token': token,
+            return {
+                'token': token,
                 'email': auth['email'],
-                'admin': auth['admin'],}
+                'admin': auth['admin'],
+            }, status.HTTP_200_OK
 
         return {'result': 'Could not verify'}, 401  
 

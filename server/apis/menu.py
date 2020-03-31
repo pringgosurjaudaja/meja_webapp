@@ -120,11 +120,8 @@ class MenuCategoryRoute(Resource):
 class MenuItemRoute(Resource):
     @menu.doc(description='Getting Info on a Menu Item')
     def get(self, item_id):
-        menu_item = menu_db.find_one(
-            {'menu_items._id': item_id}
-        )
+        menu_item = menu_db.find_one({'menu_items._id': item_id})
         menu_item['_id'] = str(menu_item['_id'])
-        pprint.pprint(menu_item)
         return menu_item, status.HTTP_200_OK
 
     @menu.doc(description='Deleting a Menu Item')

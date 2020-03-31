@@ -40,13 +40,27 @@ export class Dashboard extends React.Component {
         super(props);
         this.state = {
             activeTab: tabs.ABOUT,
-            user: 'Guest',
-            orderList: [],
+            sessionId: this.getSessionId(),
             cart: new Map(),
             showLoginDialog: false,
         };
         this.socket = io.connect('http://127.0.0.1:5000/');
-        this.setupSockets();
+    }
+
+    getSessionId = async () => {
+        try {
+            const session = await axios({
+                method: 'post',
+                url: 'http://127.0.0.1:5000/session',
+                data: {
+                    'table_id': sessionStorage.get('tableId'),
+                    'user_id': sessionStorage.get('userId'),
+                }
+            });
+            return session.data.inserted;
+        } catch(err) {
+            console.error(err);
+        }
     }
 
     setupSockets = () => {
@@ -114,8 +128,6 @@ export class Dashboard extends React.Component {
 
     handleOrderCart = async () => {
         const order = {
-            session_id: '123',
-            table_id: '123',
             order_items: [...this.state.cart.values()],
             status: orderStatus.ORDERED
         }

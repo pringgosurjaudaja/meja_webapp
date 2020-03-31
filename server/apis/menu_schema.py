@@ -15,6 +15,7 @@ class MenuItemSchema(Schema):
 
 
 class MenuCategorySchema(Schema):
+    _id = fields.String()
     name = fields.String(required=True)
     menu_items = fields.List(fields.Nested(MenuItemSchema), missing=[])
 

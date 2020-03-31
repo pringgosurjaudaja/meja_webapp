@@ -41,11 +41,11 @@ export class Login extends React.Component {
                 email: this.state.email,
                 password: this.state.password
             }
-        }).then(function (response) {
+        }).then((response) => {
             console.log(response);
-            sessionStorage.setItem('AUTH_KEY', response.data.token);
-            sessionStorage.setItem('session_id', response.data.session_id);
-            sessionStorage.setItem('table_id', response.data.table_id);
+            sessionStorage.setItem('userId', response.data.token);
+            // TODO: Insert Table ID here later from query string
+            sessionStorage.setItem('tableId', '5e8347e01c9d440000231cb3');
             sessionStorage.setItem('email', email);
 
             navigate('/dashboard')
