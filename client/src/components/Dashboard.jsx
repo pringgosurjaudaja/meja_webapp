@@ -4,13 +4,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 import { Menu } from 'src/components/Menu';
 import { Checkout } from 'src/components/Checkout';
-import { navigate } from "@reach/router";
+import { navigate, Redirect } from "@reach/router";
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 import { About } from 'src/components/About';
 import { Orders } from 'src/components/Orders';
 import { Reservation } from 'src/components/Reservation';
 import { LoginDialog } from 'src/components/LoginDialog';
-import { axios } from 'src/utilities/helper';
+import { Requests } from 'src/utilities/Requests';
 import io from 'socket.io-client';
 import 'src/styles/styles.css';
 
@@ -40,33 +40,34 @@ export class Dashboard extends React.Component {
         super(props);
         this.state = {
             activeTab: tabs.ABOUT,
-            user: 'Guest',
             orderList: [],
             cart: new Map(),
             showLoginDialog: false,
         };
         this.socket = io.connect('http://127.0.0.1:5000/');
+    }
+
+    componentDidMount() {
+        this.getOrderList().then(orderList => {
+            this.setState({ orderList: orderList })
+        });
         this.setupSockets();
+    }
+
+    getOrderList = async () => {
+        const sessionId = this.props.sessionId;
+        const session = sessionId && await Requests.getSession(sessionId);
+        return session ? session.order_list : [];
     }
 
     setupSockets = () => {
         this.socket.on('updateOrders', async (order) => {
             // Update the status of the order that has been changed
             try {
-                const request = await axios({
-                    method: 'get',
-                    url: 'http://127.0.0.1:5000/order/' + order._id
-                });
-                const updatedOrder = request.data;
-                const newOrderList = [...this.state.orderList];
-                for (let i = 0; i < newOrderList.length; i++) {
-                    if (newOrderList[i]._id === order._id) {
-                        newOrderList[i] = updatedOrder;
-                        break;
-                    }
-                }
+                console.log('Order has been updated');
+                console.log(await this.getOrderList());
                 this.setState({
-                    orderList: newOrderList
+                    orderList: await this.getOrderList()
                 });
             } catch(err) {
                 console.error(err);
@@ -80,9 +81,6 @@ export class Dashboard extends React.Component {
     }
 
     updateCart = (orderItem, operation) => {
-        console.log('Updating Cart with order item:');
-        console.log(orderItem);
-        console.log(operation);
         let oldCart = this.state.cart;
         let newCart = new Map(oldCart);
         
@@ -114,35 +112,25 @@ export class Dashboard extends React.Component {
 
     handleOrderCart = async () => {
         const order = {
-            session_id: '123',
-            table_id: '123',
             order_items: [...this.state.cart.values()],
             status: orderStatus.ORDERED
         }
 
         // Send order to be stored in database
         try {
-            const request = await axios({
-                method: 'post',
-                url: 'http://127.0.0.1:5000/order',
-                data: order
-            });
-
             // Add given generated order id
-            order['_id'] = request.data.inserted;
-
-            // Add order to order list, empty cart and navigate to order list
-            let newOrderList = [...this.state.orderList];
-            newOrderList.push(order);
-
-            this.setState({ 
-                orderList: newOrderList, 
-                cart: new Map(),
-                activeTab: tabs.ORDERS
-            });
+            const orderId = await Requests.addOrder(this.props.sessionId, order);
+            order['_id'] = orderId;
 
             // Inform staff of new customer order
             this.socket.emit('customer_order', order);
+
+            // Update order list, empty cart and navigate to order list
+            this.setState({
+                orderList: await this.getOrderList(),
+                cart: new Map(),
+                activeTab: tabs.ORDERS
+            });
 
         } catch(err) {
             console.error(err);
@@ -158,6 +146,11 @@ export class Dashboard extends React.Component {
     // #endregion
 
     render() {
+        if (!sessionStorage.getItem('sessionId')) {
+            console.log('No session ID assigned');
+            // Invalid Session or Session has Expired
+            return <Redirect to='/' noThrow />;
+        }
 
         const reservationProps = {
             showLogin: this.showLogin,
@@ -181,9 +174,6 @@ export class Dashboard extends React.Component {
                     activeKey={this.state.activeTab}
                     onSelect={(tab => this.setState({ activeTab: tab }))}
                 >
-                    {/* <Tab eventKey="recommend" title="Recommend">
-                        <Recommend {...this.props} />
-                    </Tab> */}
                     <Tab eventKey={tabs.ABOUT} title="About">
                         <About />
                     </Tab>

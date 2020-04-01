@@ -55,8 +55,10 @@ export class Dashboard extends React.Component {
         try {
             const orders = await axios({
                 method: 'get',
-                url: 'http://127.0.0.1:5000/order'
+                url: 'http://127.0.0.1:5000/session/order'
             });
+
+            console.log(orders.data);
             
             this.setState({
                 orders: orders.data
@@ -86,7 +88,7 @@ export class Dashboard extends React.Component {
             // Update status of the order in the database
             await axios({
                 method: 'patch',
-                url: 'http://127.0.0.1:5000/order/' + orderToChange._id,
+                url: 'http://127.0.0.1:5000/session/order/' + orderToChange._id,
                 data: { status: newStatus }
             });
             this.socket.emit('orderUpdated', orderToChange);

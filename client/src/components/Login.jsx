@@ -7,7 +7,7 @@ import {
 } from 'react-bootstrap';
 import { navigate } from "@reach/router";
 import 'src/styles/styles.css';
-import { axios } from 'src/utilities/helper';
+import { Requests } from 'src/utilities/Requests';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
@@ -23,7 +23,7 @@ export class Login extends React.Component {
     }
 
 
-    handleChange(event) {
+    handleChange = (event) => {
         if (event.target.name === "email") {
             this.setState({ email: event.target.value });
         } else if (event.target.name === "password") {
@@ -31,34 +31,21 @@ export class Login extends React.Component {
         }
     }
 
-    handleSubmit(event) {
+    handleSubmit = async (event) => {
         event.preventDefault();
-        const email = this.state.email.toString();
-        axios({
-            method: 'post',
-            url: 'http://127.0.0.1:5000/auth/login',
-            data: {
-                email: this.state.email,
-                password: this.state.password
-            }
-        }).then(function (response) {
-            console.log(response);
-            sessionStorage.setItem('AUTH_KEY', response.data.token);
-            sessionStorage.setItem('session_id', response.data.session_id);
-            sessionStorage.setItem('table_id', response.data.table_id);
-            sessionStorage.setItem('email', email);
 
-            navigate('/dashboard')
-        }).catch(function (error) {
-            console.log(error);
-            alert('Invalid input');
-        });
+        // Login with user entered details
+        const loginRequest = await Requests.login(this.state.email, this.state.password);
+        this.props.setSessionId(await Requests.makeSession('5e8347e01c9d440000231cb3', loginRequest.token));
 
+        navigate('/dashboard');
+    }
+
+    componentWillUnmount() {
         this.setState({ email: '', password: '' });
     }
 
     render() {
-
         return (
             <div className="container-home">
                 <Container>
