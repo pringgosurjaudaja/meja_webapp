@@ -28,9 +28,7 @@ export class Menu extends React.Component {
 
     render() {
         const { menu } = this.state;
-
         let tabs = [];
-        let defaultKey = menu && menu.length > 0 ? menu[0].name : "Burgers"; 
         
         menu && menu.forEach(category => {
             let entries = [];
@@ -58,7 +56,7 @@ export class Menu extends React.Component {
 
         return (
             <Container className="layout--padding--menu">
-                <Tabs defaultActiveKey={defaultKey}>
+                <Tabs defaultActiveKey={this.state.menu && this.state.menu[0]}>
                     {tabs}
                 </Tabs>
             </Container>

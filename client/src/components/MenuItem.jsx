@@ -26,11 +26,8 @@ export class MenuItem extends React.Component {
                     <Card.Img className="menu-item--photo" variant="top" src={example} />
                     <Card.Body>
                         <Card.Title className="menu-item--title">{item.name}</Card.Title>
-                        <Card.Text className="menu-item--text">
-                            {item.description}
-                            <br></br>
-                            <div align="right">$ {item.price}</div>
-                        </Card.Text>
+                        <Card.Text className="menu-item--text">{item.description}</Card.Text>
+                        <div align="right"><Card.Text>$ {item.price}</Card.Text></div>
                     </Card.Body>
 
                 </Card>

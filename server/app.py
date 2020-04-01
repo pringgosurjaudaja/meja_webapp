@@ -2,6 +2,7 @@ from flask_api import FlaskAPI
 from flask_cors import CORS
 from flask_socketio import SocketIO, Namespace, emit, send, join_room, leave_room
 from apis import api
+import pprint
 # from hooks.admin_hooks import AdminNamespace
 # from hooks.customer_hooks import CustomerNamespace
 
@@ -29,6 +30,7 @@ ADMIN_ROOM = 'admins'
 
 @socketio.on('customer_order')
 def on_customer_order(order):
+    pprint.pprint(order)
     room = order['_id']
     join_room(room)
     print('Received customer order')

@@ -1,19 +1,32 @@
 import React from 'react';
 import { Button, Container, Row, Col } from 'react-bootstrap';
-import { navigate } from "@reach/router"
+import { navigate } from "@reach/router";
 import 'src/styles/styles.css';
 import logo from "src/components/assets/logo.png";
-export class Home extends React.Component {
+import { Requests } from '../utilities/Requests';
 
+export class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             showLoginDialog: false,
         }
     }
+
     componentDidMount() {
         let tmp = document.getElementsByTagName('body')[0];
         tmp.setAttribute('class', 'layout--background');
+
+        const sessionId = sessionStorage.getItem('sessionId');
+        if (sessionId && Requests.getSession(sessionId)) {
+            this.props.setSessionId(sessionId);
+            navigate('/dashboard');
+        }
+    }
+
+    handleContinueAsGuest = async () => {
+        this.props.setSessionId(await Requests.makeSession('5e8347e01c9d440000231cb3', ''));
+        navigate('/dashboard');
     }
 
     componentWillUnmount() {
@@ -81,7 +94,7 @@ export class Home extends React.Component {
                     <Col>
                         <Button variant="secondary"
                             className="big-button big-button--text big-button--continue"
-                            onClick={() => navigate("/dashboard")}>
+                            onClick={this.handleContinueAsGuest}>
                             CONTINUE AS GUEST
                         </Button>
                     </Col>

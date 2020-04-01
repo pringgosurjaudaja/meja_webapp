@@ -3,10 +3,6 @@ import { Card, Table, Button } from 'react-bootstrap';
 import { orderStatus } from 'src/components/Dashboard';
 
 export class Orders extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     getTotal = (order) => {
         let total = 0;
         order.order_items.forEach(orderItem => {

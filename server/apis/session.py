@@ -8,6 +8,7 @@ from apis.menu import MODEL_menu_item
 from apis.session_schema import SessionSchema
 from apis.order_schema import OrderSchema
 from helpers.email_sender import EmailSender
+import pprint
 
 
 session = Namespace('session', description='Session Backend Service')
@@ -50,6 +51,16 @@ MODEL_session_id = session.model('Session ID', {
 
 @session.route('')
 class SessionRoute(Resource):
+    @session.doc(description='Get all active sessions')
+    def get(self):
+        sessions = []
+
+        for session in session_db.find({'active': True}):
+            session['_id'] = str(session['_id'])
+            sessions.append(session)
+        
+        return sessions, status.HTTP_200_OK
+
     @session.doc(description='Storing New Session')
     @session.expect(MODEL_session)
     def post(self):
@@ -58,7 +69,7 @@ class SessionRoute(Resource):
             session = schema.load(request.data)
             operation = session_db.insert_one(schema.dump(session))
             return {
-                'inserted': str(operation.inserted_id)
+                'session_id': str(operation.inserted_id)
             }, status.HTTP_201_CREATED
         except ValidationError as err:
             print(err)
@@ -72,6 +83,10 @@ class SessionInfo(Resource):
     @session.doc(description='Obtain Session Information')
     def get(self, session_id):
         session = session_db.find_one({'_id': ObjectId(session_id)})
+        
+        if session is None:
+            return {'result': 'Session not found.'}, status.HTTP_404_NOT_FOUND
+
         session['_id'] = str(session['_id'])
         return session, status.HTTP_200_OK
     
@@ -98,6 +113,18 @@ class SessionInfo(Resource):
             }, status.HTTP_400_BAD_REQUEST
 
 
+@session.route('/order')
+class ActiveOrders(Resource):
+    @session.doc(description='Get all active session orders')
+    def get(self):
+        orders = []
+
+        for session in session_db.find({'active': True}):
+            pprint.pprint(session)
+            orders.extend(session['order_list'])
+        
+        return orders, status.HTTP_200_OK
+
 @session.route('/order/<string:order_id>')
 class OrderInfo(Resource):
     @session.doc(description='Get Info on an Order')
@@ -118,10 +145,12 @@ class OrderInfo(Resource):
     @session.expect(MODEL_order_status)
     def patch(self, order_id):
         new_status = request.data['status']
+
+        # pprint.pprint(session_db.find_one({'order_list._id': order_id}))
         
         session_db.find_one_and_update(
             {'order_list._id': order_id},
-            {'$set': {'status': new_status}}
+            {'$set': {'order_list.$.status': new_status}}
         )
 
         return { 'updated': order_id }, status.HTTP_200_OK

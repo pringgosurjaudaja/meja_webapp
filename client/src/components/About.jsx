@@ -6,11 +6,10 @@ import {
     Row,
     Col,
     Container,
-    Alert,
     Card,
 } from 'react-bootstrap';
 import { axios, _ } from 'src/utilities/helper';
-
+import { Requests } from 'src/utilities/Requests'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import StarRatings from 'react-star-ratings';
@@ -31,49 +30,17 @@ export class About extends React.Component {
     }
 
     componentDidMount() {
-        let rows = [];
-        axios({
-            method: 'get',
-            url: 'http://127.0.0.1:5000/about/reviews',
-            timeout: 1000,
-        })
-        .then((response)=> {
-            response.data.forEach((item, index)=> {
-                
-                const row = (
-                    <Row key={index}>
-                        <Col>
-                        <Card style={{ width: '100%' }}>
-                            <Card.Body>
-                                <Card.Title>{item.review.user.name}</Card.Title>
-                                <Card.Subtitle>{item.review.review_time_friendly}</Card.Subtitle>
-                                <Card.Text>
-                                 {item.review.review_text}
-                                </Card.Text>
-                                <StarRatings
-                                    rating={item.review.rating}
-                                    starRatedColor="yellow"
-                                    starDimension="25px"
-                                    changeRating={this.changeRating}
-                                    numberOfStars={5}
-                                    name='rating'
-                                    />
-                            </Card.Body>
-                            </Card>
-                        </Col>
-                    </Row>
-                );
+        this.getReviews();
+    }
 
-                rows.push(row);
-                
-            })
-        })
-        .then(()=>{
-            this.setState({ zomato: rows });
-        })
-        .catch((error)=>{
-            console.log(error);
-        })
+    getReviews = async () => {
+        try {
+            const reviews = await Requests.getReviews();
+            const reviewCards = reviews.map((item, index) => this.reviewCard(item, index));
+            this.setState({ zomato: reviewCards });
+        } catch(err) {
+            console.error(err);
+        }
     }
     
     handleChange(event) {
@@ -113,6 +80,30 @@ export class About extends React.Component {
                 showNotif: false,
             });
           }, 2000);
+    }
+
+    reviewCard = (item, index) => {
+        return (<Row key={index}>
+                <Col>
+                <Card style={{ width: '100%' }}>
+                    <Card.Body>
+                        <Card.Title>{item.review.user.name}</Card.Title>
+                        <Card.Subtitle>{item.review.review_time_friendly}</Card.Subtitle>
+                        <Card.Text>
+                            {item.review.review_text}
+                        </Card.Text>
+                        <StarRatings
+                            rating={item.review.rating}
+                            starRatedColor="yellow"
+                            starDimension="25px"
+                            changeRating={this.changeRating}
+                            numberOfStars={5}
+                            name='rating'
+                            />
+                    </Card.Body>
+                    </Card>
+                </Col>
+            </Row>);
     }
 
     render() {

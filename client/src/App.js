@@ -7,16 +7,29 @@ import { Dashboard } from 'src/components/Dashboard';
 import { Reservation } from 'src/components/Reservation';
 
 class App extends React.Component {  
-  render() {
-    return (
-      <Router>
-        <Home path="/" />
-        <Login path="/login" />
-        <Register path="/register" />      
-        <Dashboard path="/dashboard" />
-      </Router>
-    )
-  }
+	constructor(props) {
+		super(props);
+		this.state = {
+			sessionId: ''
+		}
+	}
+
+	setSessionId = (sessionId) => {
+		this.setState({
+			sessionId: sessionId
+		})
+	}
+	
+	render() {
+		return (
+		<Router>
+			<Home path="/" setSessionId={this.setSessionId} />
+			<Login path="/login" setSessionId={this.setSessionId} />
+			<Register path="/register" />      
+			<Dashboard path="/dashboard" sessionId={this.state.sessionId} />
+		</Router>
+		)
+	}
 }
 
 export default App;
