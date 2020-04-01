@@ -43,7 +43,9 @@ export class Requests {
                     'user_id': userId ? userId : 'Guest',
                 }
             });
-            return sessionRequest.data.session_id;
+            const sessionId = sessionRequest.data.session_id;
+            sessionStorage.setItem('sessionId', sessionId);
+            return sessionId;
         } catch(err) {
             console.error(err);
         }

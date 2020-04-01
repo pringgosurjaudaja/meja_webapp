@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 import { Menu } from 'src/components/Menu';
 import { Checkout } from 'src/components/Checkout';
-import { navigate } from "@reach/router";
+import { navigate, Redirect } from "@reach/router";
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 import { About } from 'src/components/About';
 import { Orders } from 'src/components/Orders';
@@ -48,28 +48,16 @@ export class Dashboard extends React.Component {
     }
 
     componentDidMount() {
-        console.log('Dashboard is Mounting');
-        console.log(sessionStorage);
-        this.setupSession();
+        this.getOrderList().then(orderList => {
+            this.setState({ orderList: orderList })
+        });
         this.setupSockets();
     }
 
     getOrderList = async () => {
         const sessionId = this.props.sessionId;
         const session = sessionId && await Requests.getSession(sessionId);
-        return session.order_list;
-    }
-
-    setupSession = async () => {
-        // if (!this.props.sessionId) {
-        //     // Invalid Session or Session has Expired
-        //     navigate('/');
-        //     return;
-        // }
-
-        this.setState({
-            orderList: await this.getOrderList()
-        })
+        return session ? session.order_list : [];
     }
 
     setupSockets = () => {
@@ -158,6 +146,11 @@ export class Dashboard extends React.Component {
     // #endregion
 
     render() {
+        if (!sessionStorage.getItem('sessionId')) {
+            console.log('No session ID assigned');
+            // Invalid Session or Session has Expired
+            return <Redirect to='/' noThrow />;
+        }
 
         const reservationProps = {
             showLogin: this.showLogin,
