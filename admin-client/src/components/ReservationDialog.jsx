@@ -29,6 +29,7 @@ export class ReservationDialog extends React.Component {
     }
 
     componentDidMount() {
+        console.log(this.props);
     }
 
     render () {

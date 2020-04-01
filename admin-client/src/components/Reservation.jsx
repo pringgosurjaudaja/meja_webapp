@@ -82,7 +82,7 @@ export class Reservation extends React.Component {
         for(let r = 0; r<table_num; ++r) {
             let num = r+1;
             let col = (
-            <Button variant="primary"
+            <Button id={r+1} variant="primary"
             onClick={(e)=>{
                 this.handleShowReservation(e, num);
             }}>

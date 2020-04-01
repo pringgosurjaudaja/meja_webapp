@@ -33,6 +33,16 @@ export class ScheduleTable extends React.Component {
         // console.log(res);
     }
 
+    handleDeleteRow = (row)=>{
+        console.log(row);
+        for(let index = 0; index < row.length; ++index) {
+            axios({
+                method: 'delete',
+                url: 'http://127.0.0.1:5000/reservation/'+row[index],
+            })
+        }
+    }
+
     onBeforeSaveCell = (row, cellName, cellValue) => {
         // You can do any validation on here for editing value,
         // return false for reject the editing
@@ -43,10 +53,17 @@ export class ScheduleTable extends React.Component {
         let data = row;
         data[cellName] = cellValue;
         console.log(row.id);
+        console.log(this.props.table_number);
         axios({
-            method: 'patch',
+            method: 'put',
             url: 'http://127.0.0.1:5000/reservation/'+row.id,
-            data: data,
+            data: {
+                "table_number":this.props.table_number,
+                "email": data["email"],
+                "number_diner": parseInt(data["diner"]),
+                "datetime": data["date"]+"T"+data["time"],
+                "reservation_notes": data["note"],
+            },
             timeout: 1000,
         })
         .then((response)=>{
@@ -74,7 +91,10 @@ export class ScheduleTable extends React.Component {
                 </Card.Header>
                 <Card.Body>
                     <BootstrapTable data={this.state.reservation} version='4'
-                    cellEdit={ cellEditProp }>
+                    cellEdit={ cellEditProp }
+                    deleteRow
+                    selectRow={ { mode: 'checkbox' } }
+                    options={{ onDeleteRow: this.handleDeleteRow }}>
                         <TableHeaderColumn isKey dataField='id'>#</TableHeaderColumn>
                         <TableHeaderColumn dataField='email'>Name</TableHeaderColumn>
                         <TableHeaderColumn dataField='diner'>Diner</TableHeaderColumn>
