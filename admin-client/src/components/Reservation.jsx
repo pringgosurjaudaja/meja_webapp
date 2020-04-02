@@ -82,12 +82,15 @@ export class Reservation extends React.Component {
         for(let r = 0; r<table_num; ++r) {
             let num = r+1;
             let col = (
-            <Button id={r+1} variant="primary"
-            onClick={(e)=>{
-                this.handleShowReservation(e, num);
-            }}>
-                {r+1}
-            </Button>
+                <Col>
+                    <Button id={r+1} variant="primary"
+                    onClick={(e)=>{
+                        this.handleShowReservation(e, num);
+                    }}>
+                        {r+1}
+                    </Button>
+                </Col>
+            
             );
             cols.push(col);
         }
@@ -100,7 +103,12 @@ export class Reservation extends React.Component {
 
         return (
             <div style={{ display: 'flex', flexFlow: 'row wrap', maxWidth: '100vw' }}>
-                {cols}
+                <Container>
+                <Row>
+                    {cols}
+                </Row>
+                </Container>
+                
                 <ReservationDialog show={this.state.showReservationDialog} onHide={this.handleClose} {...reservationProps}/>
             </div>
         );
