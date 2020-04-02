@@ -3,7 +3,6 @@ import { Card, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { cartOps } from 'src/components/Dashboard';
-import { navigate } from "@reach/router";
 import io from 'socket.io-client';
 import InputNumber from 'rc-input-number';
 import 'rc-input-number/assets/index.css';

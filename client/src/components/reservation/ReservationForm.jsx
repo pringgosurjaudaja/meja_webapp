@@ -6,7 +6,7 @@ import {
     Button,
 } from 'react-bootstrap';
 import 'src/styles/styles.css';
-import { DateTime, moment, axios, _ } from 'src/utilities/helper';
+import { DateTime, moment, axios } from 'src/utilities/helper';
 import { Requests } from 'src/utilities/Requests';
 export class ReservationForm extends React.Component {
 

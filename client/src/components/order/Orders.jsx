@@ -33,7 +33,9 @@ export class Orders extends React.Component {
             case orderStatus.CANCELLED:
                 variant = 'outline-danger';
                 break;
-        }
+            default:
+                break;
+            }
         return (<Button disabled variant={variant}>{currOrderStatus}</Button>)
     }
 

@@ -5,9 +5,7 @@ import {
     Modal,
 } from 'react-bootstrap';
 import 'src/styles/styles.css';
-import { axios } from 'src/utilities/helper';
 import { Requests } from 'src/utilities/Requests';
-import { navigate } from "@reach/router";
 
 export class LoginDialog extends React.Component {
     constructor(props) {

@@ -99,6 +99,8 @@ export class Dashboard extends React.Component {
             case cartOps.DELETE:
                 newCart.delete(orderItem.menu_item._id);
                 break;
+            default:
+                break;
         }
 
         this.setState({ cart: newCart });

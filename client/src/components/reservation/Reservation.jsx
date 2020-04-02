@@ -78,7 +78,6 @@ export class Reservation extends React.Component {
 
     getContainer = (state) => {
         if(state.reserved === false) {
-            console.log(this.props)
             const reservationFormProps = {
                 email: this.state.email,
                 showLogin: this.props.showLogin,
