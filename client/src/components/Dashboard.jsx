@@ -39,7 +39,7 @@ export class Dashboard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            activeTab: tabs.ABOUT,
+            activeTab: tabs.ALL,
             orderList: [],
             cart: new Map(),
             showLoginDialog: false,
