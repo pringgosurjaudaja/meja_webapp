@@ -3,7 +3,7 @@ import { Modal, Button, Card, Alert, InputGroup, FormControl, FormLabel } from '
 import InputNumber from 'rc-input-number';
 import 'rc-input-number/assets/index.css';
 import 'src/styles/styles.css';
-import example from './assets/test.jpg';
+import example from 'src/styles/assets/test.jpg';
 import { cartOps } from 'src/components/Dashboard';
 
 export class MenuItemDialog extends React.Component {

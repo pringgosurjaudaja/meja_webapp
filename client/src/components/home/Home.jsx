@@ -2,8 +2,8 @@ import React from 'react';
 import { Button, Container, Row, Col } from 'react-bootstrap';
 import { navigate } from "@reach/router";
 import 'src/styles/styles.css';
-import logo from "src/components/assets/logo.png";
-import { Requests } from '../utilities/Requests';
+import logo from "src/styles/assets/logo.png";
+import { Requests } from 'src/utilities/Requests';
 
 export class Home extends React.Component {
     constructor(props) {

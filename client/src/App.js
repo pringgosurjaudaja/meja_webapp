@@ -1,10 +1,9 @@
 import React from 'react';
 import { Router } from "@reach/router";
-import { Home }  from 'src/components/Home';
-import { Login } from 'src/components/Login';
-import { Register } from 'src/components/Register';
+import { Home }  from 'src/components/home/Home';
+import { Login } from 'src/components/home/Login';
+import { Register } from 'src/components/home/Register';
 import { Dashboard } from 'src/components/Dashboard';
-import { Reservation } from 'src/components/Reservation';
 
 class App extends React.Component {  
 	constructor(props) {
@@ -26,7 +25,7 @@ class App extends React.Component {
 			<Home path="/" setSessionId={this.setSessionId} />
 			<Login path="/login" setSessionId={this.setSessionId} />
 			<Register path="/register" />      
-			<Dashboard path="/dashboard" sessionId={this.state.sessionId} />
+			<Dashboard path="/dashboard" sessionId={this.state.sessionId} setSessionId={this.setSessionId}  />
 		</Router>
 		)
 	}

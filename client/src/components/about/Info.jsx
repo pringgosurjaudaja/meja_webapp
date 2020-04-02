@@ -1,49 +1,25 @@
-
 import React from 'react';
 import { 
     Button,
     Form,
     Row,
     Col,
-    Container,
-    Card,
 } from 'react-bootstrap';
-import { axios, _ } from 'src/utilities/helper';
-import { Requests } from 'src/utilities/Requests'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
-import StarRatings from 'react-star-ratings';
+import { axios, _ } from 'src/utilities/helper';
 
-export class About extends React.Component {
-    
+export class Info extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             phone: '',
             message: '',
             showNotif: false,
-            zomato: [],
-        }
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.showNotification = this.showNotification.bind(this);
-    }
-
-    componentDidMount() {
-        this.getReviews();
-    }
-
-    getReviews = async () => {
-        try {
-            const reviews = await Requests.getReviews();
-            const reviewCards = reviews.map((item, index) => this.reviewCard(item, index));
-            this.setState({ zomato: reviewCards });
-        } catch(err) {
-            console.error(err);
         }
     }
-    
-    handleChange(event) {
+        
+    handleChange = (event) => {
         if(event.target.name === "phone") {
             this.setState({ phone: event.target.value });
         } else if(event.target.name === "message") {
@@ -51,7 +27,7 @@ export class About extends React.Component {
         }
     }
 
-    handleSubmit(event) {
+    handleSubmit = (event) => {
         event.preventDefault();
         const phone = _.get(this.state, 'phone', '');
         const message = _.get(this.state, 'message', '');
@@ -69,7 +45,7 @@ export class About extends React.Component {
         })
     }
 
-    showNotification() {
+    showNotification = () => {
         console.log(this.state);
         this.setState({
             showNotif: true,
@@ -81,39 +57,15 @@ export class About extends React.Component {
             });
           }, 2000);
     }
+    
+    render () {
 
-    reviewCard = (item, index) => {
-        return (<Row key={index}>
-                <Col>
-                <Card style={{ width: '100%' }}>
-                    <Card.Body>
-                        <Card.Title>{item.review.user.name}</Card.Title>
-                        <Card.Subtitle>{item.review.review_time_friendly}</Card.Subtitle>
-                        <Card.Text>
-                            {item.review.review_text}
-                        </Card.Text>
-                        <StarRatings
-                            rating={item.review.rating}
-                            starRatedColor="yellow"
-                            starDimension="25px"
-                            changeRating={this.changeRating}
-                            numberOfStars={5}
-                            name='rating'
-                            />
-                    </Card.Body>
-                    </Card>
-                </Col>
-            </Row>);
-    }
-
-    render() {
         const phone = _.get(this.state, "phone", '0000000000');
         const message = encodeURI(_.get(this.state, "message", ''));
         const url = 'https://api.whatsapp.com/send?phone='+phone+'&text='+encodeURI(message);
 
-        // const starRatings = require('node_modules/react-star-ratings');
         return (
-            <Container className="layout--padding--menu">
+            <div>
                 <Row>
                     <Col>
                         <h2>About</h2>
@@ -133,9 +85,9 @@ export class About extends React.Component {
                 </Row>
                 <Row>
                     <Col>
-                        <iframe width="350" height="350" frameBorder="0" style={{ "border" :0 }}
-                        src="https://www.google.com/maps/embed/v1/place?q=place_id:ChIJK30OsXOuEmsRUFqrA4_uz5M&key=AIzaSyAmrFFscJSU2dLMF4TJDSBya4xq2heAOQQ"
-                        allowFullScreen></iframe>
+                        <iframe title={"map"} width="350" height="350" frameBorder="0" style={{ "border" :0 }}
+                            src="https://www.google.com/maps/embed/v1/place?q=place_id:ChIJK30OsXOuEmsRUFqrA4_uz5M&key=AIzaSyAmrFFscJSU2dLMF4TJDSBya4xq2heAOQQ"
+                            allowFullScreen></iframe>
                     </Col>
                     
                 </Row>
@@ -168,32 +120,7 @@ export class About extends React.Component {
                         </Form>
                     </Col>
                 </Row>
-                <Row className="zomato-review--title">
-                    <Col> <h3><img className="br3" src="https://b.zmtcdn.com/images/logo/zomato_flat_bg_logo.svg" alt="Find the best restaurants, cafés, and bars in Sydney" width="60px"/> Zomato Reviews</h3></Col>
-                </Row>
-                {/* <Row>
-                    <Col>
-                      <Card style={{ width: '100%' }}>
-                        <Card.Body>
-                            <Card.Title>Card Title</Card.Title>
-                            <Card.Subtitle>Date</Card.Subtitle>
-                            <Card.Text>
-                            Some quick example text to build on the card title and make up the bulk of
-                            the card's content.
-                            </Card.Text>
-                            <StarRatings
-                                rating={4}
-                                starRatedColor="yellow"
-                                changeRating={this.changeRating}
-                                numberOfStars={5}
-                                name='rating'
-                                />
-                        </Card.Body>
-                        </Card>
-                    </Col>
-                </Row> */}
-                {this.state.zomato}
-            </Container>
-        );
+            </div>
+        )
     }
 }

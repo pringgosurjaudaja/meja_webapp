@@ -2,14 +2,14 @@ import React from 'react';
 import { Tabs, Tab, Nav } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'
-import { Menu } from 'src/components/Menu';
-import { Checkout } from 'src/components/Checkout';
+import { Menu } from 'src/components/menu/Menu';
+import { Checkout } from 'src/components/checkout/Checkout';
 import { navigate, Redirect } from "@reach/router";
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
-import { About } from 'src/components/About';
-import { Orders } from 'src/components/Orders';
-import { Reservation } from 'src/components/Reservation';
-import { LoginDialog } from 'src/components/LoginDialog';
+import { About } from 'src/components/about/About';
+import { Orders } from 'src/components/order/Orders';
+import { Reservation } from 'src/components/reservation/Reservation';
+import { LoginDialog } from 'src/components/reservation/LoginDialog';
 import { Requests } from 'src/utilities/Requests';
 import io from 'socket.io-client';
 import 'src/styles/styles.css';
@@ -43,6 +43,7 @@ export class Dashboard extends React.Component {
             orderList: [],
             cart: new Map(),
             showLoginDialog: false,
+            reservation: {},
         };
         this.socket = io.connect('http://127.0.0.1:5000/');
     }
@@ -51,6 +52,11 @@ export class Dashboard extends React.Component {
         this.getOrderList().then(orderList => {
             this.setState({ orderList: orderList })
         });
+
+        // this.getReservationList().then(reservationList => {
+        //     this.getCurrentReservation(reservationList);
+        // });
+        
         this.setupSockets();
     }
 
@@ -59,6 +65,7 @@ export class Dashboard extends React.Component {
         const session = sessionId && await Requests.getSession(sessionId);
         return session ? session.order_list : [];
     }
+
 
     setupSockets = () => {
         this.socket.on('updateOrders', async (order) => {
@@ -204,7 +211,9 @@ export class Dashboard extends React.Component {
                         <Reservation {...reservationProps}/>
                     </Tab>
                 </Tabs>
-                <LoginDialog show={this.state.showLoginDialog} onHide={()=>this.setState({ showLoginDialog:false })}/>
+                <LoginDialog show={this.state.showLoginDialog} 
+                setSessionId={this.props.setSessionId}
+                onHide={()=>this.setState({ showLoginDialog:false })}/>
             </div>
 
 

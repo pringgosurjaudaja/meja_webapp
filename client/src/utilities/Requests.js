@@ -20,6 +20,21 @@ export class Requests {
         }
     }
     
+    static async getAuth(apiKey) {
+        try {
+            const allSession = await axios ({
+                method: 'get',
+                url: BASE_URL + '/auth',
+                headers: {
+                    'X-API-KEY': apiKey
+                }
+            });
+            return allSession.data;
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
     static async getSession(sessionId) {
         try {
             const sessionRequest = await axios({
@@ -74,6 +89,18 @@ export class Requests {
 
         } catch(err) {
             console.error(err);
+        }
+    }
+
+    static async getReservation() {
+        try {
+            const reservation = await axios({
+                method: 'get',
+                url: BASE_URL + '/reservation',
+            });
+            return reservation.data;
+        } catch (err) {
+            console.log(err);
         }
     }
 }
