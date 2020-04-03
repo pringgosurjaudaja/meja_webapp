@@ -2,8 +2,7 @@ import React from 'react';
 import { Card, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { cartOps } from 'components/Dashboard';
-import { navigate } from "@reach/router";
+import { cartOps } from 'src/components/Dashboard';
 import io from 'socket.io-client';
 import InputNumber from 'rc-input-number';
 import 'rc-input-number/assets/index.css';
@@ -24,7 +23,7 @@ export class Checkout extends React.Component {
     getTotal() {
         let total = 0;
         this.props.cart.forEach(item => {
-            total += item.menuItem.price * item.quantity;
+            total += item.menu_item.price * item.quantity;
         });
         return total;
     }
@@ -53,8 +52,8 @@ export class Checkout extends React.Component {
                                 onClick={() => this.handleDeleteItem(item)} 
                             />
                         </div>
-                        <Card.Title>{item.menuItem.name}</Card.Title>
-                        <Card.Subtitle>$ {item.menuItem.price}</Card.Subtitle>
+                        <Card.Title>{item.menu_item.name}</Card.Title>
+                        <Card.Subtitle>$ {item.menu_item.price}</Card.Subtitle>
                         <Card.Text>{item.notes}</Card.Text>
                         <br></br>
                         <InputNumber 

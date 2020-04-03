@@ -1,7 +1,7 @@
 import React from 'react';
-import { MenuItemDialog } from 'components/MenuItemDialog';
+import { MenuItemDialog } from 'src/components/menu/MenuItemDialog';
 import { Card } from 'react-bootstrap';
-import example from './assets/test.jpg';
+import example from 'src/styles/assets/test.jpg';
 
 export class MenuItem extends React.Component {
     constructor(props) {
@@ -26,16 +26,17 @@ export class MenuItem extends React.Component {
                     <Card.Img className="menu-item--photo" variant="top" src={example} />
                     <Card.Body>
                         <Card.Title className="menu-item--title">{item.name}</Card.Title>
-                        <Card.Text className="menu-item--text">
-                            {item.description}
-                        </Card.Text>
+                        <Card.Text className="menu-item--text">{item.description}</Card.Text>
+                        <div align="right"><Card.Text>$ {item.price}</Card.Text></div>
                     </Card.Body>
 
                 </Card>
                 {/* Insert menu item props here */}
                 <MenuItemDialog 
                     item={item} 
-                    updateCart={this.props.updateCart} 
+                    itemInCart={this.props.itemInCart}
+                    updateCart={this.props.updateCart}
+                    handleClose={this.handleClose}
                     show={this.state.showDialog} 
                     onHide={this.handleClose} 
                 />

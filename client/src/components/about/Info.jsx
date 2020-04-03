@@ -1,20 +1,15 @@
-
 import React from 'react';
 import { 
     Button,
     Form,
     Row,
     Col,
-    Container,
-    Alert,
 } from 'react-bootstrap';
-import { axios, _ } from 'utilities/helper';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
+import { axios, _ } from 'src/utilities/helper';
 
-export class About extends React.Component {
-    
+export class Info extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -22,12 +17,9 @@ export class About extends React.Component {
             message: '',
             showNotif: false,
         }
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.showNotification = this.showNotification.bind(this);
     }
-    
-    handleChange(event) {
+        
+    handleChange = (event) => {
         if(event.target.name === "phone") {
             this.setState({ phone: event.target.value });
         } else if(event.target.name === "message") {
@@ -35,7 +27,7 @@ export class About extends React.Component {
         }
     }
 
-    handleSubmit(event) {
+    handleSubmit = (event) => {
         event.preventDefault();
         const phone = _.get(this.state, 'phone', '');
         const message = _.get(this.state, 'message', '');
@@ -53,7 +45,7 @@ export class About extends React.Component {
         })
     }
 
-    showNotification() {
+    showNotification = () => {
         console.log(this.state);
         this.setState({
             showNotif: true,
@@ -65,14 +57,15 @@ export class About extends React.Component {
             });
           }, 2000);
     }
-
-    render() {
+    
+    render () {
 
         const phone = _.get(this.state, "phone", '0000000000');
         const message = encodeURI(_.get(this.state, "message", ''));
         const url = 'https://api.whatsapp.com/send?phone='+phone+'&text='+encodeURI(message);
+
         return (
-            <Container className="layout--padding--menu">
+            <div>
                 <Row>
                     <Col>
                         <h2>About</h2>
@@ -92,9 +85,9 @@ export class About extends React.Component {
                 </Row>
                 <Row>
                     <Col>
-                        <iframe width="350" height="350" frameBorder="0" style={{ "border" :0 }}
-                        src="https://www.google.com/maps/embed/v1/place?q=place_id:ChIJK30OsXOuEmsRUFqrA4_uz5M&key=AIzaSyAmrFFscJSU2dLMF4TJDSBya4xq2heAOQQ"
-                        allowFullScreen></iframe>
+                        <iframe title={"map"} width="350" height="350" frameBorder="0" style={{ "border" :0 }}
+                            src="https://www.google.com/maps/embed/v1/place?q=place_id:ChIJK30OsXOuEmsRUFqrA4_uz5M&key=AIzaSyAmrFFscJSU2dLMF4TJDSBya4xq2heAOQQ"
+                            allowFullScreen></iframe>
                     </Col>
                     
                 </Row>
@@ -127,8 +120,7 @@ export class About extends React.Component {
                         </Form>
                     </Col>
                 </Row>
-                
-            </Container>
-        );
+            </div>
+        )
     }
 }

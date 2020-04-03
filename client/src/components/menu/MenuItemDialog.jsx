@@ -2,16 +2,15 @@ import React from 'react';
 import { Modal, Button, Card, Alert, InputGroup, FormControl, FormLabel } from 'react-bootstrap';
 import InputNumber from 'rc-input-number';
 import 'rc-input-number/assets/index.css';
-import 'styles/styles.css';
-import example from './assets/test.jpg';
-import { cartOps } from 'components/Dashboard';
+import 'src/styles/styles.css';
+import example from 'src/styles/assets/test.jpg';
+import { cartOps } from 'src/components/Dashboard';
 
 export class MenuItemDialog extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            addedToCart: false,
             quantity: 1,
             notes: ''
         }
@@ -27,20 +26,20 @@ export class MenuItemDialog extends React.Component {
 
     handleAddToCart = () => {
         const orderItem = {
-            menuItem: this.props.item,
+            menu_item: this.props.item,
             quantity: this.state.quantity,
             notes: this.state.notes
-        }
-        this.props.updateCart(orderItem, cartOps.ADD)
-        this.setState({ addedToCart: true });
+        };
+        this.props.updateCart(orderItem, cartOps.ADD);
+        this.props.handleClose();
     }
 
     render() {
-        const { item, show, onHide } = this.props;
+        const { item, show, onHide, itemInCart } = this.props;
 
         return (
             <div>
-                <Modal 
+                {item && <Modal 
                     dialogClassName='menu-item-dialog' 
                     show={show} 
                     onHide={onHide}
@@ -49,10 +48,11 @@ export class MenuItemDialog extends React.Component {
 
                     <Modal.Body>
                         <Card.Img variant="top" src={example} />
-
+                        
                         {/* Title & Description */}
                         <Modal.Title>{item.name}</Modal.Title>
                         <p>{item.description}</p>
+                        <p>$ {item.price}</p>
                         
                         {/* Notes for Menu Item */}
                         <FormLabel>Add notes</FormLabel>
@@ -71,10 +71,10 @@ export class MenuItemDialog extends React.Component {
                             min={1} 
                             defaultValue={1} 
                         />
-
+                        <br></br>
                         <Button 
                             onClick={this.handleAddToCart} 
-                            disabled={this.state.addedToCart} 
+                            disabled={itemInCart(item)} 
                             data-dismiss="modal" 
                             variant="primary"
                         >
@@ -82,7 +82,7 @@ export class MenuItemDialog extends React.Component {
                         </Button>
 
                         {/* Successfully Added Alert */}
-                        {this.state.addedToCart &&
+                        {itemInCart(item) &&
                             <Alert variant="success">
                                 Added to cart.
                             </Alert>}
@@ -93,7 +93,7 @@ export class MenuItemDialog extends React.Component {
                             Close
                         </Button>
                     </Modal.Footer>
-                </Modal>
+                </Modal>}
             </div>
         )
     }
