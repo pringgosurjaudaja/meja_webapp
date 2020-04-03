@@ -9,7 +9,7 @@ import json
 from db import db_client
 import os
 from dotenv import load_dotenv
-
+import re
 load_dotenv()
 
 menu_db = db_client.menu
@@ -84,10 +84,11 @@ def get_menu_category():
     data = request.get_json(silent=True)
     print(data['queryResult']['parameters'])
     if 'menu_item' in data['queryResult']['parameters']:
-        menu_item = data['queryResult']['parameters']['menu_item']
+        menu_item_raw = data['queryResult']['parameters']['menu_item']
+        # menu_item = string.capwords(menu_item_raw)
         menu_item_queried = menu_db.aggregate([
                 {'$unwind': '$menu_items'},
-                {'$match':{"menu_items.name": menu_item}},
+                {'$match':{"menu_items.name": re.compile(menu_item_raw, re.IGNORECASE)}},
                 
                 {'$project': {
                             'name': '$menu_items.name',
@@ -95,16 +96,38 @@ def get_menu_category():
                 }}
         ])
         item = menu_item_queried.next()
+        item_string = """
+            Item name: {0},
+            Price: ${1}
+        """.format(item['name'], item['price'])
         reply = {
-            'fulfillmentText': str(item),
+            'fulfillmentText': item_string,
         }
+        print(reply)
         return jsonify(reply)
-    menu_category = data['queryResult']['parameters']['menu_category']
-    category = menu_db.find_one({'name': menu_category})
-    category['_id'] = str(category['_id'])
-    reply = {
-        'fulfillmentText': str(category),
-    }
+    elif('menu_category' in data['queryResult']['parameters']):
+        menu_category = data['queryResult']['parameters']['menu_category']
+        category = menu_db.find_one({'name': re.compile(menu_category, re.IGNORECASE)})
+        menu_items = []
+        for x in category['menu_items']:
+            menu_items.append(x['name'])
+        print(menu_items)
+        category['_id'] = str(category['_id'])
+        reply = {
+            'fulfillmentText': str(menu_items),
+        }
+    elif('menu_category_general' in data['queryResult']['parameters']):
+        category = menu_db.find({})
+        print(category)
+        menu_items=""
+        for x in category:
+            print(x['name'])
+            menu_items+=x['name']
+            menu_items+=', '
+        menu_items = menu_items[:-2]
+        reply = {
+            'fulfillmentText': str(menu_items)
+        }
     # print(reply)
     return jsonify(reply)
 
