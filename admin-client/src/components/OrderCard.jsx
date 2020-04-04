@@ -34,9 +34,16 @@ export class OrderCard extends React.Component {
         let orderStart = new Date(order.timestamp);
         let secondsElapsed = Math.floor((this.state.currentTime - orderStart.getTime()) / 1000);
         let minutes = Math.floor(secondsElapsed / 60);
+        let hours = Math.floor(secondsElapsed / 3600);
+        minutes -= hours * 60;
         let seconds = secondsElapsed % 60;
 
-        return `${minutes} min ${seconds < 10 ? '0' + seconds : seconds} sec`;
+        let time = '';
+        if (hours > 0)    time += `${hours} hours `;
+        if (minutes > 0)  time += `${minutes} minutes `;
+        if (seconds > 0)  time += `${seconds} seconds `;
+
+        return time;
     }
 
     handleStatusChange = (newStatus) => {
@@ -80,7 +87,8 @@ export class OrderCard extends React.Component {
                     <Card.Title>Order</Card.Title>
                     <Card.Subtitle>#{order._id}</Card.Subtitle>
                     {this.orderStatusButtons(order)}
-                    <Card.Subtitle>Time Elapsed: {this.getTimeElapsed(order)}</Card.Subtitle>
+                    <Card.Subtitle>Time Elapsed:</Card.Subtitle>
+                    <Card.Text>{this.getTimeElapsed(order)}</Card.Text>
                 </Card.Header>
                 <Card.Body>
                     <Table>

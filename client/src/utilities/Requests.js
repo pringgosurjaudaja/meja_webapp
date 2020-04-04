@@ -66,6 +66,8 @@ export class Requests {
             return sessionId;
         } catch(err) {
             console.error(err);
+            localStorage.removeItem('sessionId');
+            navigate('/');
         }
     }
 
@@ -79,6 +81,8 @@ export class Requests {
             return request.data.inserted._id;
         } catch(err) {
             console.error(err)
+            localStorage.removeItem('sessionId');
+            navigate('/');
         }
     }
 
