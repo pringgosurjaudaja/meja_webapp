@@ -112,9 +112,9 @@ export class Dashboard extends React.Component {
     }
 
     // #region Event Handlers
-    handleSelect = (event) => {
+    handleNavSelect = (event) => {
         if (event === 'logout') {
-            sessionStorage.clear();
+            localStorage.removeItem('sessionId');
             navigate('/');
         }
     }
@@ -155,7 +155,7 @@ export class Dashboard extends React.Component {
     // #endregion
 
     render() {
-        if (!sessionStorage.getItem('sessionId')) {
+        if (!localStorage.getItem('sessionId')) {
             console.log('No session ID assigned');
             // Invalid Session or Session has Expired
             return <Redirect to='/' noThrow />;
@@ -167,7 +167,7 @@ export class Dashboard extends React.Component {
 
         return (
             <div>
-                <Nav className="justify-content-end" onSelect={this.handleSelect}>
+                <Nav className="justify-content-end" onSelect={this.handleNavSelect}>
                     <Nav.Item>
                         <Nav.Link eventKey="logout">
                             <FontAwesomeIcon 

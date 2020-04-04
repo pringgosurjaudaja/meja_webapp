@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Container, Row, Col } from 'react-bootstrap';
-import { navigate } from "@reach/router";
+import { navigate, Redirect } from "@reach/router";
 import 'src/styles/styles.css';
 import logo from "src/styles/assets/logo.png";
 import { Requests } from 'src/utilities/Requests';
@@ -16,12 +16,6 @@ export class Home extends React.Component {
     componentDidMount() {
         let tmp = document.getElementsByTagName('body')[0];
         tmp.setAttribute('class', 'layout--background');
-
-        const sessionId = sessionStorage.getItem('sessionId');
-        if (sessionId && Requests.getSession(sessionId)) {
-            this.props.setSessionId(sessionId);
-            navigate('/dashboard');
-        }
     }
 
     handleContinueAsGuest = async () => {
@@ -36,6 +30,13 @@ export class Home extends React.Component {
 
     render() {
         const imageAlt = "Meja Logo"
+
+        const sessionId = localStorage.getItem('sessionId');
+        if (sessionId && Requests.getSession(sessionId)) {
+            this.props.setSessionId(sessionId);
+            return (<Redirect to='/dashboard' noThrow />)
+        }
+
         return (
             <Container fluid className="l-home">
                 <Row className="l-home__row">
