@@ -95,8 +95,8 @@ body {
 }
 
 .layout--background {
-    background: url(../styles/assets/bg-app.png) no-repeat center center fixed;
-    background-size: auto 100%;
+    background: url(../styles/assets/bg-app2.jpg) no-repeat center center fixed;
+    background-size: auto 100%;;
 }
 
 .container-home {

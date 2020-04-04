@@ -51,7 +51,7 @@ export class Home extends React.Component {
                     <Col xs={3} md={3}></Col>
                 </Row>
                 <Row className="l-home__row">
-                    <Col xs={3} md={3}></Col>
+                    <Col></Col>
                     <Col>
                         <Button variant="primary"
                             className="big-button big-button--text big-button--sign-in"
@@ -60,11 +60,11 @@ export class Home extends React.Component {
                         </Button>
 
                     </Col>
-                    <Col xs={3} md={3}></Col>
+                    <Col></Col>
 
                 </Row>
                 <Row className="l-home__row">
-                    <Col xs={3} md={3}></Col>
+                    <Col></Col>
                     <Col>
                         <Button variant="primary"
                             className="big-button big-button--text big-button--register"
@@ -72,11 +72,12 @@ export class Home extends React.Component {
                             REGISTER
                         </Button>
                     </Col>
-                    <Col xs={3} md={3}></Col>
+                    <Col></Col>
 
                 </Row>
 
                 <Row>
+                    <Col xs={3} md={3}></Col>
                     <Col>
                         <hr className="divider" />
                     </Col>
@@ -88,9 +89,11 @@ export class Home extends React.Component {
                     <Col>
                         <hr className="divider" />
                     </Col>
+
+                    <Col xs={3} md={3}></Col>
                 </Row>
                 <Row className="l-home__row">
-                    <Col xs={3} md={3}></Col>
+                    <Col></Col>
                     <Col>
                         <Button variant="secondary"
                             className="big-button big-button--text big-button--continue"
@@ -98,7 +101,7 @@ export class Home extends React.Component {
                             CONTINUE AS GUEST
                         </Button>
                     </Col>
-                    <Col xs={3} md={3}></Col>
+                    <Col></Col>
                 </Row>
 
                 {/* <Row className="l-home__row">

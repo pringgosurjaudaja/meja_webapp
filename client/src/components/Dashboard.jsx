@@ -1,7 +1,7 @@
 import React from 'react';
-import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { Nav, Navbar } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faShoppingCart, faBars } from '@fortawesome/free-solid-svg-icons'
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 import { Menu } from 'src/components/menu/Menu';
 import { Checkout } from 'src/components/checkout/Checkout';
 import { navigate, Redirect } from "@reach/router";
