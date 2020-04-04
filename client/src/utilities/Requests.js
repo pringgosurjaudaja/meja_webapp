@@ -1,4 +1,5 @@
 import { axios } from './helper';
+import { navigate } from '@reach/router';
 
 const BASE_URL = 'http://127.0.0.1:5000';
 
@@ -44,6 +45,8 @@ export class Requests {
             return sessionRequest.data;
         } catch(err) {
             console.error(err);
+            localStorage.removeItem('sessionId');
+            navigate('/');
         }
     }
 

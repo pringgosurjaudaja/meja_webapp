@@ -5,6 +5,21 @@ import { orderStatus } from 'components/Dashboard';
 export class OrderCard extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            currentTime: Date.now()
+        }
+    }
+
+    componentDidMount() {
+        this.timeElapsed = setInterval(() => this.tick(), 1000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.timeElapsed);
+    }
+
+    tick = () => {
+        this.setState({ currentTime: Date.now() });
     }
 
     getTotal = (order) => {
@@ -13,6 +28,15 @@ export class OrderCard extends React.Component {
             total += orderItem.quantity * orderItem.menu_item.price;
         });
         return total;
+    }
+
+    getTimeElapsed = (order) => {
+        let orderStart = new Date(order.timestamp);
+        let secondsElapsed = Math.floor((this.state.currentTime - orderStart.getTime()) / 1000);
+        let minutes = Math.floor(secondsElapsed / 60);
+        let seconds = secondsElapsed % 60;
+
+        return `${minutes} min ${seconds < 10 ? '0' + seconds : seconds} sec`;
     }
 
     handleStatusChange = (newStatus) => {
@@ -56,6 +80,7 @@ export class OrderCard extends React.Component {
                     <Card.Title>Order</Card.Title>
                     <Card.Subtitle>#{order._id}</Card.Subtitle>
                     {this.orderStatusButtons(order)}
+                    <Card.Subtitle>Time Elapsed: {this.getTimeElapsed(order)}</Card.Subtitle>
                 </Card.Header>
                 <Card.Body>
                     <Table>

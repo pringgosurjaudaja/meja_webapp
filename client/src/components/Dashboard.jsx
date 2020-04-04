@@ -154,11 +154,11 @@ export class Dashboard extends React.Component {
     // #endregion
 
     render() {
-        if (!localStorage.getItem('sessionId')) {
-            console.log('No session ID assigned');
-            // Invalid Session or Session has Expired
-            return <Redirect to='/' noThrow />;
-        }
+        // if (!localStorage.getItem('sessionId')) {
+        //     console.log('No session ID assigned');
+        //     // Invalid Session or Session has Expired
+        //     return <Redirect to='/' noThrow />;
+        // }
 
         const reservationProps = {
             showLogin: this.showLogin,
