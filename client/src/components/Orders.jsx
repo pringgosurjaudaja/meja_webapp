@@ -14,7 +14,11 @@ export class Orders extends React.Component {
     getGrandTotal = () => {
         // Sums up the total of all the orders
         return this.props.orderList
-                    .map(order => this.getTotal(order))
+                    .map(order => {
+                        return order.status === orderStatus.CANCELLED ? 
+                               0 : 
+                               this.getTotal(order)
+                    })
                     .reduce((a, b) => a + b, 0);
     }
 

@@ -103,9 +103,9 @@ export class Dashboard extends React.Component {
     }
 
     // #region Event Handlers
-    handleSelect = (event) => {
+    handleNavSelect = (event) => {
         if (event === 'logout') {
-            sessionStorage.clear();
+            localStorage.removeItem('sessionId');
             navigate('/');
         }
     }
@@ -158,7 +158,7 @@ export class Dashboard extends React.Component {
 
         return (
             <div>
-                <Nav className="justify-content-end" onSelect={this.handleSelect}>
+                <Nav className="justify-content-end" onSelect={this.handleNavSelect}>
                     <Nav.Item>
                         <Nav.Link eventKey="logout">
                             <FontAwesomeIcon 

@@ -99,8 +99,8 @@ export class Dashboard extends React.Component {
     handleSelect = (event) => {
         console.log(event);
         if(event === 'logout') {
-            navigate('/login');
-            localStorage.removeItem('sessionId');
+            // localStorage.removeItem('sessionId');
+            navigate('/');
         }
     }
 
