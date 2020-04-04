@@ -17,7 +17,7 @@ export class Home extends React.Component {
         let tmp = document.getElementsByTagName('body')[0];
         tmp.setAttribute('class', 'layout--background');
 
-        const sessionId = sessionStorage.getItem('sessionId');
+        const sessionId = localStorage.getItem('sessionId');
         if (sessionId && Requests.getSession(sessionId)) {
             this.props.setSessionId(sessionId);
             navigate('/dashboard');

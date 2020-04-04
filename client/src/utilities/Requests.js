@@ -44,7 +44,7 @@ export class Requests {
                 }
             });
             const sessionId = sessionRequest.data.session_id;
-            sessionStorage.setItem('sessionId', sessionId);
+            localStorage.setItem('sessionId', sessionId);
             return sessionId;
         } catch(err) {
             console.error(err);

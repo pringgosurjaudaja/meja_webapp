@@ -100,7 +100,7 @@ export class Dashboard extends React.Component {
         console.log(event);
         if(event === 'logout') {
             navigate('/login');
-            sessionStorage.removeItem('AUTH_KEY');
+            localStorage.removeItem('sessionId');
         }
     }
 
