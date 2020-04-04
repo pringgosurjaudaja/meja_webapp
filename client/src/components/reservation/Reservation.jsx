@@ -33,7 +33,7 @@ export class Reservation extends React.Component {
     }
 
     getEmail = async () => {
-        const sessionId = sessionStorage.getItem('sessionId');
+        const sessionId = localStorage.getItem('sessionId');
         const session = await Requests.getSession(sessionId);
         const allSession = await Requests.getAuth(sessionId);
         allSession && allSession.forEach(async (sess) => {
@@ -62,7 +62,7 @@ export class Reservation extends React.Component {
             url: url+id,
             timeout: 1000,
             header: {
-                "x-api-key": sessionStorage.getItem('sessionId'),
+                "x-api-key": localStorage.getItem('sessionId'),
                 "Content-Type": "application/json"
             }
         })

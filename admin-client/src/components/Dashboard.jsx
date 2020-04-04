@@ -76,10 +76,15 @@ export class Dashboard extends React.Component {
         });
     }
 
-    handleChangeOrderStatus = async (newStatus, orderNumber) => {
+    handleChangeOrderStatus = async (newStatus, orderId) => {
         const newOrders = [...this.state.orders];
-        const orderToChange = newOrders[orderNumber]
-        orderToChange.status = newStatus;
+        for (let order of newOrders) {
+            if (order._id === orderId) {
+                order.status = newStatus;
+                break;
+            }
+        }
+
         this.setState({
             orders: newOrders
         });
@@ -88,20 +93,19 @@ export class Dashboard extends React.Component {
             // Update status of the order in the database
             await axios({
                 method: 'patch',
-                url: 'http://127.0.0.1:5000/session/order/' + orderToChange._id,
+                url: 'http://127.0.0.1:5000/session/order/' + orderId,
                 data: { status: newStatus }
             });
-            this.socket.emit('orderUpdated', orderToChange);
+            this.socket.emit('orderUpdated', orderId);
         } catch(err) {
             console.error(err);
         }
     }
 
     handleSelect = (event) => {
-        console.log(event);
         if(event === 'logout') {
-            navigate('/login');
-            sessionStorage.removeItem('AUTH_KEY');
+            // localStorage.removeItem('sessionId');
+            navigate('/');
         }
     }
 

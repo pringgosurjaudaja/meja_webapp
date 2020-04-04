@@ -14,7 +14,11 @@ export class Orders extends React.Component {
     getGrandTotal = () => {
         // Sums up the total of all the orders
         return this.props.orderList
-                    .map(order => this.getTotal(order))
+                    .map(order => {
+                        return order.status === orderStatus.CANCELLED ? 
+                               0 : 
+                               this.getTotal(order)
+                    })
                     .reduce((a, b) => a + b, 0);
     }
 
@@ -22,21 +26,21 @@ export class Orders extends React.Component {
         let variant;
         switch (currOrderStatus) {
             case orderStatus.ORDERED:
-                variant = 'outline-warning';
+                variant = 'warning';
                 break;
             case orderStatus.PROGRESS:
-                variant = 'outline-primary';
+                variant = 'primary';
                 break;
             case orderStatus.COMPLETED:
-                variant = 'outline-success';
+                variant = 'success';
                 break;
             case orderStatus.CANCELLED:
-                variant = 'outline-danger';
+                variant = 'danger';
                 break;
             default:
                 break;
             }
-        return (<Button disabled variant={variant}>{currOrderStatus}</Button>)
+        return (<Button variant={variant}>{currOrderStatus}</Button>)
     }
 
     // #region Component Rendering

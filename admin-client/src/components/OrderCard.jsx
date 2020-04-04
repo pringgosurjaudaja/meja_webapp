@@ -39,7 +39,7 @@ export class OrderCard extends React.Component {
                     key={i}
                     style={{ margin: '10px' }}
                     variant={buttonVariant}
-                    onClick={() => changeOrderStatus(status, orderNumber)}
+                    onClick={() => changeOrderStatus(status, order._id)}
                 >
                     {status}
                 </Button>;

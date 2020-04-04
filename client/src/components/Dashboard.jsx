@@ -52,17 +52,16 @@ export class Dashboard extends React.Component {
         this.getOrderList().then(orderList => {
             this.setState({ orderList: orderList })
         });
-
-        // this.getReservationList().then(reservationList => {
-        //     this.getCurrentReservation(reservationList);
-        // });
-
+        
         this.setupSockets();
     }
 
     getOrderList = async () => {
-        const sessionId = this.props.sessionId;
-        const session = sessionId && await Requests.getSession(sessionId);
+        const sessionId = localStorage.getItem('sessionId');
+        if (!sessionId) {
+            return [];
+        }
+        const session = await Requests.getSession(localStorage.getItem('sessionId'));
         return session ? session.order_list : [];
     }
 
@@ -112,9 +111,9 @@ export class Dashboard extends React.Component {
     }
 
     // #region Event Handlers
-    handleSelect = (event) => {
+    handleNavSelect = (event) => {
         if (event === 'logout') {
-            sessionStorage.clear();
+            localStorage.removeItem('sessionId');
             navigate('/');
         }
     }
@@ -128,7 +127,7 @@ export class Dashboard extends React.Component {
         // Send order to be stored in database
         try {
             // Add given generated order id
-            const orderId = await Requests.addOrder(this.props.sessionId, order);
+            const orderId = await Requests.addOrder(localStorage.getItem('sessionId'), order);
             order['_id'] = orderId;
 
             // Inform staff of new customer order
@@ -155,7 +154,7 @@ export class Dashboard extends React.Component {
     // #endregion
 
     render() {
-        if (!sessionStorage.getItem('sessionId')) {
+        if (!localStorage.getItem('sessionId')) {
             console.log('No session ID assigned');
             // Invalid Session or Session has Expired
             return <Redirect to='/' noThrow />;
