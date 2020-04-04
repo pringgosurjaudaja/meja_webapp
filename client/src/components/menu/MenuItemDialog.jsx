@@ -46,7 +46,7 @@ export class MenuItemDialog extends React.Component {
                 >
                     <Modal.Header closeButton />
 
-                    <Modal.Body>
+                    <Modal.Body closeButton>
                         <Card.Img variant="top" src={example} />
                         
                         {/* Title & Description */}
