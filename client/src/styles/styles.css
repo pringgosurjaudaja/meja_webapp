@@ -11,6 +11,12 @@ body {
     border-color: #000000 !important;
 }
 
+.form-control {
+    border-radius: 0px !important;
+    border: none !important;
+    border-bottom: 1px solid #000000 !important;
+}
+
 .nav-tabs {
     font-size: 12px !important;
     padding: 0px !important;

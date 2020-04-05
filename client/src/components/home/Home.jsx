@@ -77,7 +77,7 @@ export class Home extends React.Component {
                 </Row>
 
                 <Row>
-                    <Col xs={3} md={3}></Col>
+                    <Col  xs={3} md={3}></Col>
                     <Col>
                         <hr className="divider" />
                     </Col>
