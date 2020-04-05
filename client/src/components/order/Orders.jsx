@@ -26,21 +26,21 @@ export class Orders extends React.Component {
         let variant;
         switch (currOrderStatus) {
             case orderStatus.ORDERED:
-                variant = 'outline-warning';
+                variant = 'warning';
                 break;
             case orderStatus.PROGRESS:
-                variant = 'outline-primary';
+                variant = 'primary';
                 break;
             case orderStatus.COMPLETED:
-                variant = 'outline-success';
+                variant = 'success';
                 break;
             case orderStatus.CANCELLED:
-                variant = 'outline-danger';
+                variant = 'danger';
                 break;
             default:
                 break;
             }
-        return (<Button disabled variant={variant}>{currOrderStatus}</Button>)
+        return (<Button variant={variant}>{currOrderStatus}</Button>)
     }
 
     // #region Component Rendering

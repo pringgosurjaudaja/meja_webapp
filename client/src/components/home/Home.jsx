@@ -19,7 +19,7 @@ export class Home extends React.Component {
     }
 
     handleContinueAsGuest = async () => {
-        this.props.setSessionId(await Requests.makeSession('5e8347e01c9d440000231cb3', ''));
+        await Requests.makeSession('5e8347e01c9d440000231cb3', '');
         navigate('/dashboard');
     }
 
@@ -33,7 +33,6 @@ export class Home extends React.Component {
 
         const sessionId = localStorage.getItem('sessionId');
         if (sessionId && Requests.getSession(sessionId)) {
-            this.props.setSessionId(sessionId);
             return (<Redirect to='/dashboard' noThrow />)
         }
 

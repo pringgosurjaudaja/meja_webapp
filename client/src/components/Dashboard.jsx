@@ -52,17 +52,16 @@ export class Dashboard extends React.Component {
         this.getOrderList().then(orderList => {
             this.setState({ orderList: orderList })
         });
-
-        // this.getReservationList().then(reservationList => {
-        //     this.getCurrentReservation(reservationList);
-        // });
         
         this.setupSockets();
     }
 
     getOrderList = async () => {
-        const sessionId = this.props.sessionId;
-        const session = sessionId && await Requests.getSession(sessionId);
+        const sessionId = localStorage.getItem('sessionId');
+        if (!sessionId) {
+            return [];
+        }
+        const session = await Requests.getSession(localStorage.getItem('sessionId'));
         return session ? session.order_list : [];
     }
 
@@ -128,7 +127,7 @@ export class Dashboard extends React.Component {
         // Send order to be stored in database
         try {
             // Add given generated order id
-            const orderId = await Requests.addOrder(this.props.sessionId, order);
+            const orderId = await Requests.addOrder(localStorage.getItem('sessionId'), order);
             order['_id'] = orderId;
 
             // Inform staff of new customer order
@@ -213,9 +212,10 @@ export class Dashboard extends React.Component {
                         <Reservation {...reservationProps}/>
                     </Tab>
                 </Tabs>
-                <LoginDialog show={this.state.showLoginDialog} 
-                setSessionId={this.props.setSessionId}
-                onHide={()=>this.setState({ showLoginDialog:false })}/>
+                <LoginDialog 
+                    show={this.state.showLoginDialog} 
+                    onHide={()=>this.setState({ showLoginDialog:false })}
+                />
             </div>
 
 

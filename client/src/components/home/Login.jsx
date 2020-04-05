@@ -34,7 +34,7 @@ export class Login extends React.Component {
 
         // Login with user entered details
         const loginRequest = await Requests.login(this.state.email, this.state.password);
-        this.props.setSessionId(await Requests.makeSession('5e8347e01c9d440000231cb3', loginRequest.token));
+        await Requests.makeSession('5e8347e01c9d440000231cb3', loginRequest.token);
         navigate('/dashboard');
     }
 
