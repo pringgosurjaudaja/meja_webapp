@@ -85,13 +85,8 @@ def handle_order_update(order):
 # socketio.on_namespace(customer_namespace)
 
 
-@app.route('/test')
-def index():
-    print(os.getenv('DIALOGFLOW_PROJECT_ID'))
-    return render_template('chatbot.html')
-
-@app.route('/get_menu_category', methods=['POST'])
-def get_menu_category():
+@app.route('/handle_chat', methods=['POST'])
+def handle_chat():
     data = request.get_json(silent=True)
     print(data['queryResult']['parameters'])
     if 'menu_item' in data['queryResult']['parameters']:
@@ -142,22 +137,22 @@ def get_menu_category():
     # print(reply)
     return jsonify(reply)
 
-@app.route('/send_message', methods=['POST'])
-def send_message():
-    message = request.form['message']
-    project_id = os.getenv('DIALOGFLOW_PROJECT_ID')
-    session_client = dialogflow.SessionsClient()
-    session = session_client.session_path(project_id, "unique")
-    text_input = dialogflow.types.TextInput(
-                    text=message, language_code="en")
-    query_input = dialogflow.types.QueryInput(text=text_input)
-    response = session_client.detect_intent(
-                    session=session, query_input=query_input) 
-    print(response)
-    # fulfillment_text = detect_intent_texts(project_id, "unique", message, 'en')
-    response_text = { "message":  response.query_result.fulfillment_text }
+# @app.route('/send_message', methods=['POST'])
+# def send_message():
+#     message = request.form['message']
+#     project_id = os.getenv('DIALOGFLOW_PROJECT_ID')
+#     session_client = dialogflow.SessionsClient()
+#     session = session_client.session_path(project_id, "unique")
+#     text_input = dialogflow.types.TextInput(
+#                     text=message, language_code="en")
+#     query_input = dialogflow.types.QueryInput(text=text_input)
+#     response = session_client.detect_intent(
+#                     session=session, query_input=query_input) 
+#     print(response)
+#     # fulfillment_text = detect_intent_texts(project_id, "unique", message, 'en')
+#     response_text = { "message":  response.query_result.fulfillment_text }
 
-    return jsonify(response_text)
+#     return jsonify(response_text)
 if __name__ == '__main__':
     # Setup for the Flask App
     api.init_app(app)
