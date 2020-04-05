@@ -1,4 +1,5 @@
 import { axios } from './helper';
+import { navigate } from '@reach/router';
 
 const BASE_URL = 'http://127.0.0.1:5000';
 
@@ -44,6 +45,8 @@ export class Requests {
             return sessionRequest.data;
         } catch(err) {
             console.error(err);
+            localStorage.removeItem('sessionId');
+            navigate('/');
         }
     }
 
@@ -59,10 +62,12 @@ export class Requests {
                 }
             });
             const sessionId = sessionRequest.data.session_id;
-            sessionStorage.setItem('sessionId', sessionId);
+            localStorage.setItem('sessionId', sessionId);
             return sessionId;
         } catch(err) {
             console.error(err);
+            localStorage.removeItem('sessionId');
+            navigate('/');
         }
     }
 
@@ -76,10 +81,12 @@ export class Requests {
             return request.data.inserted._id;
         } catch(err) {
             console.error(err)
+            localStorage.removeItem('sessionId');
+            navigate('/');
         }
     }
 
-    static async getReviews() {
+    static async getReviewsZomato() {
         try {
             const reviews = await axios({
                 method: 'get',
@@ -100,7 +107,66 @@ export class Requests {
             });
             return reservation.data;
         } catch (err) {
-            console.log(err);
+            console.error(err);
+        }
+    }
+
+    static async getReviews() {
+        try {
+            const reviews = await axios({
+                method: 'get',
+                url: BASE_URL + '/review'
+            });
+            return reviews.data;
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    static async postReview(user, review, rating) {
+        try {
+            const reviews = await axios({
+                method: 'post',
+                url: BASE_URL + '/review',
+                data: {
+                    "user": user,
+                    "review": review,
+                    "rating": rating
+                }
+            });
+            return reviews.data;
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    /*
+    */
+    static async postReply(user, review, reviewId) {
+        try {
+            const reviews = await axios({
+                method: 'post',
+                url: BASE_URL + '/review/' + reviewId,
+                data: {
+                    "user": user,
+                    "reply": review,
+                }
+            });
+            return reviews.data;
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    static async deleteReview(reviewId) {
+        try {
+            const reviews = await axios({
+                method: 'delete',
+                url: BASE_URL + '/review/' + reviewId
+            });
+            return reviews.data;
+        } catch (err) {
+            console.error(err);
         }
     }
 }

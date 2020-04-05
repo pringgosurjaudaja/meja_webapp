@@ -1,11 +1,10 @@
 import React from 'react';
-import { Tabs, Tab, Nav } from 'react-bootstrap';
+import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'
+import { faShoppingCart, faBars } from '@fortawesome/free-solid-svg-icons'
 import { Menu } from 'src/components/menu/Menu';
 import { Checkout } from 'src/components/checkout/Checkout';
 import { navigate, Redirect } from "@reach/router";
-import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 import { About } from 'src/components/about/About';
 import { Orders } from 'src/components/order/Orders';
 import { Reservation } from 'src/components/reservation/Reservation';
@@ -45,6 +44,7 @@ export class Dashboard extends React.Component {
             showLoginDialog: false,
             reservation: {},
         };
+        this.navRef = React.createRef();
         this.socket = io.connect('http://127.0.0.1:5000/');
     }
 
@@ -52,17 +52,16 @@ export class Dashboard extends React.Component {
         this.getOrderList().then(orderList => {
             this.setState({ orderList: orderList })
         });
-
-        // this.getReservationList().then(reservationList => {
-        //     this.getCurrentReservation(reservationList);
-        // });
         
         this.setupSockets();
     }
 
     getOrderList = async () => {
-        const sessionId = this.props.sessionId;
-        const session = sessionId && await Requests.getSession(sessionId);
+        const sessionId = localStorage.getItem('sessionId');
+        if (!sessionId) {
+            return [];
+        }
+        const session = await Requests.getSession(localStorage.getItem('sessionId'));
         return session ? session.order_list : [];
     }
 
@@ -76,7 +75,7 @@ export class Dashboard extends React.Component {
                 this.setState({
                     orderList: await this.getOrderList()
                 });
-            } catch(err) {
+            } catch (err) {
                 console.error(err);
             }
         });
@@ -90,8 +89,8 @@ export class Dashboard extends React.Component {
     updateCart = (orderItem, operation) => {
         let oldCart = this.state.cart;
         let newCart = new Map(oldCart);
-        
-        switch(operation) {
+
+        switch (operation) {
             case cartOps.ADD || cartOps.UPDATE:
                 newCart.set(orderItem.menu_item._id, orderItem);
                 break;
@@ -107,14 +106,14 @@ export class Dashboard extends React.Component {
     }
     // #endregion
 
-    showLogin = ()=> {
+    showLogin = () => {
         this.setState({ showLoginDialog: true });
     }
 
     // #region Event Handlers
-    handleSelect = (event) => {
+    handleNavSelect = (event) => {
         if (event === 'logout') {
-            sessionStorage.clear();
+            localStorage.removeItem('sessionId');
             navigate('/');
         }
     }
@@ -128,7 +127,7 @@ export class Dashboard extends React.Component {
         // Send order to be stored in database
         try {
             // Add given generated order id
-            const orderId = await Requests.addOrder(this.props.sessionId, order);
+            const orderId = await Requests.addOrder(localStorage.getItem('sessionId'), order);
             order['_id'] = orderId;
 
             // Inform staff of new customer order
@@ -141,7 +140,7 @@ export class Dashboard extends React.Component {
                 activeTab: tabs.ORDERS
             });
 
-        } catch(err) {
+        } catch (err) {
             console.error(err);
         }
     }
@@ -155,11 +154,11 @@ export class Dashboard extends React.Component {
     // #endregion
 
     render() {
-        if (!sessionStorage.getItem('sessionId')) {
-            console.log('No session ID assigned');
-            // Invalid Session or Session has Expired
-            return <Redirect to='/' noThrow />;
-        }
+        // if (!localStorage.getItem('sessionId')) {
+        //     console.log('No session ID assigned');
+        //     // Invalid Session or Session has Expired
+        //     return <Redirect to='/' noThrow />;
+        // }
 
         const reservationProps = {
             showLogin: this.showLogin,
@@ -167,63 +166,57 @@ export class Dashboard extends React.Component {
 
         return (
             <div>
-                <Nav className="justify-content-end" onSelect={this.handleSelect}>
-                    <Nav.Item>
-                        <Nav.Link eventKey="logout">
-                            <FontAwesomeIcon 
-                                icon={faSignOutAlt} 
-                                transform="grow-10" 
-                                color="black" />
-                        </Nav.Link>
-                    </Nav.Item>
-                </Nav>
+                <Navbar collapseOnSelect variant="dark" bg="black" expand="lg" sticky="top" onSelect={(tab => this.setState({ activeTab: tab }))}>
+                    <Navbar.Brand>Méja</Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="mr-auto">
+                            <Nav.Item>
+                                <Nav.Link eventKey={tabs.ALL}>Menu</Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link eventKey={tabs.RESERVATION}>Reservation</Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link eventKey={tabs.ORDERS}>Orders</Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link eventKey={tabs.CHECKOUT}><FontAwesomeIcon icon={faShoppingCart} /></Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link eventKey={tabs.ABOUT}>About</Nav.Link>
+                            </Nav.Item>
+                        </Nav>
+                        <Nav>
+                            <Nav.Item>
+                                <Nav.Link eventKey="logout">
+                                    Sign out
+                                </Nav.Link>
+                            </Nav.Item>
+                        </Nav>
+                    </Navbar.Collapse>
+                </Navbar>
 
-                <Tabs 
-                    className="justify-content-center"
-                    activeKey={this.state.activeTab}
-                    onSelect={(tab => this.setState({ activeTab: tab }))}
-                >
-                    <Tab eventKey={tabs.ABOUT} title="About">
-                        <About />
-                    </Tab>
+                {this.state.activeTab === tabs.ABOUT ? <About /> : null}
+                {this.state.activeTab === tabs.ALL ? <Menu
+                    itemInCart={this.itemInCart}
+                    updateCart={this.updateCart}
+                    display="all"
+                /> : null}
+                {this.state.activeTab === tabs.ORDERS ? <Orders
+                    orderList={this.state.orderList}
+                    handleCloseOrder={this.handleCloseOrder}
+                /> : null}
+                {this.state.activeTab === tabs.CHECKOUT ? <Checkout
+                    cart={this.state.cart}
+                    updateCart={this.updateCart}
+                    handleOrderCart={this.handleOrderCart}
+                /> : null}
+                {this.state.activeTab === tabs.RESERVATION ? <Reservation {...reservationProps} /> : null}
 
-                    <Tab eventKey={tabs.ALL} title="Menu">
-                        <Menu 
-                            itemInCart={this.itemInCart}
-                            updateCart={this.updateCart} 
-                            display="all"
-                        />
-                    </Tab>
-                    
-                    <Tab eventKey={tabs.ORDERS} title={"Orders"}>
-                        <Orders 
-                            orderList={this.state.orderList}
-                            handleCloseOrder={this.handleCloseOrder}
-                        />
-                    </Tab>
-                    
-                    <Tab eventKey={tabs.CHECKOUT} title={<FontAwesomeIcon icon={faShoppingCart} />}>
-                        <Checkout 
-                            cart={this.state.cart}
-                            updateCart={this.updateCart}
-                            handleOrderCart={this.handleOrderCart}
-                        />
-                    </Tab>
-                    <Tab eventKey={tabs.RESERVATION} title="Reservation">
-                        <Reservation {...reservationProps}/>
-                    </Tab>
-                </Tabs>
-                <LoginDialog show={this.state.showLoginDialog} 
-                setSessionId={this.props.setSessionId}
-                onHide={()=>this.setState({ showLoginDialog:false })}/>
-                <div>
-<df-messenger
-  intent="WELCOME"
-  chat-title="Meja_Bot"
-  agent-id="a11d8a36-5854-4b43-8306-a110222079a5"
-  language-code="en"
-></df-messenger>
-                </div>
+                <LoginDialog show={this.state.showLoginDialog}
+                    setSessionId={this.props.setSessionId}
+                    onHide={() => this.setState({ showLoginDialog: false })} />
             </div>
 
 

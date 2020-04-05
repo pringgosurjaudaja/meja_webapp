@@ -70,7 +70,7 @@ export class ReservationForm extends React.Component {
                     "number_diner": this.state.diner,
                 },
                 header: {
-                    "x-api-key": sessionStorage.getItem('sessionId'),
+                    "x-api-key": localStorage.getItem('sessionId'),
                     "Content-Type": "application/json"
                 }
             })
@@ -92,7 +92,7 @@ export class ReservationForm extends React.Component {
     }
 
     getSession = async () => {
-        const sessionId = sessionStorage.getItem('sessionId');
+        const sessionId = localStorage.getItem('sessionId');
         const session = await Requests.getSession(sessionId);
         return session.user_id;
         
@@ -125,7 +125,7 @@ export class ReservationForm extends React.Component {
                 "reservation_notes": this.state.notes
             },
             header: {
-                "x-api-key": sessionStorage.getItem('sessionId'),
+                "x-api-key": localStorage.getItem('sessionId'),
                 "Content-Type": "application/json"
             }
         })
