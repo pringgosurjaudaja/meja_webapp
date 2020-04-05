@@ -319,5 +319,14 @@ body {
     margin-top: 5%;
 }
 
+.star-ratings {
+    margin-bottom: 5%;
+}
 
-  
+.review-footer-text {
+    margin-right: 5%;
+}
+
+.review-footer-text:hover {
+    text-decoration: underline;
+}

@@ -56,6 +56,7 @@ export class Menu extends React.Component {
 
         return (
             <Container className="layout--padding--menu">
+                <h1>Menu</h1>
                 <Tabs defaultActiveKey={this.state.menu && this.state.menu[0]}>
                     {tabs}
                 </Tabs>

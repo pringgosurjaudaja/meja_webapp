@@ -45,13 +45,10 @@ export class Reservation extends React.Component {
         
     }
 
-    componentDidMount() {
-        this.getEmail().then(()=>{
-            this.getReservationList().then(reservationList => {
-                this.getCurrentReservation(reservationList);
-            });
-        })
-        
+    componentDidMount = async () => {
+        await this.getEmail();
+        const reservationList = await this.getReservationList()
+        await this.getCurrentReservation(reservationList);        
     }
 
     handleCancel = () => {

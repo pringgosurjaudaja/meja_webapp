@@ -154,11 +154,11 @@ export class Dashboard extends React.Component {
     // #endregion
 
     render() {
-        if (!localStorage.getItem('sessionId')) {
-            console.log('No session ID assigned');
-            // Invalid Session or Session has Expired
-            return <Redirect to='/' noThrow />;
-        }
+        // if (!localStorage.getItem('sessionId')) {
+        //     console.log('No session ID assigned');
+        //     // Invalid Session or Session has Expired
+        //     return <Redirect to='/' noThrow />;
+        // }
 
         const reservationProps = {
             showLogin: this.showLogin,
@@ -217,8 +217,15 @@ export class Dashboard extends React.Component {
                 <LoginDialog show={this.state.showLoginDialog}
                     setSessionId={this.props.setSessionId}
                     onHide={() => this.setState({ showLoginDialog: false })} />
+                <div>
+<df-messenger
+  intent="WELCOME"
+  chat-title="Meja_Bot"
+  agent-id="a11d8a36-5854-4b43-8306-a110222079a5"
+  language-code="en"
+></df-messenger>
+                </div>
             </div>
-
 
         );
     }
