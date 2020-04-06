@@ -34,7 +34,7 @@ export class Menu extends React.Component {
             category.menu_items && category.menu_items.forEach((menuItem, i) => {
                 entries.push(
                     <Row key={i} className="layout--menu">
-                        <Col>
+                        <Col className="menu-container">
                             <MenuItem 
                                 item={menuItem}
                                 itemInCart={this.props.itemInCart}
@@ -55,8 +55,8 @@ export class Menu extends React.Component {
 
         return (
             <Container className="layout--padding--menu">
-                <h1>Menu</h1>
-                <Tabs defaultActiveKey={this.state.menu && this.state.menu[0]}>
+                <h1 className="menu-h1">Menu</h1>
+                <Tabs className="menu-nav-tabs" fixed="top" defaultActiveKey={this.state.menu && this.state.menu[0]}>
                     {tabs}
                 </Tabs>
             </Container>

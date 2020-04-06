@@ -95,7 +95,6 @@ body {
 .layout--padding--menu {
     padding-left: 5%;
     padding-right: 5%;
-    padding-top: 7%;
 }
 
 /* Add padding to the container in admin menu tab*/
@@ -169,15 +168,19 @@ body {
     border: 0px !important;
 }
 
+.h1, h1 {
+    margin-top: 30px !important;
+    margin-bottom: 20px !important;
+}
 
 .big-button {
     width: 263px;
     height: 52px;
 }
+
 .big-button--text {
     font-size: 14px !important;
     color: #000000 !important;
-    /* font-family: "OpenSans"; */
 }
 
 .big-button--sign-in {
@@ -218,6 +221,36 @@ body {
 .divider {
     border-top: 3px solid;
     width: 100%;
+}
+
+.menu-h1 {
+    margin-top: 0px !important;
+    padding-top: 30px !important;
+    margin-bottom: 20px !important;
+    position: fixed !important;
+    background-color: #ffffff !important;
+    background-size: 100%;
+    z-index: 1;
+    width: 100%;
+    height: 100px;
+}
+
+.menu-nav-tabs {
+    font-size: 12px !important;
+    padding: 0px !important;
+    padding-bottom: 8px !important;
+    top: 150px;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+    position: fixed !important;
+    width: 100%;
+    border-bottom: 0px !important;
+    z-index: 1;
+    background-color: #ffffff;
+}
+
+.menu-container {
+    top: 150px;
 }
 
 .menu-item {
