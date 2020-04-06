@@ -46,7 +46,7 @@ export class MenuItemDialog extends React.Component {
                 >
                     <Modal.Header closeButton />
 
-                    <Modal.Body closeButton>
+                    <Modal.Body>
                         <Card.Img variant="top" src={example} />
                         
                         {/* Title & Description */}
@@ -63,7 +63,7 @@ export class MenuItemDialog extends React.Component {
                                 aria-label="With textarea" 
                             />
                         </InputGroup>
-
+                        <br></br>
                         {/* Quantity of Menu Item */}
                         <InputNumber 
                             onChange={this.handleQuantityChange} 
@@ -71,7 +71,7 @@ export class MenuItemDialog extends React.Component {
                             min={1} 
                             defaultValue={1} 
                         />
-                        <br></br>
+                        <br></br><br></br>
                         <Button 
                             onClick={this.handleAddToCart} 
                             disabled={itemInCart(item)} 
@@ -87,12 +87,6 @@ export class MenuItemDialog extends React.Component {
                                 Added to cart.
                             </Alert>}
                     </Modal.Body>
-
-                    <Modal.Footer>
-                        <Button onClick={this.props.onHide} variant="secondary">
-                            Close
-                        </Button>
-                    </Modal.Footer>
                 </Modal>}
             </div>
         )

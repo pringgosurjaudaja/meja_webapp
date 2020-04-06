@@ -41,14 +41,10 @@ body {
     box-sizing: border-box !important;
 }
 
-/* .navbar {
-  -webkit-transition: all 0.6s ease-out;
-  -moz-transition: all 0.6s ease-out;
-  -o-transition: all 0.6s ease-out;
-  -ms-transition: all 0.6s ease-out;
-  transition: all 0.6s ease-out;
-  border-radius: 0px;
-} */
+.navbar {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+}
 
 .navbar-toggler {
     color: #ffffff !important;
@@ -60,25 +56,9 @@ body {
     text-align: center !important;
 }
 
-/* .nav-fullscreen{
-    position: absolute;
-		display: flex;
-    z-index: 800;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-		opacity: 0;
-		visibility: hidden;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(0,0,0,0.5); 
-    transition: opacity 0.2s, visibility 0.2s;
-} */
-
 .navbar-brand {
     color: #ffffff !important;
-    font-size: 25px !important;
+    font-size: 26px !important;
 }
 
 .navbar-nav {
@@ -90,14 +70,8 @@ body {
     background-color: #000000 !important;
 }
 
-/* #basic-navbar-nav { */
-    /* height: 100vh !important; */
-    /* max-height: none; */
-    /* position:fixed; */
-/* } */
-
-.navbar-toggle.collapsed .icon:before {
-    content: '\f00d' !important;
+.bg-transparent {
+    background-color: transparent !important; /* Black w/opacity */
 }
 
 .layout--background {
@@ -189,6 +163,10 @@ body {
 
 .l-reserve-details__row {
     font-size: 20px;
+}
+
+.modal-header {
+    border: 0px !important;
 }
 
 
@@ -338,4 +316,62 @@ df-messenger {
     --df-messenger-font-color: white;
     --df-messenger-send-icon: #878fac;
     --df-messenger-user-message: #aaaaaa;
-   }
+}
+
+.overlay {
+    /* Height & width depends on how you want to reveal the overlay (see JS below) */   
+    height: 100% !important;
+    width: 100% !important;
+    position: fixed important; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    padding: 0px !important;
+    background-color: rgb(0,0,0); /* Black fallback color */
+    background-color: rgba(0,0,0, 0.9); /* Black w/opacity */
+    overflow-x: hidden; /* Disable horizontal scroll */
+    transition: 0.5s; /* 0.5 second transition effect to slide in or slide down the overlay (height or width, depending on reveal) */
+  }
+
+  .overlay .modal-content {
+    background-color: transparent !important;
+  }
+  
+  .overlay-content {
+    position: relative;
+    width: 100%; /* 100% width */
+    text-align: center; /* Centered text/links */
+    margin-top: 20px; /* 20px top margin to avoid conflict with the close button on smaller screens */
+    background-color: transparent; /* Black fallback color */
+    margin-right: 0px;
+    margin-left: 0px;
+  }
+  
+  .overlay a {
+    padding: 8px;
+    text-decoration: none;
+    font-size: 30px;
+    float: center !important;
+    color: #818181;
+    display: block; /* Display block instead of inline */
+    transition: 0.3s; /* Transition effects on hover (color) */
+  }
+  
+  /* When you mouse over the navigation links, change their color */
+  .overlay a:hover, .overlay a:focus {
+    color: #f1f1f1;
+    opacity: 1 !important;
+  }
+  
+  /* Position the close button (top right corner) */
+  .overlay-closebtn .close {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #ffffff !important;
+    opacity: .5;
+  }
+
+  .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    color: #fff;
+    background-color: transparent !important;
+  }

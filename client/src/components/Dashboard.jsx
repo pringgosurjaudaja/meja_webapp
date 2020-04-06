@@ -1,7 +1,7 @@
 import React from 'react';
 import { Nav, Navbar } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'
+import { faShoppingCart, faBars } from '@fortawesome/free-solid-svg-icons'
 import { Menu } from 'src/components/menu/Menu';
 import { Checkout } from 'src/components/checkout/Checkout';
 import { navigate, Redirect } from "@reach/router";
@@ -9,6 +9,7 @@ import { About } from 'src/components/about/About';
 import { Orders } from 'src/components/order/Orders';
 import { Reservation } from 'src/components/reservation/Reservation';
 import { LoginDialog } from 'src/components/reservation/LoginDialog';
+import { NavOverlay } from 'src/components/NavOverlay';
 import { Requests } from 'src/utilities/Requests';
 import io from 'socket.io-client';
 import 'src/styles/styles.css';
@@ -38,21 +39,22 @@ export class Dashboard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            showOverlay: false,
             activeTab: tabs.ALL,
             orderList: [],
             cart: new Map(),
             showLoginDialog: false,
             reservation: {},
         };
-        this.navRef = React.createRef();
         this.socket = io.connect('http://127.0.0.1:5000/');
     }
+
 
     componentDidMount() {
         this.getOrderList().then(orderList => {
             this.setState({ orderList: orderList })
         });
-        
+
         this.setupSockets();
     }
 
@@ -115,6 +117,8 @@ export class Dashboard extends React.Component {
         if (event === 'logout') {
             localStorage.removeItem('sessionId');
             navigate('/');
+        } else {
+            this.setState({ activeTab: event });
         }
     }
 
@@ -153,6 +157,17 @@ export class Dashboard extends React.Component {
     }
     // #endregion
 
+    /* Open when someone clicks on the span element */
+    handleOpenNav = () => {
+        this.setState({ showOverlay: true });
+    }
+
+
+    /* Close when someone clicks on the "x" symbol inside the overlay */
+    handleCloseNav = () => {
+        this.setState({ showOverlay: false });
+    }
+
     render() {
         // if (!localStorage.getItem('sessionId')) {
         //     console.log('No session ID assigned');
@@ -166,35 +181,23 @@ export class Dashboard extends React.Component {
 
         return (
             <div>
-                <Navbar collapseOnSelect variant="dark" bg="black" expand="lg" sticky="top" onSelect={(tab => this.setState({ activeTab: tab }))}>
-                    <Navbar.Brand>Méja</Navbar.Brand>
-                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                    <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="mr-auto">
-                            <Nav.Item>
-                                <Nav.Link eventKey={tabs.ALL}>Menu</Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Nav.Link eventKey={tabs.RESERVATION}>Reservation</Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Nav.Link eventKey={tabs.ORDERS}>Orders</Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Nav.Link eventKey={tabs.CHECKOUT}><FontAwesomeIcon icon={faShoppingCart} /></Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Nav.Link eventKey={tabs.ABOUT}>About</Nav.Link>
-                            </Nav.Item>
-                        </Nav>
-                        <Nav>
-                            <Nav.Item>
-                                <Nav.Link eventKey="logout">
-                                    Sign out
-                                </Nav.Link>
-                            </Nav.Item>
-                        </Nav>
-                    </Navbar.Collapse>
+                <NavOverlay tabs={tabs} show={this.state.showOverlay} onHide={this.handleCloseNav} handleNavSelect={this.handleNavSelect} activeTab={this.state.activeTab} />
+                <Navbar variant="dark" bg="black" sticky="top" onSelect={(tab => this.handleNavSelect(tab))}>
+                    <Nav className="mr-auto">
+                        <Nav.Item>
+                            <Nav.Link onClick={this.handleOpenNav}><FontAwesomeIcon icon={faBars} color="white" /></Nav.Link>
+                        </Nav.Item>
+                    </Nav>
+                    <Nav className="mr-auto">
+                        <Nav.Item>
+                            <Nav.Link eventKey={tabs.ALL}><Navbar.Brand>Méja</Navbar.Brand></Nav.Link>
+                        </Nav.Item>
+                    </Nav>
+                    <Nav>
+                        <Nav.Item>
+                            <Nav.Link eventKey={tabs.CHECKOUT}><FontAwesomeIcon icon={faShoppingCart} color="white" /></Nav.Link>
+                        </Nav.Item>
+                    </Nav>
                 </Navbar>
 
                 {this.state.activeTab === tabs.ABOUT ? <About /> : null}
@@ -218,12 +221,12 @@ export class Dashboard extends React.Component {
                     setSessionId={this.props.setSessionId}
                     onHide={() => this.setState({ showLoginDialog: false })} />
                 <div>
-<df-messenger
-  intent="WELCOME"
-  chat-title="Meja_Bot"
-  agent-id="a11d8a36-5854-4b43-8306-a110222079a5"
-  language-code="en"
-></df-messenger>
+                    <df-messenger
+                        intent="WELCOME"
+                        chat-title="Meja_Bot"
+                        agent-id="a11d8a36-5854-4b43-8306-a110222079a5"
+                        language-code="en"
+                    ></df-messenger>
                 </div>
             </div>
 

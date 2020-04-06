@@ -69,7 +69,7 @@ export class Checkout extends React.Component {
 
         return (
             <div className="margin-center">
-                <h1>Order</h1>
+                <h1>Checkout</h1>
                 {entries.length > 0 ? entries : 'Empty Cart'}
                 <br />
 
