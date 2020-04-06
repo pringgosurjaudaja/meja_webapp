@@ -1,8 +1,20 @@
 body {
-    font-family: "Open Sans";
+    font-family: 'DM Sans', sans-serif !important;
     font-size: 24px;
     font-style: normal;
     font-variant: normal;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #000000 !important;
+    border-color: #000000 !important;
+}
+
+.form-control {
+    border-radius: 0px !important;
+    border: none !important;
+    border-bottom: 1px solid #000000 !important;
 }
 
 .container-home {
@@ -159,4 +171,66 @@ body {
 }
 .modal-calendar {
     overflow: scroll !important;
+}
+
+.nav-tabs {
+    font-size: 15px !important;
+    padding: 0px !important;
+    margin-bottom: 10px !important;
+}
+
+.nav-tabs .nav-link {
+    color: #727272 !important;
+}
+
+.nav-link:hover {
+    border: none !important;
+}
+
+.nav-tabs .nav-link.active {
+    color: #ffffff !important;
+    background-color: #000000 !important;
+    border-radius: 20px !important;
+    display: inline-block;
+    width: auto;
+    height: auto;
+    box-sizing: border-box !important;
+}
+
+/* .navbar {
+  -webkit-transition: all 0.6s ease-out;
+  -moz-transition: all 0.6s ease-out;
+  -o-transition: all 0.6s ease-out;
+  -ms-transition: all 0.6s ease-out;
+  transition: all 0.6s ease-out;
+  border-radius: 0px;
+} */
+
+.navbar-toggler {
+    color: #ffffff !important;
+    border: none !important;
+}
+
+.navbar-toggler-icon {
+    color: #ffffff !important;
+    text-align: center !important;
+}
+
+.navbar-brand {
+    color: #ffffff !important;
+    font-size: 25px !important;
+}
+
+.navbar-nav {
+    color: #918585 !important;
+    font-size: 18px;
+}
+
+.bg-black {
+    background-color: #000000 !important;
+}
+
+
+.navbar-toggle.collapsed .icon:before {
+    content: '\f00d' !important;
 }
