@@ -171,7 +171,7 @@ class SessionReceiptRoute(Resource):
     def post(self):
         # Get user and session details from database
         session = session_db.find_one({'_id': ObjectId(request.data['session_id'])})
-        user = auth_db.find_one({'_id': session['user_id']})
+        user = auth_db.find_one({'_id': ObjectId(session['user_id'])})
 
         # Populate Email Context using Order Details
         email_context = {

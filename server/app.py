@@ -13,6 +13,7 @@ import re
 load_dotenv()
 
 menu_db = db_client.menu
+review_db = db_client.review
 import pprint
 # from hooks.admin_hooks import AdminNamespace
 # from hooks.customer_hooks import CustomerNamespace
@@ -92,6 +93,8 @@ def handle_chat():
     if 'menu_item' in data['queryResult']['parameters']:
         menu_item_raw = data['queryResult']['parameters']['menu_item']
         # menu_item = string.capwords(menu_item_raw)
+        category = menu_db.find_one({'menu_items.name': re.compile(menu_item_raw, re.IGNORECASE)})
+        print(category)
         menu_item_queried = menu_db.aggregate([
                 {'$unwind': '$menu_items'},
                 {'$match':{"menu_items.name": re.compile(menu_item_raw, re.IGNORECASE)}},
@@ -102,39 +105,220 @@ def handle_chat():
                 }}
         ])
         item = menu_item_queried.next()
-        item_string = """
-            Item name: {0},
-            Price: ${1}
-        """.format(item['name'], item['price'])
-        reply = {
-            'fulfillmentText': item_string,
+        # item_string = """
+        #     Item name: {0},
+        #     Price: ${1}
+        # """.format(item['name'], item['price'])
+        message = {
+            "fulfillmentText": "Your text response",
+            "fulfillmentMessages": [
+                {
+                    "text": {
+                        "text": [
+                            f"Here is the detail of {item['name']}"
+                        ]
+                    }
+                },
+                {
+                    "payload": {
+                        
+                        "richContent": [
+                            [
+                            {
+                                "type": "image",
+                                "rawUrl": "http://localhost:3000/static/media/test.17541ace.jpg",
+                            },
+                            {
+                                "type": "info",
+                                "title": item['name'],
+                                "subtitle": f"Menu-category: {category['name']}\nPrice: {item['price']}",
+                                
+                            }
+                            ]
+                        ]
+                        
+                    }
+                }
+            ]
         }
-        print(reply)
-        return jsonify(reply)
+        # reply = {
+        #     'fulfillmentText': item_string,
+        # }
+        return jsonify(message)
+        # print(reply)
+        # return jsonify(reply)
     elif('menu_category' in data['queryResult']['parameters']):
         menu_category = data['queryResult']['parameters']['menu_category']
         category = menu_db.find_one({'name': re.compile(menu_category, re.IGNORECASE)})
-        menu_items = []
-        for x in category['menu_items']:
-            menu_items.append(x['name'])
-        print(menu_items)
-        category['_id'] = str(category['_id'])
-        reply = {
-            'fulfillmentText': str(menu_items),
+        # menu_items = []
+        text_message = f"Here are the list of {menu_category}"
+        message1 = {
+    "fulfillmentText": "Your text response",
+    "fulfillmentMessages": [
+        {
+            "text": {
+                "text": [
+                    text_message
+                ]
+            }
+        },
+        {
+            "payload": {
+
+            }
         }
+    ]
+        }
+        message = {
+            "richContent": [
+                [
+                ]
+            ]
+            }
+        for x in category['menu_items']:
+            menu_item_rich = {
+                "type": "list",
+                "title": x['name'],
+                "subtitle": f"Description: {x['description']}\nPrice: {x['price']}",
+            }
+            message['richContent'][0].append(menu_item_rich)
+            message['richContent'][0].append({'type':'divider'})
+            # menu_items.append(x['name'])
+        print(message)
+        message1['fulfillmentMessages'][1]['payload'] = message
+        # category['_id'] = str(category['_id'])
+        # reply = {
+        #     'fulfillmentText': str(menu_items),
+        # }
+        return jsonify(message1)
     elif('menu_category_general' in data['queryResult']['parameters']):
         category = menu_db.find({})
-        print(category)
-        menu_items=""
-        for x in category:
-            print(x['name'])
-            menu_items+=x['name']
-            menu_items+=', '
-        menu_items = menu_items[:-2]
-        reply = {
-            'fulfillmentText': str(menu_items)
+        # print(category)
+        # menu_items=""
+        message1 = {
+    "fulfillmentText": "Your text response",
+    "fulfillmentMessages": [
+        {
+            "text": {
+                "text": [
+                    "Here are the categories"
+                ]
+            }
+        },
+        {
+            "payload": {
+
+            }
         }
+    ]
+        }
+        message = {
+            "richContent": [
+                [
+                ]
+            ]
+            }
+        for x in category:
+            # print(x['name']i)
+            menu_category_rich = {
+                "type": "list",
+                "title": x['name'],
+                }
+            message['richContent'][0].append(menu_category_rich)
+            message['richContent'][0].append({'type':'divider'})
+        #     menu_items+=x['name']
+        #     menu_items+=', '
+        # menu_items = menu_items[:-2]
+        # reply = {
+        #     'fulfillmentText': str(menu_items)
+        # }
+        message1['fulfillmentMessages'][1]['payload'] = message
+        return jsonify(message1)
+    elif('review' in data['queryResult']['parameters']):
+        reviews = review_db.find({})
+        # print(reviews)
+        message1 = {
+            "fulfillmentText": "Your text response",
+            "fulfillmentMessages": [
+                {
+                    "text": {
+                        "text": [
+                            "Here are some reviews for this restaurant"
+                        ]
+                    }
+                },
+                {
+                    "payload": {
+
+                    }
+                }
+            ]
+                }
+        message = {
+            "richContent": [
+                [
+                ]
+            ]
+            }
+        z=0
+        for x in reviews:
+            print(x)
+            if(z==3):break
+            review_item = {
+                "type": "list",
+                "title": x['review'],
+                "subtitle": f"Rating: {x['rating']}/5\nDate Reviewed: {x['date_time']}"
+            }
+            message['richContent'][0].append(review_item)
+            message['richContent'][0].append({'type':'divider'})
+            z+=1
+        message1['fulfillmentMessages'][1]['payload'] = message
+        return jsonify(message1)
     # print(reply)
+    elif('suggestion' in data['queryResult']['parameters']):
+        categories = list(menu_db.find({}))
+        res = list()
+        for cat in categories:
+            for menu_item in cat['menu_items']:
+                if menu_item['chefs_pick'] == True:
+                    res.append(menu_item)
+
+        message1 = {
+            "fulfillmentText": "Your text response",
+            "fulfillmentMessages": [
+                {
+                    "text": {
+                        "text": [
+                            "Here are some chef's picks"
+                        ]
+                    }
+                },
+                {
+                    "payload": {
+
+                    }
+                }
+            ]
+                }
+        message = {
+            "richContent": [
+                [
+                ]
+            ]
+            }
+        for x in categories:
+            for menu_item in x['menu_items']:
+                if menu_item['chefs_pick'] == True:
+                    menu_item_rich = {
+                        "type": "list",
+                        "title": menu_item['name'],
+                        "subtitle": f"Description: {menu_item['description']}\nPrice: {menu_item['price']}",
+                    }
+                    message['richContent'][0].append(menu_item_rich)
+                    message['richContent'][0].append({'type':'divider'})
+
+        message1['fulfillmentMessages'][1]['payload'] = message
+        return jsonify(message1)
     return jsonify(reply)
 
 # @app.route('/send_message', methods=['POST'])
