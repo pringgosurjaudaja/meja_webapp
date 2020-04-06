@@ -1,7 +1,6 @@
 import React from 'react';
 import { MenuItemDialog } from 'src/components/menu/MenuItemDialog';
 import { Card } from 'react-bootstrap';
-import example from 'src/styles/assets/test.jpg';
 
 export class MenuItem extends React.Component {
     constructor(props) {
@@ -23,7 +22,6 @@ export class MenuItem extends React.Component {
         return (
             <div>
                 <Card className="menu-item" onClick={this.handleMenuClick}>
-                    <Card.Img className="menu-item--photo" variant="top" src={example} />
                     <Card.Body>
                         <Card.Title className="menu-item--title">{item.name}</Card.Title>
                         <Card.Text className="menu-item--text">{item.description}</Card.Text>
