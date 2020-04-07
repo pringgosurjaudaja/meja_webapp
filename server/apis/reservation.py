@@ -58,12 +58,17 @@ class Reservation(Resource):
             date = res['datetime'].date()
             time = res['datetime'].time()
             # Logic to allocate table
-            tables = list(table_db.find({'seat': res['number_diner']}))
+            tables = list(table_db.find({'seat': { '$gte': res['number_diner']} }))
+            tables.sort(key=lambda table: table['seat'], reverse=False)
+            res['table_number'] = None
             for table in tables:
-                reservations = list(reservation_db.find({'datetime': '%sT%s'%(date,time), 'number_diner': res['number_diner'], 'table_number': table['number']}))
-                if not reservations:
+                reservation = list(reservation_db.find({'datetime': '%sT%s'%(date,time), 'table_number': table['number']}))
+                if not reservation:
                     res['table_number'] = table['number']
                     break
+            
+            if not res['table_number']:
+                return {'message' : 'Cannot allocate table.'}, 401
 
             operation = reservation_db.insert_one(schema.dump(res))
             return { 'result': 'new reservation has been created'}, status.HTTP_201_CREATED
@@ -81,11 +86,11 @@ class ReservationSearch(Resource):
         try:
             date = request.data.get('date')
             diner = request.data.get('number_diner')
-            tables = list(table_db.find({'seat': diner}))
+            tables = list(table_db.find({'seat': { '$gte': diner} }))
             times = ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00"]
             res = []
             for time in times:
-                reservations = list(reservation_db.find({'datetime': '%sT%s:00'%(date,time), 'number_diner': diner}))
+                reservations = list(reservation_db.find({'datetime': '%sT%s:00'%(date,time), 'number_diner': {'$gte': diner} }))
                 if len(reservations) < len(tables):
                     res.append(time)
             return res

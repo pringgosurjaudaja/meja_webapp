@@ -5,7 +5,6 @@ class ReservationSchema(Schema):
     email = fields.String(required=True)
     datetime = fields.DateTime(required=True)
     number_diner = fields.Integer(required=True)
-    status = fields.String()
     reservation_notes = fields.String() 
 
     class Meta:

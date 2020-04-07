@@ -1,7 +1,7 @@
 import React from 'react';
 import { Nav, Navbar } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faShoppingCart, faBars } from '@fortawesome/free-solid-svg-icons'
+import { faReceipt, faBars } from '@fortawesome/free-solid-svg-icons'
 import { Menu } from 'src/components/menu/Menu';
 import { Checkout } from 'src/components/checkout/Checkout';
 import { navigate, Redirect } from "@reach/router";
@@ -195,7 +195,7 @@ export class Dashboard extends React.Component {
                     </Nav>
                     <Nav>
                         <Nav.Item>
-                            <Nav.Link eventKey={tabs.CHECKOUT}><FontAwesomeIcon icon={faShoppingCart} color="white" /></Nav.Link>
+                            <Nav.Link eventKey={tabs.CHECKOUT}><FontAwesomeIcon icon={faReceipt} color="white" /></Nav.Link>
                         </Nav.Item>
                     </Nav>
                 </Navbar>
