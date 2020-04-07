@@ -33,6 +33,11 @@ export class NavOverlay extends React.Component {
                         <Nav.Item className="overlay-content">
                             <Nav.Link eventKey={tabs.ABOUT}>About</Nav.Link>
                         </Nav.Item>
+                        <Nav.Item className="overlay-content">
+                            <Nav.Link eventKey="logout">
+                                Sign out
+                            </Nav.Link>
+                        </Nav.Item>
                     </Nav>
                 </Modal.Body>
             </Modal>
