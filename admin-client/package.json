@@ -28,10 +28,10 @@
     "socket.io": "^2.3.0"
   },
   "scripts": {
-    "start": "NODE_PATH=src PORT=3001 react-scripts start",
-    "build": "NODE_PATH=src react-scripts build",
-    "test": "NODE_PATH=src react-scripts test",
-    "eject": "NODE_PATH=src react-scripts eject"
+    "start": "NODE_PATH=. PORT=3001 react-scripts start",
+    "build": "NODE_PATH=. react-scripts build",
+    "test": "NODE_PATH=. react-scripts test",
+    "eject": "NODE_PATH=. react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"

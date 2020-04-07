@@ -1,18 +1,13 @@
-import React from 'react';
-import { 
-    Button,
-    Modal,
-    Tabs,
-    Tab
-} from 'react-bootstrap';
-import 'styles/styles.css';
-import { axios, _, moment } from 'utilities/helper';
+import 'src/styles/styles.css';
 
-import { ScheduleTable } from 'components/ScheduleTable';
-// import FullCalendar from '@fullcalendar/react';
-// // import dayGridPlugin from '@fullcalendar/daygrid';
-// import timeGridPlugin from '@fullcalendar/timegrid';
-// // import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid';
+import {
+    Modal,
+    Tab,
+    Tabs
+} from 'react-bootstrap';
+
+import React from 'react';
+import { ScheduleTable } from 'src/components/reservation/ScheduleTable';
 
 export class ReservationDialog extends React.Component {
     constructor(props) {
@@ -33,10 +28,8 @@ export class ReservationDialog extends React.Component {
             return r.table_number === this.props.table;
         })
 
-        // console.log(data);
         let events = [];
 
-        // console.log(this.props)
         data.forEach((item, index)=>{
             
             let datetime = item.datetime.split("T");

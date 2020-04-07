@@ -1,17 +1,15 @@
-import React from 'react';
-import { 
+import {
     Button,
-    Modal,
-    Row,
     Col,
     Container,
+    Row,
 } from 'react-bootstrap';
-import { axios } from 'utilities/helper';
-import { ReservationDialog } from 'components/ReservationDialog';
 
-// import FullCalendar from '@fullcalendar/react';
-// import dayGridPlugin from '@fullcalendar/daygrid';
+import React from 'react';
+import { Requests } from 'src/utilities/Requests';
+import { ReservationDialog } from 'src/components/reservation/ReservationDialog';
 
+const BASE_NUM = 100;
 export class Reservation extends React.Component {
 
     constructor(props) {
@@ -22,55 +20,27 @@ export class Reservation extends React.Component {
             table: 0,
             number_of_table: 0,
         }
-        this.handleShowReservation = this.handleShowReservation.bind(this);
-        this.handleClose = this.handleClose.bind(this);
     }
 
-    componentDidMount() {
-        axios({
-            method: 'get',
-            url: 'http://127.0.0.1:5000/reservation',
-            timeout: 1000,
-        })
-        .then((response) => {
-            this.setState({ reservation: response.data })
-        })
-        .catch((error)=>{
-            console.log(error);
-        })
+    componentDidMount = async () => {
+
+        const reservation = await Requests.getReservations();
+        this.setState({ reservation: reservation });
         
-        axios({
-            method: 'get',
-            url: 'http://127.0.0.1:5000/table',
-            timeout: 1000,
-        })
-        .then((response) => {
-            this.setState({ number_of_table: response.data.length })
-            console.log(response.data);
-        })
-        .catch((error)=>{
-            console.log(error);
-        })
-
+        const tableNumber = await Requests.getTables();
+        this.setState({ number_of_table: tableNumber.length })
 
     }
 
 
-    handleShowReservation(event, table) {
-        // console.log(table);
+    handleShowReservation = (event, table) => {
         this.setState({
             showReservationDialog: true,
-        })
-
-        // const data = this.state.reservation.filter((r)=>{
-        //     return r.table_num == table;
-        // })
-        this.setState({ 
             table: table,
         });
     }
 
-    handleClose() {
+    handleClose = () => {
         this.setState({ 
             showReservationDialog: false,
         });
@@ -83,7 +53,7 @@ export class Reservation extends React.Component {
             let num = r+1;
             let col = (
                 <Col>
-                    <Button id={r+1} variant="primary"
+                    <Button id={BASE_NUM+r} variant="primary"
                     onClick={(e)=>{
                         this.handleShowReservation(e, num);
                     }}>

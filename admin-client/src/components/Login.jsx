@@ -6,8 +6,9 @@ import {
     Form,
 } from 'react-bootstrap';
 import { navigate } from "@reach/router";
-import 'styles/styles.css';
-import { axios } from 'utilities/helper';
+import 'src/styles/styles.css';
+import { axios } from 'src/utilities/helper';
+import { Requests } from 'src/utilities/Requests';
 
 export class Login extends React.Component {
     constructor(props) {
@@ -16,40 +17,21 @@ export class Login extends React.Component {
             email: '',
             password: '',
         }
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleChange(event) {
-        // console.log(event.target.name);
-        // console.log(event.target.value);
-        
-        if (event.target.name == "email") {
+    handleChange = (event) => {
+        if (event.target.name === "email") {
             this.setState({ email: event.target.value});
-        } else if (event.target.name == "password") {
+        } else if (event.target.name === "password") {
             this.setState({ password: event.target.value});
         }
     }
 
-    handleSubmit(event) {
+    handleSubmit = async (event) => {
         event.preventDefault();
-        axios({
-            method: 'post',
-            url: 'http://127.0.0.1:5000/auth/login',
-            data: {
-                email: this.state.email,
-                password: this.state.password
-            }
-            }).then(function(response) {
-                console.log(response);
-                sessionStorage.setItem('AUTH_KEY', response.data.token);
-                navigate('/dashboard')
-            }).catch(function(error) {
-                console.log(error);
-                alert('Invalid input');
-            });
-        
-        this.setState({ email: '', password: ''});
+        const result = await Requests.login(this.state.email, this.state.password);
+        sessionStorage.setItem("AUTH_KEY", result.token);
+        navigate("/dashboard");
     }
 
     render() {

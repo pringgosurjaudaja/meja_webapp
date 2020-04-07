@@ -1,14 +1,15 @@
-import React from 'react';
-import { Container, Row, Col, Form, Button, Tab, Tabs } from 'react-bootstrap';
-import 'styles/styles.css';
+import 'src/styles/styles.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
-import { MenuItemCard } from 'components/MenuItemCard';
-import { Dialog } from 'components/Dialog';
-import {axios} from 'utilities/helper'
-import { EditDialog } from './EditDialog';
-import { CategoryDialog } from './CategoryDialog';
-// import { menuListCSS } from 'react-select/src/components/Menu';
+
+import { Button, Col, Container, Row, Tab, Tabs } from 'react-bootstrap';
+
+import { CategoryDialog } from 'src/components/menu/CategoryDialog';
+import { Dialog } from 'src/components/menu/Dialog';
+import { EditDialog } from 'src/components/menu/EditDialog';
+import { MenuItemCard } from 'src/components/menu/MenuItemCard';
+import React from 'react';
+import { Requests } from 'src/utilities/Requests';
 
 export class Menu extends React.Component {
     constructor(props) {
@@ -28,7 +29,6 @@ export class Menu extends React.Component {
         this.setState({ menuItemList: this.props.menuItemList });
     }
 
-
     handleAddMenuItem = () => {
         this.setState({ showAddMenuDialog: true });
     }
@@ -37,23 +37,11 @@ export class Menu extends React.Component {
         this.setState({ showCategoryDialog: true });
     }
 
-    handleDeleteCategory = () => {
+    handleDeleteCategory = async () => {
         let category = this.props.menuItemList.filter((menu)=>{
-            // console.log(menu);
             return menu.name === this.state.activeTab;
         })
-        console.log(category[0]._id);
-        axios({
-            method: 'delete',
-            url: 'http://127.0.0.1:5000/menu/category/'+category[0]._id,
-            timeout: 1000,
-        })
-        .then((response)=>{
-            console.log(response);
-        })
-        .catch((error)=>{
-            console.log(error);
-        })
+        await Requests.deleteCategory(category[0]._id);
         window.location.reload();
     }
 
@@ -88,7 +76,7 @@ export class Menu extends React.Component {
 
         let categories = {};
 
-        let defaultKey = this.props.menuItemList.length == 0 ? "Burgers" : this.props.menuItemList[0].name;
+        let defaultKey = this.props.menuItemList.length === 0 ? "Burgers" : this.props.menuItemList[0].name;
         this.props.menuItemList.length > 0 && this.props.menuItemList.forEach((category, i) => {
             let entries = [];
             categories[category.name] = category.name;

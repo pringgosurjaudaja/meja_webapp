@@ -1,15 +1,14 @@
 import React from 'react';
 import { Tabs, Tab, Nav } from 'react-bootstrap';
-import 'styles/styles.css';
-import { Table } from 'components/Table';
-import { Menu } from 'components/Menu';
-import { Order } from 'components/Order';
+import 'src/styles/styles.css';
+import { Menu } from 'src/components/menu/Menu';
+import { Order } from 'src/components/order/Order';
 import { navigate } from "@reach/router";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
-import { axios } from 'utilities/helper';
+import { axios } from 'src/utilities/helper';
 import io from 'socket.io-client';
-import { Reservation } from './Reservation';
+import { Reservation } from 'src/components/reservation/Reservation';
 
 export const orderStatus = {
     ORDERED: 'Ordered',

@@ -4,11 +4,10 @@ import {
     Modal,
     Form,
 } from 'react-bootstrap';
-import 'styles/styles.css';
+import 'src/styles/styles.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Select from 'react-select';
-import { _ } from 'lodash';
-import { axios } from 'utilities/helper';
+import { axios } from 'src/utilities/helper';
 
 
 export class EditDialog extends React.Component {

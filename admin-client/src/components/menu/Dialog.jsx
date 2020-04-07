@@ -4,10 +4,10 @@ import {
     Modal,
     Form,
 } from 'react-bootstrap';
-import 'styles/styles.css';
+import 'src/styles/styles.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Select from 'react-select';
-import { axios } from 'utilities/helper';
+import { axios } from 'src/utilities/helper';
 
 
 export class Dialog extends React.Component {
@@ -41,7 +41,7 @@ export class Dialog extends React.Component {
         let category_id="";
         
         this.props.menuitemlist && this.props.menuitemlist.forEach((item)=>{
-            if(item.name == this.props.currentcategory) {
+            if(item.name === this.props.currentcategory) {
                 category_id = item._id;
             }
         });

@@ -1,5 +1,6 @@
+import { Button, Card, Table } from 'react-bootstrap';
+
 import React from 'react';
-import { Card, Table, Button } from 'react-bootstrap';
 import { orderStatus } from 'src/components/Dashboard';
 
 export class Orders extends React.Component {
