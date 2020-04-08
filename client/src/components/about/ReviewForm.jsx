@@ -22,8 +22,19 @@ export class ReviewForm extends React.Component {
         }
     }
 
-    componentDidMount() {
-        this.setState({ email: this.props.email });
+    componentDidMount = async () =>  {
+        await this.getEmail();
+    }
+    getEmail = async () => {
+        const sessionId = localStorage.getItem('sessionId');
+        const session = await Requests.getSession(sessionId);
+        const allSession = await Requests.getAuth(sessionId);
+        allSession && allSession.forEach(async (sess) => {
+            if (sess._id === session.user_id) {
+                this.setState({ email: sess.email });
+                return;
+            }
+        })
     }
 
     submitFeedback = async (e) => {

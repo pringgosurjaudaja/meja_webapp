@@ -15,7 +15,6 @@ export class Review extends React.Component {
         super(props);
         this.state = {
             zomato: [],
-            review: [],
             email: "",
         }
     }
@@ -23,7 +22,6 @@ export class Review extends React.Component {
     componentDidMount = async () => {
         await this.getEmail();
         await this.getReviewsZomato();
-        await this.getReviews();
     }
 
     getEmail = async () => {
@@ -49,25 +47,6 @@ export class Review extends React.Component {
     }
 
 
-    getReviews = async () => {
-        try {
-            const reviews = await Requests.getReviews();
-            const reviewCards = reviews.map((item, index) =>  this.reviewCard(item, index));
-            this.setState({ review: reviewCards });
-        } catch(err) {
-            console.error(err);
-        }
-    }
-
-    reviewCard = (item, index) => {
-        const reviewCardProps = {
-            item: item,
-            email: this.state.email,
-        }
-        return (
-            <ReviewCard key={index} {...reviewCardProps}/>
-        )
-    }
 
 
     reviewCardZomato = (item, index) => {
@@ -104,11 +83,6 @@ export class Review extends React.Component {
                     <Col> <h3><img className="br3" src="https://b.zmtcdn.com/images/logo/zomato_flat_bg_logo.svg" alt="Find the best restaurants, cafés, and bars in Sydney" width="60px"/> Zomato Reviews</h3></Col>
                 </Row>
                 {this.state.zomato}
-                <Row className="zomato-review--title">
-                    <Col> <h3> Customer Feedback</h3></Col>
-                </Row>
-                <ReviewForm email={this.state.email}/>
-                {this.state.review}
                 <br/>
             </div>
         )

@@ -78,6 +78,7 @@ export class ReviewCard extends React.Component {
     }
 
     render () {
+        console.log(this.props);
         return (
             <Row key={this.props.index}>
                 <Col>
