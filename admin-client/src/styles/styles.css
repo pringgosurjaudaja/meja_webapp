@@ -37,10 +37,30 @@ body {
 }
 
 /* Add padding to the container in admin menu tab*/
-.layout--pading--admin-menu {
+.layout--padding--admin-menu {
     padding-left: 0 !important;
     padding-right: 0 !important;
+    margin-left: 5% !important;
+    margin-right: 5% !important;
 }
+.layout--margin--admin-menu__button-list {
+    margin-top: 40px;
+}
+
+.layout--margin--admin-menu__button {
+    font-size: 18px;
+    text-decoration: underline;
+    cursor: pointer;
+    margin-top: 15px !important;
+    margin-bottom: 15px !important;
+    width: inherit;
+    height: 70px;
+}
+.layout--margin--admin-menu__button:hover {
+    background-color: black;
+    color: white;
+}
+
 
 .layout--pading--admin-table {
     vertical-align: middle;
@@ -233,4 +253,9 @@ body {
 
 .navbar-toggle.collapsed .icon:before {
     content: '\f00d' !important;
+}
+
+.layout--menu-action {
+    display: block;
+    top: 30%;
 }

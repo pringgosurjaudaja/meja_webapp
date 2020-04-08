@@ -124,25 +124,23 @@ export class Menu extends React.Component {
 
         return (
             <Container className="layout--padding--admin-menu">
+                
                 <Row>
-                    <Col xs={4} md={4}>
-                        <Button onClick={this.handleAddMenuItem} size="lg">+</Button>
-                    </Col>
-                    <Col xs={4} md={4}>
-                        <Button onClick={this.handleAddCategory} size="lg">Add new category</Button>
-                    </Col>
-                    <Col xs={4} md={4}>
-                        <Button onClick={this.handleDeleteCategory} size="lg">Delete Current category</Button>
-                    </Col>
+                    <Col xs={2} sm={2} className="layout--margin--admin-menu__button-list">
+                        <div className="layout--margin--admin-menu__button" onClick={this.handleAddMenuItem}>Add new menu item</div>
+                        <div className="layout--margin--admin-menu__button" onClick={this.handleAddCategory}>Add new category</div>
+                        <div className="layout--margin--admin-menu__button" onClick={this.handleDeleteCategory}>Delete current category</div>
                     
-                </Row>
-                <Row>
-                    <Col>
+                    </Col>
+                    <Col xs={10} sm={10}>
+                        
                         <Tabs className="justify-content-center"
                             defaultActiveKey={defaultKey} onSelect={this.handleTabChange}
                             >
+                        
                             {tabs}
                         </Tabs>
+                        
                     </Col>
                     
                 </Row>

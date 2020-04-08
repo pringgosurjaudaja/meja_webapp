@@ -2,8 +2,6 @@ import 'src/styles/styles.css';
 
 import {
     Modal,
-    Tab,
-    Tabs
 } from 'react-bootstrap';
 
 import React from 'react';
@@ -58,21 +56,11 @@ export class ReservationDialog extends React.Component {
                 >
                 <Modal.Header closeButton>
                     <Modal.Title id="contained-modal-title-vcenter">
-                     Add new Item
+                        Manage Reservation
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Tabs  className="justify-content-center"
-                defaultActiveKey="table">
-                        <Tab eventKey="order" title="Order">
-                            Sebi Here
-                        </Tab>
-                        <Tab eventKey="reservation" title="Reservation">
-                            <ScheduleTable {...tableProps}/>
-                        </Tab>
-
-                        
-                    </Tabs>
+                    <ScheduleTable {...tableProps}/>
                 </Modal.Body>
             </Modal>
             

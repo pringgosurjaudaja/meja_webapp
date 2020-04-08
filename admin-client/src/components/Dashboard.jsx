@@ -126,7 +126,7 @@ export class Dashboard extends React.Component {
                     className="justify-content-center"
                     defaultActiveKey="order"
                 >
-                    <Tab eventKey="table" title="Table">
+                    <Tab eventKey="reservation" title="Reservation">
                         <Reservation/>
                     </Tab>
                     <Tab eventKey="menu" title="Menu">

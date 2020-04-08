@@ -7,7 +7,6 @@ import {
 } from 'react-bootstrap';
 import { navigate } from "@reach/router";
 import 'src/styles/styles.css';
-import { axios } from 'src/utilities/helper';
 import { Requests } from 'src/utilities/Requests';
 
 export class Login extends React.Component {
