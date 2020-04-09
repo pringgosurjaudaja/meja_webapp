@@ -35,6 +35,7 @@ export class CustomerReview extends React.Component {
     }
 
 
+
     getReviews = async () => {
         try {
             const reviews = await Requests.getReviews();
@@ -49,21 +50,45 @@ export class CustomerReview extends React.Component {
         const reviewCardProps = {
             item: item,
             email: this.state.email,
+            removeReview: (reviewId) => this.removeReview(reviewId),
         }
         return (
             <ReviewCard key={index} {...reviewCardProps}/>
         )
     }
 
+    addReview = (review) => {
+        this.setState({
+            review: this.state.review.concat(this.reviewCard(review, 100))
+        })
+    }
 
-    
+    removeReview = (reviewId) => {
+        let reviews = [...this.state.review];
+        let idx = -1;
+        let r = reviews.filter((item, index) => {
+            idx = index;
+            return item._id == reviewId;
+        });
+        // let index = reviews.indexOf(r);
+        console.log(idx)
+        if (idx !== -1) {
+            reviews.splice(idx, 1);
+            this.setState({ review: reviews });
+        }
+    }
+
     render () {
+        const reviewFormProps = {
+            addReview: (data) => this.addReview(data),
+            
+        }
         return (
             <div>
                 <Row className="zomato-review--title">
                     <Col> <h3> Customer Feedback</h3></Col>
                 </Row>
-                <ReviewForm email={this.state.email}/>
+                <ReviewForm email={this.state.email} {...reviewFormProps}/>
                 {this.state.review}
                 <br/>
             </div>

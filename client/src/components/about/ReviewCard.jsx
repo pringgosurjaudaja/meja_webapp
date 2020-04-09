@@ -7,6 +7,7 @@ import {
 import { Requests } from 'src/utilities/Requests'; 
 import StarRatings from 'react-star-ratings';
 import { ReplyForm } from 'src/components/about/ReplyForm';
+import { _ } from 'src/utilities/helper';
 
 export class ReviewCard extends React.Component {
     
@@ -16,7 +17,13 @@ export class ReviewCard extends React.Component {
             review: "",
             rating: 0,
             show: false,
-        }
+            replies: [],
+        };
+    }
+
+    componentDidMount () {
+        this.getReplies();
+
     }
 
     openDialog = () => {
@@ -29,7 +36,7 @@ export class ReviewCard extends React.Component {
 
     deleteComment = async () => {
         await Requests.deleteReview(this.props.item._id);
-        window.location.reload();
+        this.props.removeReview(this.props.item._id);
     }
 
     getFooter = (show) => {
@@ -39,6 +46,7 @@ export class ReviewCard extends React.Component {
                 email: this.props.email,
                 id: this.props.item._id,
                 closeDialog: () => this.closeDialog(),
+                addReply: (item) => this.addReply(item),
             }
             return (<ReplyForm {...replyFormProps}/>);
         } else {
@@ -54,31 +62,60 @@ export class ReviewCard extends React.Component {
 
     getReplies = () => {
         let res = [];
-        this.props.item && this.props.item.replies.forEach((item, index) => {
-            const comment = (
-                <Card style={{ width: '100%' }}>
-                    <Card.Body>
-                        <Card.Title>{item.user}</Card.Title>
-                        <Card.Subtitle>{item.date_time}</Card.Subtitle>
-                        <Card.Text>{item.reply}</Card.Text>
-                    </Card.Body>
-                </Card>
-            );
-
-            const row = (
-                <Row key={index}>
-                    <Col>
-                        {comment}
-                    </Col>
-                </Row>
-            );
-            res.push(row);
-        })
+        if(!_.isNil(this.props.item.replies)) {
+            this.props.item.replies.forEach((item, index) => {
+                const comment = (
+                    <Card style={{ width: '100%' }}>
+                        <Card.Body>
+                            <Card.Title>{item.user}</Card.Title>
+                            <Card.Subtitle>{item.date_time}</Card.Subtitle>
+                            <Card.Text>{item.reply}</Card.Text>
+                        </Card.Body>
+                    </Card>
+                );
+    
+                const row = (
+                    <Row key={index}>
+                        <Col>
+                            {comment}
+                        </Col>
+                    </Row>
+                );
+                res.push(row);
+            })
+            this.setState({ replies: res});
+                
+        }
+        
+        
+        
         return res;
+    }
+
+    addReply = (item) => {
+        const comment = (
+            <Card style={{ width: '100%' }}>
+                <Card.Body>
+                    <Card.Title>{item.user}</Card.Title>
+                    <Card.Subtitle>{item.date_time}</Card.Subtitle>
+                    <Card.Text>{item.reply}</Card.Text>
+                </Card.Body>
+            </Card>
+        );
+
+        const row = (
+            <Row key={100}>
+                <Col>
+                    {comment}
+                </Col>
+            </Row>
+        );
+        this.setState({ replies: this.state.replies.concat(row) });
     }
 
     render () {
         console.log(this.props);
+        // this.getReplies();
         return (
             <Row key={this.props.index}>
                 <Col>
@@ -99,7 +136,7 @@ export class ReviewCard extends React.Component {
                                 />
                             <br/>
                             {this.getFooter(this.state.show)}
-                            {this.getReplies()}
+                            {this.state.replies}
                         </Card.Body>
                     </Card>
                 </Col>

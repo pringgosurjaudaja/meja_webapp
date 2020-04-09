@@ -59,6 +59,7 @@ def on_admin_join():
 def handle_order_update(order):
     emit('updateOrders', order, room=order['_id'])
 
+
 # class AdminNamespace(Namespace):
 #     def on_new_order(self, data):
 #         print('HELLO WORLLDLDD')

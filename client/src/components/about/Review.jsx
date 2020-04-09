@@ -6,9 +6,6 @@ import {
 } from 'react-bootstrap';
 import { Requests } from 'src/utilities/Requests'; 
 import StarRatings from 'react-star-ratings';
-import { ReviewForm } from 'src/components/about/ReviewForm';
-import { ReviewCard } from 'src/components/about/ReviewCard';
-
 export const BASE_INDEX_NUM = 100;
 export class Review extends React.Component {
     constructor(props) {

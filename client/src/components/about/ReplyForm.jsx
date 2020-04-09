@@ -7,21 +7,25 @@ import {
     Button
 } from 'react-bootstrap';
 import { Requests } from 'src/utilities/Requests';
-
 export class ReplyForm extends React.Component {
     
     constructor(props) {
         super(props);
         this.state = {
             review: "",
-        }
+        };
     }
     
     submitReply = async (e) => {
         e.preventDefault();
         console.log(this.props);
-        await Requests.postReply(this.props.email, this.state.review, this.props.id);
+        const res = await Requests.postReply(this.props.email, this.state.review, this.props.id);
         this.props.closeDialog();
+        this.props.addReply({
+            "user": this.props.email,
+            "reply": this.state.review,
+            "_id": this. props.id
+        })
     }
 
 

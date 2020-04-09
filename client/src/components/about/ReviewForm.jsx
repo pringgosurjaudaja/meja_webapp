@@ -9,7 +9,6 @@ import {
 import { Requests } from 'src/utilities/Requests'; 
 import StarRatings from 'react-star-ratings';
 import { _ } from 'src/utilities/helper';
-
 export const ARBITRARY_INDEX = 999999;
 export class ReviewForm extends React.Component {
     
@@ -19,7 +18,7 @@ export class ReviewForm extends React.Component {
             email: "",
             review: "",
             rating: 0,
-        }
+        };
     }
 
     componentDidMount = async () =>  {
@@ -39,20 +38,20 @@ export class ReviewForm extends React.Component {
 
     submitFeedback = async (e) => {
         e.preventDefault();
-        if (_.isNil(this.props.reviewId)) {
-            console.log(this.state);
-            await Requests.postReview(this.state.email, this.state.review, this.state.rating);
-
-        } else {
-            const result = await Requests.postReview(this.state.email, this.state.review, this.props.reviewId);
-            
-            
-            console.log(result);
+        const res = await Requests.postReview(this.state.email, this.state.review, this.state.rating);
+        console.log(res);
+        const data = {
+            "user": this.state.email,
+            "review": this.state.review,
+            "rating": this.state.rating,
+            "_id": res.result,
         }
+        this.props.addReview(data);
         this.setState({
             review: "",
             rating: 0,
         })
+        
     }
 
     changeRating = (rating) => {
