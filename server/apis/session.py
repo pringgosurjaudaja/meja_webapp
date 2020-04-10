@@ -169,6 +169,12 @@ class SessionReceiptRoute(Resource):
     @session.doc(description='Sending a Customer Receipt for their Session at Restaurant')
     @session.expect(MODEL_session_id)
     def post(self):
+        # Set order active status to non-active
+        session_db.find_one_and_update(
+            {'_id': ObjectId(request.data['session_id'])},
+            {'$set': {'active': False}}
+        )
+
         # Get user and session details from database
         session = session_db.find_one({'_id': ObjectId(request.data['session_id'])})
         user = auth_db.find_one({'_id': ObjectId(session['user_id'])})
@@ -194,8 +200,13 @@ class SessionReceiptRoute(Resource):
         email_context['total_price'] = sum(subtotals)
 
         email = {
-            'text': '', # Insert the text version of the receipt we want to send
+            'subject': 'Receipt for your time at ' + email_context['restaurant'],
+            'text': 'Please go to Meja app for your receipt.', # Insert the text version of the receipt we want to send
             'html': render_template('receipt.html', context=email_context)
         }
 
-        EmailSender().send_email('artemisproject28+test@gmail.com', email['text'], email['html'])
+        EmailSender().send_email(user['email'], email)
+
+        return {
+            'result': 'Email sent to ' + user['email'] + ' successfully'
+        }, status.HTTP_200_OK

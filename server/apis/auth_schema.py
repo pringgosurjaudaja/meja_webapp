@@ -17,3 +17,10 @@ class AuthSchema(Schema):
     @post_load
     def create_auth(self, data, **kwargs):
         return Auth(**data)
+
+class UserSchema(Schema):
+    name = fields.String()
+    email = fields.String()
+
+    class Meta:
+        ordered = True

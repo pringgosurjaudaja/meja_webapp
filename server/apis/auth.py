@@ -4,7 +4,7 @@ from flask_api import status
 from flask_restplus import Namespace, Resource, fields, marshal_with, reqparse
 from bson.objectid import ObjectId
 import json
-from apis.auth_schema import Auth, AuthSchema
+from apis.auth_schema import Auth, AuthSchema, UserSchema
 from apis.session_schema import SessionSchema
 from apis.table_schema import TableSchema
 from marshmallow import ValidationError
@@ -128,5 +128,19 @@ class LoginRoute(Resource):
             }, status.HTTP_200_OK
 
         return {'result': 'Could not verify'}, 401  
+
+@auth.route('/user/<string:user_id>')
+class UserRoute(Resource):
+    @auth.doc(description='Get User Details')
+    def get(self, user_id):
+        schema = UserSchema()
+        user = auth_db.find_one({ '_id': ObjectId(user_id) })
+
+        if user is None:
+            return {
+                'result': 'Did not find user with id ' + user_id
+            }, status.HTTP_200_OK
+
+        return schema.dump(user), status.HTTP_200_OK
 
 # Logout Endpoint?

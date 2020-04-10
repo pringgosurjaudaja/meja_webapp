@@ -36,6 +36,18 @@ export class Requests {
         }
     }
 
+    static async getUser(userId) {
+        try {
+            const userRequest = await axios({
+                method: 'get',
+                url: BASE_URL + '/auth/user/' + userId
+            });
+            return userRequest.data;
+        } catch(err) {
+            console.error(err);
+        }
+    }
+
     static async getSession(sessionId) {
         try {
             const sessionRequest = await axios({
@@ -106,7 +118,7 @@ export class Requests {
                 url: BASE_URL + '/reservation',
             });
             return reservation.data;
-        } catch (err) {
+        } catch(err) {
             console.error(err);
         }
     }
@@ -135,13 +147,11 @@ export class Requests {
                 }
             });
             return reviews.data;
-        } catch (err) {
+        } catch(err) {
             console.error(err);
         }
     }
 
-    /*
-    */
     static async postReply(user, review, reviewId) {
         try {
             const reviews = await axios({
@@ -153,7 +163,7 @@ export class Requests {
                 }
             });
             return reviews.data;
-        } catch (err) {
+        } catch(err) {
             console.error(err);
         }
     }
@@ -165,7 +175,23 @@ export class Requests {
                 url: BASE_URL + '/review/' + reviewId
             });
             return reviews.data;
-        } catch (err) {
+        } catch(err) {
+            console.error(err);
+        }
+    }
+
+    static async sendReceipt(sessionId) {
+        // Close session and send receipt to user
+        try {
+            const receiptRequest = await axios({
+                method: 'post',
+                url: BASE_URL + '/session/receipt',
+                data: { 
+                    'session_id': sessionId
+                }
+            });
+            return receiptRequest.data;
+        } catch(err) {
             console.error(err);
         }
     }
