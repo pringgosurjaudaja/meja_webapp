@@ -1,8 +1,9 @@
 import React from 'react';
-import { Nav, Navbar } from 'react-bootstrap';
+import { Nav, Navbar, Modal, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faReceipt, faBars } from '@fortawesome/free-solid-svg-icons'
 import { Menu } from 'src/components/menu/Menu';
+import { Payment } from 'src/components/payment/Payment';
 import { Checkout } from 'src/components/checkout/Checkout';
 import { navigate, Redirect } from "@reach/router";
 import { About } from 'src/components/about/About';
@@ -26,6 +27,7 @@ const tabs = {
     ORDERS: 'orders',
     CHECKOUT: 'checkout',
     RESERVATION: 'reservation',
+    PAYMENT: 'payment'
 }
 
 export const orderStatus = {
@@ -44,6 +46,7 @@ export class Dashboard extends React.Component {
             orderList: [],
             cart: new Map(),
             showLoginDialog: false,
+            showCompleteOrderWarning: false,
             reservation: {},
         };
         this.socket = io.connect('http://127.0.0.1:5000/');
@@ -149,9 +152,18 @@ export class Dashboard extends React.Component {
         }
     }
 
+    handlePayment = () => {
+        this.setState({ 
+            showCompleteOrderWarning: false,
+            activeTab: tabs.PAYMENT 
+        });
+    }
+
     handleCloseOrder = () => {
         console.log('Closing Order and Paying');
         console.log(this.state.orderList);
+
+        this.setState({ showCompleteOrderWarning: true });
 
         // Send entire session info to the backend to be stored in db
     }
@@ -162,6 +174,9 @@ export class Dashboard extends React.Component {
         this.setState({ showOverlay: true });
     }
 
+    handleCloseWarning = () => {
+        this.setState({ showCompleteOrderWarning: false });
+    }
 
     /* Close when someone clicks on the "x" symbol inside the overlay */
     handleCloseNav = () => {
@@ -216,6 +231,9 @@ export class Dashboard extends React.Component {
                     handleOrderCart={this.handleOrderCart}
                 /> : null}
                 {this.state.activeTab === tabs.RESERVATION ? <Reservation {...reservationProps} /> : null}
+                {this.state.activeTab === tabs.PAYMENT ? <Payment 
+                    orderList={this.state.orderList}
+                /> : null}
 
                 <LoginDialog show={this.state.showLoginDialog}
                     setSessionId={this.props.setSessionId}
@@ -228,6 +246,23 @@ export class Dashboard extends React.Component {
                         language-code="en"
                     ></df-messenger>
                 </div>
+
+                <Modal show={this.state.showCompleteOrderWarning} onHide={this.handleCloseWarning}>
+                    <Modal.Header>
+                        <Modal.Title>Proceed to Payment</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        Confirm your orders and proceed to payment?
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="danger" onClick={this.handleCloseWarning}>
+                            Cancel
+                        </Button>
+                        <Button variant="success" onClick={this.handlePayment}>
+                            Proceed
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
             </div>
 
         );

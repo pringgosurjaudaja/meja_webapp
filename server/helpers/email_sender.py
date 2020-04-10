@@ -6,22 +6,21 @@ class EmailSender:
     def __init__(self):
         self.config = {
             'sender': 'artemisproject28@gmail.com',
-            'subject': 'Multipart Test'
         }
     
-    def send_email(self, recipient_email, text_email, html_email):
+    def send_email(self, recipient_email, email_content):
         '''
         Referenced from 
         https://realpython.com/python-send-email/#option-1-setting-up-a-gmail-account-for-development
         '''
         # Addding config and HTML/plain-text parts to a MIMEMultipart message
         message = MIMEMultipart('alternative')
-        message['Subject'] = self.config['subject']
+        message['Subject'] = email_content['subject']
         message['From'] = self.config['sender']
         message['To'] = recipient_email
         # The email client will try to render HTML version before plain-text
-        message.attach(MIMEText(text_email, 'plain'))
-        message.attach(MIMEText(html_email, 'html'))
+        message.attach(MIMEText(email_content['text'], 'plain'))
+        message.attach(MIMEText(email_content['html'], 'html'))
 
         # Config setup for SMTP server
         password = 'Artemis123'     # Need to hash and store this somewhere else (SECURITY RISK)

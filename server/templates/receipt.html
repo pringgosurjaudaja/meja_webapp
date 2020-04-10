@@ -9,7 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" />
     <style type="text/css">
         /* Web Fonts */
-        @import url('https://fonts.googleapis.com/css?family=Average|Montserrat:400,700&display=swap');
+        @import url('https://fonts.googleapis.com/css?family=DM+Sans&display=swap');
 
         /* Some resets and issue fixes */
         #outlook a {
@@ -22,6 +22,7 @@
             -ms-text-size-adjust: 100%;
             margin: 0;
             padding: 0;
+            font-family: 'DM Sans', 'Arial';
         }
 
         .ReadMsgBody { 
@@ -110,8 +111,8 @@
                                     <td valign="top">
                                         <table border="0" cellspacing="0" cellpadding="10" width="600" class="100p">
                                             <tr>
-                                                <td align="left" class="100p">
-                                                    <img src="../assets/logo.png" alt="Logo" width="180" />
+                                                <td align="center" class="100p">
+                                                    <h1 style="font-size: 32px;">Méja</h1>
                                                 </td>
                                             </tr>
                                         </table>
@@ -123,8 +124,8 @@
                                 <tr>
                                     <td align="left">
                                         <div style="font-size: 16px; color:#000000; margin-left: 10%; margin-top: 5%">
-                                            <font face="'Montserrat', Arial, sans-serif">
-                                                <h1>Thanks for dining with us {{ context['name'] }}!</h1>
+                                            <font face="'DM Sans', Arial, sans-serif">
+                                                <h3>Thanks for dining with us <strong>{{ context['name'] }}</strong>!</h3>
                                             </font>
                                         </div>
                                     </td>
@@ -133,7 +134,7 @@
                                 <tr>
                                     <td align="left">
                                         <div style="font-size: 16px; color:#000000; margin-left: 10%;">
-                                            <font face="'Montserrat', Arial, sans-serif">
+                                            <font face="'DM Sans', Arial, sans-serif">
                                                 <p>Here is your receipt for your meal at {{ context['restaurant'] }}.</p>
                                             </font>
                                         </div>
@@ -187,7 +188,7 @@
                                 <tr>
                                     <td align="left">
                                         <div style="font-size: 16px; color:#000000; margin-left: 10%; margin-bottom: 5%;">
-                                            <font face="'Montserrat', Arial, sans-serif">
+                                            <font face="'DM Sans', Arial, sans-serif">
                                                 <p>Visit your <a href="#">account</a> page for more details.</p>
                                             </font>
                                         </div>
@@ -200,17 +201,11 @@
                 </table>
 
                 <!-- <bottom area> -->
-                <table width="640" cellspacing="0" cellpadding="5" bgcolor="#E8DCC8" class="100p">
-                    <tr align="center">
-                        <td class="100p">
-                            <img src="../assets/logo.png" alt="Logo" width="180" />
-                        </td>
-                    </tr>
-                    
+                <table width="640" cellspacing="0" cellpadding="5" bgcolor="#E8DCC8" class="100p">                    
                     <tr align="center">
                         <td style="margin-bottom: 5%;">
                             <div style="margin-bottom: 3%;">
-                                <font face="'Montserrat', Arial, sans-serif">
+                                <font face="'DM Sans', Arial, sans-serif">
                                     <p style="color: #000000; font-size: 12px;">© Meja App 2020</p>
                                 </font>
                             </div>
