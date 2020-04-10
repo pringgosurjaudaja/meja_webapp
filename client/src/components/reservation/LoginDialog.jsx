@@ -6,7 +6,8 @@ import {
 } from 'react-bootstrap';
 import 'src/styles/styles.css';
 import { Requests } from 'src/utilities/Requests';
-
+import { _ } from 'src/utilities/helper';
+import { navigate } from "@reach/router";
 export class LoginDialog extends React.Component {
     constructor(props) {
         super(props);
@@ -30,8 +31,13 @@ export class LoginDialog extends React.Component {
     handleSubmit = async (event) => {
         try {
             const loginRequest = await Requests.login(this.state.email, this.state.password);
-            this.props.setSessionId(await Requests.makeSession('5e8347e01c9d440000231cb3', loginRequest.token));
-            window.location.reload();
+            
+            if (_.isNil(loginRequest)) {
+                navigate('/');
+            } else {
+                await Requests.makeSession('5e8347e01c9d440000231cb3', loginRequest.token);
+                window.location.reload();
+            }
 
             this.setState({ email: '', password: ''});
         } catch (err) {
