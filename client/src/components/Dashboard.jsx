@@ -1,7 +1,9 @@
 import React from 'react';
 import { Nav, Navbar, Modal, Button } from 'react-bootstrap';
+import { Fab, Action } from 'react-tiny-fab';
+import io from 'socket.io-client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faReceipt, faBars } from '@fortawesome/free-solid-svg-icons'
+import { faReceipt, faBars, faConciergeBell } from '@fortawesome/free-solid-svg-icons'
 import { Menu } from 'src/components/menu/Menu';
 import { Payment } from 'src/components/payment/Payment';
 import { Checkout } from 'src/components/checkout/Checkout';
@@ -12,8 +14,11 @@ import { Reservation } from 'src/components/reservation/Reservation';
 import { LoginDialog } from 'src/components/reservation/LoginDialog';
 import { NavOverlay } from 'src/components/NavOverlay';
 import { Requests } from 'src/utilities/Requests';
-import io from 'socket.io-client';
 import 'src/styles/styles.css';
+import 'react-tiny-fab/dist/styles.css';
+
+console.log('React version');
+console.log(React.version);
 
 export const cartOps = {
     ADD: 'add',
@@ -48,6 +53,8 @@ export class Dashboard extends React.Component {
             showLoginDialog: false,
             showCompleteOrderWarning: false,
             reservation: {},
+            callingWaiter: false,
+            showConfirmCallWaiter: false
         };
         this.socket = io.connect('http://127.0.0.1:5000/');
     }
@@ -183,6 +190,52 @@ export class Dashboard extends React.Component {
         this.setState({ showOverlay: false });
     }
 
+    handleCallWaiter = (confirmedCallWaiter) => {
+        let calling = this.state.callingWaiter;
+
+        calling || confirmedCallWaiter ?
+        // Toggle calling waiter
+        this.setState({ callingWaiter: !calling, showConfirmCallWaiter: false }) :
+        // Open modal to make user confirm waiter call
+        this.setState({ showConfirmCallWaiter: true })
+    }
+
+    closeConfirmCallWaiter = () => {
+        this.setState({ showConfirmCallWaiter: false });
+    }
+
+    // confirmOrderModal = () => (
+    //     <Modal show={this.state.showCompleteOrderWarning} onHide={this.handleCloseWarning}>
+    //         <Modal.Header>
+    //             <Modal.Title>Proceed to Payment</Modal.Title>
+    //         </Modal.Header>
+    //         <Modal.Body>
+    //             Confirm your orders and proceed to payment?
+    //         </Modal.Body>
+    //         <Modal.Footer>
+    //             <Button variant="danger" onClick={this.handleCloseWarning}>
+    //                 Cancel
+    //             </Button>
+    //             <Button variant="success" onClick={this.handlePayment}>
+    //                 Proceed
+    //             </Button>
+    //         </Modal.Footer>
+    //     </Modal>
+    // )
+
+    // confirmWaiterModal = () => (
+    //     <Modal show={this.state.showConfirmCallWaiter} onHide={this.closeConfirmCallWaiter}>
+    //         <Modal.Body>
+    //             Need assistance from one of our friendly waiting staff?
+    //         </Modal.Body>
+    //         <Modal.Footer>
+    //             <Button variant="success" onClick={this.handleCallWaiter(true)}>
+    //                 Call Waiter
+    //             </Button>
+    //         </Modal.Footer>
+    //     </Modal>
+    // )
+
     render() {
         // if (!localStorage.getItem('sessionId')) {
         //     console.log('No session ID assigned');
@@ -238,6 +291,10 @@ export class Dashboard extends React.Component {
                 <LoginDialog show={this.state.showLoginDialog}
                     setSessionId={this.props.setSessionId}
                     onHide={() => this.setState({ showLoginDialog: false })} />
+
+                
+
+                {/* Chatbot */}
                 <div>
                     <df-messenger
                         intent="WELCOME"
@@ -247,6 +304,16 @@ export class Dashboard extends React.Component {
                     ></df-messenger>
                 </div>
 
+                {/* Call Waiter Button */}
+                <Fab 
+                    mainButtonStyles={{
+                        backgroundColor: this.state.callingWaiter ? '#27ae60': '#918585'
+                    }}
+                    icon={<FontAwesomeIcon icon={faConciergeBell} />}
+                    onClick={() => this.handleCallWaiter(false)}
+                    position={{bottom: 0, left: 0}}
+                />
+                
                 <Modal show={this.state.showCompleteOrderWarning} onHide={this.handleCloseWarning}>
                     <Modal.Header>
                         <Modal.Title>Proceed to Payment</Modal.Title>
@@ -260,6 +327,24 @@ export class Dashboard extends React.Component {
                         </Button>
                         <Button variant="success" onClick={this.handlePayment}>
                             Proceed
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+                
+                <Modal 
+                    show={this.state.showConfirmCallWaiter} 
+                    onHide={this.closeConfirmCallWaiter}
+                    centered
+                >
+                    <Modal.Header>
+                        <Modal.Title>Need Help?</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        Need assistance from one of our friendly waiting staff?
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="success" onClick={() => this.handleCallWaiter(true)}>
+                            Call Waiter
                         </Button>
                     </Modal.Footer>
                 </Modal>
