@@ -193,56 +193,64 @@ export class Dashboard extends React.Component {
     handleCallWaiter = (confirmedCallWaiter) => {
         let calling = this.state.callingWaiter;
 
-        calling || confirmedCallWaiter ?
-        // Toggle calling waiter
-        this.setState({ callingWaiter: !calling, showConfirmCallWaiter: false }) :
-        // Open modal to make user confirm waiter call
-        this.setState({ showConfirmCallWaiter: true })
+        if (calling) {
+            // Cancel the waiter call
+            this.setState(({ callingWaiter: !calling }));
+        } else if (confirmedCallWaiter) {
+            // Call a waiter
+            console.log('Calling waiter');
+            this.socket.emit('call_waiter', localStorage.getItem('sessionId'));
+            this.setState({ callingWaiter: !calling, showConfirmCallWaiter: false });
+        } else {
+            // Open modal to make user confirm waiter call
+            this.setState({ showConfirmCallWaiter: true });
+        }
     }
 
     closeConfirmCallWaiter = () => {
         this.setState({ showConfirmCallWaiter: false });
     }
 
-    // confirmOrderModal = () => (
-    //     <Modal show={this.state.showCompleteOrderWarning} onHide={this.handleCloseWarning}>
-    //         <Modal.Header>
-    //             <Modal.Title>Proceed to Payment</Modal.Title>
-    //         </Modal.Header>
-    //         <Modal.Body>
-    //             Confirm your orders and proceed to payment?
-    //         </Modal.Body>
-    //         <Modal.Footer>
-    //             <Button variant="danger" onClick={this.handleCloseWarning}>
-    //                 Cancel
-    //             </Button>
-    //             <Button variant="success" onClick={this.handlePayment}>
-    //                 Proceed
-    //             </Button>
-    //         </Modal.Footer>
-    //     </Modal>
-    // )
+    confirmOrderModal = () => (
+        <Modal show={this.state.showCompleteOrderWarning} onHide={this.handleCloseWarning}>
+            <Modal.Header>
+                <Modal.Title>Proceed to Payment</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                Confirm your orders and proceed to payment?
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="danger" onClick={this.handleCloseWarning}>
+                    Cancel
+                </Button>
+                <Button variant="success" onClick={this.handlePayment}>
+                    Proceed
+                </Button>
+            </Modal.Footer>
+        </Modal>
+    )
 
-    // confirmWaiterModal = () => (
-    //     <Modal show={this.state.showConfirmCallWaiter} onHide={this.closeConfirmCallWaiter}>
-    //         <Modal.Body>
-    //             Need assistance from one of our friendly waiting staff?
-    //         </Modal.Body>
-    //         <Modal.Footer>
-    //             <Button variant="success" onClick={this.handleCallWaiter(true)}>
-    //                 Call Waiter
-    //             </Button>
-    //         </Modal.Footer>
-    //     </Modal>
-    // )
+    confirmWaiterModal = () => (
+        <Modal 
+            show={this.state.showConfirmCallWaiter} 
+            onHide={this.closeConfirmCallWaiter}
+            centered
+        >
+            <Modal.Header>
+                <Modal.Title>Need Help?</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                Need assistance from one of our friendly waiting staff?
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="success" onClick={() => this.handleCallWaiter(true)}>
+                    Call Waiter
+                </Button>
+            </Modal.Footer>
+        </Modal>
+    )
 
     render() {
-        // if (!localStorage.getItem('sessionId')) {
-        //     console.log('No session ID assigned');
-        //     // Invalid Session or Session has Expired
-        //     return <Redirect to='/' noThrow />;
-        // }
-
         const reservationProps = {
             showLogin: this.showLogin,
         }
@@ -293,7 +301,6 @@ export class Dashboard extends React.Component {
                     onHide={() => this.setState({ showLoginDialog: false })} />
 
                 
-
                 {/* Chatbot */}
                 <div>
                     <df-messenger
@@ -314,40 +321,8 @@ export class Dashboard extends React.Component {
                     position={{bottom: 0, left: 0}}
                 />
                 
-                <Modal show={this.state.showCompleteOrderWarning} onHide={this.handleCloseWarning}>
-                    <Modal.Header>
-                        <Modal.Title>Proceed to Payment</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        Confirm your orders and proceed to payment?
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="danger" onClick={this.handleCloseWarning}>
-                            Cancel
-                        </Button>
-                        <Button variant="success" onClick={this.handlePayment}>
-                            Proceed
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
-                
-                <Modal 
-                    show={this.state.showConfirmCallWaiter} 
-                    onHide={this.closeConfirmCallWaiter}
-                    centered
-                >
-                    <Modal.Header>
-                        <Modal.Title>Need Help?</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        Need assistance from one of our friendly waiting staff?
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="success" onClick={() => this.handleCallWaiter(true)}>
-                            Call Waiter
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
+                {this.confirmOrderModal()}
+                {this.confirmWaiterModal()}
             </div>
 
         );

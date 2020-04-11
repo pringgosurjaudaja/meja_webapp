@@ -19,7 +19,7 @@ MODEL_reservation = reservation.model('Reservation',{
 })
 
 MODEL_reservation_update = reservation.model('Reservation Update',{
-    'table_number': fields.Integer(),
+    'table_id': fields.String(),
     'email': fields.String(),
     'datetime': fields.DateTime(),
     'number_diner': fields.Integer(),
@@ -57,21 +57,31 @@ class Reservation(Resource):
             res = schema.load(request.data)
             date = res['datetime'].date()
             time = res['datetime'].time()
-            # Logic to allocate table
+
+            # Try to allocate reservation to a table
             tables = list(table_db.find({'seat': { '$gte': res['number_diner']} }))
             tables.sort(key=lambda table: table['seat'], reverse=False)
-            res['table_number'] = None
+            res['table_id'] = None
             for table in tables:
-                reservation = list(reservation_db.find({'datetime': '%sT%s'%(date,time), 'table_number': table['number']}))
+                reservation = list(reservation_db.find({
+                    'datetime': '%sT%s'%(date,time), 
+                    'table_id': str(table['_id'])
+                }))
+
                 if not reservation:
-                    res['table_number'] = table['number']
+                    res['table_id'] = str(table['_id'])
                     break
             
-            if not res['table_number']:
-                return {'message' : 'Cannot allocate table.'}, 401
+            if not res['table_id']:
+                return {
+                    'message' : 'Cannot allocate table.'
+                }, status.HTTP_404_NOT_FOUND
 
             operation = reservation_db.insert_one(schema.dump(res))
-            return { 'result': 'new reservation has been created'}, status.HTTP_201_CREATED
+            return {
+                'inserted': str(operation.inserted_id),
+                'result': 'New reservation has been created'
+            }, status.HTTP_201_CREATED
         except ValidationError as err:
             print(err)
             return { 
@@ -109,7 +119,7 @@ class ReservationRoute(Resource):
             reservation_db.find_one_and_update(
                 {'_id': ObjectId(reservation_id)},
                 {'$set':
-                    {'table_number': request.data.get('table_number'),
+                    {'table_id': request.data.get('table_id'),
                      'email': request.data.get('email'),
                      'datetime': request.data.get('datetime'),
                      'number_diner': request.data.get('number_diner'),
@@ -135,18 +145,15 @@ class ReservationRoute(Resource):
                 'result': 'Missing required fields'
             }, status.HTTP_400_BAD_REQUEST                  
 
-# @reservation.route('/<string:reservation_id>')
-# class ReservationRoute(Resource):
-#     @reservation.doc(description="Get reservation based on id")
-#     def get(self, reservation_id):
-#         reservation = reservation_db.find_one(
-#             {'_id': ObjectId(reservation_id)}
-#         )
-#         if not reservation:
-#             reservation['_id'] = str(reservation['_id'])
-#             return reservation, status.HTTP_200_OK
-#         else:
+@reservation.route('/table/<string:table_id>')
+class ReservationTableRoute(Resource):
+    @reservation.doc(description='Get all reservations for a specific table')
+    def get(self, table_id):
+        reservations = []
 
-#             return {
-#                             'result': 'No reservation'
-#                         } 
+        for reservation in reservation_db.find({'table_id': table_id}):
+            reservation['_id'] = str(reservation['_id'])
+            reservations.append(reservation)
+
+        reservations.sort(key=lambda reservation:reservation['datetime'])
+        return reservations, status.HTTP_200_OK
