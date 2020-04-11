@@ -7,7 +7,7 @@ import { faReceipt, faBars, faConciergeBell } from '@fortawesome/free-solid-svg-
 import { Menu } from 'src/components/menu/Menu';
 import { Payment } from 'src/components/payment/Payment';
 import { Checkout } from 'src/components/checkout/Checkout';
-import { navigate, Redirect } from "@reach/router";
+import { navigate } from "@reach/router";
 import { About } from 'src/components/about/About';
 import { Orders } from 'src/components/order/Orders';
 import { Reservation } from 'src/components/reservation/Reservation';

@@ -10,6 +10,7 @@ import 'src/styles/styles.css';
 import { Requests } from 'src/utilities/Requests';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { _ } from 'src/utilities/helper';
 
 export class Login extends React.Component {
     constructor(props) {
@@ -34,8 +35,13 @@ export class Login extends React.Component {
 
         // Login with user entered details
         const loginRequest = await Requests.login(this.state.email, this.state.password);
-        await Requests.makeSession('5e8347e01c9d440000231cb3', loginRequest.token);
-        navigate('/dashboard');
+        if (_.isNil(loginRequest)) {
+            navigate('/');
+        } else {
+            await Requests.makeSession('5e8347e01c9d440000231cb3', loginRequest.token);
+            navigate('/dashboard');
+        }
+        
     }
 
     componentWillUnmount() {
