@@ -20,6 +20,7 @@ export class Reservation extends React.Component {
             tables: [],
             showReservationDialog: false,
             tableId: 0,
+            tableName: '',
             number_of_table: 0,
             showTableDialog: false,
             addTable: true,
@@ -37,11 +38,12 @@ export class Reservation extends React.Component {
     }
 
 
-    handleShowReservation = (event, tableId) => {
+    handleShowReservation = (event, tableId, tableName) => {
         console.log(tableId)
         this.setState({
             showReservationDialog: true,
             tableId: tableId,
+            tableName: tableName,
         });
     }
 
@@ -72,13 +74,14 @@ export class Reservation extends React.Component {
         let cols = [];
         for(let r = 0; r<table_num; ++r) {
             const table_id = this.state.tables[r]._id;
+            const table_name = this.state.tables[r].name;
             let col = (
                 <Col>
                     <Button id={BASE_NUM+r} variant="primary"
                     onClick={(e)=>{
-                        this.handleShowReservation(e, table_id);
+                        this.handleShowReservation(e, table_id, table_name);
                     }}>
-                        {this.state.tables[r].name}
+                        {table_name}
                     </Button>
                 </Col>
             
@@ -89,6 +92,7 @@ export class Reservation extends React.Component {
         
         let reservationProps = {
             table_id: this.state.tableId,
+            table_name: this.state.tableName,
             reservation: this.state.reservation,
         }
         let tableProps = {

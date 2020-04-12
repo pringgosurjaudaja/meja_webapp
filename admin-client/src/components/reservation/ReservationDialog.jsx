@@ -7,7 +7,6 @@ import {
 import React from 'react';
 import { ScheduleTable } from 'src/components/reservation/ScheduleTable';
 import { Requests } from 'src/utilities/Requests';
-import { _ } from 'src/utilities/helper';
 
 export class ReservationDialog extends React.Component {
     constructor(props) {
@@ -21,11 +20,8 @@ export class ReservationDialog extends React.Component {
     }
 
     componentDidMount = async () => {
-        // if(!_.isNil(this.props.table_id)) {
-        setTimeout(1000);
         let res = await Requests.getTableReservation(this.props.table_id);
         this.setState({ data: res.data });
-        // }
         
     }
 
@@ -36,9 +32,7 @@ export class ReservationDialog extends React.Component {
 
 
     render () {
-        
         let events = [];
-        console.log(this.state.data);
         if(this.state.data.length !== 0) {
             this.state.data.forEach((item, index)=>{
             
@@ -52,13 +46,13 @@ export class ReservationDialog extends React.Component {
                     time: datetime[1],
                     note: item.reservation_notes,
                 });
-    
             });
         }
         
 
         const tableProps = {
             table_id: this.props.table_id,
+            table_name: this.props.table_name,
             data: events,
         }
 

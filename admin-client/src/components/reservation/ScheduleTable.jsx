@@ -51,7 +51,7 @@ export class ScheduleTable extends React.Component {
         return (
         <Card style={{ width: '100%', margin: '10px' }}>
                 <Card.Header>
-                    <Card.Title>Table {this.props.table_id}</Card.Title>
+                    <Card.Title>Table {this.props.table_name}</Card.Title>
                     {/* <Card.Subtitle>#{order._id}</Card.Subtitle> */}
                 </Card.Header>
                 <Card.Body>

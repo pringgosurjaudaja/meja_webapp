@@ -2,7 +2,7 @@ import 'src/styles/styles.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 
-import { Button, Col, Container, Row, Tab, Tabs } from 'react-bootstrap';
+import { Col, Container, Row, Tab, Tabs } from 'react-bootstrap';
 
 import { CategoryDialog } from 'src/components/menu/CategoryDialog';
 import { Dialog } from 'src/components/menu/Dialog';

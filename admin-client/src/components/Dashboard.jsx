@@ -56,8 +56,6 @@ export class Dashboard extends React.Component {
                 method: 'get',
                 url: 'http://127.0.0.1:5000/session/order'
             });
-
-            console.log(orders.data);
             
             this.setState({
                 orders: orders.data
