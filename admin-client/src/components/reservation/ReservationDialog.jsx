@@ -6,6 +6,8 @@ import {
 
 import React from 'react';
 import { ScheduleTable } from 'src/components/reservation/ScheduleTable';
+import { Requests } from 'src/utilities/Requests';
+import { _ } from 'src/utilities/helper';
 
 export class ReservationDialog extends React.Component {
     constructor(props) {
@@ -13,38 +15,50 @@ export class ReservationDialog extends React.Component {
         this.state = {
             events: [],
             response: [],
+            data: [],
         }
         this.calendarRef = React.createRef();
     }
 
-    componentDidMount() {
-        console.log(this.props);
+    componentDidMount = async () => {
+        // if(!_.isNil(this.props.table_id)) {
+        setTimeout(1000);
+        let res = await Requests.getTableReservation(this.props.table_id);
+        this.setState({ data: res.data });
+        // }
+        
     }
 
+    componentWillReceiveProps = async (nextProps) => {
+        let res = await Requests.getTableReservation(nextProps.table_id);
+        this.setState({ data: res.data });
+    }
+
+
     render () {
-        let data = this.props.reservation.filter((r)=>{
-            return r.table_id === this.props.tableId;
-        })
-
+        
         let events = [];
-
-        data.forEach((item, index)=>{
+        console.log(this.state.data);
+        if(this.state.data.length !== 0) {
+            this.state.data.forEach((item, index)=>{
             
-            let datetime = item.datetime.split("T");
-
-            events.push({
-                id: item._id,
-                email: item.email,
-                diner: item.number_diner,
-                date: datetime[0],
-                time: datetime[1],
-                note: item.reservation_notes,
+                let datetime = item.datetime.split("T");
+    
+                events.push({
+                    id: item._id,
+                    email: item.email,
+                    diner: item.number_diner,
+                    date: datetime[0],
+                    time: datetime[1],
+                    note: item.reservation_notes,
+                });
+    
             });
-
-        });
+        }
+        
 
         const tableProps = {
-            table_id: this.props.tableId,
+            table_id: this.props.table_id,
             data: events,
         }
 

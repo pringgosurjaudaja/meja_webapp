@@ -116,5 +116,55 @@ export class Requests {
             console.error(err);
         }
     }
+
+
+    static async addTable(tableName, seats) {
+        try {
+            const result = await axios({
+                method: 'post',
+                url: BASE_URL + '/table',
+                header: {
+                    "x-api-key": sessionStorage.getItem('AUTH_KEY'),
+                },
+                data: {
+                    name: tableName,
+                    seat: parseInt(seats),
+                }
+            });
+            return result;
+        } catch (err) {
+            console.error(err);
+        }
+    }
+    static async deleteTable(tableId) {
+        try {
+            
+            const result = await axios({
+                method: 'delete',
+                url: BASE_URL + '/table/'+tableId,
+                header: {
+                    "x-api-key": sessionStorage.getItem('AUTH_KEY'),
+                }
+            });
+            return result;
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    static async getTableReservation(tableId) {
+        try {
+            const result = await axios({
+                method: 'get',
+                url: BASE_URL + '/reservation/table/'+tableId,
+                header: {
+                    "x-api-key": sessionStorage.getItem('AUTH_KEY'),
+                }
+            });
+            return result;
+        } catch (err) {
+            console.error(err);
+        }
+    }
     
 }

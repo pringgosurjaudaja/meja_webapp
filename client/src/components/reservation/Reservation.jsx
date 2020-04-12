@@ -29,14 +29,17 @@ export class Reservation extends React.Component {
     }
 
     getCurrentReservation = async (reservationList) => {
-        reservationList.forEach(async (reservation) => {
-            console.log(reservation);
-            if(reservation.email === this.state.email) {
-                this.setState({ reservation: reservation });
-                this.setState({ reserved: true });
-                return;
-            }
-        });
+        console.log(reservationList);
+        if (reservationList.result !== "No Reservation") {
+            reservationList.forEach((reservation) => {
+                console.log(reservation);
+                if(reservation.email === this.state.email) {
+                    this.setState({ reservation: reservation });
+                    this.setState({ reserved: true });
+                    return;
+                }
+            });
+        }
     }
 
     getEmail = async () => {

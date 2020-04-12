@@ -21,8 +21,9 @@ export class ScheduleTable extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({ reservation: nextProps.reservation });
+        this.setState({ reservation: nextProps.data });
     }
+
 
     handleDeleteRow = async (row) =>{
         for(let index = 0; index < row.length; ++index) {

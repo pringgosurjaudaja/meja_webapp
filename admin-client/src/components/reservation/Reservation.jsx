@@ -38,6 +38,7 @@ export class Reservation extends React.Component {
 
 
     handleShowReservation = (event, tableId) => {
+        console.log(tableId)
         this.setState({
             showReservationDialog: true,
             tableId: tableId,
@@ -67,13 +68,15 @@ export class Reservation extends React.Component {
 
     render () {
         const table_num = this.state.tables ? this.state.tables.length : 0;
+        
         let cols = [];
         for(let r = 0; r<table_num; ++r) {
+            const table_id = this.state.tables[r]._id;
             let col = (
                 <Col>
                     <Button id={BASE_NUM+r} variant="primary"
                     onClick={(e)=>{
-                        this.handleShowReservation(e, this.state.tables[r]._id);
+                        this.handleShowReservation(e, table_id);
                     }}>
                         {this.state.tables[r].name}
                     </Button>
@@ -85,11 +88,12 @@ export class Reservation extends React.Component {
 
         
         let reservationProps = {
-            tableId: this.state.tableId,
+            table_id: this.state.tableId,
             reservation: this.state.reservation,
         }
         let tableProps = {
             addTable: this.state.addTable,
+            tables: this.state.tables,
         }
 
         return (
@@ -100,7 +104,16 @@ export class Reservation extends React.Component {
                             <div className="layout--margin--admin-menu__button" id="add" onClick={this.handleShowTableDialog}>Add new Table</div>
                             <div className="layout--margin--admin-menu__button" id="delete" onClick={this.handleShowTableDialog}>Delete a table</div>
                         </Col>
-                        {cols}
+                        <Col>
+                            <Container>
+                                <Row>
+                                    {cols}
+                                </Row>
+                            </Container>
+
+                            
+                        </Col>
+                        
                     </Row>
                 </Container>
                 <TableDialog show={this.state.showTableDialog} onHide={this.handleClose} {...tableProps}/>
