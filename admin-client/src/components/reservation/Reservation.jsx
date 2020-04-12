@@ -8,6 +8,7 @@ import {
 import React from 'react';
 import { Requests } from 'src/utilities/Requests';
 import { ReservationDialog } from 'src/components/reservation/ReservationDialog';
+import { TableDialog } from 'src/components/reservation/TableDialog';
 
 const BASE_NUM = 100;
 export class Reservation extends React.Component {
@@ -19,6 +20,8 @@ export class Reservation extends React.Component {
             showReservationDialog: false,
             table: 0,
             number_of_table: 0,
+            showTableDialog: false,
+            addTable: true,
         }
     }
 
@@ -40,9 +43,24 @@ export class Reservation extends React.Component {
         });
     }
 
+    handleShowTableDialog = (event) => {
+        if (event.target.id === "add") {
+            this.setState({ 
+                addTable: true, 
+                showTableDialog: true,
+            });
+        } else if (event.target.id === "delete") {
+            this.setState({ 
+                addTable: false, 
+                showTableDialog: true, 
+            });
+        }
+    }
+
     handleClose = () => {
         this.setState({ 
             showReservationDialog: false,
+            showTableDialog: false,
         });
     }
 
@@ -70,15 +88,22 @@ export class Reservation extends React.Component {
             table: this.state.table,
             reservation: this.state.reservation,
         }
+        let tableProps = {
+            addTable: this.state.addTable,
+        }
 
         return (
             <div style={{ display: 'flex', flexFlow: 'row wrap', maxWidth: '100vw' }}>
                 <Container>
-                <Row>
-                    {cols}
-                </Row>
+                    <Row>
+                        <Col xs={2} sm={2} className="layout--margin--admin-menu__button-list">
+                            <div className="layout--margin--admin-menu__button" id="add" onClick={this.handleShowTableDialog}>Add new Table</div>
+                            <div className="layout--margin--admin-menu__button" id="delete" onClick={this.handleShowTableDialog}>Delete a table</div>
+                        </Col>
+                        {cols}
+                    </Row>
                 </Container>
-                
+                <TableDialog show={this.state.showTableDialog} onHide={this.handleClose} {...tableProps}/>
                 <ReservationDialog show={this.state.showReservationDialog} onHide={this.handleClose} {...reservationProps}/>
             </div>
         );
