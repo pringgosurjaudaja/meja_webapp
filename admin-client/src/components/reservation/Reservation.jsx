@@ -17,8 +17,9 @@ export class Reservation extends React.Component {
         super(props);
         this.state = {
             reservation: [],
+            tables: [],
             showReservationDialog: false,
-            table: 0,
+            tableId: 0,
             number_of_table: 0,
             showTableDialog: false,
             addTable: true,
@@ -30,16 +31,16 @@ export class Reservation extends React.Component {
         const reservation = await Requests.getReservations();
         this.setState({ reservation: reservation });
         
-        const tableNumber = await Requests.getTables();
-        this.setState({ number_of_table: tableNumber.length })
+        const tables = await Requests.getTables();
+        this.setState({ tables: tables })
 
     }
 
 
-    handleShowReservation = (event, table) => {
+    handleShowReservation = (event, tableId) => {
         this.setState({
             showReservationDialog: true,
-            table: table,
+            tableId: tableId,
         });
     }
 
@@ -65,17 +66,16 @@ export class Reservation extends React.Component {
     }
 
     render () {
-        const table_num = this.state.number_of_table;
+        const table_num = this.state.tables ? this.state.tables.length : 0;
         let cols = [];
         for(let r = 0; r<table_num; ++r) {
-            let num = r+1;
             let col = (
                 <Col>
                     <Button id={BASE_NUM+r} variant="primary"
                     onClick={(e)=>{
-                        this.handleShowReservation(e, num);
+                        this.handleShowReservation(e, this.state.tables[r]._id);
                     }}>
-                        {r+1}
+                        {this.state.tables[r].name}
                     </Button>
                 </Col>
             
@@ -85,7 +85,7 @@ export class Reservation extends React.Component {
 
         
         let reservationProps = {
-            table: this.state.table,
+            tableId: this.state.tableId,
             reservation: this.state.reservation,
         }
         let tableProps = {

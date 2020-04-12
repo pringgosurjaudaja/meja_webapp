@@ -65,7 +65,7 @@ export class Requests {
         }
     }
 
-    static async updateReservation(reservationId, tableNumber, email, numberDiner, dateTime, reservationNotes) {
+    static async updateReservation(reservationId, tableId, email, numberDiner, dateTime, reservationNotes) {
         try {
             const result = await axios({
                 method: 'put',
@@ -74,7 +74,7 @@ export class Requests {
                     "x-api-key": sessionStorage.getItem('AUTH_KEY'),
                 },
                 data: {
-                    table_number: tableNumber,
+                    table_id: tableId,
                     email: email,
                     number_diner: numberDiner,
                     datetime: dateTime,

@@ -35,7 +35,7 @@ export class ScheduleTable extends React.Component {
         // return false for reject the editing
         let data = row;
         data[cellName] = cellValue;
-        await Requests.updateReservation(row.id, this.props.table_number, data["email"], parseInt(data["diner"]), data["date"]+"T"+data["time"], data["note"]);
+        await Requests.updateReservation(row.id, this.props.table_id, data["email"], parseInt(data["diner"]), data["date"]+"T"+data["time"], data["note"]);
         return true;
       }
     
@@ -50,7 +50,7 @@ export class ScheduleTable extends React.Component {
         return (
         <Card style={{ width: '100%', margin: '10px' }}>
                 <Card.Header>
-                    <Card.Title>Table {this.props.table_number}</Card.Title>
+                    <Card.Title>Table {this.props.table_id}</Card.Title>
                     {/* <Card.Subtitle>#{order._id}</Card.Subtitle> */}
                 </Card.Header>
                 <Card.Body>
