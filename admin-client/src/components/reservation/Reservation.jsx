@@ -17,19 +17,12 @@ export class Reservation extends React.Component {
         this.state = {
             reservation: [],
             showReservationDialog: false,
-            table: 0,
-            number_of_table: 0,
         }
     }
 
     componentDidMount = async () => {
-
         const reservation = await Requests.getReservations();
         this.setState({ reservation: reservation });
-        
-        const tableNumber = await Requests.getTables();
-        this.setState({ number_of_table: tableNumber.length })
-
     }
 
 
@@ -47,7 +40,9 @@ export class Reservation extends React.Component {
     }
 
     render () {
-        const table_num = this.state.number_of_table;
+        const { tables } = this.props;
+
+        const table_num = tables.length;
         let cols = [];
         for(let r = 0; r<table_num; ++r) {
             let num = r+1;
@@ -67,7 +62,7 @@ export class Reservation extends React.Component {
 
         
         let reservationProps = {
-            table: this.state.table,
+            table: tables,
             reservation: this.state.reservation,
         }
 

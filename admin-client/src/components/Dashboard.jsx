@@ -22,49 +22,26 @@ export class Dashboard extends React.Component {
         super(props);
         this.state = {
             menuItemList: [],
-            orders: []
+            orders: [],
+            tables: []
         }
         this.socket = io.connect('http://127.0.0.1:5000/');
         this.socket.emit('admin_join');
     }
 
-    componentDidMount() {
+    componentDidMount = async () => {
         // Populate the menuItemList
-        this.getMenu();
-        this.getOrders();
+        const menu = await Requests.getMenu();
+        const orders = await Requests.getOrders();
+        const tables = await Requests.getTables();
+
+        this.setState({
+            menuItemList: menu,
+            orders: orders,
+            tables: tables
+        });
+
         this.socketSetup();
-    }
-
-    getMenu = async () => {
-        try {
-            const menu = await axios({
-                method: 'get',
-                url: 'http://127.0.0.1:5000/menu',
-            });
-            
-            this.setState({
-                menuItemList: menu.data
-            });
-        } catch(err) {
-            console.error('Error in Retrieving Menu');
-        }
-    }
-
-    getOrders = async () => {
-        try {
-            const orders = await axios({
-                method: 'get',
-                url: 'http://127.0.0.1:5000/session/order'
-            });
-
-            console.log(orders.data);
-            
-            this.setState({
-                orders: orders.data
-            });
-        } catch(err) {
-            console.error('Error in Retrieving Orders');
-        }
     }
 
     socketSetup = () => {
@@ -72,6 +49,10 @@ export class Dashboard extends React.Component {
             // Check for new coustomer orders
             console.log('Received new customer order');
             this.getOrders();
+        });
+
+        this.socket.on('customerCallingWaiter', () => {
+
         });
     }
 
@@ -127,7 +108,7 @@ export class Dashboard extends React.Component {
                     defaultActiveKey="order"
                 >
                     <Tab eventKey="reservation" title="Reservation">
-                        <Reservation/>
+                        <Reservation tables={this.state.tables} />
                     </Tab>
                     <Tab eventKey="menu" title="Menu">
                         <Menu {...menuProps}/>

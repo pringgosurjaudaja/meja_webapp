@@ -81,3 +81,20 @@ class TableSpecificRoute(Resource):
             return { 
                 'result': 'Missing required fields'
             }, status.HTTP_400_BAD_REQUEST
+
+
+@table.route('/waiter/<string:table_id>')
+class CallWaiterRoute(Resource):
+    @table.doc(description='Toggle Calling Waiter Status of Table')
+    def patch(self, table_id):
+        table = table_db.find_one({'_id': ObjectId(table_id)})
+        current_status = table['calling_waiter']
+
+        table_db.find_one_and_update(
+            {'_id': ObjectId(table_id)},
+            {'$set': {'calling_waiter': not current_status}}
+        )
+
+        return {
+            'result': table_id + ' Calling Waiter: ' + str(not current_status)
+        }, status.HTTP_200_OK
