@@ -58,14 +58,37 @@ def token_required(f):
         print('TOKEN: {}'.format(token))  
         return f(*args, **kwargs)
 
-    return decorated      
+    return decorated     
+
+def admin_required(f):
+    @wraps(f)
+    def decorated(*args,**kwargs):
+        token = None
+
+        if 'X-API-KEY' in request.headers:
+            token = request.headers['X-API-KEY']
+
+        if not token:
+            return {'message' : 'Token is missing.'}, 401
+
+        print('TOKEN: {}'.format(token))     
+
+        user = auth_db.find_one({'_id': ObjectId(token)})    
+        print(user)
+
+        if user['admin'] == False:
+            return {'message' : 'You are not an admin.'}, 401    
+
+        return f(*args, **kwargs)
+
+    return decorated     
 
 # For debugging only
 @auth.doc(description='Endpoint for whole Auth Operations')
 @auth.route('')
 class Auth(Resource):
     @auth.doc(security='apikey')
-    @token_required
+    @admin_required
     @auth.doc(description='Get all users on the database')
     def get(self):
         auths = list(auth_db.find({}))
@@ -82,6 +105,11 @@ class SignupRoute(Resource):
         schema = AuthSchema()
         try:
             auth = schema.load(request.data)
+            test = auth_db.find_one({'email': auth.email})
+            if test:
+                return { 
+                    'result': 'User with that email already exist'
+                }, status.HTTP_400_BAD_REQUEST 
             operation = auth_db.insert_one(schema.dump(auth))
             return { 'result': 'new user has been created'}, status.HTTP_201_CREATED
         except ValidationError as err:
@@ -132,6 +160,8 @@ class LoginRoute(Resource):
 @auth.route('/user/<string:user_id>')
 class UserRoute(Resource):
     @auth.doc(description='Get User Details')
+    @auth.doc(security='apikey')
+    @token_required
     def get(self, user_id):
         schema = UserSchema()
         user = auth_db.find_one({ '_id': ObjectId(user_id) })

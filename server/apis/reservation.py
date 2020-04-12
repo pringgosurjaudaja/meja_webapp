@@ -6,6 +6,7 @@ from bson.objectid import ObjectId
 from db import db_client
 from apis.reservation_schema import ReservationSchema
 from datetime import datetime, date
+from apis.auth import token_required, admin_required
 
 reservation = Namespace('reservation', description="Reservation Backend Service")
 reservation_db = db_client.reservation
@@ -34,6 +35,8 @@ MODEL_reservation_search = reservation.model('Reservation Search',{
 @reservation.route('')
 class Reservation(Resource):
     @reservation.doc(description='Get all reservation in db')
+    @reservation.doc(security='apikey')
+    @admin_required
     def get(self):
         reservations = list(reservation_db.find({}))
         result = []
@@ -51,6 +54,8 @@ class Reservation(Resource):
 
     @reservation.doc(description='Create New Reservation')
     @reservation.expect(MODEL_reservation)
+    @reservation.doc(security='apikey')
+    @token_required
     def post(self):
         schema = ReservationSchema()
         try:
@@ -92,6 +97,8 @@ class Reservation(Resource):
 class ReservationSearch(Resource):     
     @reservation.doc(description='Available Time')
     @reservation.expect(MODEL_reservation_search)
+    @reservation.doc(security='apikey')
+    @token_required
     def post(self):
         try:
             date = request.data.get('date')
@@ -112,6 +119,8 @@ class ReservationSearch(Resource):
 
 @reservation.route('/<string:reservation_id>')
 class ReservationRoute(Resource):
+    @reservation.doc(security='apikey')
+    @admin_required
     @reservation.doc(description='Edit Reservation')
     @reservation.expect(MODEL_reservation_update)
     def put(self, reservation_id):
@@ -135,6 +144,8 @@ class ReservationRoute(Resource):
             }, status.HTTP_400_BAD_REQUEST       
 
     @reservation.doc(description='Cancelling/Deleting a Reservation')
+    @reservation.doc(security='apikey')
+    @admin_required
     def delete(self, reservation_id):
         try:
             reservation_db.delete_one({"_id" : ObjectId(reservation_id)})
@@ -147,6 +158,8 @@ class ReservationRoute(Resource):
 
 @reservation.route('/table/<string:table_id>')
 class ReservationTableRoute(Resource):
+    @reservation.doc(security='apikey')
+    @admin_required
     @reservation.doc(description='Get all reservations for a specific table')
     def get(self, table_id):
         reservations = []

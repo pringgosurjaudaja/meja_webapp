@@ -8,6 +8,7 @@ from apis.menu_schema import MenuItemSchema, MenuCategorySchema
 import json
 from bson import json_util
 import pprint
+from apis.auth import token_required, admin_required
 
 menu_db = db_client.menu
 menu = Namespace('menu', description='Menu Backend Service')
@@ -38,6 +39,8 @@ MODEL_menu_recommendation = menu.model('Menu Item Recommendation', {
 @menu.route('')
 class MenuRoute(Resource):
     @menu.doc(description='Get all items on the Menu')
+    @menu.doc(security='apikey')
+    @token_required
     def get(self):
         menu_items = list(menu_db.find({}))
         for menu_item in menu_items:
@@ -46,6 +49,8 @@ class MenuRoute(Resource):
 
     @menu.doc(description='Inserting a new Menu category')
     @menu.expect(MODEL_menu_category)
+    @menu.doc(security='apikey')
+    @admin_required
     def post(self):
         schema = MenuCategorySchema()
         try:
@@ -62,6 +67,8 @@ class MenuRoute(Resource):
 @menu.route('/category/<string:category_id>')
 class MenuCategoryRoute(Resource):
     @menu.doc(description='Get Menu Category Details')
+    @menu.doc(security='apikey')
+    @token_required
     def get(self, category_id):
         menu_category = menu_db.find_one({'_id': ObjectId(category_id)})
         menu_category['_id'] = str(menu_category['_id'])
@@ -69,6 +76,8 @@ class MenuCategoryRoute(Resource):
 
     @menu.doc(description='Edit Menu Category Details')
     @menu.expect(MODEL_menu_category)
+    @menu.doc(security='apikey')
+    @admin_required
     def patch(self, category_id):
         schema = MenuCategorySchema()
         try:
@@ -88,6 +97,8 @@ class MenuCategoryRoute(Resource):
 
     @menu.doc(description='Add Menu Item to Menu Category')
     @menu.expect(MODEL_menu_item)
+    @menu.doc(security='apikey')
+    @admin_required
     def post(self, category_id):
         schema = MenuItemSchema()
         try:
@@ -108,6 +119,8 @@ class MenuCategoryRoute(Resource):
             }, status.HTTP_400_BAD_REQUEST
 
     @menu.doc(description='Deleting a Menu Category')
+    @menu.doc(security='apikey')
+    @admin_required
     def delete(self, category_id):
         menu_db.delete_one({'_id': ObjectId(category_id)})
         
@@ -119,12 +132,16 @@ class MenuCategoryRoute(Resource):
 @menu.route('/item/<string:item_id>')
 class MenuItemRoute(Resource):
     @menu.doc(description='Getting Info on a Menu Item')
+    @menu.doc(security='apikey')
+    @token_required
     def get(self, item_id):
         menu_item = menu_db.find_one({'menu_items._id': item_id})
         menu_item['_id'] = str(menu_item['_id'])
         return menu_item, status.HTTP_200_OK
 
     @menu.doc(description='Deleting a Menu Item')
+    @menu.doc(security='apikey')
+    @admin_required
     def delete(self, item_id):
         menu_db.update(
             {},
@@ -136,6 +153,8 @@ class MenuItemRoute(Resource):
 
     @menu.doc(description='Updating a Menu Item')
     @menu.expect(MODEL_menu_item)
+    @menu.doc(security='apikey')
+    @admin_required
     def put(self, item_id):
         schema = MenuItemSchema()
         updated_menu_item = schema.load(request.data)
@@ -155,6 +174,8 @@ class MenuItemRoute(Resource):
 @menu.route('/recommendations')
 class MenuRecommendationList(Resource):
     @menu.doc(description='Getting all recommended items on the Menu')
+    @menu.doc(security='apikey')
+    @token_required
     def get(self):
         categories = list(menu_db.find({}))
         res = list()
@@ -168,6 +189,8 @@ class MenuRecommendationList(Resource):
 @menu.route('/recommendations/<string:item_id>')
 class MenuRecommendationRoute(Resource):
     @menu.doc(description='Adding a Menu Item to Recommendations')
+    @menu.doc(security='apikey')
+    @admin_required
     def patch(self, item_id):
         try:
             menu_db.find_one_and_update(
@@ -185,6 +208,8 @@ class MenuRecommendationRoute(Resource):
 
 
     @menu.doc(description='Removing a Menu Item from Recommendations')
+    @menu.doc(security='apikey')
+    @admin_required
     def delete(self, item_id):
         try:
             menu_db.find_one_and_update(
