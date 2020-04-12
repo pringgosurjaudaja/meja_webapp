@@ -1,7 +1,7 @@
 from db import db_client
 from flask import request, jsonify
 from flask_api import status
-from flask_restplus import Namespace, Resource, fields, marshal_with, reqparse
+from flask_restplus import Namespace, Resource, fields
 from bson.objectid import ObjectId
 import json
 from apis.table_schema import TableSchema
@@ -9,11 +9,10 @@ from marshmallow import ValidationError
 from functools import wraps
 
 table = Namespace('table', description='Table Backend Service')
-parser = reqparse.RequestParser()
 table_db = db_client.table
 
 MODEL_table = table.model('Table', {
-    'number' : fields.Integer(),
+    'name' : fields.String(),
     'seat' : fields.Integer(),
 })
 
@@ -27,9 +26,6 @@ class Table(Resource):
             table['_id'] = str(table['_id'])
         return tables, status.HTTP_200_OK
 
-# Add Table Endpoints
-@table.route('/add')
-class AddRoute(Resource):
     @table.doc(description='Adding new table')
     @table.expect(MODEL_table)
     def post(self):
@@ -37,15 +33,44 @@ class AddRoute(Resource):
         try:
             table = schema.load(request.data)
             operation = table_db.insert_one(schema.dump(table))
-            return { 'result': 'new table has been created'}, status.HTTP_201_CREATED
+            return { 
+                'inserted': str(operation.inserted_id),
+                'result': 'New table has been created'
+            }, status.HTTP_201_CREATED
         except ValidationError as err:
             print(err)
             return { 
                 'result': 'Missing required fields'
-            }, status.HTTP_400_BAD_REQUEST  
+            }, status.HTTP_400_BAD_REQUEST
 
-@table.route('/delete/<string:table_id>')      
-class DeleteRoute(Resource):
+@table.route('/<string:table_id>')
+class TableSpecificRoute(Resource):
+    @table.doc(description='Get details of a table')
+    def get(self, table_id):
+        table = table_db.find_one({'_id': ObjectId(table_id)})
+
+        if table is None:
+            return status.HTTP_404_NOT_FOUND
+        
+        table['_id'] = str(table['_id'])
+        return table
+
+    @table.doc(description='Updating a table\'s details')
+    @table.expect(MODEL_table)
+    def put(self, table_id):
+        schema = TableSchema()
+        updated_table = schema.load(request.data)
+
+        table_db.replace_one(
+            {'_id': ObjectId(table_id)},
+            schema.dump(updated_table)
+        )
+
+        return {
+            'updated': table_id
+        }, status.HTTP_200_OK
+            
+
     @table.doc(description='Deleting a Table')
     def delete(self, table_id):
         try:
@@ -55,4 +80,4 @@ class DeleteRoute(Resource):
             print(err)
             return { 
                 'result': 'Missing required fields'
-            }, status.HTTP_400_BAD_REQUEST         
+            }, status.HTTP_400_BAD_REQUEST
