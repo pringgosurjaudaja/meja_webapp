@@ -21,3 +21,21 @@ Completed the order APIs. Moved on to the status of the order.
 Fixed the schema so it fits more on the document base MongoDB.
 Instead of having references to another collection, we embed it all in one document so it's easier to fetch.
 
+Week 5
+Made the session schema in order to store the user's table id and order
+and order item so that it can track the current session and how long they stay
+in the restaurant
+
+Week 6
+Start to look into the Google Dialogflow api for the chatbot.
+Made modification to the back end (Session)
+
+Week 7
+Implemented the chatbot using Dialogflow's API. This involves training the bot
+for intents and conversation that can retrieve the information about the restaurant
+menus, review, abouts, etc.
+
+Week 8
+This week, cleaned up the code, deleted some unused code and added some
+error exception catching to make it easier for debug
+Week 9
