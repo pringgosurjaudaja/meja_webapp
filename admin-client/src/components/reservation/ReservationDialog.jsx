@@ -23,7 +23,7 @@ export class ReservationDialog extends React.Component {
 
     render () {
         let data = this.props.reservation.filter((r)=>{
-            return r.table_number === this.props.table;
+            return r.table_id === this.props.tableId;
         })
 
         let events = [];
@@ -44,7 +44,7 @@ export class ReservationDialog extends React.Component {
         });
 
         const tableProps = {
-            table_number: this.props.table,
+            table_id: this.props.tableId,
             data: events,
         }
 

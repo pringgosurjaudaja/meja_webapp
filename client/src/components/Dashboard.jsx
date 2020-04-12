@@ -47,6 +47,7 @@ export class Dashboard extends React.Component {
         super(props);
         this.state = {
             showOverlay: false,
+            showCheckout: false,
             activeTab: tabs.ALL,
             orderList: [],
             cart: new Map(),
@@ -116,6 +117,16 @@ export class Dashboard extends React.Component {
 
         this.setState({ cart: newCart });
     }
+
+    /* Open when someone clicks on the span element */
+    handleOpenCart = () => {
+        this.setState({ showCheckout: true });
+    }
+
+    /* Close when someone clicks on the "x" symbol inside the overlay */
+    handleCloseCart = () => {
+        this.setState({ showCheckout: false });
+    }
     // #endregion
 
     showLogin = () => {
@@ -176,13 +187,13 @@ export class Dashboard extends React.Component {
     }
     // #endregion
 
+    handleCloseWarning = () => {
+        this.setState({ showCompleteOrderWarning: false });
+    }
+    
     /* Open when someone clicks on the span element */
     handleOpenNav = () => {
         this.setState({ showOverlay: true });
-    }
-
-    handleCloseWarning = () => {
-        this.setState({ showCompleteOrderWarning: false });
     }
 
     /* Close when someone clicks on the "x" symbol inside the overlay */
@@ -257,6 +268,13 @@ export class Dashboard extends React.Component {
         return (
             <div>
                 <NavOverlay tabs={tabs} show={this.state.showOverlay} onHide={this.handleCloseNav} handleNavSelect={this.handleNavSelect} activeTab={this.state.activeTab} />
+                <Checkout
+                    cart={this.state.cart}
+                    updateCart={this.updateCart}
+                    handleOrderCart={this.handleOrderCart}
+                    show={this.state.showCheckout}
+                    onHide={this.handleCloseCart}
+                />
                 <Navbar variant="dark" bg="black" sticky="top" onSelect={(tab => this.handleNavSelect(tab))}>
                     <Nav className="mr-auto">
                         <Nav.Item>
@@ -270,7 +288,7 @@ export class Dashboard extends React.Component {
                     </Nav>
                     <Nav>
                         <Nav.Item>
-                            <Nav.Link eventKey={tabs.CHECKOUT}><FontAwesomeIcon icon={faReceipt} color="white" /></Nav.Link>
+                            <Nav.Link onClick={this.handleOpenCart}><FontAwesomeIcon icon={faReceipt} color="white" /></Nav.Link>
                         </Nav.Item>
                     </Nav>
                 </Navbar>
@@ -284,11 +302,6 @@ export class Dashboard extends React.Component {
                 {this.state.activeTab === tabs.ORDERS ? <Orders
                     orderList={this.state.orderList}
                     handleCloseOrder={this.handleCloseOrder}
-                /> : null}
-                {this.state.activeTab === tabs.CHECKOUT ? <Checkout
-                    cart={this.state.cart}
-                    updateCart={this.updateCart}
-                    handleOrderCart={this.handleOrderCart}
                 /> : null}
                 {this.state.activeTab === tabs.RESERVATION ? <Reservation {...reservationProps} /> : null}
                 {this.state.activeTab === tabs.PAYMENT ? <Payment 

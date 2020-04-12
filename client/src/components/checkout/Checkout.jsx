@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Button } from 'react-bootstrap';
+import { Card, Button, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { cartOps } from 'src/components/Dashboard';
@@ -38,7 +38,7 @@ export class Checkout extends React.Component {
     }
 
     render() {
-        const { cart, handleOrderCart } = this.props;
+        const { cart, handleOrderCart, show, onHide } = this.props;
         let entries = [];
 
         cart.size > 0 && cart.forEach((item, i) => {
@@ -68,21 +68,31 @@ export class Checkout extends React.Component {
         });
 
         return (
-            <div className="margin-center">
-                <h1>Checkout</h1>
-                {entries.length > 0 ? entries : 'Empty Cart'}
-                <br />
+            <Modal
+                className="overlay-cart"
+                show={show}
+                onHide={onHide}>
 
-                <p>Total: $ {this.getTotal()}</p>
+                <Modal.Header closeButton>
+                    <h1>Checkout</h1></Modal.Header>
+                
+                <Modal.Body>
+                <div className="margin-center">
+                    {entries.length > 0 ? entries : 'Empty Cart'}
+                    <br />
 
-                <Button 
-                    align='center' 
-                    onClick={handleOrderCart}
-                    disabled={entries.length === 0}
-                >
-                    Order Now
-                </Button>
-            </div>
+                    <p>Total: $ {this.getTotal()}</p>
+
+                    <Button 
+                        align='center' 
+                        onClick={handleOrderCart}
+                        disabled={entries.length === 0}
+                    >
+                        Order Now
+                    </Button>
+                </div>
+                </Modal.Body>
+            </Modal>
         );
     }
 }

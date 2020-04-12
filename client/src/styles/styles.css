@@ -351,6 +351,10 @@ df-messenger {
     --df-messenger-user-message: #aaaaaa;
 }
 
+.df-messenger-wrapper {
+    top: 60px !important;
+}
+
 .overlay {
     /* Height & width depends on how you want to reveal the overlay (see JS below) */   
     height: 100% !important;
@@ -407,4 +411,23 @@ df-messenger {
   .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
     color: #fff;
     background-color: transparent !important;
+  }
+
+  .overlay-cart {
+    /* Height & width depends on how you want to reveal the overlay (see JS below) */   
+    height: 90% !important;
+    width: 100% !important;
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top:63px !important;
+    padding: 0px !important;
+    background-color: #FFFFFF; /* Black fallback color */
+    overflow-x: hidden; /* Disable horizontal scroll */
+  }
+
+  .overlay-cart .modal-content {
+    background-color: transparent !important;
+    border: 0px solid !important;  
+    overflow-y: scroll;
+    height: 80% !important;
   }

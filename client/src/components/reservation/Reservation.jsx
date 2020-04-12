@@ -17,6 +17,12 @@ export class Reservation extends React.Component {
         }
     }
 
+    componentDidMount = async () => {
+        await this.getEmail();
+        const reservationList = await this.getReservationList()
+        await this.getCurrentReservation(reservationList);        
+    }
+
     getReservationList = async () => {
         const reservationList = await Requests.getReservation();
         return reservationList;
@@ -24,6 +30,7 @@ export class Reservation extends React.Component {
 
     getCurrentReservation = async (reservationList) => {
         reservationList.forEach(async (reservation) => {
+            console.log(reservation);
             if(reservation.email === this.state.email) {
                 this.setState({ reservation: reservation });
                 this.setState({ reserved: true });
@@ -43,12 +50,6 @@ export class Reservation extends React.Component {
             }
         })
         
-    }
-
-    componentDidMount = async () => {
-        await this.getEmail();
-        const reservationList = await this.getReservationList()
-        await this.getCurrentReservation(reservationList);        
     }
 
     handleCancel = () => {
