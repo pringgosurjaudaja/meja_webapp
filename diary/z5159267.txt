@@ -1,0 +1,20 @@
+Week 1
+We formed our group and started brainstorming. We did a voting to decide which topic we are choosing for our project. Ganang and I were assigned and completed flask-restplus setup.
+
+Week 2
+We finalised the topic for our project, which is Waiter app. We discussed the initial requirements and turned them into user stories. This week is our first Sprint and I was tasked to design interface concepts and graphics for the app.
+
+Week 3
+Completed digital prototype for the client app. There might still be minor changes, but client is mostly done. Moving on to admin app design prototype after further discussion with the team. We finalised our project proposal. For our next sprint, I was tasked with Orders frontend and Recommendations backend. Still blocked due to dependency on other tickets.
+
+Week 4
+Completed Recommendations REST API endpoints after dependant tickets were done. Continued working on Orders frontend, I encountered several problems due to unfamiliarity with React but managed to finally finish working on the components. Just need to connect them to backend.
+
+Week 5
+Since we decided on using socket.io for our live Orders system, I handed over Orders ticket to Sebastian. I was next tasked with CSS design and frontend for the overall app look.
+
+Week 7
+After working on some parts of the css, we decided to remodel our navigation system so I created a fullscreen menu overlay. Added basic touches for the admin client while we’re still discussing about what we want for it.
+
+Week 8
+Continuing with CSS and design of the app. Client app is mostly done, but now has bugs with the new chatbot and call waiter feature. Still figuring out how to resolve these issues.
