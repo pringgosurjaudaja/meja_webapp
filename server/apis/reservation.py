@@ -145,7 +145,7 @@ class ReservationRoute(Resource):
 
     @reservation.doc(description='Cancelling/Deleting a Reservation')
     @reservation.doc(security='apikey')
-    @admin_required
+    @token_required
     def delete(self, reservation_id):
         try:
             reservation_db.delete_one({"_id" : ObjectId(reservation_id)})
