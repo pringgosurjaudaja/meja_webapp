@@ -11,7 +11,7 @@ class EmailSender:
     def send_email(self, recipient_email, email_content):
         '''
         Referenced from 
-        https://realpython.com/python-send-email/#option-1-setting-up-a-gmail-account-for-development
+        https://realpython.com/python-send-email
         '''
         # Addding config and HTML/plain-text parts to a MIMEMultipart message
         message = MIMEMultipart('alternative')
