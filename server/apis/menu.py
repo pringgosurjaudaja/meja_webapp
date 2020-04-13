@@ -140,11 +140,14 @@ class MenuItemRoute(Resource):
         # Ensures we are not losing the id of the original item we are updating
         updated_menu_item['_id'] = item_id
 
-        menu_db.find_one_and_replace(
-            {'_id': ObjectId(item_id)}, 
-            schema.dump(updated_menu_item)
+        menu_db.update(
+            {'menu_items._id': item_id}, 
+            {'$set':{'menu_items.$.name': updated_menu_item['name'],
+                     'menu_items.$.description': updated_menu_item['description'],
+                     'menu_items.$.media_urls': updated_menu_item['media_urls'],
+                     'menu_items.$.price': updated_menu_item['price'],
+                     'menu_items.$.chefs_pick': updated_menu_item['chefs_pick']}}
         )
-        
         return {
             'updated': schema.dump(updated_menu_item),
         }, status.HTTP_200_OK
