@@ -76,7 +76,7 @@ export class Menu extends React.Component {
 
         let categories = {};
 
-        let defaultKey = this.props.menuItemList.length === 0 ? "Burgers" : this.props.menuItemList[0].name;
+    
         this.props.menuItemList.length > 0 && this.props.menuItemList.forEach((category, i) => {
             let entries = [];
             categories[category.name] = category.name;
@@ -135,8 +135,7 @@ export class Menu extends React.Component {
                     <Col xs={10} sm={10}>
                         
                         <Tabs className="justify-content-center"
-                            defaultActiveKey={defaultKey} onSelect={this.handleTabChange}
-                            >
+                            onSelect={this.handleTabChange}>
                         
                             {tabs}
                         </Tabs>

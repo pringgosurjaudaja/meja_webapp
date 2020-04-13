@@ -7,16 +7,12 @@ import {
 import 'src/styles/styles.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Select from 'react-select';
-import { axios } from 'src/utilities/helper';
-
+import { Requests } from 'src/utilities/Requests';
 
 export class Dialog extends React.Component {
     constructor(props) {
         super(props);
         
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSelectLabel = this.handleSelectLabel.bind(this);
-        this.handleSelectTag = this.handleSelectTag.bind(this);
         this.state = {
             name: '',
             description: '',
@@ -27,7 +23,7 @@ export class Dialog extends React.Component {
     }
 
     
-    handleAddMenu(e) {
+    handleAddMenu = async () => {
         let labels=[];
         let tags = [];
         
@@ -46,33 +42,12 @@ export class Dialog extends React.Component {
             }
         });
 
-        let url = 'http://127.0.0.1:5000/menu/category/'+category_id;
-  
-        axios({
-            method: 'post',
-            url: url,
-            timeout: 1000,
-            data: {
-                "name": this.state.name,
-                "description": this.state.description,
-                "price": parseFloat(this.state.price),
-            },
-            header: {
-                "x-api-key": sessionStorage.getItem('AUTH_KEY'),
-                "Content-Type": "application/json"
-            }
-        })
-        .then((response) => {
-            console.log(response);
-        })
-        .catch((error)=>{
-            console.log(error.response);
-        });
+        await Requests.addMenuItem(category_id, this.state.name, this.state.description, parseFloat(this.state.price));
         
     }
 
 
-    handleChange(e) {
+    handleChange = (e) => {
         if(e.target.name === "name") {
             this.setState({ name: e.target.value });
         } else if(e.target.name === "description") {
@@ -82,28 +57,28 @@ export class Dialog extends React.Component {
         }
     }
 
-    handleSelectLabel(chosen) {
-        this.setState({label: chosen})
-    }
+    // handleSelectLabel(chosen) {
+    //     this.setState({label: chosen})
+    // }
 
 
-    handleSelectTag(chosen) {
-        this.setState({tags: chosen})
-    }
+    // handleSelectTag(chosen) {
+    //     this.setState({tags: chosen})
+    // }
     render () {
-        const foodLabels = [
-            { value: 0, label: 'Vegan' },
-            { value: 1, label: 'Gluten Free' },
-            { value: 2, label: 'Vegetarian' },  
-        ];
+        // const foodLabels = [
+        //     { value: 0, label: 'Vegan' },
+        //     { value: 1, label: 'Gluten Free' },
+        //     { value: 2, label: 'Vegetarian' },  
+        // ];
 
-        const foodTags = [
-            { value: 'japanese', label: 'Japanese' },
-            { value: 'western', label: 'Western' },
-            { value: 'spanish', label: 'Spanish' },
-            { value: 'italian', label: 'Italian' },  
-            { value: 'popular', label: 'Popular' },
-        ];
+        // const foodTags = [
+        //     { value: 'japanese', label: 'Japanese' },
+        //     { value: 'western', label: 'Western' },
+        //     { value: 'spanish', label: 'Spanish' },
+        //     { value: 'italian', label: 'Italian' },  
+        //     { value: 'popular', label: 'Popular' },
+        // ];
 
         return (
             <Modal {...this.props} size="lg"
@@ -141,7 +116,7 @@ export class Dialog extends React.Component {
                             name="price" type="text"
                             placeholder="Enter name" />
                         </Form.Group>
-                        <Form.Group>
+                        {/* <Form.Group>
                             <Form.Label>Label</Form.Label>
                             <Select onChange={this.handleSelectLabel}
                                 value={this.state.label}
@@ -165,7 +140,7 @@ export class Dialog extends React.Component {
                                 isClearable
                                 options={foodTags}
                             />
-                        </Form.Group>
+                        </Form.Group> */}
                         
                         <Button variant="primary" type="submit">
                             Submit
