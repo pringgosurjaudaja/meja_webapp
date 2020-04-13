@@ -6,8 +6,6 @@ import {
 } from 'react-bootstrap';
 import 'src/styles/styles.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Select from 'react-select';
-import { axios } from 'src/utilities/helper';
 import { Requests } from '../../utilities/Requests';
 
 
@@ -57,29 +55,7 @@ export class EditDialog extends React.Component {
     handleEditMenu = async (e) => {
         console.log(this.props);
         e.preventDefault();
-
         await Requests.editMenuItem(this.state.id, this.state.name, this.state.description, parseFloat(this.state.price));
-        // let url = 'http://127.0.0.1:5000/menu/item/'+this.state.id;
-        // axios({
-        //     method: 'put',
-        //     url: url,
-        //     timeout: 1000,
-        //     data: {
-        //         "name": this.state.name,
-        //         "description": this.state.description,
-        //         "price": parseFloat(this.state.price),
-        //     },
-        //     header: {
-        //         "x-api-key": sessionStorage.getItem('AUTH_KEY'),
-        //         "Content-Type": "application/json"
-        //     }
-        // })
-        // .then((response) => {
-        //     console.log(response);
-        // })
-        // .catch((error)=>{
-        //     console.log(error.response);
-        // });
     }
 
     render () {
@@ -121,31 +97,7 @@ export class EditDialog extends React.Component {
                             name="price" type="text"
                             placeholder="Enter name" />
                         </Form.Group>
-                        {/* <Form.Group>
-                            <Form.Label>Label</Form.Label>
-                            <Select onChange={this.handleSelectLabel}
-                                value={this.state.labels}
-                                name="label"
-                                isMulti
-                                className="basic-single"
-                                classNamePrefix="select"
-                                isClearable
-                                options={this.state.foodLabels}
-                            />
-                        </Form.Group>
-
-                        <Form.Group>
-                            <Form.Label>Tags</Form.Label>
-                            <Select onChange={this.handleSelectTag} 
-                                value={this.state.tags}
-                                name="tags"
-                                isMulti
-                                className="basic-single"
-                                classNamePrefix="select"
-                                isClearable
-                                options={this.state.foodTags}
-                            />
-                        </Form.Group> */}
+                        
                         
                         <Button variant="primary" type="submit">
                             Submit
