@@ -55,14 +55,23 @@ export class Requests {
                 method: 'get',
                 url: BASE_URL + '/session/order'
             });
-
-            console.log(orders.data);
-            
-            this.setState({
-                orders: orders.data
-            });
+            return orders.data;
         } catch(err) {
             console.error('Error in Retrieving Orders');
+        }
+    }
+
+    static async updateOrderStatus (newStatus, orderId) {
+        try {
+            // Update status of the order in the database
+            const result = await axios({
+                method: 'patch',
+                url: BASE_URL + '/session/order/' + orderId,
+                data: { status: newStatus }
+            });
+            
+        } catch(err) {
+            console.error(err);
         }
     }
     
@@ -81,7 +90,7 @@ export class Requests {
         }
     }
     
-    static async getTables () {
+    static async getTables() {
         try {
             const result = await axios({
                 method: 'get',
@@ -92,6 +101,56 @@ export class Requests {
             });
             return result.data;
         } catch(err) {
+            console.error(err);
+        }
+    }
+
+    static async addTable(tableName, seats) {
+        try {
+            const result = await axios({
+                method: 'post',
+                url: BASE_URL + '/table',
+                header: {
+                    "x-api-key": sessionStorage.getItem('AUTH_KEY'),
+                },
+                data: {
+                    name: tableName,
+                    seat: parseInt(seats),
+                }
+            });
+            return result;
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    static async deleteTable(tableId) {
+        try {
+            
+            const result = await axios({
+                method: 'delete',
+                url: BASE_URL + '/table/'+tableId,
+                header: {
+                    "x-api-key": sessionStorage.getItem('AUTH_KEY'),
+                }
+            });
+            return result;
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    static async getTableReservation(tableId) {
+        try {
+            const result = await axios({
+                method: 'get',
+                url: BASE_URL + '/reservation/table/'+tableId,
+                header: {
+                    "x-api-key": sessionStorage.getItem('AUTH_KEY'),
+                }
+            });
+            return result.data;
+        } catch (err) {
             console.error(err);
         }
     }

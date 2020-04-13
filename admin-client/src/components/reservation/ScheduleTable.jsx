@@ -56,27 +56,21 @@ export class ScheduleTable extends React.Component {
           };
           
         return (
-        <Card style={{ width: '100%', margin: '10px' }}>
-                <Card.Header>
-                    <Card.Title>Table {this.props.table_name}</Card.Title>
-                    {/* <Card.Subtitle>#{order._id}</Card.Subtitle> */}
-                </Card.Header>
-                <Card.Body>
-                    <BootstrapTable data={this.state.reservation} version='4'
-                    cellEdit={ cellEditProp }
-                    deleteRow
-                    selectRow={ { mode: 'checkbox' } }
-                    options={{ onDeleteRow: this.handleDeleteRow }}>
-                        <TableHeaderColumn isKey dataField='id'>#</TableHeaderColumn>
-                        <TableHeaderColumn dataField='email'>Name</TableHeaderColumn>
-                        <TableHeaderColumn dataField='diner'>Diner</TableHeaderColumn>
-                        <TableHeaderColumn dataField='date'>Date</TableHeaderColumn>
-                        <TableHeaderColumn dataField='time'>Time</TableHeaderColumn>
-                        <TableHeaderColumn dataField='note'>Note</TableHeaderColumn>
-                    </BootstrapTable>
-                        
-                    {/* <Card.Title>Total: ${this.getTotal(order)}</Card.Title> */}
-                </Card.Body>
-            </Card>);
+            <BootstrapTable 
+                style={{margin: '10px'}}
+                data={this.state.reservation} 
+                version='4'
+                cellEdit={ cellEditProp }
+                deleteRow
+                selectRow={ { mode: 'checkbox' } }
+                options={{ onDeleteRow: this.handleDeleteRow }}
+            >
+                <TableHeaderColumn isKey dataField='id'>#</TableHeaderColumn>
+                <TableHeaderColumn dataField='email'>Name</TableHeaderColumn>
+                <TableHeaderColumn dataField='diner'>Diner</TableHeaderColumn>
+                <TableHeaderColumn dataField='date'>Date</TableHeaderColumn>
+                <TableHeaderColumn dataField='time'>Time</TableHeaderColumn>
+                <TableHeaderColumn dataField='note'>Note</TableHeaderColumn>
+            </BootstrapTable>)
     }
 }

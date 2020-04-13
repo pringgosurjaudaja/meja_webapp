@@ -18,12 +18,9 @@ export class Reservation extends React.Component {
         this.state = {
             reservation: [],
             tables: [],
-            showReservationDialog: false,
-            tableId: 0,
-            tableName: '',
-            number_of_table: 0,
-            showTableDialog: false,
+            activeTable: null,
             addTable: true,
+            showTableDialog: false,
         }
     }
 
@@ -33,12 +30,9 @@ export class Reservation extends React.Component {
     }
 
 
-    handleShowReservation = (tableId, tableName) => {
-        console.log(tableId);
+    handleShowReservation = (table) => {
         this.setState({
-            showReservationDialog: true,
-            tableId: tableId,
-            tableName: tableName,
+            activeTable: table
         });
     }
 
@@ -58,7 +52,7 @@ export class Reservation extends React.Component {
 
     handleClose = () => {
         this.setState({ 
-            showReservationDialog: false,
+            activeTable: null,
             showTableDialog: false,
         });
     }
@@ -66,11 +60,10 @@ export class Reservation extends React.Component {
     render () {
         const { tables } = this.props;
         
-        let tableComps = tables.map((table, i) => {
+        let tableComps = tables && tables.map((table, i) => {
             return (
                 <Col key={i}>
-                    <Button 
-                        id={BASE_NUM + i} 
+                    <Button
                         variant="primary"
                         onClick={()=> this.handleShowReservation(table._id, table.name)}
                     >
@@ -79,12 +72,6 @@ export class Reservation extends React.Component {
                 </Col>
             )
         });
-        
-        let reservationProps = {
-            table_id: this.state.tableId,
-            table_name: this.state.tableName,
-            reservation: this.state.reservation,
-        };
 
         let tableProps = {
             addTable: this.state.addTable,
@@ -101,15 +88,39 @@ export class Reservation extends React.Component {
                         </Col>
                         <Col>
                             <Container>
-                                <Row>
-                                    {tableComps}
-                                </Row>
+                                <div style={{ display: 'flex', flexFlow: 'row wrap', maxWidth: '80vw' }}>
+                                {tables && tables.map((table, i) => {
+                                    return (
+                                        <Button
+                                            style={{
+                                                borderRadius: '5%',
+                                                margin: '10px', 
+                                                minWidth: '150px', 
+                                                minHeight: '120px'
+                                            }}
+                                            key={i}
+                                            variant={table.calling_waiter ? "danger" : "primary"}
+                                            onClick={()=> this.handleShowReservation(table)}
+                                        >
+                                            {table.name}
+                                        </Button>
+                                    )
+                                })}
+                                </div>
                             </Container>
                         </Col>
                     </Row>
                 </Container>
-                <TableDialog show={this.state.showTableDialog} onHide={this.handleClose} {...tableProps}/>
-                <ReservationDialog show={this.state.showReservationDialog} onHide={this.handleClose} {...reservationProps}/>
+                <TableDialog 
+                    show={this.state.showTableDialog} 
+                    onHide={this.handleClose} 
+                    {...tableProps}
+                />
+                {this.state.activeTable && <ReservationDialog 
+                    show={this.state.activeTable !== undefined} 
+                    onHide={this.handleClose} 
+                    table={this.state.activeTable}
+                />}
             </div>
         );
     }

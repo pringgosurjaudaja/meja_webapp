@@ -118,11 +118,9 @@ class ActiveOrders(Resource):
     @session.doc(description='Get all active session orders')
     def get(self):
         orders = []
-
         for session in session_db.find({'active': True}):
-            pprint.pprint(session)
             orders.extend(session['order_list'])
-        
+
         return orders, status.HTTP_200_OK
 
 @session.route('/order/<string:order_id>')

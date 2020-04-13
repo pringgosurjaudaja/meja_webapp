@@ -29,25 +29,18 @@ export class Dashboard extends React.Component {
         this.socket.emit('admin_join');
     }
 
-    componentDidMount = async() => {
+    componentDidMount = async () => {
         // Populate the menuItemList
         const menu = await Requests.getMenu();
         const orders = await Requests.getOrders();
-        this.getOrders();
-        this.socketSetup();
-
+        const tables = await Requests.getTables();
+        
         this.setState({
             menuItemList: menu,
             orders: orders,
             tables: tables
         });
-    }
-
-    getOrders = async () => {
-        const orders = await Requests.getOrders();
-        this.setState({
-            orders: orders
-        })
+        this.socketSetup();
     }
 
     socketSetup = () => {
@@ -98,10 +91,10 @@ export class Dashboard extends React.Component {
                 </Nav>
                 <Tabs 
                     className="justify-content-center"
-                    defaultActiveKey="order"
+                    defaultActiveKey="table"
                 >
-                    <Tab eventKey="reservation" title="Reservation">
-                        <Reservation/>
+                    <Tab eventKey="table" title="Tables">
+                        <Reservation tables={this.state.tables} />
                     </Tab>
                     <Tab eventKey="menu" title="Menu">
                         <Menu {...menuProps}/>

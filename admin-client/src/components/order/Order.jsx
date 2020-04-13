@@ -22,6 +22,10 @@ export class Order extends React.Component {
     filterOrders = (newOrderFilter) => {
         const { orders } = this.props;
 
+        if (!orders) {
+            return []
+        }
+
         switch (newOrderFilter) {
             case ORDER_TABS.active:
                 return orders.filter(order => {
