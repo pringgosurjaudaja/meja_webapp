@@ -19,46 +19,38 @@ export class Requests {
             alert('Login Failed');
         }
     }
-    
-    static async getMenu () {
+
+    static async getMenu() {
         try {
-            const result = await axios ({
+            const menu = await axios({
                 method: 'get',
                 url: BASE_URL + '/menu',
             });
-            return result.data;
-        } catch (err) {
-            console.error(err);
+            return menu.data;
+            
+            
+        } catch(err) {
+            console.error('Error in Retrieving Menu');
         }
     }
 
-    static async getOrders () {
+    static async getOrders() {
         try {
             const orders = await axios({
                 method: 'get',
                 url: BASE_URL + '/session/order'
             });
+
+            console.log(orders.data);
             
-            return orders.data;
+            this.setState({
+                orders: orders.data
+            });
         } catch(err) {
             console.error('Error in Retrieving Orders');
         }
     }
-
-    static async updateOrderStatus (newStatus, orderId) {
-        try {
-            // Update status of the order in the database
-            const result = await axios({
-                method: 'patch',
-                url: BASE_URL + '/session/order/' + orderId,
-                data: { status: newStatus }
-            });
-            
-        } catch(err) {
-            console.error(err);
-        }
-    }
-
+    
     static async getReservations () {
         try {
             const result = await axios({
@@ -104,7 +96,7 @@ export class Requests {
         }
     }
 
-    static async updateReservation(reservationId, tableId, email, numberDiner, dateTime, reservationNotes) {
+    static async updateReservation(reservationId, tableNumber, email, numberDiner, dateTime, reservationNotes) {
         try {
             const result = await axios({
                 method: 'put',
@@ -113,7 +105,7 @@ export class Requests {
                     "x-api-key": sessionStorage.getItem('AUTH_KEY'),
                 },
                 data: {
-                    table_id: tableId,
+                    table_number: tableNumber,
                     email: email,
                     number_diner: numberDiner,
                     datetime: dateTime,
@@ -152,56 +144,6 @@ export class Requests {
             });
             return result.data;
         } catch(err) {
-            console.error(err);
-        }
-    }
-
-
-    static async addTable(tableName, seats) {
-        try {
-            const result = await axios({
-                method: 'post',
-                url: BASE_URL + '/table',
-                header: {
-                    "x-api-key": sessionStorage.getItem('AUTH_KEY'),
-                },
-                data: {
-                    name: tableName,
-                    seat: parseInt(seats),
-                }
-            });
-            return result;
-        } catch (err) {
-            console.error(err);
-        }
-    }
-    static async deleteTable(tableId) {
-        try {
-            
-            const result = await axios({
-                method: 'delete',
-                url: BASE_URL + '/table/'+tableId,
-                header: {
-                    "x-api-key": sessionStorage.getItem('AUTH_KEY'),
-                }
-            });
-            return result;
-        } catch (err) {
-            console.error(err);
-        }
-    }
-
-    static async getTableReservation(tableId) {
-        try {
-            const result = await axios({
-                method: 'get',
-                url: BASE_URL + '/reservation/table/'+tableId,
-                header: {
-                    "x-api-key": sessionStorage.getItem('AUTH_KEY'),
-                }
-            });
-            return result.data;
-        } catch (err) {
             console.error(err);
         }
     }

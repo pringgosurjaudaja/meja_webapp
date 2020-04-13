@@ -36,30 +36,11 @@ export class Dashboard extends React.Component {
         const orders = await Requests.getOrders();
         const tables = await Requests.getTables();
 
-    getMenu = async () => {
-        const menu = await Requests.getMenu();
         this.setState({
-            menuItemList: menu
+            menuItemList: menu,
+            orders: orders,
+            tables: tables
         });
-    }
-
-    getOrders = async () => {
-        const orders = await Requests.getOrders();
-        this.setState({
-            orders: orders
-        })
-        // try {
-        //     const orders = await axios({
-        //         method: 'get',
-        //         url: 'http://127.0.0.1:5000/session/order'
-        //     });
-            
-        //     this.setState({
-        //         orders: orders.data
-        //     });
-        // } catch(err) {
-        //     console.error('Error in Retrieving Orders');
-        // }
     }
 
     socketSetup = () => {
@@ -87,20 +68,8 @@ export class Dashboard extends React.Component {
             orders: newOrders
         });
 
-
         await Requests.updateOrderStatus(newStatus, orderId);
         this.socket.emit('orderUpdated', orderId);
-        // try {
-        //     // Update status of the order in the database
-        //     await axios({
-        //         method: 'patch',
-        //         url: 'http://127.0.0.1:5000/session/order/' + orderId,
-        //         data: { status: newStatus }
-        //     });
-        //     this.socket.emit('orderUpdated', orderId);
-        // } catch(err) {
-        //     console.error(err);
-        // }
     }
 
     handleSelect = (event) => {
@@ -143,8 +112,6 @@ export class Dashboard extends React.Component {
                 </Tabs>
 
             </div>
-            
-            
         );
     }
 }

@@ -30,15 +30,11 @@ export class Reservation extends React.Component {
     componentDidMount = async () => {
         const reservation = await Requests.getReservations();
         this.setState({ reservation: reservation });
-        
-        const tables = await Requests.getTables();
-        this.setState({ tables: tables })
-
     }
 
 
-    handleShowReservation = (event, tableId, tableName) => {
-        console.log(tableId)
+    handleShowReservation = (tableId, tableName) => {
+        console.log(tableId);
         this.setState({
             showReservationDialog: true,
             tableId: tableId,
@@ -68,36 +64,32 @@ export class Reservation extends React.Component {
     }
 
     render () {
-        const table_num = this.state.tables ? this.state.tables.length : 0;
+        const { tables } = this.props;
         
-        let cols = [];
-        for(let r = 0; r<table_num; ++r) {
-            const table_id = this.state.tables[r]._id;
-            const table_name = this.state.tables[r].name;
-            let col = (
-                <Col>
-                    <Button id={BASE_NUM+r} variant="primary"
-                    onClick={(e)=>{
-                        this.handleShowReservation(e, table_id, table_name);
-                    }}>
-                        {table_name}
+        let tableComps = tables.map((table, i) => {
+            return (
+                <Col key={i}>
+                    <Button 
+                        id={BASE_NUM + i} 
+                        variant="primary"
+                        onClick={()=> this.handleShowReservation(table._id, table.name)}
+                    >
+                        {table.name}
                     </Button>
                 </Col>
-            
-            );
-            cols.push(col);
-        }
-
+            )
+        });
         
         let reservationProps = {
             table_id: this.state.tableId,
             table_name: this.state.tableName,
             reservation: this.state.reservation,
-        }
+        };
+
         let tableProps = {
             addTable: this.state.addTable,
             tables: this.state.tables,
-        }
+        };
 
         return (
             <div style={{ display: 'flex', flexFlow: 'row wrap', maxWidth: '100vw' }}>
@@ -110,13 +102,10 @@ export class Reservation extends React.Component {
                         <Col>
                             <Container>
                                 <Row>
-                                    {cols}
+                                    {tableComps}
                                 </Row>
                             </Container>
-
-                            
                         </Col>
-                        
                     </Row>
                 </Container>
                 <TableDialog show={this.state.showTableDialog} onHide={this.handleClose} {...tableProps}/>
