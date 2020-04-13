@@ -195,4 +195,24 @@ export class Requests {
             console.error(err);
         }
     }
+
+    static async toggleCallWaiter(sessionId) {
+        try {
+            const sessionReq = await axios({
+                method: 'get',
+                url: BASE_URL + '/session/' + sessionId
+            });
+            const session = sessionReq.data;
+            const tableId = session.table_id;
+
+            // Toggle the call waiter in the backend
+            const waiterReq = await axios({
+                method: 'patch',
+                url: BASE_URL + '/table/waiter/' + tableId,
+            });
+            return waiterReq.data;
+        } catch(err) {
+            console.error(err);
+        }
+    }
 }
