@@ -263,4 +263,15 @@ export class Requests {
         }
     }
     
+    static async toggleCallWaiter(tableId) {
+        try {
+            const request = await axios({
+                method: 'patch',
+                url: BASE_URL + '/table/waiter/' + tableId,
+            });
+            return request.data;
+        } catch(err) {
+            console.error(err);
+        }
+    }
 }

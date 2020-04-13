@@ -1,0 +1,76 @@
+Sebastian Chua
+
+Week 1
+
+Mainly focused on group formation and discussing each team members' skillset. Explored the offered 
+projects and discussed which project would best match our team's capabilities. Also began exploring 
+the use and interface of our Github and Jira accounts.
+
+Week 2
+
+We planned to decide on a project by this week and begin our first spring. Through a voting system. 
+Our team collectively decided upon the Waiter project - I was appointed to be the product owner. We 
+held a meeting to plan out a wholistic view of which features we wanted to implement. We also 
+discussed software architecture and decided upon using Zomato, Instagram and DialogFlow APIs in our 
+project. I was assigned to begin implementing our backend system for the Menu in this sprint.
+
+Week 3
+
+This week I planned to begin implementing the Menu backend and finishing the project plan for
+submission. Being used to primarily working on the frontend side of things, it took me some time to
+refamiliarise myself with Python and Flask + Flask-Rest. A lot of time this week was spent
+reading documentation and sample implementations from previous projects. This stopped me from finishing
+the Menu backend service before having to move on to the project proposal. As the product owner, I 
+was responsible for filling out the majority of the non-technical sections, namely providing a 
+problem statement, product aim, researching existing systems and drawbacks, and listing out the
+main and notable features our product was going to offer. I was also placed in charge of reviewing
+the final draft prior to submission.
+
+Week 4
+
+This week I finalised the Menu backend and began API testing using Postman. I also looked into the Zomato 
+API and added its base functionality in our backend. A lot of time in the beginning of the week was spent 
+learning MongoDB specifics and how it could be interfaced through Python. Having not worked with databases 
+before, it took some time for me to evaluate how to best structure our schemas in order to support the 
+features we wanted to implement. I faced some issues with updating embedded documents on MongoDB but 
+eventually got it to work after vigorous googling and experimentation. Next step for me is to begin implementing 
+the API endpoints for orders.
+
+Week 5
+
+This week was all about implementing the ordering system for our Waiter application. After discussions
+with our team regarding how to best model it, I began and finished the implementation of our order service.
+Implementing this was much faster after gaining familiarity with the database functions after building the
+menu service. I also implemented email sending with Python using an online tutorial and designed a HTML + Jinja 
+template for sending receipts to customers after they finished their order. I also looked into Marhsmallow for 
+better request validation compared to Flask-Rest's response marshalling and began applying it in both the order 
+and menu backend.
+
+Week 6
+
+When a customer made an order, we wanted to inform all staff members that a new order had come in. I 
+decided that using sockets would be appropriate for this and began reviewing documentation for socket-io. 
+This required me to now work on both the frontend and backend for both our customer app and our admin app
+to implement this socket functionality. A huge roadblock was deciding how to best update all admins when a new
+order was placed. After deliberation, I decided to use the database as the main source of truth for the application
+state, using the sockets purely for informing admins that a change had occurred and they needed to pull fresh data 
+from the database. Next week's plan is to begin implementing the calling waiter functionality.
+
+Week 7
+
+After careful evealuation of our current progress, we noticed our current architecture made it inconvenient to track
+which user has made which order, which table this order was for etc. This led our team to have further discussions and
+we eventually decided upon using sessions to model our system - a session will keep track of the user's id and the
+table they are sitting on. It will also keep track of the multiple orders the user has made in the one sitting. Most of 
+the time this week is transferring the functionality implemented in the order service to incorporate sessions instead. I 
+also spent time refactoring code to centralise how requests were being called in a Requests class in the frontend.
+
+Week 8
+
+Finished handle order and emailing receipt
+Refactored table database to work better with reservations.
+Added Call Waiter button in the frontend
+
+Week 9
+
+Finish call waiter + refactoring code

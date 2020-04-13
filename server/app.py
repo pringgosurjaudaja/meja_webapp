@@ -5,6 +5,7 @@ from apis import api
 from flask import render_template, jsonify, request, make_response
 import dialogflow_v2 as dialogflow
 import requests
+from bson import ObjectId
 import json
 from db import db_client
 import os
@@ -14,6 +15,8 @@ load_dotenv()
 
 menu_db = db_client.menu
 review_db = db_client.review
+session_db = db_client.session
+table_db = db_client.table
 import pprint
 # from hooks.admin_hooks import AdminNamespace
 # from hooks.customer_hooks import CustomerNamespace
@@ -48,10 +51,10 @@ def handle_order_update(order):
 
 # region Handle Calling Waiter
 @socketio.on('call_waiter')
-def on_call_waiter(sessionId):
+def on_call_waiter():
     print('In call waiter')
-    print(sessionId)
-    # Find table_id 
+    # Inform admins to update their clients
+    emit('customerCallingWaiter', room=ADMIN_ROOM)
 
 
 # endregion

@@ -202,16 +202,15 @@ export class Dashboard extends React.Component {
         this.setState({ showOverlay: false });
     }
 
-    handleCallWaiter = (confirmedCallWaiter) => {
+    handleCallWaiter = async (confirmedCallWaiter) => {
         let calling = this.state.callingWaiter;
-
-        if (calling) {
-            // Cancel the waiter call
-            this.setState(({ callingWaiter: !calling }));
-        } else if (confirmedCallWaiter) {
-            // Call a waiter
-            console.log('Calling waiter');
-            this.socket.emit('call_waiter', localStorage.getItem('sessionId'));
+        if (calling || confirmedCallWaiter) {
+            if (confirmedCallWaiter) {
+                // Call a waiter
+                this.socket.emit('call_waiter');
+            }
+            // Toggle the calling waiter status
+            await Requests.toggleCallWaiter(localStorage.getItem('sessionId'));
             this.setState({ callingWaiter: !calling, showConfirmCallWaiter: false });
         } else {
             // Open modal to make user confirm waiter call

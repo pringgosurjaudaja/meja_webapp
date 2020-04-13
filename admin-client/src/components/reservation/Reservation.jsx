@@ -28,7 +28,6 @@ export class Reservation extends React.Component {
     }
 
     componentDidMount = async () => {
-
         const reservation = await Requests.getReservations();
         this.setState({ reservation: reservation });
         
