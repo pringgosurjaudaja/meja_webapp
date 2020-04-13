@@ -9,6 +9,7 @@ import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 import { axios } from 'src/utilities/helper';
 import io from 'socket.io-client';
 import { Reservation } from 'src/components/reservation/Reservation';
+import { Requests } from 'src/utilities/Requests';
 
 export const orderStatus = {
     ORDERED: 'Ordered',
@@ -36,33 +37,29 @@ export class Dashboard extends React.Component {
     }
 
     getMenu = async () => {
-        try {
-            const menu = await axios({
-                method: 'get',
-                url: 'http://127.0.0.1:5000/menu',
-            });
-            
-            this.setState({
-                menuItemList: menu.data
-            });
-        } catch(err) {
-            console.error('Error in Retrieving Menu');
-        }
+        const menu = await Requests.getMenu();
+        this.setState({
+            menuItemList: menu
+        });
     }
 
     getOrders = async () => {
-        try {
-            const orders = await axios({
-                method: 'get',
-                url: 'http://127.0.0.1:5000/session/order'
-            });
+        const orders = await Requests.getOrders();
+        this.setState({
+            orders: orders
+        })
+        // try {
+        //     const orders = await axios({
+        //         method: 'get',
+        //         url: 'http://127.0.0.1:5000/session/order'
+        //     });
             
-            this.setState({
-                orders: orders.data
-            });
-        } catch(err) {
-            console.error('Error in Retrieving Orders');
-        }
+        //     this.setState({
+        //         orders: orders.data
+        //     });
+        // } catch(err) {
+        //     console.error('Error in Retrieving Orders');
+        // }
     }
 
     socketSetup = () => {
@@ -86,17 +83,20 @@ export class Dashboard extends React.Component {
             orders: newOrders
         });
 
-        try {
-            // Update status of the order in the database
-            await axios({
-                method: 'patch',
-                url: 'http://127.0.0.1:5000/session/order/' + orderId,
-                data: { status: newStatus }
-            });
-            this.socket.emit('orderUpdated', orderId);
-        } catch(err) {
-            console.error(err);
-        }
+
+        await Requests.updateOrderStatus(newStatus, orderId);
+        this.socket.emit('orderUpdated', orderId);
+        // try {
+        //     // Update status of the order in the database
+        //     await axios({
+        //         method: 'patch',
+        //         url: 'http://127.0.0.1:5000/session/order/' + orderId,
+        //         data: { status: newStatus }
+        //     });
+        //     this.socket.emit('orderUpdated', orderId);
+        // } catch(err) {
+        //     console.error(err);
+        // }
     }
 
     handleSelect = (event) => {

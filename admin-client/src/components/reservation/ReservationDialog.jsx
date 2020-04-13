@@ -7,6 +7,7 @@ import {
 import React from 'react';
 import { ScheduleTable } from 'src/components/reservation/ScheduleTable';
 import { Requests } from 'src/utilities/Requests';
+import { _ } from 'src/utilities/helper';
 
 export class ReservationDialog extends React.Component {
     constructor(props) {
@@ -21,19 +22,19 @@ export class ReservationDialog extends React.Component {
 
     componentDidMount = async () => {
         let res = await Requests.getTableReservation(this.props.table_id);
-        this.setState({ data: res.data });
+        this.setState({ data: res });
         
     }
 
     componentWillReceiveProps = async (nextProps) => {
         let res = await Requests.getTableReservation(nextProps.table_id);
-        this.setState({ data: res.data });
+        this.setState({ data: res });
     }
 
 
     render () {
         let events = [];
-        if(this.state.data.length !== 0) {
+        if(!_.isNil(this.state.data)) {
             this.state.data.forEach((item, index)=>{
             
                 let datetime = item.datetime.split("T");

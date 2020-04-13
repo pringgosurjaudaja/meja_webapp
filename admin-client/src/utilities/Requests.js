@@ -20,6 +20,45 @@ export class Requests {
         }
     }
     
+    static async getMenu () {
+        try {
+            const result = await axios ({
+                method: 'get',
+                url: BASE_URL + '/menu',
+            });
+            return result.data;
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    static async getOrders () {
+        try {
+            const orders = await axios({
+                method: 'get',
+                url: BASE_URL + '/session/order'
+            });
+            
+            return orders.data;
+        } catch(err) {
+            console.error('Error in Retrieving Orders');
+        }
+    }
+
+    static async updateOrderStatus (newStatus, orderId) {
+        try {
+            // Update status of the order in the database
+            const result = await axios({
+                method: 'patch',
+                url: BASE_URL + '/session/order/' + orderId,
+                data: { status: newStatus }
+            });
+            
+        } catch(err) {
+            console.error(err);
+        }
+    }
+
     static async getReservations () {
         try {
             const result = await axios({
@@ -161,7 +200,7 @@ export class Requests {
                     "x-api-key": sessionStorage.getItem('AUTH_KEY'),
                 }
             });
-            return result;
+            return result.data;
         } catch (err) {
             console.error(err);
         }
