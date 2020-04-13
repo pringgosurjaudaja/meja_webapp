@@ -54,7 +54,7 @@ export class Menu extends React.Component {
 
     // Get the details of the specific item from each individual Menu Item Card
     getEditMenuItem = (item) => {
-        console.log(item);
+        // console.log(item);
         this.setState({ activeItem: item })
     }
 
@@ -82,6 +82,7 @@ export class Menu extends React.Component {
             categories[category.name] = category.name;
             category.menu_items.length > 0 
             && category.menu_items.forEach((item, i) => {
+                // console.log(item);
                 let props = {
                     _id: item._id,
                     name: item.name,
@@ -92,6 +93,7 @@ export class Menu extends React.Component {
                     category_tags: item.category_tags,
                     handleeditmenuitem: this.handleEditMenuItem,
                     geteditmenuitem: this.getEditMenuItem,
+                    recommended: item.chefs_pick,
                 }
                 let entry = (
                     <Row key={i} className="layout--menu">
