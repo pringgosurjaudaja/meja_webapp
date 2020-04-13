@@ -6,8 +6,6 @@ class MenuItemSchema(Schema):
     description = fields.String(required=True)
     media_urls = fields.List(fields.String(), missing=[])       # URLs for pictures of the menu item
     price = fields.Float(required=True)
-    labels = fields.List(fields.Integer(), missing=[])          # Vegan, Vegetarian, Gluten-Free
-    category_tags = fields.List(fields.String(), missing=[])    # E.g. Indian, Spicy, Mains, etc.
     chefs_pick = fields.Boolean(missing=False)      # Whether it is part of the chef's recommended list
 
     class Meta:

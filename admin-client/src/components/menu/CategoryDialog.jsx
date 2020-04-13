@@ -5,8 +5,7 @@ import {
     Form,
 } from 'react-bootstrap';
 
-import { axios } from 'src/utilities/helper';
-
+import { Requests } from 'src/utilities/Requests';
 
 export class CategoryDialog extends React.Component {
     
@@ -16,20 +15,8 @@ export class CategoryDialog extends React.Component {
             name: '',
         }
     }
-    handleSubmit = () => {
-        axios({
-            method: 'post',
-            url: 'http://127.0.0.1:5000/menu',
-            data: {
-                "name": this.state.name
-            }
-        })
-        .then((response) => {
-            console.log(response);
-        })
-        .catch((error)=>{
-            console.log(error.response);
-        });
+    handleSubmit = async () => {
+        await Requests.addCategory(this.state.name);
     }
 
     handleChange = (event) => {
