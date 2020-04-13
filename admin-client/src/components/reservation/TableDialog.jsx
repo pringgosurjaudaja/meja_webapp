@@ -16,7 +16,7 @@ export class TableDialog extends React.Component {
         this.state = {
             seats: 1,
             tableName: '',  // New table Name
-            tableId: '',    // Table Id to be deleted
+            tableId: '',    // Table Id
         }
     }
 

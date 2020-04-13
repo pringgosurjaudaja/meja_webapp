@@ -8,63 +8,43 @@ import 'src/styles/styles.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Select from 'react-select';
 import { axios } from 'src/utilities/helper';
+import { Requests } from '../../utilities/Requests';
 
 
 export class EditDialog extends React.Component {
     constructor(props) {
         super(props);
-        
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSelectLabel = this.handleSelectLabel.bind(this);
-        this.handleSelectTag = this.handleSelectTag.bind(this);
-        this.handleEditMenu = this.handleEditMenu.bind(this);
+
         this.state = {
             id: '',
             name: '',
             description: '',
             price: '',
-            labels: [],
-            tags: [],
-            foodLabels: [
-                { value: 0, label: 'Vegan' },
-                { value: 1, label: 'Gluten Free' },
-                { value: 2, label: 'Vegetarian' },  
-            ],
-            foodTags: [
-                { value: 'japanese', label: 'Japanese' },
-                { value: 'western', label: 'Western' },
-                { value: 'spanish', label: 'Spanish' },
-                { value: 'italian', label: 'Italian' },  
-                { value: 'popular', label: 'Popular' },
-            ]
+            
         }
         
     }
 
     
-    componentDidMount() {
+    componentDidMount = () => {
         this.setState({
             id: this.props.item._id,
             name: this.props.item.name,
             description: this.props.item.description,
             price: this.props.item.price,
-            labels: this.props.item.labels,
-            tags: this.props.item.category_tags,
         })
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps = (nextProps) => {
         this.setState({
             id: nextProps.item._id,
             name: nextProps.item.name,
             description: nextProps.item.description,
             price: nextProps.item.price,
-            labels: nextProps.labels,
-            tags: nextProps.category_tags,
         })
     }
 
-    handleChange(e) {
+    handleChange = (e) => {
         if(e.target.name === "name") {
             this.setState({ name: e.target.value });
         } else if(e.target.name === "description") {
@@ -74,40 +54,32 @@ export class EditDialog extends React.Component {
         }
     }
 
-    handleSelectLabel(chosen) {
-        console.log(chosen);
-        this.setState({label: chosen})
-    }
-
-
-    handleSelectTag(chosen) {
-        this.setState({tags: chosen})
-    }
-
-    handleEditMenu(e) {
+    handleEditMenu = async (e) => {
         console.log(this.props);
-        
-        let url = 'http://127.0.0.1:5000/menu/item/'+this.state.id;
-        axios({
-            method: 'put',
-            url: url,
-            timeout: 1000,
-            data: {
-                "name": this.state.name,
-                "description": this.state.description,
-                "price": parseFloat(this.state.price),
-            },
-            header: {
-                "x-api-key": sessionStorage.getItem('AUTH_KEY'),
-                "Content-Type": "application/json"
-            }
-        })
-        .then((response) => {
-            console.log(response);
-        })
-        .catch((error)=>{
-            console.log(error.response);
-        });
+        e.preventDefault();
+
+        await Requests.editMenuItem(this.state.id, this.state.name, this.state.description, parseFloat(this.state.price));
+        // let url = 'http://127.0.0.1:5000/menu/item/'+this.state.id;
+        // axios({
+        //     method: 'put',
+        //     url: url,
+        //     timeout: 1000,
+        //     data: {
+        //         "name": this.state.name,
+        //         "description": this.state.description,
+        //         "price": parseFloat(this.state.price),
+        //     },
+        //     header: {
+        //         "x-api-key": sessionStorage.getItem('AUTH_KEY'),
+        //         "Content-Type": "application/json"
+        //     }
+        // })
+        // .then((response) => {
+        //     console.log(response);
+        // })
+        // .catch((error)=>{
+        //     console.log(error.response);
+        // });
     }
 
     render () {
@@ -123,7 +95,7 @@ export class EditDialog extends React.Component {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form className="layout--padding"  onSubmit={(e)=>this.handleEditMenu(e)}>
+                    <Form className="layout--padding"  onSubmit={this.handleEditMenu}>
                         <Form.Group>
                             <Form.Label>Name</Form.Label>
                             <Form.Control
@@ -149,7 +121,7 @@ export class EditDialog extends React.Component {
                             name="price" type="text"
                             placeholder="Enter name" />
                         </Form.Group>
-                        <Form.Group>
+                        {/* <Form.Group>
                             <Form.Label>Label</Form.Label>
                             <Select onChange={this.handleSelectLabel}
                                 value={this.state.labels}
@@ -173,7 +145,7 @@ export class EditDialog extends React.Component {
                                 isClearable
                                 options={this.state.foodTags}
                             />
-                        </Form.Group>
+                        </Form.Group> */}
                         
                         <Button variant="primary" type="submit">
                             Submit

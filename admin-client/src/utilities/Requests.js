@@ -32,6 +32,21 @@ export class Requests {
         }
     }
 
+    static async addCategory (name) {
+        try {
+            const result = await axios({
+                method: 'post',
+                url: BASE_URL + '/menu',
+                data: {
+                    name: name
+                }
+            });
+            return result.data;
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
     static async getOrders () {
         try {
             const orders = await axios({
@@ -133,6 +148,48 @@ export class Requests {
                 url: BASE_URL + '/menu/category/' + categoryId,
                 header: {
                     "x-api-key": sessionStorage.getItem('AUTH_KEY'),
+                }
+            });
+            return result.data;
+        } catch(err) {
+            console.error(err);
+        }
+    }
+
+    static async addMenuItem(categoryId, name, description, price) {
+        try {
+            const result = await axios({
+                method: 'post',
+                url: BASE_URL + '/menu/category/' + categoryId,
+                header: {
+                    "x-api-key": sessionStorage.getItem('AUTH_KEY'),
+                    "Content-Type": "application/json"
+                },
+                data: {
+                    name: name,
+                    description: description,
+                    price: price
+                }
+            });
+            return result.data;
+        } catch(err) {
+            console.error(err);
+        }
+    }
+
+    static async editMenuItem(menuItemId, name, description, price) {
+        try {
+            const result = await axios({
+                method: 'put',
+                url: BASE_URL + '/menu/item/' + menuItemId,
+                header: {
+                    "x-api-key": sessionStorage.getItem('AUTH_KEY'),
+                    "Content-Type": "application/json"
+                },
+                data: {
+                    name: name,
+                    description: description,
+                    price: price
                 }
             });
             return result.data;
