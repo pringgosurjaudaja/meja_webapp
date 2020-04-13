@@ -1,4 +1,4 @@
-from marshmallow import Schema, fields
+from marshmallow import Schema, fields, EXCLUDE
 
 class MenuItemSchema(Schema):
     _id = fields.String()
@@ -10,6 +10,7 @@ class MenuItemSchema(Schema):
 
     class Meta:
         ordered = True
+        unknown = EXCLUDE
 
 
 class MenuCategorySchema(Schema):
