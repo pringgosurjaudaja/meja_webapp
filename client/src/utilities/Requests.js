@@ -36,6 +36,30 @@ export class Requests {
         }
     }
 
+    static async getMenu() {
+        try {
+            const menu = await axios ({
+                method: 'get',
+                url: BASE_URL + '/menu'
+            });
+            return menu.data;
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    static async getRecommendation() {
+        try {
+            const menu = await axios ({
+                method: 'get',
+                url: BASE_URL + '/menu/recommendations'
+            });
+            return menu.data;
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
     static async getUser(userId) {
         try {
             const userRequest = await axios({

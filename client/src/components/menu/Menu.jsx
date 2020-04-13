@@ -1,27 +1,29 @@
 import React from 'react';
 import { Container, Row, Col, Tabs, Tab } from 'react-bootstrap';
 import { MenuItem } from 'src/components/menu/MenuItem';
-import { axios } from 'src/utilities/helper';
+import { Requests } from 'src/utilities/Requests';
 
+
+const DEFAULT_TAB = "Recommendation";
 export class Menu extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            menu: []
+            menu: [],
+            recommendation: [],
         }
     }
 
-    componentDidMount() {
-        // Get menu items from the backend
-        axios({
-            method: 'get',
-            url: 'http://127.0.0.1:5000/menu'
-        })
-        .then((response) => {
-            this.setState({
-                menu: response.data 
-            });
+    componentDidMount = async () => {
+
+        const menu = await Requests.getMenu();
+        const recommendation = await Requests.getRecommendation();
+        this.setState({
+            menu: menu,
+            recommendation: recommendation
         });
+
+
     }
 
 
@@ -53,10 +55,31 @@ export class Menu extends React.Component {
             );
         });
 
+
+
+        const recommendation = this.state.recommendation;
+        const recommendationEntries = [];
+        recommendation && recommendation.forEach((menuItem, i) => {
+            recommendationEntries.push(
+                <Row key={i} className="layout--menu">
+                        <Col className="menu-container">
+                            <MenuItem 
+                                item={menuItem}
+                                itemInCart={this.props.itemInCart}
+                                updateCart={this.props.updateCart} 
+                                className="menu-item"
+                            />
+                        </Col>
+                    </Row>
+            )
+        })
+        const recommendationTab = <Tab key="Recommendation" eventKey={DEFAULT_TAB} title="Recommendation">{recommendationEntries}</Tab>
+        
         return (
             <Container className="layout--padding--menu">
                 <h1 className="menu-h1">Menu</h1>
-                <Tabs className="menu-nav-tabs" fixed="top" defaultActiveKey={this.state.menu && this.state.menu[0]}>
+                <Tabs className="menu-nav-tabs" fixed="top" defaultActiveKey={DEFAULT_TAB}>
+                    {recommendationTab}
                     {tabs}
                 </Tabs>
             </Container>

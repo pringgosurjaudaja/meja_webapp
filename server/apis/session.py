@@ -3,7 +3,7 @@ from flask import request, render_template
 from flask_api import status
 from flask_restplus import Namespace, Resource, fields
 from bson.objectid import ObjectId
-from marshmallow import ValidationError
+from marshmallow import ValidationError, EXCLUDE
 from apis.menu import MODEL_menu_item
 from apis.session_schema import SessionSchema
 from apis.order_schema import OrderSchema
@@ -96,7 +96,7 @@ class SessionInfo(Resource):
         print('Adding a new order')
         schema = OrderSchema()
         try:
-            order = schema.load(request.data)
+            order = schema.load(request.data, unknown=EXCLUDE)
             # Generate an order id
             order['_id'] = str(ObjectId())
             session_db.update(

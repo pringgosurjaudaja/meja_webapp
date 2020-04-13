@@ -269,4 +269,35 @@ export class Requests {
             console.error(err);
         }
     }
+
+
+    static async addRecommendation(itemId) {
+        try {
+            const request = await axios({
+                method: 'patch',
+                url: BASE_URL + '/menu/recommendations/' + itemId,
+                header: {
+                    "x-api-key": sessionStorage.getItem('AUTH_KEY'),
+                }
+            });
+            return request.data;
+        } catch(err) {
+            console.error(err);
+        }
+    }
+
+    static async deleteRecommendation(itemId) {
+        try {
+            const request = await axios({
+                method: 'delete',
+                url: BASE_URL + '/menu/recommendations/' + itemId,
+                header: {
+                    "x-api-key": sessionStorage.getItem('AUTH_KEY'),
+                }
+            });
+            return request.data;
+        } catch(err) {
+            console.error(err);
+        }
+    }
 }

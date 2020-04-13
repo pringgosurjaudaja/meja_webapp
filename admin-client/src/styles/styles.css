@@ -167,6 +167,21 @@ body {
     right: 4%;
     top: 5%;
 }
+
+.menu-item-card--icon-star {
+    position: absolute;
+    right: calc(4% + 25px + 25px);
+    top: 5%;
+    color: grey;
+}
+
+.menu-item-card--icon-star-active {
+    position: absolute;
+    right: calc(4% + 25px + 25px);
+    top: 5%;
+    color: orange;
+}
+
 .menu-item-card--icon-edit {
     position: absolute;
     right: calc(4% + 25px);
