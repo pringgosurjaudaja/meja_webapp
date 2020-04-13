@@ -162,7 +162,8 @@ export class Dashboard extends React.Component {
             this.setState({
                 orderList: await this.getOrderList(),
                 cart: new Map(),
-                activeTab: tabs.ORDERS
+                activeTab: tabs.ORDERS,
+                showCheckout: false,
             });
 
         } catch (err) {
@@ -265,7 +266,6 @@ export class Dashboard extends React.Component {
         const reservationProps = {
             showLogin: this.showLogin,
         }
-
         return (
             <div>
                 <NavOverlay tabs={tabs} show={this.state.showOverlay} onHide={this.handleCloseNav} handleNavSelect={this.handleNavSelect} activeTab={this.state.activeTab} />
@@ -275,6 +275,7 @@ export class Dashboard extends React.Component {
                     handleOrderCart={this.handleOrderCart}
                     show={this.state.showCheckout}
                     onHide={this.handleCloseCart}
+
                 />
                 <Navbar variant="dark" bg="black" sticky="top" onSelect={(tab => this.handleNavSelect(tab))}>
                     <Nav className="mr-auto">
