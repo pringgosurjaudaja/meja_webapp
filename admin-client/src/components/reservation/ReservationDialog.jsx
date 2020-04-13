@@ -16,7 +16,6 @@ export class ReservationDialog extends React.Component {
             response: [],
             data: [],
         }
-        this.calendarRef = React.createRef();
     }
 
     componentDidMount = async () => {
@@ -32,7 +31,7 @@ export class ReservationDialog extends React.Component {
 
 
     render () {
-        const { table } = this.props;
+        const { table, toggleWaiterCall } = this.props;
 
         let events = this.state.data ? this.state.data.map(reservation => {
             let datetime = reservation.datetime.split("T");
@@ -74,7 +73,9 @@ export class ReservationDialog extends React.Component {
                         <Button
                             style={{ marginLeft: '20px' }}
                             variant='danger' 
-                            onClick={() => console.log('waiter toggled')}
+                            onClick={() => {
+                                toggleWaiterCall(table._id);
+                            }}
                         >
                             <FontAwesomeIcon 
                                 style={{ marginRight: '5px'}}

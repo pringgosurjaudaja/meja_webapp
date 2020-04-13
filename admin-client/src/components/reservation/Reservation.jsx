@@ -17,7 +17,6 @@ export class Reservation extends React.Component {
         super(props);
         this.state = {
             reservation: [],
-            tables: [],
             activeTable: null,
             addTable: true,
             showTableDialog: false,
@@ -28,7 +27,6 @@ export class Reservation extends React.Component {
         const reservation = await Requests.getReservations();
         this.setState({ reservation: reservation });
     }
-
 
     handleShowReservation = (table) => {
         this.setState({
@@ -58,7 +56,7 @@ export class Reservation extends React.Component {
     }
 
     render () {
-        const { tables } = this.props;
+        const { tables, toggleWaiterCall } = this.props;
         
         let tableComps = tables && tables.map((table, i) => {
             return (
@@ -75,7 +73,7 @@ export class Reservation extends React.Component {
 
         let tableProps = {
             addTable: this.state.addTable,
-            tables: this.state.tables,
+            tables: tables,
         };
 
         return (
@@ -120,6 +118,7 @@ export class Reservation extends React.Component {
                     show={this.state.activeTable !== undefined} 
                     onHide={this.handleClose} 
                     table={this.state.activeTable}
+                    toggleWaiterCall={toggleWaiterCall}
                 />}
             </div>
         );

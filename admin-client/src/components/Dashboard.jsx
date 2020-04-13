@@ -23,7 +23,8 @@ export class Dashboard extends React.Component {
         super(props);
         this.state = {
             menuItemList: [],
-            orders: []
+            orders: [],
+            tables: []
         }
         this.socket = io.connect('http://127.0.0.1:5000/');
         this.socket.emit('admin_join');
@@ -44,11 +45,18 @@ export class Dashboard extends React.Component {
     }
 
     socketSetup = () => {
-        this.socket.on('newCustomerOrder', () => {
-            // Check for new coustomer orders
+        this.socket.on('newCustomerOrder', async () => {
+            // Check for new customer orders
             console.log('Received new customer order');
-            this.getOrders();
+            const orders = await Requests.getOrders();
+            this.setState({ orders: orders });
         });
+
+        this.socket.on('customerCallingWaiter', async () => {
+            console.log('Customer is calling a waiter');
+            const tables = await Requests.getTables();
+            this.setState({ tables: tables });
+        })
     }
 
     handleChangeOrderStatus = async (newStatus, orderId) => {
@@ -59,13 +67,24 @@ export class Dashboard extends React.Component {
                 break;
             }
         }
-
-        this.setState({
-            orders: newOrders
-        });
+        this.setState({ orders: newOrders });
 
         await Requests.updateOrderStatus(newStatus, orderId);
         this.socket.emit('orderUpdated', orderId);
+    }
+
+    toggleWaiterCall = async (tableId) => {
+        console.log(tableId);
+        const newTables = [...this.state.tables];
+        for (let table of newTables) {
+            if (table._id === tableId) {
+                table.calling_waiter = !table.calling_waiter;
+                break;
+            }
+        }
+        this.setState({ tables: newTables });
+        // await Requests.toggleCallWaiter(tableId);
+        this.socket.emit('call_waiter_toggled', tableId);
     }
 
     handleSelect = (event) => {
@@ -94,7 +113,10 @@ export class Dashboard extends React.Component {
                     defaultActiveKey="table"
                 >
                     <Tab eventKey="table" title="Tables">
-                        <Reservation tables={this.state.tables} />
+                        <Reservation 
+                            tables={this.state.tables}
+                            toggleWaiterCall ={this.toggleWaiterCall}
+                        />
                     </Tab>
                     <Tab eventKey="menu" title="Menu">
                         <Menu {...menuProps}/>

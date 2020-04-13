@@ -47,10 +47,6 @@ export class OrderCard extends React.Component {
         return time;
     }
 
-    handleStatusChange = (newStatus) => {
-        this.props.order.status = newStatus;
-    }
-
     orderStatusButtons = (order) => {
         const { changeOrderStatus, orderNumber } = this.props;
 

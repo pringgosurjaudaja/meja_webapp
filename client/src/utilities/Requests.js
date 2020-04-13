@@ -196,15 +196,8 @@ export class Requests {
         }
     }
 
-    static async toggleCallWaiter(sessionId) {
+    static async toggleCallWaiter(tableId) {
         try {
-            const sessionReq = await axios({
-                method: 'get',
-                url: BASE_URL + '/session/' + sessionId
-            });
-            const session = sessionReq.data;
-            const tableId = session.table_id;
-
             // Toggle the call waiter in the backend
             const waiterReq = await axios({
                 method: 'patch',

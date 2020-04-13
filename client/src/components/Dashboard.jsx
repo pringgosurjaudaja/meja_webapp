@@ -92,6 +92,10 @@ export class Dashboard extends React.Component {
                 console.error(err);
             }
         });
+
+        this.socket.on('callWaiterToggled', () => {
+            this.handleCallWaiter(false);
+        })
     }
 
     // #region Cart Operations
@@ -205,12 +209,15 @@ export class Dashboard extends React.Component {
     handleCallWaiter = async (confirmedCallWaiter) => {
         let calling = this.state.callingWaiter;
         if (calling || confirmedCallWaiter) {
+            const session = await Requests.getSession(localStorage.getItem('sessionId'));
+            const tableId = session.table_id;
+            
             if (confirmedCallWaiter) {
                 // Call a waiter
-                this.socket.emit('call_waiter');
+                this.socket.emit('call_waiter', tableId);
             }
             // Toggle the calling waiter status
-            await Requests.toggleCallWaiter(localStorage.getItem('sessionId'));
+            await Requests.toggleCallWaiter(tableId);
             this.setState({ callingWaiter: !calling, showConfirmCallWaiter: false });
         } else {
             // Open modal to make user confirm waiter call

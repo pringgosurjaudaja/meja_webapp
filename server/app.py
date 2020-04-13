@@ -51,11 +51,15 @@ def handle_order_update(order):
 
 # region Handle Calling Waiter
 @socketio.on('call_waiter')
-def on_call_waiter():
-    print('In call waiter')
-    # Inform admins to update their clients
+def on_call_waiter(table_id):
+    join_room(table_id)
+    # Inform admins to update their tables
     emit('customerCallingWaiter', room=ADMIN_ROOM)
 
+@socketio.on('call_waiter_toggled')
+def on_call_waiter_toggle(table_id):
+    # Inform customer that their call waiter status has been handled
+    emit('callWaiterToggled', room=table_id)
 
 # endregion
 
