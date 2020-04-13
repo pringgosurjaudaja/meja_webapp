@@ -42,7 +42,6 @@ export class Checkout extends React.Component {
         let entries = [];
 
         cart.size > 0 && cart.forEach((item, i) => {
-            console.log(item);
             entries.push(
                 <Card key={i} style={{ width: '95%' }}>
                     <Card.Body>
