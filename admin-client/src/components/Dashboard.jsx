@@ -23,18 +23,18 @@ export class Dashboard extends React.Component {
         super(props);
         this.state = {
             menuItemList: [],
-            orders: [],
-            tables: []
+            orders: []
         }
         this.socket = io.connect('http://127.0.0.1:5000/');
         this.socket.emit('admin_join');
     }
 
-    componentDidMount = async () => {
+    componentDidMount() {
         // Populate the menuItemList
-        const menu = await Requests.getMenu();
-        const orders = await Requests.getOrders();
-        const tables = await Requests.getTables();
+        this.getMenu();
+        this.getOrders();
+        this.socketSetup();
+    }
 
     getMenu = async () => {
         const menu = await Requests.getMenu();
@@ -55,10 +55,6 @@ export class Dashboard extends React.Component {
             // Check for new coustomer orders
             console.log('Received new customer order');
             this.getOrders();
-        });
-
-        this.socket.on('customerCallingWaiter', () => {
-
         });
     }
 
@@ -90,7 +86,7 @@ export class Dashboard extends React.Component {
     render () {
         const menuProps = {
             menuItemList: this.state.menuItemList
-        }
+        };
         return (
             <div>
                 <Nav className="justify-content-end" onSelect={this.handleSelect}>
@@ -106,7 +102,7 @@ export class Dashboard extends React.Component {
                     defaultActiveKey="order"
                 >
                     <Tab eventKey="reservation" title="Reservation">
-                        <Reservation tables={this.state.tables} />
+                        <Reservation/>
                     </Tab>
                     <Tab eventKey="menu" title="Menu">
                         <Menu {...menuProps}/>

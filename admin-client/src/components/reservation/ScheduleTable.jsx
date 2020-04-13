@@ -36,7 +36,14 @@ export class ScheduleTable extends React.Component {
         // return false for reject the editing
         let data = row;
         data[cellName] = cellValue;
-        await Requests.updateReservation(row.id, this.props.table_id, data["email"], parseInt(data["diner"]), data["date"]+"T"+data["time"], data["note"]);
+        let arg = {
+            table_id: this.props.table_id,
+            email: data["email"],
+            number_diner: parseInt(data["diner"]),
+            datetime: data["date"]+"T"+data["time"],
+            reservation_notes: data["note"]
+        };
+        await Requests.updateReservation(row.id, arg);
         return true;
       }
     
