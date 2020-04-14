@@ -435,3 +435,11 @@ df-messenger {
   .badge-info {
     background-color: #ae956d !important;
 }
+
+
+.layout--menu.row:nth-child(1) {
+    padding-top: 25px;
+}
+.review-footer-button {
+    float: right;
+}

@@ -1,10 +1,14 @@
 import React from 'react';
-import { Modal, Button, Card, Alert, InputGroup, FormControl, FormLabel } from 'react-bootstrap';
+import { Modal, Button, Card, Alert, InputGroup, FormControl, FormLabel, Tab, Tabs, Row, Col } from 'react-bootstrap';
 import InputNumber from 'rc-input-number';
 import 'rc-input-number/assets/index.css';
 import 'src/styles/styles.css';
 import example from 'src/styles/assets/test.jpg';
 import { cartOps } from 'src/components/Dashboard';
+import { _ } from 'src/utilities/helper';
+import StarRatings from 'react-star-ratings';
+import { MenuItemReviewForm } from 'src/components/menu/MenuItemReviewForm';
+import { Requests } from 'src/utilities/Requests';
 
 export class MenuItemDialog extends React.Component {
     constructor(props) {
@@ -12,8 +16,29 @@ export class MenuItemDialog extends React.Component {
 
         this.state = {
             quantity: 1,
-            notes: ''
+            notes: '',
+            review_list: [],
+            email: "",
+
         }
+    }
+
+    getEmail = async () => {
+        const sessionId = localStorage.getItem('sessionId');
+        const session = await Requests.getSession(sessionId);
+        const allSession = await Requests.getAuth(sessionId);
+        allSession && allSession.forEach(async (sess) => {
+            if (sess._id === session.user_id) {
+                this.setState({ email: sess.email });
+                return;
+            }
+        })
+    }
+
+
+    componentDidMount = () => {
+        this.setState({ review_list: this.props.item.review_list });
+        this.getEmail();
     }
 
     handleQuantityChange = (val) => {
@@ -34,9 +59,87 @@ export class MenuItemDialog extends React.Component {
         this.props.handleClose();
     }
 
+    handleAddFoodReview = async (review) => {
+        if (_.isNil(this.state.review_list)) {
+            let review_list = [];
+            review_list.push(review);
+            this.setState({
+                review_list: review_list,
+            })
+        } else {
+            this.setState({
+                review_list: this.state.review_list.concat(review)
+            })
+        }
+    }
+
+    handleDeleteFoodReview = async (menuItemId, reviewId) => {
+        await Requests.deleteFoodReview(menuItemId, reviewId);
+        let reviews = [...this.state.review_list];
+        let idx = -1;
+        let r = reviews.filter((item, index) => {
+            idx = index;
+            return item._id == reviewId;
+        });
+        // let index = reviews.indexOf(r);
+        console.log(idx)
+        if (idx !== -1) {
+            reviews.splice(idx, 1);
+            this.setState({ review_list: reviews });
+        }
+    }
+
+    getFoodReviews = () => {
+        let res = [];
+        if(!_.isNil(this.state.review_list)) {
+            this.state.review_list.forEach((item, index) => {
+                const comment = (
+                    <Card style={{ width: '100%' }}>
+                        <Card.Body>
+                            <Card.Title>{item.user}</Card.Title>
+                            <Card.Subtitle><StarRatings
+                                rating={item.rating}
+                                starRatedColor="yellow"
+                                starDimension="25px"
+                                numberOfStars={5}
+                                name='rating'
+                                /></Card.Subtitle>
+                            <Card.Text>{item.comment}</Card.Text>
+                            { item.user === this.state.email ? <Button className="review-footer-button" onClick={()=>this.handleDeleteFoodReview(item.menu_item_id, item._id)}>delete</Button>:''}
+
+                        </Card.Body>
+                    </Card>
+                );
+    
+                const row = (
+                    <Row key={index}>
+                        <Col>
+                            {comment}
+                        </Col>
+                    </Row>
+                );
+                res.push(row);
+            })
+            // this.setState({ review_list: res});
+                
+        }
+        
+        
+        
+        return res;
+    }
+
+
     render() {
         const { item, show, onHide, itemInCart } = this.props;
+        console.log(this.state);
+        const foodReviews = this.getFoodReviews();
 
+        const reviewFormProps = {
+            handleAddFoodReview: (review) => this.handleAddFoodReview(review),
+            menuItemId: item._id,
+            email: this.state.email,
+        }
         return (
             <div>
                 {item && <Modal 
@@ -47,45 +150,55 @@ export class MenuItemDialog extends React.Component {
                     <Modal.Header closeButton />
 
                     <Modal.Body>
-                        <Card.Img variant="top" src={example} />
-                        
-                        {/* Title & Description */}
-                        <Modal.Title>{item.name}</Modal.Title>
-                        <p>{item.description}</p>
-                        <p>$ {item.price}</p>
-                        
-                        {/* Notes for Menu Item */}
-                        <FormLabel>Add notes</FormLabel>
-                        <InputGroup>
-                            <FormControl 
-                                onChange={this.handleNotesChange} 
-                                as="textarea" 
-                                aria-label="With textarea" 
-                            />
-                        </InputGroup>
-                        <br></br>
-                        {/* Quantity of Menu Item */}
-                        <InputNumber 
-                            onChange={this.handleQuantityChange} 
-                            focusOplaceholder="Quantity" 
-                            min={1} 
-                            defaultValue={1} 
-                        />
-                        <br></br><br></br>
-                        <Button 
-                            onClick={this.handleAddToCart} 
-                            disabled={itemInCart(item)} 
-                            data-dismiss="modal" 
-                            variant="primary"
-                        >
-                            Add to cart
-                        </Button>
+                        <Tabs>
+                            <Tab eventKey="info" title="Info">
+                                <Card.Img variant="top" src={example} />
+                            
+                                {/* Title & Description */}
+                                <Modal.Title>{item.name}</Modal.Title>
+                                <p>{item.description}</p>
+                                <p>$ {item.price}</p>
+                                
+                                {/* Notes for Menu Item */}
+                                <FormLabel>Add notes</FormLabel>
+                                <InputGroup>
+                                    <FormControl 
+                                        onChange={this.handleNotesChange} 
+                                        as="textarea" 
+                                        aria-label="With textarea" 
+                                    />
+                                </InputGroup>
+                                <br></br>
+                                {/* Quantity of Menu Item */}
+                                <InputNumber 
+                                    onChange={this.handleQuantityChange} 
+                                    focusOplaceholder="Quantity" 
+                                    min={1} 
+                                    defaultValue={1} 
+                                />
+                                <br></br><br></br>
+                                <Button 
+                                    onClick={this.handleAddToCart} 
+                                    disabled={itemInCart(item)} 
+                                    data-dismiss="modal" 
+                                    variant="primary"
+                                >
+                                    Add to cart
+                                </Button>
 
-                        {/* Successfully Added Alert */}
-                        {itemInCart(item) &&
-                            <Alert variant="success">
-                                Added to cart.
-                            </Alert>}
+                                {/* Successfully Added Alert */}
+                                {itemInCart(item) &&
+                                    <Alert variant="success">
+                                        Added to cart.
+                                    </Alert>}
+                            </Tab>
+                            <Tab eventKey="review" title="Review">
+                                <MenuItemReviewForm {...reviewFormProps}/>
+                                {foodReviews.length!==0 ? foodReviews : "No Reviews yet"}
+                            </Tab>
+                            
+                        </Tabs>
+                        
                     </Modal.Body>
                 </Modal>}
             </div>
