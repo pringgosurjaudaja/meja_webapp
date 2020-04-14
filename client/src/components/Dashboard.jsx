@@ -324,6 +324,7 @@ export class Dashboard extends React.Component {
                 {/* Chatbot */}
                 <div>
                     <df-messenger
+                        chat-icon="https://storage.googleapis.com/cloudprod-apiai/62b45f9c-465b-43f2-89fd-a2c19b2663a5_x.png"
                         intent="WELCOME"
                         chat-title="Meja_Bot"
                         agent-id="a11d8a36-5854-4b43-8306-a110222079a5"
