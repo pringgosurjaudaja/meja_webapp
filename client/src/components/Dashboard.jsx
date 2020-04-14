@@ -1,5 +1,5 @@
 import React from 'react';
-import { Nav, Navbar, Modal, Button } from 'react-bootstrap';
+import { Nav, Navbar, Modal, Button, Badge } from 'react-bootstrap';
 import { Fab, Action } from 'react-tiny-fab';
 import io from 'socket.io-client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -296,7 +296,10 @@ export class Dashboard extends React.Component {
                     </Nav>
                     <Nav>
                         <Nav.Item>
-                            <Nav.Link onClick={this.handleOpenCart}><FontAwesomeIcon icon={faReceipt} color="white" /></Nav.Link>
+                            <Nav.Link onClick={this.handleOpenCart}>
+                                <FontAwesomeIcon icon={faReceipt} color="white" />
+        {this.state.cart.size > 0 && <Badge pill variant="info">{this.state.cart.size}</Badge>}
+                            </Nav.Link>
                         </Nav.Item>
                     </Nav>
                 </Navbar>

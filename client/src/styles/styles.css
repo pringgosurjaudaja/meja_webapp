@@ -249,6 +249,10 @@ body {
     background-color: #ffffff;
 }
 
+.menu-nav-tabs li {
+    display: inline-block;
+  }
+
 .menu-container {
     top: 150px;
 }
@@ -351,10 +355,6 @@ df-messenger {
     --df-messenger-user-message: #aaaaaa;
 }
 
-.df-messenger-wrapper {
-    top: 60px !important;
-}
-
 .overlay {
     /* Height & width depends on how you want to reveal the overlay (see JS below) */   
     height: 100% !important;
@@ -431,3 +431,7 @@ df-messenger {
     overflow-y: scroll;
     height: 80% !important;
   }
+
+  .badge-info {
+    background-color: #ae956d !important;
+}
