@@ -1,5 +1,11 @@
-from marshmallow import Schema, fields, EXCLUDE
+from marshmallow import Schema, fields, EXCLUDE, validate
 
+class MenuReviewSchema(Schema):
+    _id = fields.String()
+    menu_item_id = fields.String()
+    rating = fields.Integer(validate=validate.Range(min=0, max=5))
+    comment = fields.String(missing=[])
+    user = fields.String()
 class MenuItemSchema(Schema):
     _id = fields.String()
     name = fields.String(required=True)
@@ -7,7 +13,8 @@ class MenuItemSchema(Schema):
     media_urls = fields.List(fields.String(), missing=[])       # URLs for pictures of the menu item
     price = fields.Float(required=True)
     chefs_pick = fields.Boolean(missing=False)      # Whether it is part of the chef's recommended list
-
+    review_list = fields.List(fields.Nested(MenuReviewSchema), missing=[])
+    rating = fields.Float()
     class Meta:
         ordered = True
         unknown = EXCLUDE
@@ -20,3 +27,4 @@ class MenuCategorySchema(Schema):
 
     class Meta:
         ordered = True
+
