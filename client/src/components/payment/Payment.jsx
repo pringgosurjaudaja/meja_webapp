@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Container, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { OrderHelper } from 'src/components/order/OrderHelper';
 import { Requests } from '../../utilities/Requests';
 

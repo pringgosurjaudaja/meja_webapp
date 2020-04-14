@@ -1,6 +1,6 @@
 import React from 'react';
 import { Nav, Navbar, Modal, Button, Badge } from 'react-bootstrap';
-import { Fab, Action } from 'react-tiny-fab';
+import { Fab } from 'react-tiny-fab';
 import io from 'socket.io-client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faReceipt, faBars, faConciergeBell } from '@fortawesome/free-solid-svg-icons'

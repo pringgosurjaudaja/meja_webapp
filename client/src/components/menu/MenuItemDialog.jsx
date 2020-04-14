@@ -77,12 +77,12 @@ export class MenuItemDialog extends React.Component {
         await Requests.deleteFoodReview(menuItemId, reviewId);
         let reviews = [...this.state.review_list];
         let idx = -1;
-        let r = reviews.filter((item, index) => {
+        reviews.filter((item, index) => {
             idx = index;
-            return item._id == reviewId;
+            return item._id === reviewId;
         });
         // let index = reviews.indexOf(r);
-        console.log(idx)
+
         if (idx !== -1) {
             reviews.splice(idx, 1);
             this.setState({ review_list: reviews });

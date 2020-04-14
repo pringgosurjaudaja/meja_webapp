@@ -66,12 +66,10 @@ export class CustomerReview extends React.Component {
     removeReview = (reviewId) => {
         let reviews = [...this.state.review];
         let idx = -1;
-        let r = reviews.filter((item, index) => {
+        reviews.filter((item, index) => {
             idx = index;
-            return item._id == reviewId;
+            return item._id === reviewId;
         });
-        // let index = reviews.indexOf(r);
-        console.log(idx)
         if (idx !== -1) {
             reviews.splice(idx, 1);
             this.setState({ review: reviews });
