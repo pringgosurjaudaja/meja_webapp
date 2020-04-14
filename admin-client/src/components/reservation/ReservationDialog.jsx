@@ -7,6 +7,7 @@ import { Requests } from 'src/utilities/Requests';
 import { _ } from 'src/utilities/helper';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faConciergeBell } from '@fortawesome/free-solid-svg-icons';
+import { TableQR } from './TableQR';
 
 export class ReservationDialog extends React.Component {
     constructor(props) {
@@ -14,14 +15,13 @@ export class ReservationDialog extends React.Component {
         this.state = {
             events: [],
             response: [],
-            data: [],
+            data: []
         }
     }
 
     componentDidMount = async () => {
         let res = await Requests.getTableReservation(this.props.table._id);
         this.setState({ data: res });
-        
     }
 
     componentWillReceiveProps = async (nextProps) => {
@@ -86,7 +86,6 @@ export class ReservationDialog extends React.Component {
                     </OverlayTrigger>}
                 </Modal.Header>
                 <Modal.Body>
-                    <p>id: {table._id}</p>
                     <Tabs defaultActiveKey='tableReservation'>
                         <Tab eventKey='tableOrder' title='Current Order'>
 
@@ -94,10 +93,14 @@ export class ReservationDialog extends React.Component {
                         <Tab eventKey='tableReservation' title='Reservations'>
                             <ScheduleTable {...tableProps}/>
                         </Tab>
+                        <Tab eventKey='qrCode' title='QR Code'>
+                            <TableQR tableId={table._id} size='150' />
+                            <br />
+                            <p>id: {table._id}</p>
+                        </Tab>
                     </Tabs>
                 </Modal.Body>
-            </Modal>
-            
+            </Modal>            
         );
     }
 }
