@@ -132,7 +132,6 @@ export class MenuItemDialog extends React.Component {
 
     render() {
         const { item, show, onHide, itemInCart } = this.props;
-        console.log(this.state);
         const foodReviews = this.getFoodReviews();
 
         const reviewFormProps = {
