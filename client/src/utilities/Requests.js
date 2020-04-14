@@ -232,4 +232,36 @@ export class Requests {
             console.error(err);
         }
     }
+
+    static async addFoodReview(menuItemId, user, rating, comment) {
+        try {
+            const result = await axios({
+                method: 'post',
+                url: BASE_URL + '/menu/review/' + menuItemId,
+                data: { 
+                    user: user,
+                    rating: rating,
+                    comment: comment
+                }
+            });
+            console.log(result.data.inserted);
+            return result.data.inserted;
+        } catch (err) {
+            console.leerror(err);
+        }
+    }
+    static async deleteFoodReview(menuItemId, reviewId) {
+        try {
+            const result = await axios({
+                method: 'delete',
+                url: BASE_URL + '/menu/review/' + menuItemId,
+                data: { 
+                    _id: reviewId
+                }
+            });
+            return result.data;
+        } catch (err) {
+            console.error(err);
+        }
+    }
 }
