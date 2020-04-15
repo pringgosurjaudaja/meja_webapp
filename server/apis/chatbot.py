@@ -74,7 +74,7 @@ def construct_custom_intent(type, items, text_message):
                     menu_item_rich = {
                         "type": "list",
                         "title": menu_item['name'],
-                        "subtitle": f"Description: {menu_item['description']}\nPrice: {menu_item['price']}",
+                        "subtitle": f"Description: {menu_item['description']}\nPrice: {menu_item['price']}\nRating: {menu_item['rating']}/5.0",
                     }
                     message['richContent'][0].append(menu_item_rich)
                     message['richContent'][0].append({'type':'divider'})
@@ -142,6 +142,8 @@ def handle_chats():
         text_message ="Here are some reviews for this restaurant"
         return construct_custom_intent("review", reviews, text_message)
     elif('suggestion' in data['queryResult']['parameters']):
-        categories = list(menu_db.find({}))
+        categories = list(menu_db.find({}).sort("menu_items.rating"))
+        print(categories)
+        text_message="Here are the top rated dish in our menu"
         return construct_custom_intent('suggestion', categories, text_message)
     return jsonify(reply)
