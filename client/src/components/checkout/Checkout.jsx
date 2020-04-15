@@ -3,6 +3,7 @@ import { Card, Button, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { cartOps } from 'src/components/Dashboard';
+import { CartEntry } from 'src/components/checkout/CartEntry';
 import io from 'socket.io-client';
 import InputNumber from 'rc-input-number';
 import 'rc-input-number/assets/index.css';
@@ -33,65 +34,44 @@ export class Checkout extends React.Component {
     }
 
     handleQuantityChange = (orderItem, newQuantity) => {
-        orderItem.quantity = newQuantity;
+        orderItem.quantity = Math.max(1, newQuantity);
         this.props.updateCart(orderItem, cartOps.UPDATE);
     }
 
     render() {
         const { cart, handleOrderCart, show, onHide } = this.props;
-        let entries = [];
-
-        cart.size > 0 && cart.forEach((item, i) => {
-            entries.push(
-                <Card key={i} style={{ width: '95%' }}>
-                    <Card.Body>
-                        <div align="right">
-                            <FontAwesomeIcon 
-                                icon={faTrash} 
-                                onClick={() => this.handleDeleteItem(item)} 
-                            />
-                        </div>
-                        <Card.Title>{item.menu_item.name}</Card.Title>
-                        <Card.Subtitle>$ {item.menu_item.price}</Card.Subtitle>
-                        <Card.Text>{item.notes}</Card.Text>
-                        <br></br>
-                        <InputNumber 
-                            onChange={(value) => this.handleQuantityChange(item, value)} 
-                            focusOplaceholder="Quantity" 
-                            min={1} 
-                            defaultValue={item.quantity} 
-                        />
-                    </Card.Body>
-                </Card>
-            );
-        });
+        let entries = cart.size > 0 && 
+                      [...cart.values()].map((item, i) => <CartEntry handleQuantityChange={this.handleQuantityChange} key={i} item={item} />);
 
         return (
             <Modal
                 className="overlay-cart"
                 show={show}
-                onHide={onHide}>
-
+                onHide={onHide}
+            >
                 <Modal.Header className='overlay-closebtn' closeButton>
-                    <h1>Checkout</h1></Modal.Header>
-                
+                    <h1>Cart</h1>
+                </Modal.Header>
+                {entries.length > 0 ?
                 <Modal.Body>
-                <div className="margin-center">
-                    {entries.length > 0 ? entries : 'Empty Cart'}
-                    <br />
-
-                    <p>Total: $ {this.getTotal()}</p>
-
-                    <Button 
-                        className='overlay-button'
-                        align='center' 
-                        onClick={handleOrderCart}
-                        disabled={entries.length === 0}
-                    >
-                        Order Now
-                    </Button>
-                </div>
+                    <div>
+                        {entries}
+                        <br />
+                        <h3>Total: $ {this.getTotal()}</h3>
+                        <Button 
+                            className='overlay-button'
+                            align='center' 
+                            onClick={handleOrderCart}
+                            disabled={entries.length === 0}
+                        >
+                            Order Now
+                        </Button>
+                    </div>
+                </Modal.Body> :
+                <Modal.Body>
+                    <p>Your cart is currently empty. Check out our menu and add some items!</p>
                 </Modal.Body>
+                }
             </Modal>
         );
     }
