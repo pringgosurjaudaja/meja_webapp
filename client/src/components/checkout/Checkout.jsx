@@ -72,7 +72,7 @@ export class Checkout extends React.Component {
                 show={show}
                 onHide={onHide}>
 
-                <Modal.Header closeButton>
+                <Modal.Header className='overlay-closebtn' closeButton>
                     <h1>Checkout</h1></Modal.Header>
                 
                 <Modal.Body>
@@ -83,6 +83,7 @@ export class Checkout extends React.Component {
                     <p>Total: $ {this.getTotal()}</p>
 
                     <Button 
+                        className='overlay-button'
                         align='center' 
                         onClick={handleOrderCart}
                         disabled={entries.length === 0}

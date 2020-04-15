@@ -336,9 +336,11 @@ export class Dashboard extends React.Component {
                 </div>
 
                 {/* Call Waiter Button */}
-                <Fab 
+                <Fab
+                    // className='callWaiterButton'
                     mainButtonStyles={{
-                        backgroundColor: this.state.callingWaiter ? '#27ae60': '#918585'
+                        backgroundColor: this.state.callingWaiter ? '#27ae60': '#918585',
+                        zIndex: '100 !important'
                     }}
                     icon={<FontAwesomeIcon icon={faConciergeBell} />}
                     onClick={() => this.handleCallWaiter(false)}
