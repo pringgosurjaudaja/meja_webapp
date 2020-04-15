@@ -67,15 +67,15 @@ export class Menu extends React.Component {
         recommendation && recommendation.forEach((menuItem, i) => {
             recommendationEntries.push(
                 <Row key={i} className="layout--menu">
-                        <Col className="menu-container">
-                            <MenuItem 
-                                item={menuItem}
-                                itemInCart={this.props.itemInCart}
-                                updateCart={this.props.updateCart} 
-                                className="menu-item"
-                            />
-                        </Col>
-                    </Row>
+                    <Col className="menu-container">
+                        <MenuItem 
+                            item={menuItem}
+                            itemInCart={this.props.itemInCart}
+                            updateCart={this.props.updateCart} 
+                            className="menu-item"
+                        />
+                    </Col>
+                </Row>
             )
         })
         const recommendationTab = <Tab key="Recommendation" eventKey={DEFAULT_TAB} title="Recommendation">{recommendationEntries}</Tab>
@@ -88,26 +88,7 @@ export class Menu extends React.Component {
         let result = [];
         const { menu } = this.state;
         const foodName = this.state.search;
-        if (foodName.length === 0) {
-            menu && menu.forEach(category => {
-
-                category.menu_items && category.menu_items.forEach((menuItem, i) => {
-                    result.push(
-                        <Row className="layout--menu">
-                            <Col className="menu-container">
-                                <MenuItem 
-                                    item={menuItem}
-                                    itemInCart={this.props.itemInCart}
-                                    updateCart={this.props.updateCart} 
-                                    className="menu-item"
-                                />
-                            </Col>
-                        </Row>
-                    );
-                });
-            });
-            
-        } else {
+        if (foodName !== "") {
             menu && menu.forEach(category => {
 
                 category.menu_items && category.menu_items.forEach((menuItem, i) => {
@@ -147,7 +128,7 @@ export class Menu extends React.Component {
 
     checkSimilarity = (menuItem, foodName) => {
         const menuItemName = menuItem.name;
-            const menuItemDescription = menuItem.description;
+        const menuItemDescription = menuItem.description;
         return menuItemName.toLowerCase().includes(foodName.toLowerCase()) || menuItemDescription.toLowerCase().includes(foodName.toLowerCase());
     }
 
@@ -156,59 +137,7 @@ export class Menu extends React.Component {
     }
 
     handleChange = (event) => {
-        // console.log(event.target.value);
-        // _.debounce(()=> {
-            this.setState({ search: event.target.value })
-        //     console.log(event.target.value);
-        // }, 1000, { 'maxWait': 1500});
-    }
-
-    getSearchResult = (foodName) => {
-        let result = [];
-        const { menu } = this.state;
-        if (foodName.length === 0) {
-            
-            
-            menu && menu.forEach(category => {
-
-                category.menu_items && category.menu_items.forEach((menuItem, i) => {
-                    result.push(
-                        <Row className="layout--menu">
-                            <Col className="menu-container">
-                                <MenuItem 
-                                    item={menuItem}
-                                    itemInCart={this.props.itemInCart}
-                                    updateCart={this.props.updateCart} 
-                                    className="menu-item"
-                                />
-                            </Col>
-                        </Row>
-                    );
-                });
-            });
-            
-        } else {
-            menu && menu.forEach(category => {
-
-                category.menu_items && category.menu_items.forEach((menuItem, i) => {
-                    const menuItemName = menuItem.name;
-                    
-                    menuItemName.includes(foodName) && result.push(
-                        <Row className="layout--menu">
-                            <Col className="menu-container">
-                                <MenuItem 
-                                    item={menuItem}
-                                    itemInCart={this.props.itemInCart}
-                                    updateCart={this.props.updateCart} 
-                                    className="menu-item"
-                                />
-                            </Col>
-                        </Row>
-                    );
-                });
-            });
-        }
-        return result;
+        this.setState({ search: event.target.value });
     }
 
     render() {
