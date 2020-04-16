@@ -57,7 +57,14 @@ export class Checkout extends React.Component {
                     <div>
                         {entries}
                         <br />
-                        <h3>Total: $ {this.getTotal()}</h3>
+                        <div style={{ display: 'flex' }}>
+                            <div style={{ flex: 1 }}>
+                                <h4>Total:</h4>
+                            </div>
+                            <div style={{ flex: 1, textAlign: 'right' }}>
+                                <h4>$ {this.getTotal().toFixed(2)}</h4>
+                            </div>
+                        </div>
                         <Button 
                             className='overlay-button'
                             align='center' 

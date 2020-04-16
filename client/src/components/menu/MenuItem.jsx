@@ -25,7 +25,7 @@ export class MenuItem extends React.Component {
                     <Card.Body>
                         <Card.Title className="menu-item--title">{item.name}</Card.Title>
                         <Card.Text className="menu-item--text">{item.description}</Card.Text>
-                        <div align="right"><Card.Text>$ {item.price}</Card.Text></div>
+                        <div align="right"><Card.Text>$ {item.price.toFixed(2)}</Card.Text></div>
                     </Card.Body>
 
                 </Card>
