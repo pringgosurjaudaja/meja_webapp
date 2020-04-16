@@ -42,7 +42,7 @@ export class MenuItemDialog extends React.Component {
     }
 
     handleQuantityChange = (val) => {
-        this.setState({ quantity: val });
+        this.setState({ quantity: Math.max(1, val) });
     }
 
     handleNotesChange = (e) => {
@@ -145,59 +145,62 @@ export class MenuItemDialog extends React.Component {
                     dialogClassName='menu-item-dialog' 
                     show={show} 
                     onHide={onHide}
+                    style={{ zIndex: 99999 }}
                 >
                     <Modal.Header closeButton />
 
-                    <Modal.Body>
+                    <Modal.Body style={{ marginTop: '-20px' }}>
                         <Tabs>
                             <Tab eventKey="info" title="Info">
-                                <Card.Img variant="top" src={example} />
-                            
-                                {/* Title & Description */}
-                                <Modal.Title>{item.name}</Modal.Title>
-                                <p>{item.description}</p>
-                                <p>$ {item.price}</p>
-                                
-                                {/* Notes for Menu Item */}
-                                <FormLabel>Add notes</FormLabel>
-                                <InputGroup>
-                                    <FormControl 
-                                        onChange={this.handleNotesChange} 
-                                        as="textarea" 
-                                        aria-label="With textarea" 
-                                    />
-                                </InputGroup>
-                                <br></br>
-                                {/* Quantity of Menu Item */}
-                                <InputNumber 
-                                    onChange={this.handleQuantityChange} 
-                                    focusOplaceholder="Quantity" 
-                                    min={1} 
-                                    defaultValue={1} 
-                                />
-                                <br></br><br></br>
-                                <Button 
-                                    onClick={this.handleAddToCart} 
-                                    disabled={itemInCart(item)} 
-                                    data-dismiss="modal" 
-                                    variant="primary"
-                                >
-                                    Add to cart
-                                </Button>
+                                <Card>
+                                    <Card.Img variant="top" src={example} />
+                                    <Card.Body>
+                                        {/* Title & Description */}
+                                        <Card.Title>{item.name}</Card.Title>
+                                        <Card.Text>{item.description}</Card.Text>
+                                        <Card.Subtitle>$ {item.price.toFixed(2)}</Card.Subtitle>
 
-                                {/* Successfully Added Alert */}
-                                {itemInCart(item) &&
-                                    <Alert variant="success">
-                                        Added to cart.
-                                    </Alert>}
+                                        {/* Quantity of Menu Item */}
+                                        <div style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', margin: '20px' }}>
+                                            <Button className='menu-item-qty-btn' onClick={() => this.handleQuantityChange(--this.state.quantity)}>-</Button>
+                                            <h3>{this.state.quantity}</h3>
+                                            <Button className='menu-item-qty-btn' onClick={() => this.handleQuantityChange(++this.state.quantity)}>+</Button>
+                                        </div>
+                                        
+                                        {/* Notes for Menu Item */}
+                                        <FormLabel>Add notes</FormLabel>
+                                        <InputGroup>
+                                            <FormControl 
+                                                onChange={this.handleNotesChange} 
+                                                as="textarea" 
+                                                aria-label="With textarea" 
+                                            />
+                                        </InputGroup>
+                                        <br></br>
+                                        
+                                        <Button 
+                                            onClick={this.handleAddToCart} 
+                                            disabled={itemInCart(item)} 
+                                            data-dismiss="modal" 
+                                            variant="primary"
+                                            style={{ width: '100%' }}
+                                        >
+                                            Add to cart
+                                        </Button>
+
+                                        {/* Successfully Added Alert */}
+                                        {itemInCart(item) &&
+                                            <Alert variant="success">
+                                                Added to cart.
+                                            </Alert>}
+                                    </Card.Body>
+                                </Card>
                             </Tab>
                             <Tab eventKey="review" title="Review">
                                 <MenuItemReviewForm {...reviewFormProps}/>
                                 {foodReviews.length!==0 ? foodReviews : "No Reviews yet"}
                             </Tab>
-                            
                         </Tabs>
-                        
                     </Modal.Body>
                 </Modal>}
             </div>
