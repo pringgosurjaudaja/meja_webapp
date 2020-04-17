@@ -4,11 +4,9 @@ import { MenuItem } from 'src/components/menu/MenuItem';
 import { Requests } from 'src/utilities/Requests';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { _ } from 'src/utilities/helper';
 
 const DEFAULT_TAB = "Recommendation";
 const SEARCH_TAB = "Search";
-const BASE_INDEX = 5000;
 export class Menu extends React.Component {
     constructor(props) {
         super(props);
