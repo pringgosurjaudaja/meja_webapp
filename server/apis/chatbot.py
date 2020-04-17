@@ -128,7 +128,7 @@ def handle_chats():
                             [
                             {
                                 "type": "image",
-                                "rawUrl": item['image'][0],
+                                "rawUrl": item['image'],
                             },
                             {
                                 "type": "info",

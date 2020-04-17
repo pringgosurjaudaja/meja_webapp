@@ -20,7 +20,7 @@ MODEL_menu_category = menu.model('Menu Category', {
 MODEL_menu_item = menu.model('Menu Item', {
     'name': fields.String(),
     'description': fields.String(),
-    'media_urls': fields.List(fields.String()),
+    'media_urls': fields.String(),
     'price': fields.Float(),
     'chefs_pick': fields.Boolean(default=False)
 })
