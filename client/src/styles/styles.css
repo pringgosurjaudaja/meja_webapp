@@ -486,7 +486,7 @@ df-messenger {
 }
 
 .orders-total {
-    padding-top: 20px !important;
+    padding-top: 20px;
 }
 
 .order-card .card-title {
@@ -499,15 +499,15 @@ df-messenger {
 }
 
 .order-card .card-body {
-    padding-bottom: 10px !important;
-    padding-top: 5px !important;
+    padding-bottom: 10px;
+    padding-top: 5px;
 }
 
 .order-card .card-subtitle {
     font-size: 14px;
     font-weight: medium;
     font-style: italic;
-    padding-bottom: 10px !important;
+    padding-bottom: 10px;
 }
 
 .profile-img {
