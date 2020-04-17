@@ -8,7 +8,6 @@ import {
 } from 'react-bootstrap';
 import { Requests } from 'src/utilities/Requests'; 
 import StarRatings from 'react-star-ratings';
-import { _ } from 'src/utilities/helper';
 export const ARBITRARY_INDEX = 999999;
 export class ReviewForm extends React.Component {
     

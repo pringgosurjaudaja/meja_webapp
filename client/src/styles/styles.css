@@ -11,6 +11,27 @@ body {
     border-color: #000000 !important;
 }
 
+.checkout-cartentry {
+    color: white;
+    background-color: transparent !important;
+    border: 2px solid white !important;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.checkout-cartentry-trash {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.checkout-cart-btn {
+    background-color: transparent !important;
+    color: white !important;
+    border: none !important;
+    font-size: 1.5em !important;
+}
+
 .form-control {
     border-radius: 0px !important;
     border: none !important;
@@ -284,6 +305,13 @@ body {
     height: 100% !important;
 }
 
+.menu-item-qty-btn {
+    /* background-color: transparent !important; */
+    /* color: white !important; */
+    border: none !important;
+    font-size: 1.5em !important;
+}
+
 .margin-center
 {
     margin-left:5% !important;
@@ -360,7 +388,7 @@ df-messenger {
     height: 100% !important;
     width: 100% !important;
     position: fixed important; /* Stay in place */
-    z-index: 1; /* Sit on top */
+    z-index: 99999 !important; /* Sit on top */
     left: 0;
     top: 0;
     padding: 0px !important;
@@ -368,13 +396,13 @@ df-messenger {
     background-color: rgba(0,0,0, 0.9); /* Black w/opacity */
     overflow-x: hidden; /* Disable horizontal scroll */
     transition: 0.5s; /* 0.5 second transition effect to slide in or slide down the overlay (height or width, depending on reveal) */
-  }
+}
 
-  .overlay .modal-content {
+.overlay .modal-content {
     background-color: transparent !important;
-  }
-  
-  .overlay-content {
+}
+
+.overlay-content {
     position: relative;
     width: 100%; /* 100% width */
     text-align: center; /* Centered text/links */
@@ -382,9 +410,41 @@ df-messenger {
     background-color: transparent; /* Black fallback color */
     margin-right: 0px;
     margin-left: 0px;
-  }
-  
-  .overlay a {
+}
+
+.overlay-cart {
+    /* Height & width depends on how you want to reveal the overlay (see JS below) */   
+    height: 100% !important;
+    width: 100% !important;
+    z-index: 99999 !important; /* Sit on top */
+    top: 63px !important;
+    background-color: rgb(0,0,0); /* Black fallback color */
+    background-color: rgba(0,0,0, 0.9); /* Black w/opacity */
+    color: white;
+    overflow-x: hidden; /* Disable horizontal scroll */
+}
+
+.overlay-cart .modal-content {
+    background-color: transparent !important;
+    border: 0px solid !important;  
+    overflow-y: auto;
+    /* color: white; */
+    height: 80% !important;
+}
+
+.overlay-cart .overlay-button {
+    color: black !important;
+    background-color: white !important;
+    width: 100% !important;
+    height: 45px !important;
+    margin-top: 20px !important;
+}
+
+.overlay-button:hover {
+    background-color: grey !important;
+}
+
+.overlay a {
     padding: 8px;
     text-decoration: none;
     font-size: 30px;
@@ -392,54 +452,35 @@ df-messenger {
     color: #818181;
     display: block; /* Display block instead of inline */
     transition: 0.3s; /* Transition effects on hover (color) */
-  }
-  
-  /* When you mouse over the navigation links, change their color */
-  .overlay a:hover, .overlay a:focus {
+}
+
+/* When you mouse over the navigation links, change their color */
+.overlay a:hover, .overlay a:focus {
     color: #f1f1f1;
     opacity: 1 !important;
-  }
-  
-  /* Position the close button (top right corner) */
-  .overlay-closebtn .close {
+}
+
+/* Position the close button (top right corner) */
+.overlay-closebtn .close {
     font-size: 3rem;
     font-weight: 700;
     color: #ffffff !important;
     opacity: .5;
-  }
-
-  .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
-    color: #fff;
-    background-color: transparent !important;
-  }
-
-  .overlay-cart {
-    /* Height & width depends on how you want to reveal the overlay (see JS below) */   
-    height: 90% !important;
-    width: 100% !important;
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top:63px !important;
-    padding: 0px !important;
-    background-color: #FFFFFF; /* Black fallback color */
-    overflow-x: hidden; /* Disable horizontal scroll */
-  }
-
-  .overlay-cart .modal-content {
-    background-color: transparent !important;
-    border: 0px solid !important;  
-    overflow-y: scroll;
-    height: 80% !important;
-  }
-
-  .badge-info {
-    background-color: #ae956d !important;
 }
 
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    color: #fff;
+    background-color: transparent !important;
+}
+
+.badge-info {
+    background-color: #ae956d !important;
+}
 
 .layout--menu.row:nth-child(1) {
     padding-top: 25px;
 }
+
 .review-footer-button {
     float: right;
 }

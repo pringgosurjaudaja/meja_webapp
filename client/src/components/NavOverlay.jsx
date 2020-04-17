@@ -4,9 +4,6 @@ import 'rc-input-number/assets/index.css';
 import 'src/styles/styles.css';
 
 export class NavOverlay extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         const { tabs, show, onHide, handleNavSelect, activeTab } = this.props;
