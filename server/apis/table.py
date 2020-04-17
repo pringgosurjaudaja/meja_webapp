@@ -5,6 +5,7 @@ from flask_restplus import Namespace, Resource, fields
 from bson.objectid import ObjectId
 import json
 from apis.table_schema import TableSchema
+from apis.auth import admin_required
 from marshmallow import ValidationError
 from functools import wraps
 
@@ -20,6 +21,8 @@ MODEL_table = table.model('Table', {
 @table.route('')
 class Table(Resource):
     @table.doc(description='Get all tables on the database')
+    @table.doc(security='apikey')
+    @admin_required
     def get(self):
         tables = list(table_db.find({}))
         for table in tables:
@@ -27,6 +30,8 @@ class Table(Resource):
         return tables, status.HTTP_200_OK
 
     @table.doc(description='Adding new table')
+    @table.doc(security='apikey')
+    @admin_required
     @table.expect(MODEL_table)
     def post(self):
         schema = TableSchema()
@@ -46,6 +51,8 @@ class Table(Resource):
 @table.route('/<string:table_id>')
 class TableSpecificRoute(Resource):
     @table.doc(description='Get details of a table')
+    @table.doc(security='apikey')
+    @admin_required
     def get(self, table_id):
         table = table_db.find_one({'_id': ObjectId(table_id)})
 
@@ -56,6 +63,8 @@ class TableSpecificRoute(Resource):
         return table
 
     @table.doc(description='Updating a table\'s details')
+    @table.doc(security='apikey')
+    @admin_required
     @table.expect(MODEL_table)
     def put(self, table_id):
         schema = TableSchema()
@@ -72,6 +81,8 @@ class TableSpecificRoute(Resource):
             
 
     @table.doc(description='Deleting a Table')
+    @table.doc(security='apikey')
+    @admin_required
     def delete(self, table_id):
         try:
             table_db.delete_one({"_id" : ObjectId(table_id)})

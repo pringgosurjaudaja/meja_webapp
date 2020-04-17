@@ -60,12 +60,35 @@ def token_required(f):
 
     return decorated      
 
+def admin_required(f):
+    @wraps(f)
+    def decorated(*args,**kwargs):
+        token = None
+
+        if 'X-API-KEY' in request.headers:
+            token = request.headers['X-API-KEY']
+
+        if not token:
+            return {'message' : 'Token is missing.'}, 401
+
+        print('TOKEN: {}'.format(token))     
+
+        user = auth_db.find_one({'_id': ObjectId(token)})    
+        print(user)
+
+        if user['admin'] == False:
+            return {'message' : 'You are not an admin.'}, 401    
+
+        return f(*args, **kwargs)
+
+    return decorated         
+
 # For debugging only
 @auth.doc(description='Endpoint for whole Auth Operations')
 @auth.route('')
 class Auth(Resource):
     @auth.doc(security='apikey')
-    @token_required
+    @admin_required
     @auth.doc(description='Get all users on the database')
     def get(self):
         auths = list(auth_db.find({}))
