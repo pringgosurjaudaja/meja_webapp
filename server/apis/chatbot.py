@@ -12,7 +12,7 @@ menu_db = db_client.menu
 menu_db = db_client.menu
 review_db = db_client.review
 
-def construct_custom_intent(type, items, text_message):
+def construct_custom_intent(type, items, text_message, found):
     message1 = {
     "fulfillmentText": "Your text response",
     "fulfillmentMessages": [
@@ -36,6 +36,7 @@ def construct_custom_intent(type, items, text_message):
             ]
         ]
         }
+    if(found == False): return jsonify(message1)
     if(type == 'menu_category'):
         for x in items['menu_items']:
             menu_item_rich = {
@@ -78,12 +79,25 @@ def construct_custom_intent(type, items, text_message):
                     }
                     message['richContent'][0].append(menu_item_rich)
                     message['richContent'][0].append({'type':'divider'})
+    elif(type == 'menu_review'):
+        count = 0
+        for z in items['review_list']:
+            if(count == 3):break
+            menu_review = {
+                "type": "list",
+                "title": f"{z['user']}'s review of {items['name']}",
+                "subtitle": f"Comment: {z['comment']}\nRating: {z['rating']}/5.0"
+            }
+            message['richContent'][0].append(menu_review)
+            message['richContent'][0].append({'type':'divider'})
+            count+=1
     message1['fulfillmentMessages'][1]['payload'] = message
     return jsonify(message1)
 def handle_chats():
     data = request.get_json(silent=True)
-    print(data['queryResult']['parameters'])
-    if 'menu_item' in data['queryResult']['parameters']:
+    print(data['queryResult']['intent']['displayName'])
+    intent = data['queryResult']['intent']['displayName']
+    if ('menu_item' in intent):
         menu_item_raw = data['queryResult']['parameters']['menu_item']
         category = menu_db.find_one({'menu_items.name': re.compile(menu_item_raw, re.IGNORECASE)})
         menu_item_queried = menu_db.aggregate([
@@ -91,7 +105,9 @@ def handle_chats():
                 {'$match':{"menu_items.name": re.compile(menu_item_raw, re.IGNORECASE)}},
                 {'$project': {
                             'name': '$menu_items.name',
-                            'price': '$menu_items.price'
+                            'price': '$menu_items.price',
+                            'rating': '$menu_items.rating',
+                            'image': '$menu_items.media_urls'
                 }}
         ])
         item = menu_item_queried.next()
@@ -112,12 +128,12 @@ def handle_chats():
                             [
                             {
                                 "type": "image",
-                                "rawUrl": "http://localhost:3000/static/media/test.17541ace.jpg",
+                                "rawUrl": item['image'][0],
                             },
                             {
                                 "type": "info",
                                 "title": item['name'],
-                                "subtitle": f"Menu-category: {category['name']}\nPrice: {item['price']}",
+                                "subtitle": f"Menu-category: {category['name']}\nPrice: {item['price']}\nRating: {item['rating']}/5.0",
                                 
                             }
                             ]
@@ -131,19 +147,49 @@ def handle_chats():
     elif('menu_category' in data['queryResult']['parameters']):
         menu_category = data['queryResult']['parameters']['menu_category']
         category = menu_db.find_one({'name': re.compile(menu_category, re.IGNORECASE)})
-        text_message = f"Here are the list of {menu_category}"
-        return construct_custom_intent('menu_category', category, text_message)
+        if not category:
+            text_message = f"I'm sorry there are no category of {menu_category}"
+            found = False
+        else:
+            text_message = f"Here are the list of {menu_category}"
+            found = True
+        return construct_custom_intent('menu_category', category, text_message, found)
     elif('menu_category_general' in data['queryResult']['parameters']):
         category = menu_db.find({})
         text_message = "Here are the categories"
-        return construct_custom_intent('menu_category_general',category, text_message)
+        return construct_custom_intent('menu_category_general',category, text_message, found=True)
     elif('review' in data['queryResult']['parameters']):
         reviews = review_db.find({})
-        text_message ="Here are some reviews for this restaurant"
-        return construct_custom_intent("review", reviews, text_message)
+        if not reviews:
+            text_message = "I'm sorry there are currently no review for this restaurant"
+            found = False
+        else:
+            text_message ="Here are some reviews for this restaurant"
+            found = True
+        return construct_custom_intent("review", reviews, text_message, found)
     elif('suggestion' in data['queryResult']['parameters']):
         categories = list(menu_db.find({}).sort("menu_items.rating"))
         print(categories)
         text_message="Here are the top rated dish in our menu"
-        return construct_custom_intent('suggestion', categories, text_message)
+        return construct_custom_intent('suggestion', categories, text_message, found = True)
+    elif('menu_review' in intent):
+        menu_item = data['queryResult']['parameters']['menu_item']
+        menu = menu_db.find_one({'menu_items.name': re.compile(menu_item, re.IGNORECASE)})
+        menu_item_queried = menu_db.aggregate([
+                {'$unwind': '$menu_items'},
+                {'$match':{"menu_items.name": re.compile(menu_item, re.IGNORECASE)}},
+                {'$project': {
+                            'name': '$menu_items.name',
+                            'review_list': '$menu_items.review_list'
+                }}
+        ])
+        item = menu_item_queried.next()
+        if not menu:
+            text_message = f"I'm sorry there are no review for  {item['name']}"
+            found = False
+        else:
+            text_message = f"Here are the review for {item['name']}"
+            found = True
+        print(item)
+        return construct_custom_intent('menu_review', item, text_message, found)
     return jsonify(reply)
