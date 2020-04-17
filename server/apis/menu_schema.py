@@ -14,7 +14,7 @@ class MenuItemSchema(Schema):
     price = fields.Float(required=True)
     chefs_pick = fields.Boolean(missing=False)      # Whether it is part of the chef's recommended list
     review_list = fields.List(fields.Nested(MenuReviewSchema), missing=[])
-    rating = fields.Float()
+    rating = fields.Float(missing = 0)
     class Meta:
         ordered = True
         unknown = EXCLUDE
