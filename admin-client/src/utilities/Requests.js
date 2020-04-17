@@ -223,7 +223,7 @@ export class Requests {
         }
     }
 
-    static async editMenuItem(menuItemId, name, description, price) {
+    static async editMenuItem(menuItemId, name, description, price, media_url) {
         try {
             const result = await axios({
                 method: 'put',
@@ -235,7 +235,8 @@ export class Requests {
                 data: {
                     name: name,
                     description: description,
-                    price: price
+                    price: price,
+                    media_urls: media_url,
                 }
             });
             return result.data;

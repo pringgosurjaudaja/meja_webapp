@@ -23,8 +23,6 @@ export class Dialog extends React.Component {
 
     
     handleAddMenu = async (e) => {
-        
-        e.preventDefault();
         let category_id="";
         
         this.props.menuitemlist && this.props.menuitemlist.forEach((item)=>{
@@ -91,7 +89,7 @@ export class Dialog extends React.Component {
                         </Form.Group>
 
                         <Form.Group>
-                            <Form.Label>Image URL</Form.Label>
+                            <Form.Label>Image URL (optional)</Form.Label>
                             <Form.Control 
                             onChange={this.handleChange} 
                             value={this.state.media_url}

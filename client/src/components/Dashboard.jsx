@@ -329,7 +329,7 @@ export class Dashboard extends React.Component {
                     <df-messenger
                         chat-icon="https://storage.googleapis.com/cloudprod-apiai/5833d656-dce0-4de6-b1a1-b5946043ba5c_x.png"
                         intent="WELCOME"
-                        chat-title="Meja_Bot"
+                        chat-title="Meja Bot"
                         agent-id="a11d8a36-5854-4b43-8306-a110222079a5"
                         language-code="en"
                     ></df-messenger>
