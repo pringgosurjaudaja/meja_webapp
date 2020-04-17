@@ -17,23 +17,14 @@ export class Dialog extends React.Component {
             name: '',
             description: '',
             price: '',
-            labels: [],
-            tags: [],
+            media_url: ''
         }
     }
 
     
-    handleAddMenu = async () => {
-        let labels=[];
-        let tags = [];
+    handleAddMenu = async (e) => {
         
-        this.state.labels.forEach((o, i)=> {
-            labels.push(o.value);
-        })
-        this.state.tags.forEach((o, i)=> {
-            tags.push(o.value);
-        });
-
+        e.preventDefault();
         let category_id="";
         
         this.props.menuitemlist && this.props.menuitemlist.forEach((item)=>{
@@ -42,7 +33,7 @@ export class Dialog extends React.Component {
             }
         });
 
-        await Requests.addMenuItem(category_id, this.state.name, this.state.description, parseFloat(this.state.price));
+        await Requests.addMenuItem(category_id, this.state.name, this.state.description, parseFloat(this.state.price), this.state.media_url);
         
     }
 
@@ -52,33 +43,14 @@ export class Dialog extends React.Component {
             this.setState({ name: e.target.value });
         } else if(e.target.name === "description") {
             this.setState({ description: e.target.value });
-        } else  if(e.target.name === "price") {
+        } else if(e.target.name === "price") {
             this.setState({ price: e.target.value });
+        } else if(e.target.name === "media_url") {
+            this.setState({ media_url: e.target.value });
         }
     }
 
-    // handleSelectLabel(chosen) {
-    //     this.setState({label: chosen})
-    // }
-
-
-    // handleSelectTag(chosen) {
-    //     this.setState({tags: chosen})
-    // }
     render () {
-        // const foodLabels = [
-        //     { value: 0, label: 'Vegan' },
-        //     { value: 1, label: 'Gluten Free' },
-        //     { value: 2, label: 'Vegetarian' },  
-        // ];
-
-        // const foodTags = [
-        //     { value: 'japanese', label: 'Japanese' },
-        //     { value: 'western', label: 'Western' },
-        //     { value: 'spanish', label: 'Spanish' },
-        //     { value: 'italian', label: 'Italian' },  
-        //     { value: 'popular', label: 'Popular' },
-        // ];
 
         return (
             <Modal {...this.props} size="lg"
@@ -106,41 +78,26 @@ export class Dialog extends React.Component {
                             onChange={this.handleChange} 
                             value={this.state.description}
                             name="description" type="textarea"
-                            placeholder="Enter name" />
+                            placeholder="Enter description" />
                         </Form.Group>
+
                         <Form.Group>
                             <Form.Label>Price</Form.Label>
                             <Form.Control 
                             onChange={this.handleChange} 
                             value={this.state.price}
                             name="price" type="text"
-                            placeholder="Enter name" />
-                        </Form.Group>
-                        {/* <Form.Group>
-                            <Form.Label>Label</Form.Label>
-                            <Select onChange={this.handleSelectLabel}
-                                value={this.state.label}
-                                name="label"
-                                isMulti
-                                className="basic-single"
-                                classNamePrefix="select"
-                                isClearable
-                                options={foodLabels}
-                            />
+                            placeholder="Enter price" />
                         </Form.Group>
 
                         <Form.Group>
-                            <Form.Label>Tags</Form.Label>
-                            <Select onChange={this.handleSelectTag} 
-                                value={this.state.tags}
-                                name="tags"
-                                isMulti
-                                className="basic-single"
-                                classNamePrefix="select"
-                                isClearable
-                                options={foodTags}
-                            />
-                        </Form.Group> */}
+                            <Form.Label>Image URL</Form.Label>
+                            <Form.Control 
+                            onChange={this.handleChange} 
+                            value={this.state.media_url}
+                            name="media_url" type="text"
+                            placeholder="Enter image URL" />
+                        </Form.Group>
                         
                         <Button variant="primary" type="submit">
                             Submit

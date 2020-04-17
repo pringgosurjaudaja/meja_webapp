@@ -44,7 +44,7 @@ export class MenuItemCard extends React.Component {
         console.log(this.props);
         return (
             <Card className="menu-item" style={{display: 'flex', flexDirection: 'row'}}>
-                <Card.Img className="menu-item-card--photo" variant="top" src={example}></Card.Img>
+                <Card.Img className="menu-item-card--photo" variant="top" src={this.props.media_urls ? this.props.media_urls : example}></Card.Img>
                 <Card.Body className="menu-item-card--body">
                     <Card.Title className="menu-item-card--title">{this.props.name}</Card.Title>
                     <Card.Text className="menu-item-card--text">
