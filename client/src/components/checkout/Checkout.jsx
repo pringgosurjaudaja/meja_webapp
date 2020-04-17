@@ -1,11 +1,8 @@
 import React from 'react';
-import { Card, Button, Modal } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { Button, Modal } from 'react-bootstrap';
 import { cartOps } from 'src/components/Dashboard';
 import { CartEntry } from 'src/components/checkout/CartEntry';
 import io from 'socket.io-client';
-import InputNumber from 'rc-input-number';
 import 'rc-input-number/assets/index.css';
 
 export class Checkout extends React.Component {

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Modal, Button, Card, Alert, InputGroup, FormControl, FormLabel, Tab, Tabs, Row, Col } from 'react-bootstrap';
-import InputNumber from 'rc-input-number';
 import 'rc-input-number/assets/index.css';
 import 'src/styles/styles.css';
 import example from 'src/styles/assets/test.jpg';
@@ -153,7 +152,7 @@ export class MenuItemDialog extends React.Component {
                         <Tabs>
                             <Tab eventKey="info" title="Info">
                                 <Card>
-                                    <Card.Img variant="top" src={example} />
+                                    <Card.Img variant="top" src={item.media_urls ? item.media_urls : example} />
                                     <Card.Body>
                                         {/* Title & Description */}
                                         <Card.Title>{item.name}</Card.Title>

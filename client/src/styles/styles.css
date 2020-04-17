@@ -484,3 +484,54 @@ df-messenger {
 .review-footer-button {
     float: right;
 }
+
+.orders-total {
+    padding-top: 20px;
+}
+
+.order-card .card-title {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.order-card {
+    margin-bottom: 5%;
+}
+
+.order-card .card-body {
+    padding-bottom: 10px;
+    padding-top: 5px;
+}
+
+.order-card .card-subtitle {
+    font-size: 14px;
+    font-weight: medium;
+    font-style: italic;
+    padding-bottom: 10px;
+}
+
+.profile-img {
+    max-height: 200px;
+}
+
+.profile-name {
+    font-size: 22px;
+}
+
+.profile-email {
+    font-size: 22px;
+    font-style: italic;
+}
+/* .chat-wrapper {
+    display: flex !important;
+    flex-flow: column nowrap !important;
+    justify-content: flex-end !important;
+}
+
+.chat-wrapper df-message-list {
+    height: calc(100vh - 250px) !important;
+}
+
+#messageList {
+    height: calc(100vh - 350px) !important;
+} */
