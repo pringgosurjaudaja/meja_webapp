@@ -12,14 +12,16 @@ export class Orders extends React.Component {
         return (<div className='margin-center'>
             <h1>Orders</h1>
             {orderCards}
-            <h5>Net Total: ${OrderHelper.getGrandTotal(orderList)}</h5>
-            <Button 
-                align='center' 
-                onClick={this.props.handleCloseOrder}
-                disabled={orderList.length === 0}
-            >
-                Complete Order
-            </Button>
+            <h5 align="center" className="orders-total">Net Total: ${OrderHelper.getGrandTotal(orderList)}</h5>
+            <div align="center">
+                <Button
+                    align='center'
+                    onClick={this.props.handleCloseOrder}
+                    disabled={orderList.length === 0}
+                >
+                    Complete Order
+                </Button>
+            </div>
         </div>);
     }
 }

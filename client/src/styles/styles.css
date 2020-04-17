@@ -484,3 +484,41 @@ df-messenger {
 .review-footer-button {
     float: right;
 }
+
+.orders-total {
+    padding-top: 20px !important;
+}
+
+.order-card .card-title {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.order-card {
+    margin-bottom: 5%;
+}
+
+.order-card .card-body {
+    padding-bottom: 10px !important;
+    padding-top: 5px !important;
+}
+
+.order-card .card-subtitle {
+    font-size: 14px;
+    font-weight: medium;
+    font-style: italic;
+    padding-bottom: 10px !important;
+}
+
+.profile-img {
+    max-height: 200px;
+}
+
+.profile-name {
+    font-size: 22px;
+}
+
+.profile-email {
+    font-size: 22px;
+    font-style: italic;
+}

@@ -31,6 +31,9 @@ export class NavOverlay extends React.Component {
                             <Nav.Link eventKey={tabs.ABOUT}>About</Nav.Link>
                         </Nav.Item>
                         <Nav.Item className="overlay-content">
+                            <Nav.Link eventKey={tabs.PROFILE}>Profile</Nav.Link>
+                        </Nav.Item>
+                        <Nav.Item className="overlay-content">
                             <Nav.Link eventKey="logout">
                                 Sign out
                             </Nav.Link>
