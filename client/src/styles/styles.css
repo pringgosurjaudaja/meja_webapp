@@ -522,3 +522,16 @@ df-messenger {
     font-size: 22px;
     font-style: italic;
 }
+/* .chat-wrapper {
+    display: flex !important;
+    flex-flow: column nowrap !important;
+    justify-content: flex-end !important;
+}
+
+.chat-wrapper df-message-list {
+    height: calc(100vh - 250px) !important;
+}
+
+#messageList {
+    height: calc(100vh - 350px) !important;
+} */

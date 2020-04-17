@@ -18,7 +18,7 @@ export class EditDialog extends React.Component {
             name: '',
             description: '',
             price: '',
-            
+            media_url: '',
         }
         
     }
@@ -30,6 +30,7 @@ export class EditDialog extends React.Component {
             name: this.props.item.name,
             description: this.props.item.description,
             price: this.props.item.price,
+            media_url: this.props.item.media_urls,
         })
     }
 
@@ -39,6 +40,7 @@ export class EditDialog extends React.Component {
             name: nextProps.item.name,
             description: nextProps.item.description,
             price: nextProps.item.price,
+            media_url: nextProps.item.media_urls,
         })
     }
 
@@ -49,13 +51,13 @@ export class EditDialog extends React.Component {
             this.setState({ description: e.target.value });
         } else  if(e.target.name === "price") {
             this.setState({ price: e.target.value });
+        } else  if(e.target.name === "media_url") {
+            this.setState({ media_url: e.target.value });
         }
     }
 
     handleEditMenu = async (e) => {
-        console.log(this.props);
-        e.preventDefault();
-        await Requests.editMenuItem(this.state.id, this.state.name, this.state.description, parseFloat(this.state.price));
+        await Requests.editMenuItem(this.state.id, this.state.name, this.state.description, parseFloat(this.state.price), this.state.media_url);
     }
 
     render () {
@@ -87,7 +89,7 @@ export class EditDialog extends React.Component {
                             onChange={this.handleChange} 
                             value={this.state.description}
                             name="description" type="textarea"
-                            placeholder="Enter name" />
+                            placeholder="Enter description" />
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Price</Form.Label>
@@ -95,7 +97,15 @@ export class EditDialog extends React.Component {
                             onChange={this.handleChange} 
                             value={this.state.price}
                             name="price" type="text"
-                            placeholder="Enter name" />
+                            placeholder="Enter price" />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Image URL (optional)</Form.Label>
+                            <Form.Control 
+                            onChange={this.handleChange} 
+                            value={this.state.media_url}
+                            name="media_url" type="text"
+                            placeholder="Enter image URL" />
                         </Form.Group>
                         
                         
