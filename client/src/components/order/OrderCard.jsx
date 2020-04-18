@@ -51,7 +51,7 @@ export class OrderCard extends React.Component {
                                     <Card.Title>
                                         {orderItem.menu_item.name}
                                     </Card.Title>
-                                    <Card.Text>
+                                    <Card.Text className="order-notes">
                                         {orderItem.notes}
                                     </Card.Text>
                                 </th>

@@ -52,7 +52,7 @@ export class MenuItemReviewForm extends React.Component {
 
                                 <StarRatings
                                 rating={this.state.rating}
-                                starRatedColor="yellow"
+                                starRatedColor='rgb(174, 149, 109)'
                                 starDimension="25px"
                                 changeRating={this.changeRating}
                                 numberOfStars={5}

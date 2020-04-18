@@ -492,6 +492,21 @@ df-messenger {
     float: right;
 }
 
+.orders {
+    padding: 20px;
+}
+
+.orders .btn-primary {
+    width: 100% !important;
+    height: 45px !important;
+    margin-top: 20px !important;
+}
+
+.orders-empty {
+    font-style: italic;
+    padding-bottom: 20px;
+}
+
 .orders-total {
     padding-top: 20px;
 }
@@ -512,6 +527,10 @@ df-messenger {
     font-weight: medium;
     font-style: italic;
     padding-bottom: 10px;
+}
+
+.order-notes {
+    font-style: italic;
 }
 
 .profile-img {
