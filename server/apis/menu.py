@@ -134,10 +134,14 @@ class MenuItemRoute(Resource):
 
     @menu.doc(description='Deleting a Menu Item')
     def delete(self, item_id):
-        menu_db.update(
+        deleted = menu_db.update(
             {'menu_items._id': item_id},
             {'$pull': {'menu_items': {'_id': item_id}}}
         )
+        if(deleted['nModified']==0):
+            return{
+                'deleted': 'not found'
+            }, status.HTTP_404_NOT_FOUND
         return {
             'deleted': 'success'
         }, status.HTTP_200_OK
