@@ -20,7 +20,7 @@ export class ReservationConfirmation extends React.Component {
 
         return (
             <Container fluid className="l-reserve">
-                <Row className="l-reserve__row l-reserve-details__row">
+                <Row className="l-reserve__row l-reserve-details__row l-reserve-title">
                     <h1>Your Reservation</h1>
                 </Row>
                 <hr/>

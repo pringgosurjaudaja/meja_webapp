@@ -19,10 +19,11 @@ export class ReservationForm extends React.Component {
                 date: 0,
             },
             ready: false, // shows when the date and diner is input
-            diner: 0,
+            diner: 1,
             timeAvailability: [],
             notes: "",
             time: "",
+            showNotif: false,
         }
     }
 
@@ -99,6 +100,20 @@ export class ReservationForm extends React.Component {
         
     }
 
+    showNotification = () => {
+        console.log(this.state);
+        this.setState({
+            showNotif: true,
+          });
+          setTimeout(() => {
+            console.log(this.state);
+            this.setState({
+                showNotif: false,
+            });
+            window.location.reload();
+          }, 4000);
+    }
+
     handleSubmit = async (e) => {
         e.preventDefault();
         const user_id = await this.getSession();
@@ -131,8 +146,7 @@ export class ReservationForm extends React.Component {
         })
         .then((response) => {
             console.log(response);
-            this.setState({ show: true });
-            window.location.reload();
+            this.showNotification();
         })
         .catch((error)=>{
             alert(error)
@@ -147,7 +161,7 @@ export class ReservationForm extends React.Component {
         };
         return (
             <Container className="l-reserve">
-                <Row className="l-reserve__row">
+                <Row className="l-reserve__row l-reserve-title">
                     <h1>Make Reservation</h1>
                 </Row>
                 <hr/>
@@ -156,7 +170,6 @@ export class ReservationForm extends React.Component {
                         <Form.Group>
                             <Form.Label>Number of Diners</Form.Label>
                             <Form.Control as="select" onChange={this.handleChangeSelect}>
-                                <option value="0">0</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
@@ -197,6 +210,12 @@ export class ReservationForm extends React.Component {
                             <Form.Control as="textarea" row="3" onChange={this.handleChangeNote}/>
                         </Form.Group> :''}
                         <Button type="submit">Confirm Reservation</Button>
+                        <br/>
+                        <Row>
+                            <div style={{ width: "90%" }}className={`alert alert-success ${this.state.showNotif ? 'alert-shown' : 'alert-hidden'}`}>
+                                Reservation succesful, the page will be refreshed
+                            </div>
+                        </Row>
                     </Form>
                 </Row>
             </Container>

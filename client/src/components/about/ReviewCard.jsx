@@ -3,6 +3,7 @@ import {
     Card,
     Row,
     Col,
+    Button
 } from 'react-bootstrap';
 import { Requests } from 'src/utilities/Requests'; 
 import StarRatings from 'react-star-ratings';
@@ -52,9 +53,9 @@ export class ReviewCard extends React.Component {
         } else {
             return (
                 <span>
-                    <span type="button" className="review-footer-text" onClick={()=>this.openDialog()}>reply</span>
+                    <Button type="button" className="review-footer-text" onClick={()=>this.openDialog()}>reply</Button>
                     
-                    { this.props.email === this.props.item.user ? <span className="review-footer-text" onClick={()=>this.deleteComment()}>delete</span>:''}
+                    { this.props.email === this.props.item.user ? <Button className="review-footer-text" onClick={()=>this.deleteComment()}>delete</Button>:''}
                 </span>
             );
         }

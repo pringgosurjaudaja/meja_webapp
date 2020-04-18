@@ -77,11 +77,22 @@ export class Reservation extends React.Component {
         
     }
 
+    switchToConfirmation = () => {
+        this.setState({ reserved: true });
+    }
+
+
+    switchToForm = () => {
+        this.setState({ reserved: false });
+    }
+
+
     getContainer = (state) => {
         if(state.reserved === false) {
             const reservationFormProps = {
                 email: this.state.email,
                 showLogin: this.props.showLogin,
+                switchToConfirmation: ()=>this.switchToConfirmation()
             }
             return (
                 <ReservationForm {...reservationFormProps}/>
@@ -100,7 +111,8 @@ export class Reservation extends React.Component {
                 email: email,
                 dialogProps : {
                     cancelReservation: this.handleCancel,
-                }
+                },
+                switchToForm: () => this.switchToForm(),
             }
             return (
                 <ReservationConfirmation {...reservationConfirmationProps}/>

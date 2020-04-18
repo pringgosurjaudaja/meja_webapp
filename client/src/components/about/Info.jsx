@@ -1,11 +1,10 @@
 import React from 'react';
-import { 
-    Button,
-    Form,
+import {
     Row,
     Col,
 } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faShare } from '@fortawesome/free-solid-svg-icons';
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import { axios, _ } from 'src/utilities/helper';
 
@@ -45,24 +44,13 @@ export class Info extends React.Component {
         })
     }
 
-    showNotification = () => {
-        console.log(this.state);
-        this.setState({
-            showNotif: true,
-          });
-          setTimeout(() => {
-            console.log(this.state);
-            this.setState({
-                showNotif: false,
-            });
-          }, 2000);
-    }
+
     
     render () {
 
         const phone = _.get(this.state, "phone", '0000000000');
         const message = encodeURI(_.get(this.state, "message", ''));
-        const url = 'https://api.whatsapp.com/send?phone='+phone+'&text='+encodeURI(message);
+        const url = 'https://api.whatsapp.com/send';//?phone='+phone+'&text='+encodeURI(message);
 
         return (
             <div>
@@ -92,20 +80,14 @@ export class Info extends React.Component {
                     
                 </Row>
                 <Row>
-                    <Col><h3>Share <FontAwesomeIcon className="icon-whatsapp" icon={faWhatsapp}/></h3></Col>
+                    <Col><h3>Share <FontAwesomeIcon className="icon-whatsapp" icon={faWhatsapp}/> <FontAwesomeIcon className="icon-share" onClick={()=>{window.open(url)}} icon={faShare}/></h3></Col>
                     
                     
                     {/* https://api.whatsapp.com/send?phone=<insert phone>&text=<insert message></insert> */}
                 </Row>
                 <Row>
-                    {/* <Alert variant={'success'}> Message sent!</Alert> */}
-                    <div style={{ width: "100%" }}className={`alert alert-success ${this.state.showNotif ? 'alert-shown' : 'alert-hidden'}`}>
-                        Message sent succesfully
-                    </div>
-                </Row>
-                <Row>
                     <Col>
-                        <Form onSubmit={this.handleSubmit}>
+                        {/* <Form onSubmit={this.handleSubmit}>
                             <Form.Group controlId="exampleForm.ControlTextarea1">
                                 <Form.Label>Send your message</Form.Label>
                                 <Form.Control name="phone" type="text" placeholder="Enter Phone Number" onChange={this.handleChange}/>
@@ -117,7 +99,7 @@ export class Info extends React.Component {
                             href={url}
                             onClick={this.showNotification} type="submit" 
                             style={{ backgroundColor: "#25D366", borderColor: "#25D366"}} >Share</Button>
-                        </Form>
+                        </Form> */}
                     </Col>
                 </Row>
             </div>
