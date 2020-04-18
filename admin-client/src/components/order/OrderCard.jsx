@@ -1,4 +1,4 @@
-import { Button, Card, Table } from 'react-bootstrap';
+import { Button, ButtonGroup, Card, Table } from 'react-bootstrap';
 
 import React from 'react';
 import { orderStatus } from 'src/components/Dashboard';
@@ -52,12 +52,12 @@ export class OrderCard extends React.Component {
 
         const statusButtonVariantMap = new Map([
             [orderStatus.ORDERED, 'warning'],
-            [orderStatus.PROGRESS, 'primary'],
+            [orderStatus.PROGRESS, 'info'],
             [orderStatus.COMPLETED, 'success'],
             [orderStatus.CANCELLED, 'danger'],
         ]);
     
-        return (<div>
+        return (<ButtonGroup>
             {[...statusButtonVariantMap.entries()].map(([status, variant], i) => {
                 let buttonVariant = variant;
                 if (status !== order.status) {
@@ -65,14 +65,14 @@ export class OrderCard extends React.Component {
                 }
                 return <Button 
                     key={i}
-                    style={{ margin: '10px' }}
+                    className="order-status-btn"
                     variant={buttonVariant}
                     onClick={() => changeOrderStatus(status, order._id)}
                 >
                     {status}
                 </Button>;
             })}
-        </div>);
+        </ButtonGroup>);
     }
 
     render() {

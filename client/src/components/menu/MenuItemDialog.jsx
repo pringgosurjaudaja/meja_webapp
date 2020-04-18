@@ -101,7 +101,7 @@ export class MenuItemDialog extends React.Component {
                             <Card.Title>{item.user}</Card.Title>
                             <Card.Subtitle onClick={()=>console.log(index)}><StarRatings
                                 rating={item.rating}
-                                starRatedColor="yellow"
+                                starRatedColor='rgb(174, 149, 109)'
                                 starDimension="25px"
                                 numberOfStars={5}
                                 name='rating'
@@ -201,7 +201,7 @@ export class MenuItemDialog extends React.Component {
                                     </Card.Body>
                                 </Card>
                             </Tab>
-                            <Tab eventKey="review" title="Review">
+                            <Tab eventKey="review" title="Reviews">
                                 <MenuItemReviewForm {...reviewFormProps}/>
                                 {foodReviews.length!==0 ? foodReviews : "No Reviews yet"}
                             </Tab>

@@ -6,6 +6,7 @@ class MenuReviewSchema(Schema):
     rating = fields.Integer(validate=validate.Range(min=0, max=5))
     comment = fields.String(missing=[])
     user = fields.String()
+    date_time = fields.DateTime(format= '%d-%m-%YT%H:%M:%S')
 class MenuItemSchema(Schema):
     _id = fields.String()
     name = fields.String(required=True)

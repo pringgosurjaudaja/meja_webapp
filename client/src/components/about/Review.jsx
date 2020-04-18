@@ -42,7 +42,7 @@ export class Review extends React.Component {
                             </Card.Text>
                             <StarRatings
                                 rating={item.review.rating}
-                                starRatedColor="yellow"
+                                starRatedColor='rgb(174, 149, 109)'
                                 starDimension="25px"
                                 changeRating={this.changeRating}
                                 numberOfStars={5}
