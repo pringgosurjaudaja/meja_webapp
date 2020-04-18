@@ -60,18 +60,22 @@ export class TableDialog extends React.Component {
         if (this.props.addTable === true) {
             return (
                 <div>
-                    <h4>Number of Seats</h4>
+                    <h4>Table Details</h4>
                     <Form onSubmit={this.handleAddTable}>
                         <Form.Group>
+                            <Form.Label>Table Name</Form.Label>
                             <Form.Control value={this.state.tableName} onChange={this.handleChange}
                             name="add" type="text" placeholder="Enter Table Name" />
                         </Form.Group>
-                        <InputNumber 
+                        <Form.Group>
+                            <Form.Label>Number of Seats</Form.Label><br/>
+                            <InputNumber 
                                 onChange={this.handleQuantityChange} 
                                 focusOplaceholder="Quantity" 
                                 min={1} 
-                                defaultValue={1} 
-                        />
+                                defaultValue={1} />
+                        </Form.Group>
+                        
                         <br/>
                         <br/>
                         <Button type="submit">Submit</Button>
@@ -87,7 +91,7 @@ export class TableDialog extends React.Component {
             })
             return (
                 <div>
-                    <h4>Number of Seats</h4>
+                    <h4>Table Name</h4>
                     <Form onSubmit={this.handleDeleteTable}>
                     <Form.Group>
                             <Form.Control as="select" onChange={this.handleChange}
