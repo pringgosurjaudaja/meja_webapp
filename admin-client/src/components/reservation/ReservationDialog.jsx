@@ -1,13 +1,13 @@
-import 'src/styles/styles.css';
-
-import { Modal, Button, OverlayTrigger, Tooltip, Tabs, Tab } from 'react-bootstrap';
 import React from 'react';
+import { Modal, Button, OverlayTrigger, Tooltip, Tabs, Tab } from 'react-bootstrap';
+import { OrderCard } from 'src/components/order/OrderCard';
 import { ScheduleTable } from 'src/components/reservation/ScheduleTable';
 import { Requests } from 'src/utilities/Requests';
 import { _ } from 'src/utilities/helper';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faConciergeBell } from '@fortawesome/free-solid-svg-icons';
 import { TableQR } from './TableQR';
+import 'src/styles/styles.css';
 
 export class ReservationDialog extends React.Component {
     constructor(props) {
@@ -15,13 +15,19 @@ export class ReservationDialog extends React.Component {
         this.state = {
             events: [],
             response: [],
-            data: []
+            data: [],
+            currentOrderList: []
         }
     }
 
     componentDidMount = async () => {
         let res = await Requests.getTableReservation(this.props.table._id);
         this.setState({ data: res });
+
+        const session = await Requests.getActiveTableSession(this.props.table._id);
+        if (session) {
+            this.setState({ currentOrderList: session.order_list });
+        }
     }
 
     componentWillReceiveProps = async (nextProps) => {
@@ -31,7 +37,7 @@ export class ReservationDialog extends React.Component {
 
 
     render () {
-        const { table, toggleWaiterCall } = this.props;
+        const { table, show, onHide, handleWaiterCall } = this.props;
 
         let events = this.state.data ? this.state.data.map(reservation => {
             let datetime = reservation.datetime.split("T");
@@ -52,7 +58,7 @@ export class ReservationDialog extends React.Component {
         }
 
         return (
-            <Modal {...this.props} size="lg"
+            <Modal show={show} onHide={onHide} size="lg"
                 aria-labelledby="contained-modal-title-vcenter"
                 centered
                 
@@ -73,9 +79,7 @@ export class ReservationDialog extends React.Component {
                         <Button
                             style={{ marginLeft: '20px' }}
                             variant='danger' 
-                            onClick={() => {
-                                toggleWaiterCall(table._id);
-                            }}
+                            onClick={() => handleWaiterCall(table._id)}
                         >
                             <FontAwesomeIcon 
                                 style={{ marginRight: '5px'}}
@@ -88,7 +92,12 @@ export class ReservationDialog extends React.Component {
                 <Modal.Body>
                     <Tabs defaultActiveKey='tableReservation'>
                         <Tab eventKey='tableOrder' title='Current Order'>
-
+                            {this.state.currentOrderList ? 
+                             this.state.currentOrderList.map((order, i) => {
+                                return <OrderCard key={i} order={order} />
+                             }):
+                             <h5>No active orders on this table.</h5> 
+                            }
                         </Tab>
                         <Tab eventKey='tableReservation' title='Reservations'>
                             <ScheduleTable {...tableProps}/>

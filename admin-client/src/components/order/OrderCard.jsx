@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, ButtonGroup, Card, Table } from 'react-bootstrap';
+import { OrderTable } from 'src/components/order/OrderTable';
 import { orderStatus } from 'src/components/Dashboard';
 import { Requests } from 'src/utilities/Requests';
 
@@ -18,11 +19,13 @@ export class OrderCard extends React.Component {
 
         this.timeElapsed = setInterval(() => this.tick(), 1000);
 
-        const table = await Requests.getTable(order.table_id);
-        this.setState({ tableName: table.name });
-
-        const user = await Requests.getUser(order.user_id);
-        this.setState({ userName: user.name });
+        if (order.table_id && order.user_id) {
+            const table = await Requests.getTable(order.table_id);
+            this.setState({ tableName: table.name });
+    
+            const user = await Requests.getUser(order.user_id);
+            this.setState({ userName: user.name });
+        }
     }
 
     componentWillUnmount() {
@@ -32,14 +35,6 @@ export class OrderCard extends React.Component {
     truncateId = (id) => {
         return id.slice(0, 10) + '...';
     }    
-
-    getTotal = () => {
-        let total = 0;
-        this.props.order.order_items.forEach(orderItem => {
-            total += orderItem.quantity * orderItem.menu_item.price;
-        });
-        return total;
-    }
 
     // #region Time Elapsed Functions
     tick = () => {
@@ -105,12 +100,16 @@ export class OrderCard extends React.Component {
             <Card style={{ width: '30vw', margin: '10px' }}>
                 <Card.Header>
                     <Card.Title>Order #{this.truncateId(order._id)}</Card.Title>
-                    <div style={{ marginBottom: '10px' }}>
-                        <Card.Subtitle>Table: <strong>{this.state.tableName}</strong></Card.Subtitle>
-                    </div>
-                    <div style={{ marginBottom: '10px' }}>
-                        <Card.Subtitle>Customer: <strong>{this.state.userName}</strong></Card.Subtitle>
-                    </div>
+                    {this.state.tableName && this.state.userName && (
+                        <div>
+                            <div style={{ marginBottom: '10px' }}>
+                                <Card.Subtitle>Table: <strong>{this.state.tableName}</strong></Card.Subtitle>
+                            </div>
+                            <div style={{ marginBottom: '10px' }}>
+                                <Card.Subtitle>Customer: <strong>{this.state.userName}</strong></Card.Subtitle>
+                            </div>
+                        </div>
+                    )}
                     {this.orderStatusButtons()}
                     {this.isActive() &&
                         <div>
@@ -119,34 +118,7 @@ export class OrderCard extends React.Component {
                         </div>
                     }
                 </Card.Header>
-                <Card.Body>
-                    <Table>
-                        <thead>
-                            <tr>
-                                <th>Quantity</th>
-                                <th>Name</th>
-                                <th>Price</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {order.order_items.map((orderItem, j) => {
-                                return (<tr key={j}>
-                                    <th>{orderItem.quantity}</th>
-                                    <th>
-                                        <Card.Title>
-                                            {orderItem.menu_item.name}
-                                        </Card.Title>
-                                        <Card.Text>
-                                            {orderItem.notes}
-                                        </Card.Text>
-                                    </th>
-                                    <th>${orderItem.menu_item.price}</th>
-                                </tr>)
-                            })}
-                        </tbody>
-                    </Table>
-                    <Card.Title>Total: ${this.getTotal()}</Card.Title>
-                </Card.Body>
+                <OrderTable order={order} />
             </Card>
         );
     }

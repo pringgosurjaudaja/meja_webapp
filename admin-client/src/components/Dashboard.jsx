@@ -72,7 +72,7 @@ export class Dashboard extends React.Component {
         this.socket.emit('orderUpdated', orderId);
     }
 
-    toggleWaiterCall = async (tableId) => {
+    handleWaiterCall = async (tableId) => {
         console.log(tableId);
         const newTables = [...this.state.tables];
         for (let table of newTables) {
@@ -114,7 +114,7 @@ export class Dashboard extends React.Component {
                     <Tab eventKey="table" title="Tables">
                         <Reservation 
                             tables={this.state.tables}
-                            toggleWaiterCall ={this.toggleWaiterCall}
+                            handleWaiterCall={this.handleWaiterCall}
                         />
                     </Tab>
                     <Tab eventKey="menu" title="Menu">

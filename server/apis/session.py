@@ -133,6 +133,24 @@ class ActiveOrders(Resource):
 
         return sorted(orders, key=lambda k: k['timestamp'], reverse=True), status.HTTP_200_OK
 
+@session.route('/table/<string:table_id>')
+class ActiveTableSession(Resource):
+    @session.doc(description='Get active session for a table')
+    def get(self, table_id):
+        active_session = session_db.find_one({ 
+            '$and': [
+                { 'table_id': table_id },
+                { 'active': True }, 
+                { 'order_list': { '$not': { '$size': 0 } } } 
+            ]
+        })
+
+        if active_session is None:
+            return status.HTTP_404_NOT_FOUND
+
+        active_session['_id'] = str(active_session['_id'])
+        return active_session
+
 @session.route('/order/<string:order_id>')
 class OrderInfo(Resource):
     @session.doc(description='Get Info on an Order')
