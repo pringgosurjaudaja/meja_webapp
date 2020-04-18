@@ -542,3 +542,8 @@ df-messenger {
 #messageList {
     height: calc(100vh - 350px) !important;
 } */
+
+.profile-badge {
+    margin-left: 5px;
+    font-size: 10px;
+}
