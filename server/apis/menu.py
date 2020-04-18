@@ -8,6 +8,7 @@ from apis.menu_schema import MenuItemSchema, MenuCategorySchema, MenuReviewSchem
 import json
 from bson import json_util
 import pprint
+from datetime import datetime
 
 menu_db = db_client.menu
 menu_review_db = db_client.menu_review
@@ -225,6 +226,8 @@ class MenuReviewRoute(Resource):
             menu_review = schema.load(request.data)
             menu_review['menu_item_id'] = menu_item_id
             menu_review['_id'] = str(ObjectId())
+            now = datetime.now()
+            menu_review['date_time'] = now
             menu_db.update(
                 {'menu_items._id': menu_item_id},
                 {'$push':{'menu_items.$.review_list': schema.dump(menu_review)}}
