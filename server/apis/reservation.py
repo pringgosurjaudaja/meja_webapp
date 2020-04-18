@@ -6,6 +6,7 @@ from bson.objectid import ObjectId
 from db import db_client
 from apis.reservation_schema import ReservationSchema
 from datetime import datetime, date
+from helpers.email_sender import EmailSender
 
 reservation = Namespace('reservation', description="Reservation Backend Service")
 reservation_db = db_client.reservation
@@ -29,6 +30,10 @@ MODEL_reservation_update = reservation.model('Reservation Update',{
 MODEL_reservation_search = reservation.model('Reservation Search',{
     'date': fields.DateTime(),
     'number_diner': fields.Integer()
+})
+
+MODEL_reservation_email = reservation.model('Reservation email',{
+    'reservation_id': fields.String()
 })
 
 @reservation.route('')
@@ -157,3 +162,18 @@ class ReservationTableRoute(Resource):
 
         reservations.sort(key=lambda reservation:reservation['datetime'])
         return reservations, status.HTTP_200_OK
+
+@reservation.route('/email')
+class ReservationEmail(Resource):
+    @reservation.expect(MODEL_reservation_email)
+    def post(self):
+        reservation = reservation_db.find_one({'_id': ObjectId(request.data['reservation_id'])})
+        email={
+            'subject': f"Reservation Confirmation for {reservation['datetime']}",
+            'text': f"Your reservation at {reservation['datetime']} for {reservation['number_diner']} people are confirmed."
+
+        }
+        EmailSender().send_email_text('artemisproject28@gmail.com',email)
+        return {
+            'result': 'Email sent to ' + 'artemisproj' + ' successfully'
+        }, status.HTTP_200_OK
