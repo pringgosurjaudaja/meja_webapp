@@ -19,7 +19,7 @@ export class CartEntry extends React.Component {
                     </div>
                     <Card.Title>{item.menu_item.name}</Card.Title>
                     <Card.Subtitle>$ {item.menu_item.price}</Card.Subtitle>
-                    {item.notes && <Card.Text>{item.notes}</Card.Text>}
+                    {item.notes && <Card.Text className="order-notes">{item.notes}</Card.Text>}
                     <br />
                     <div style={{display: 'flex', justifyContent: 'space-evenly', alignItems: 'center'}}>
                         <Button className='checkout-cart-btn' onClick={() => handleQuantityChange(item, --item.quantity)}>-</Button>

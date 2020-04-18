@@ -9,10 +9,18 @@ export class Orders extends React.Component {
 
         const orderCards = orderList.map((order, i) => <OrderCard key={i} order={order} />);
 
-        return (<div className='margin-center'>
+        return (<div className='orders'>
             <h1>Orders</h1>
+            {orderCards.length == 0 && <div className="orders-empty" align="center">No orders yet! Go place one :)</div>}
             {orderCards}
-            <h5 align="center" className="orders-total">Net Total: ${OrderHelper.getGrandTotal(orderList)}</h5>
+            <div style={{ display: 'flex' }}>
+                <div style={{ flex: 1 }}>
+                    <h4>Net Total:</h4>
+                </div>
+                <div style={{ flex: 1, textAlign: 'right' }}>
+                    <h4>${OrderHelper.getGrandTotal(orderList)}</h4>
+                </div>
+            </div>
             <div align="center">
                 <Button
                     align='center'

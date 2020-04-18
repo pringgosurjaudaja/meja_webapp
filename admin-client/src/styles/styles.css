@@ -5,11 +5,157 @@ body {
     font-variant: normal;
 }
 
-.btn-primary {
-    color: #fff;
-    background-color: #000000 !important;
-    border-color: #000000 !important;
+.layout--background {
+    background: url(../styles/assets/bg-app2.jpg) no-repeat center center fixed;
+    background-size: auto 100%;;
 }
+
+.container-home {
+    margin-top: 50px;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+.layout--padding {
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 3%;
+}
+
+/* Add padding to the container*/
+.layout--padding--menu {
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+/* Add padding to the container in admin menu tab*/
+.layout--pading--admin-menu {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+.layout--no-padding {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+/* Spacing between menu item in client*/
+.layout--menu {
+    margin-bottom: 0%;
+}
+.title {
+    padding-left: 5% !important;
+    padding-right: 5% !important;
+    margin-top: 5vh !important;
+}
+.l-center {
+    vertical-align: middle;
+    text-align: center;
+    margin: auto;
+}
+
+.l-home--title {
+    font-size: 100px;
+}
+
+.l-home {
+    vertical-align: middle;
+    text-align: center;
+    margin: auto;
+    position: absolute;
+    top: 25%;
+}
+.l-reserve {
+    margin-top: 3vh;
+}
+.l-reserve-title {
+    margin-bottom: 5vh;
+}
+
+.l-home__row {
+    height: 75px;
+    width: auto;
+}
+
+.l-home__row__title {
+    /* height: 200px;
+    position: absolute; */
+    width: 267px;
+    background: url(../styles/assets/logo.png) no-repeat !important;
+}
+
+.l-reserve__row {
+    padding-left: 50px;
+    padding-right: 50px;
+    word-wrap: normal;
+}
+.l-reserve__row--small {
+    padding-left: 50px;
+    padding-right: 50px;
+    word-wrap: normal;
+}
+
+.l-reserve-details__row {
+    font-size: 20px;
+}
+
+.modal-header {
+    border: 0px !important;
+}
+
+.h1, h1 {
+    margin-top: 30px !important;
+    margin-bottom: 20px !important;
+}
+
+.big-button {
+    width: 263px;
+    height: 52px;
+}
+
+.big-button--text {
+    font-size: 14px !important;
+    color: #000000 !important;
+}
+
+.big-button--sign-in {
+    left: 0% !important;
+    right: 0% !important;
+    top: 0% !important;
+    bottom: 0% !important;
+    background: #FFFFFF !important;
+    /* Gray 1 */
+
+    border: 1px solid #333333 !important;
+    border-radius: 12px !important;
+}
+
+.big-button--register {
+    left: 0% !important;
+    right: 0% !important;
+    top: 0% !important;
+    bottom: 0% !important;
+    background: #AE956D !important;
+    color: #FFFFFF !important;
+    border-radius: 12px !important;
+    border-color:  #AE956D !important;
+}
+
+
+.big-button--continue {
+    left: 0% !important;
+    right: 0% !important;
+    top: 0% !important;
+    bottom: 0% !important;
+    background: #CDCCC8 !important;
+    color: #FFFFFF !important;
+    border-radius: 12px !important;
+    border-color: #CDCCC8 !important;
+}
+
+.divider {
+    border-top: 3px solid;
+    width: 100%;
+}
+
 
 .form-control {
     border-radius: 0px !important;
@@ -83,6 +229,19 @@ body {
 .layout--menu {
     margin-bottom: 5%;
 }
+
+.layout--btn {
+    width: 100% !important;
+    height: 45px !important;
+    margin-top: 20px !important;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #000000 !important;
+    border-color: #000000 !important;
+}
+
 .title {
     padding-left: 5%;
     padding-right: 5%;
@@ -105,7 +264,7 @@ body {
 }
 
 .l-home__row {
-    height: 200px;
+    height: 100px;
     margin-bottom: 50px;
 }
 
@@ -273,4 +432,10 @@ body {
 .layout--menu-action {
     display: block;
     top: 30%;
+}
+
+.order-status-btn {
+    font-size: 14px !important;
+    margin-top: 5px;
+    margin-bottom: 10px;
 }

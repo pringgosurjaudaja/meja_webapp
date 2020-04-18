@@ -129,7 +129,7 @@ body {
 }
 /* Spacing between menu item in client*/
 .layout--menu {
-    margin-bottom: 5%;
+    margin-bottom: 0%;
 }
 .title {
     padding-left: 5% !important;
@@ -141,6 +141,15 @@ body {
     text-align: center;
     margin: auto;
 }
+.l-landing {
+    vertical-align: middle;
+    text-align: center;
+    margin: auto;
+    position: absolute;
+    top: 35%;
+    font-size: 28px;
+}
+
 
 .l-home--title {
     font-size: 100px;
@@ -492,6 +501,21 @@ df-messenger {
     float: right;
 }
 
+.orders {
+    padding: 20px;
+}
+
+.orders .btn-primary {
+    width: 100% !important;
+    height: 45px !important;
+    margin-top: 20px !important;
+}
+
+.orders-empty {
+    font-style: italic;
+    padding-bottom: 20px;
+}
+
 .orders-total {
     padding-top: 20px;
 }
@@ -501,9 +525,6 @@ df-messenger {
     font-weight: bold;
 }
 
-.order-card {
-    margin-bottom: 5%;
-}
 
 .order-card .card-body {
     padding-bottom: 10px;
@@ -515,6 +536,10 @@ df-messenger {
     font-weight: medium;
     font-style: italic;
     padding-bottom: 10px;
+}
+
+.order-notes {
+    font-style: italic;
 }
 
 .profile-img {
@@ -546,4 +571,14 @@ df-messenger {
 .profile-badge {
     margin-left: 5px;
     font-size: 10px;
+}
+
+.card {
+    margin-bottom: 5% !important;
+}
+
+
+.review-timestamp {
+    margin-bottom: 5px !important;
+    font-style: italic !important;
 }

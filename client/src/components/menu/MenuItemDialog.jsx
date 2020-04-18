@@ -36,7 +36,7 @@ export class MenuItemDialog extends React.Component {
 
 
     componentDidMount = () => {
-        this.setState({ review_list: this.props.item.review_list });
+        this.setState({ review_list: this.props.item.review_list.reverse() });
         this.getEmail();
     }
 
@@ -66,8 +66,9 @@ export class MenuItemDialog extends React.Component {
                 review_list: review_list,
             })
         } else {
+            let current_list = [review];
             this.setState({
-                review_list: this.state.review_list.concat(review)
+                review_list: current_list.concat(this.state.review_list)
             })
         }
     }
@@ -76,14 +77,13 @@ export class MenuItemDialog extends React.Component {
         await Requests.deleteFoodReview(menuItemId, reviewId);
         let reviews = [...this.state.review_list];
         let idx = -1;
-        reviews.filter((item, index) => {
+        let r = reviews.filter((item, index) => {
             idx = index;
             return item._id === reviewId;
         });
-        // let index = reviews.indexOf(r);
-
-        if (idx !== -1) {
-            reviews.splice(idx, 1);
+        let index = reviews.indexOf(r[0]);
+        if (index !== -1) {
+            reviews.splice(index, 1);
             this.setState({ review_list: reviews });
         }
     }
@@ -92,13 +92,17 @@ export class MenuItemDialog extends React.Component {
         let res = [];
         if(!_.isNil(this.state.review_list)) {
             this.state.review_list.forEach((item, index) => {
+                let datetime = item.date_time ? item.date_time.split("T"): "";
+                let timestamp = item.date_time ? "Posted on " + datetime[0] + " at " + datetime[1]: "";
+                let username = item.user ? item.user : "Anonymous";
                 const comment = (
                     <Card style={{ width: '100%' }}>
                         <Card.Body>
-                            <Card.Title>{item.user}</Card.Title>
+                            <Card.Title>{ username }</Card.Title>
+                            <div className="review-timestamp">{ timestamp }</div>
                             <Card.Subtitle><StarRatings
                                 rating={item.rating}
-                                starRatedColor="yellow"
+                                starRatedColor='rgb(174, 149, 109)'
                                 starDimension="25px"
                                 numberOfStars={5}
                                 name='rating'
@@ -195,7 +199,7 @@ export class MenuItemDialog extends React.Component {
                                     </Card.Body>
                                 </Card>
                             </Tab>
-                            <Tab eventKey="review" title="Review">
+                            <Tab eventKey="review" title="Reviews">
                                 <MenuItemReviewForm {...reviewFormProps}/>
                                 {foodReviews.length!==0 ? foodReviews : "No Reviews yet"}
                             </Tab>

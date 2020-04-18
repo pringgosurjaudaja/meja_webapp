@@ -1,7 +1,7 @@
 import React from 'react';
 import 'rc-input-number/assets/index.css';
 import 'src/styles/styles.css';
-import example from 'src/styles/assets/profile.png';
+import { Requests } from 'src/utilities/Requests';
 import { Container, Tab, Tabs } from 'react-bootstrap';
 
 export class PastOrders extends React.Component {
@@ -10,6 +10,7 @@ export class PastOrders extends React.Component {
         this.state = {
         }
     }
+
 
     render() {
         return (

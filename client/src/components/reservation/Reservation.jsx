@@ -92,7 +92,6 @@ export class Reservation extends React.Component {
             const reservationFormProps = {
                 email: this.state.email,
                 showLogin: this.props.showLogin,
-                switchToConfirmation: ()=>this.switchToConfirmation()
             }
             return (
                 <ReservationForm {...reservationFormProps}/>
@@ -112,7 +111,6 @@ export class Reservation extends React.Component {
                 dialogProps : {
                     cancelReservation: this.handleCancel,
                 },
-                switchToForm: () => this.switchToForm(),
             }
             return (
                 <ReservationConfirmation {...reservationConfirmationProps}/>

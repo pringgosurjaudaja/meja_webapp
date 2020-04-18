@@ -76,7 +76,8 @@ export class Menu extends React.Component {
                 </Row>
             )
         })
-        const recommendationTab = <Tab key="Recommendation" eventKey={DEFAULT_TAB} title="Recommendations">{recommendationEntries}</Tab>
+        const recommendationTab = <Tab key="Recommendation" eventKey={DEFAULT_TAB} title="Recommendations
+        ">{recommendationEntries}</Tab>
         return recommendationTab;
     }
 
