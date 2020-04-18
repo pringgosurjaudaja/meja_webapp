@@ -137,3 +137,14 @@ class UserRoute(Resource):
 
         return schema.dump(user), status.HTTP_200_OK
 
+@auth.route('/user/<string:user_id>/past-orders')
+class UserOrdersRoute(Resource):
+    @auth.doc(description='Get User\'s Past Orders')
+    def get(self, user_id):
+        orders = []
+        for session in session_db.find({'user_id': user_id}):
+            for order in session['order_list']:
+                if order['status'] == 'Completed':
+                    orders.append(order)
+
+        return sorted(orders, key=lambda k: k['timestamp'], reverse=True), status.HTTP_200_OK

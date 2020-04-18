@@ -49,6 +49,18 @@ export class Requests {
         }
     }
 
+    static async getUser(userId) {
+        try {
+            const user = await axios({
+                method: 'get',
+                url: BASE_URL + '/auth/user/' + userId
+            });
+            return user.data;
+        } catch(err) {
+            console.error(err);
+        }
+    }
+
     static async getOrders () {
         try {
             const orders = await axios({
@@ -95,6 +107,36 @@ export class Requests {
             const result = await axios({
                 method: 'get',
                 url: BASE_URL + '/table',
+                header: {
+                    "x-api-key": sessionStorage.getItem('AUTH_KEY'),
+                }
+            });
+            return result.data;
+        } catch(err) {
+            console.error(err);
+        }
+    }
+
+    static async getTable(tableId) {
+        try {
+            const result = await axios({
+                method: 'get',
+                url: BASE_URL + '/table/' + tableId,
+                header: {
+                    "x-api-key": sessionStorage.getItem('AUTH_KEY'),
+                }
+            });
+            return result.data;
+        } catch(err) {
+            console.error(err);
+        }
+    }
+
+    static async getActiveTableSession(tableId) {
+        try {
+            const result = await axios({
+                method: 'get',
+                url: BASE_URL + '/session/table/' + tableId,
                 header: {
                     "x-api-key": sessionStorage.getItem('AUTH_KEY'),
                 }

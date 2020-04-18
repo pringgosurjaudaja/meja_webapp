@@ -1,38 +1,48 @@
-import { Button, ButtonGroup, Card, Table } from 'react-bootstrap';
-
 import React from 'react';
+import { Button, ButtonGroup, Card, Table } from 'react-bootstrap';
+import { OrderTable } from 'src/components/order/OrderTable';
 import { orderStatus } from 'src/components/Dashboard';
+import { Requests } from 'src/utilities/Requests';
 
 export class OrderCard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentTime: Date.now()
+            currentTime: Date.now(),
+            tableName: '',
+            userName: ''
         }
     }
 
-    componentDidMount() {
+    componentDidMount = async () => {
+        const { order } = this.props;
+
         this.timeElapsed = setInterval(() => this.tick(), 1000);
+
+        if (order.table_id && order.user_id) {
+            const table = await Requests.getTable(order.table_id);
+            this.setState({ tableName: table.name });
+    
+            const user = await Requests.getUser(order.user_id);
+            this.setState({ userName: user.name });
+        }
     }
 
     componentWillUnmount() {
         clearInterval(this.timeElapsed);
     }
 
+    truncateId = (id) => {
+        return id.slice(0, 10) + '...';
+    }    
+
+    // #region Time Elapsed Functions
     tick = () => {
         this.setState({ currentTime: Date.now() });
     }
 
-    getTotal = (order) => {
-        let total = 0;
-        order.order_items.forEach(orderItem => {
-            total += orderItem.quantity * orderItem.menu_item.price;
-        });
-        return total;
-    }
-
-    getTimeElapsed = (order) => {
-        let orderStart = new Date(order.timestamp);
+    getTimeElapsed = () => {
+        let orderStart = new Date(this.props.order.timestamp);
         let secondsElapsed = Math.floor((this.state.currentTime - orderStart.getTime()) / 1000);
         let minutes = Math.floor(secondsElapsed / 60);
         let hours = Math.floor(secondsElapsed / 3600);
@@ -46,9 +56,16 @@ export class OrderCard extends React.Component {
 
         return time;
     }
+    // #endregion
 
-    orderStatusButtons = (order) => {
-        const { changeOrderStatus, orderNumber } = this.props;
+    // #region Order Status Functions
+    isActive = () => {
+        const { order } = this.props;
+        return order.status === orderStatus.ORDERED || order.status === orderStatus.PROGRESS;
+    }
+
+    orderStatusButtons = () => {
+        const { changeOrderStatus, order } = this.props;
 
         const statusButtonVariantMap = new Map([
             [orderStatus.ORDERED, 'warning'],
@@ -74,6 +91,7 @@ export class OrderCard extends React.Component {
             })}
         </ButtonGroup>);
     }
+    // #endregion
 
     render() {
         const { order } = this.props;
@@ -81,40 +99,26 @@ export class OrderCard extends React.Component {
         return (
             <Card style={{ width: '30vw', margin: '10px' }}>
                 <Card.Header>
-                    <Card.Title>Order</Card.Title>
-                    <Card.Subtitle>#{order._id}</Card.Subtitle>
-                    {this.orderStatusButtons(order)}
-                    <Card.Subtitle>Time Elapsed:</Card.Subtitle>
-                    <Card.Text>{this.getTimeElapsed(order)}</Card.Text>
+                    <Card.Title>Order #{this.truncateId(order._id)}</Card.Title>
+                    {this.state.tableName && this.state.userName && (
+                        <div>
+                            <div style={{ marginBottom: '10px' }}>
+                                <Card.Subtitle>Table: <strong>{this.state.tableName}</strong></Card.Subtitle>
+                            </div>
+                            <div style={{ marginBottom: '10px' }}>
+                                <Card.Subtitle>Customer: <strong>{this.state.userName}</strong></Card.Subtitle>
+                            </div>
+                        </div>
+                    )}
+                    {this.orderStatusButtons()}
+                    {this.isActive() &&
+                        <div>
+                            <Card.Subtitle>Time Elapsed:</Card.Subtitle>
+                            <Card.Text>{this.getTimeElapsed()}</Card.Text>
+                        </div>
+                    }
                 </Card.Header>
-                <Card.Body>
-                    <Table>
-                        <thead>
-                            <tr>
-                                <th>Quantity</th>
-                                <th>Name</th>
-                                <th>Price</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {order.order_items.map((orderItem, j) => {
-                                return (<tr key={j}>
-                                    <th>{orderItem.quantity}</th>
-                                    <th>
-                                        <Card.Title>
-                                            {orderItem.menu_item.name}
-                                        </Card.Title>
-                                        <Card.Text>
-                                            {orderItem.notes}
-                                        </Card.Text>
-                                    </th>
-                                    <th>${orderItem.menu_item.price}</th>
-                                </tr>)
-                            })}
-                        </tbody>
-                    </Table>
-                    <Card.Title>Total: ${this.getTotal(order)}</Card.Title>
-                </Card.Body>
+                <OrderTable order={order} />
             </Card>
         );
     }
