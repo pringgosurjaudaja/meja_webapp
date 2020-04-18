@@ -82,12 +82,9 @@ export class MenuItemDialog extends React.Component {
             return item._id === reviewId;
         });
         let index = reviews.indexOf(r[0]);
-        console.log(idx);
         if (index !== -1) {
             reviews.splice(index, 1);
             this.setState({ review_list: reviews });
-        } else {
-            console.log("not found");
         }
     }
 
@@ -95,11 +92,15 @@ export class MenuItemDialog extends React.Component {
         let res = [];
         if(!_.isNil(this.state.review_list)) {
             this.state.review_list.forEach((item, index) => {
+                let datetime = item.date_time ? item.date_time.split("T"): "";
+                let timestamp = item.date_time ? "Posted on " + datetime[0] + " at " + datetime[1]: "";
+                let username = item.user ? item.user : "Anonymous";
                 const comment = (
                     <Card style={{ width: '100%' }}>
                         <Card.Body>
-                            <Card.Title>{item.user}</Card.Title>
-                            <Card.Subtitle onClick={()=>console.log(index)}><StarRatings
+                            <Card.Title>{ username }</Card.Title>
+                            <div className="review-timestamp">{ timestamp }</div>
+                            <Card.Subtitle><StarRatings
                                 rating={item.rating}
                                 starRatedColor='rgb(174, 149, 109)'
                                 starDimension="25px"
@@ -107,10 +108,7 @@ export class MenuItemDialog extends React.Component {
                                 name='rating'
                                 /></Card.Subtitle>
                             <Card.Text>{item.comment}</Card.Text>
-                            { item.user === this.state.email ? <Button className="review-footer-button" onClick={()=>{
-                                this.handleDeleteFoodReview(item.menu_item_id, item._id)
-                                console.log(item.menu_item_id+" and "+ item._id);
-                                }}>delete</Button>:''}
+                            { item.user === this.state.email ? <Button className="review-footer-button" onClick={()=>this.handleDeleteFoodReview(item.menu_item_id, item._id)}>delete</Button>:''}
 
                         </Card.Body>
                     </Card>
