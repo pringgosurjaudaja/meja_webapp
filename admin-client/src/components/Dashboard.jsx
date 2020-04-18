@@ -6,7 +6,6 @@ import { Order } from 'src/components/order/Order';
 import { navigate } from "@reach/router";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
-import { axios } from 'src/utilities/helper';
 import io from 'socket.io-client';
 import { Reservation } from 'src/components/reservation/Reservation';
 import { Requests } from 'src/utilities/Requests';

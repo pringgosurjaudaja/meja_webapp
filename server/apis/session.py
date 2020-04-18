@@ -118,8 +118,18 @@ class ActiveOrders(Resource):
     @session.doc(description='Get all active session orders')
     def get(self):
         orders = []
-        for session in session_db.find({'active': True}):
-            orders.extend(session['order_list'])
+        active_sessions = session_db.find({ 
+            '$and': [
+                { 'active': True }, 
+                { 'order_list': { '$not': { '$size': 0 } } } 
+            ]
+        })
+
+        for session in active_sessions:
+            for order in session['order_list']:
+                order['table_id'] = session['table_id']
+                order['user_id'] = session['user_id']
+                orders.append(order)
 
         return orders, status.HTTP_200_OK
 

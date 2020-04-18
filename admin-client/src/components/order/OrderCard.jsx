@@ -1,18 +1,22 @@
-import { Button, Card, Table } from 'react-bootstrap';
-
 import React from 'react';
+import { Button, Card, Table } from 'react-bootstrap';
 import { orderStatus } from 'src/components/Dashboard';
+import { Requests } from 'src/utilities/Requests';
 
 export class OrderCard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentTime: Date.now()
+            currentTime: Date.now(),
+            tableName: ''
         }
     }
 
-    componentDidMount() {
+    componentDidMount = async () => {
         this.timeElapsed = setInterval(() => this.tick(), 1000);
+
+        const table = await Requests.getTable(this.props.order.table_id);
+        this.setState({ tableName: table.name });
     }
 
     componentWillUnmount() {
@@ -21,6 +25,10 @@ export class OrderCard extends React.Component {
 
     tick = () => {
         this.setState({ currentTime: Date.now() });
+    }
+
+    truncateId = (id) => {
+        return id.slice(0, 10) + '...';
     }
 
     getTotal = (order) => {
@@ -81,8 +89,8 @@ export class OrderCard extends React.Component {
         return (
             <Card style={{ width: '30vw', margin: '10px' }}>
                 <Card.Header>
-                    <Card.Title>Order</Card.Title>
-                    <Card.Subtitle>#{order._id}</Card.Subtitle>
+                    <Card.Title>Order #{this.truncateId(order._id)}</Card.Title>
+                    <Card.Subtitle>Table: <strong>{this.state.tableName}</strong></Card.Subtitle>
                     {this.orderStatusButtons(order)}
                     <Card.Subtitle>Time Elapsed:</Card.Subtitle>
                     <Card.Text>{this.getTimeElapsed(order)}</Card.Text>
