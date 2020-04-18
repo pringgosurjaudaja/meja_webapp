@@ -120,8 +120,8 @@ class ActiveOrders(Resource):
         orders = []
         for session in session_db.find({'active': True}):
             orders.extend(session['order_list'])
-
-        return orders, status.HTTP_200_OK
+        print(type(orders))
+        return sorted(orders, key=lambda k: k['timestamp'], reverse=True), status.HTTP_200_OK
 
 @session.route('/order/<string:order_id>')
 class OrderInfo(Resource):
