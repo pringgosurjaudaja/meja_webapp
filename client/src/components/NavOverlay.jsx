@@ -6,7 +6,7 @@ import 'src/styles/styles.css';
 export class NavOverlay extends React.Component {
 
     render() {
-        const { tabs, show, onHide, handleNavSelect, activeTab } = this.props;
+        const { tabs, show, onHide, handleNavSelect, activeTab, loggedIn } = this.props;
         return (
             <Modal
                 id="myNav"
@@ -30,14 +30,25 @@ export class NavOverlay extends React.Component {
                         <Nav.Item className="overlay-content">
                             <Nav.Link eventKey={tabs.ABOUT}>About</Nav.Link>
                         </Nav.Item>
+                        {loggedIn &&
                         <Nav.Item className="overlay-content">
                             <Nav.Link eventKey={tabs.PROFILE}>Profile</Nav.Link>
-                        </Nav.Item>
+                        </Nav.Item>}
+                        {loggedIn && 
                         <Nav.Item className="overlay-content">
                             <Nav.Link eventKey="logout">
                                 Sign out
                             </Nav.Link>
                         </Nav.Item>
+                        }
+                        {!loggedIn && 
+                        <Nav.Item className="overlay-content">
+                            <Nav.Link eventKey="logout">
+                                Sign in
+                            </Nav.Link>
+                        </Nav.Item>
+                        }
+                        
                     </Nav>
                 </Modal.Body>
             </Modal>

@@ -48,6 +48,7 @@ export class Dashboard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            loggedIn: false,
             showOverlay: false,
             showCheckout: false,
             activeTab: tabs.ALL,
@@ -62,8 +63,24 @@ export class Dashboard extends React.Component {
         this.socket = io.connect('http://127.0.0.1:5000/');
     }
 
+    getCurrentUser = async () => {
+        const sessionId = localStorage.getItem('sessionId');
+        const session = await Requests.getSession(sessionId);
+        const allSession = await Requests.getAuth(sessionId);
+        allSession && allSession.forEach(async (sess) => {
+            if (sess._id === session.user_id) {
+                console.log('USER logged in');
+                this.setState({ 
+                    loggedIn: true
+                });
+                return;
+            }
+        })
+    }
+
 
     componentDidMount() {
+        this.getCurrentUser();
         this.getOrderList().then(orderList => {
             this.setState({ orderList: orderList })
         });
@@ -276,7 +293,7 @@ export class Dashboard extends React.Component {
         }
         return (
             <div>
-                <NavOverlay tabs={tabs} show={this.state.showOverlay} onHide={this.handleCloseNav} handleNavSelect={this.handleNavSelect} activeTab={this.state.activeTab} />
+                <NavOverlay tabs={tabs} show={this.state.showOverlay} onHide={this.handleCloseNav} handleNavSelect={this.handleNavSelect} activeTab={this.state.activeTab} loggedIn={this.state.loggedIn} />
                 <Checkout
                     cart={this.state.cart}
                     updateCart={this.updateCart}
@@ -321,7 +338,7 @@ export class Dashboard extends React.Component {
                     orderList={this.state.orderList}
                 /> : null}
                 {this.state.activeTab === tabs.PROFILE ? <Profile 
-                
+
                 /> : null}
 
                 <LoginDialog show={this.state.showLoginDialog}
