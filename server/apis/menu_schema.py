@@ -6,6 +6,7 @@ class MenuReviewSchema(Schema):
     rating = fields.Integer(validate=validate.Range(min=0, max=5))
     comment = fields.String(missing=[])
     user = fields.String()
+
 class MenuItemSchema(Schema):
     _id = fields.String()
     name = fields.String(required=True)
@@ -15,10 +16,10 @@ class MenuItemSchema(Schema):
     chefs_pick = fields.Boolean(missing=False)      # Whether it is part of the chef's recommended list
     review_list = fields.List(fields.Nested(MenuReviewSchema), missing=[])
     rating = fields.Float(missing = 0)
+    
     class Meta:
         ordered = True
         unknown = EXCLUDE
-
 
 class MenuCategorySchema(Schema):
     _id = fields.String()

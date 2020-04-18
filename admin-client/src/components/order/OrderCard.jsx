@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Card, Table } from 'react-bootstrap';
+import { Button, ButtonGroup, Card, Table } from 'react-bootstrap';
 import { orderStatus } from 'src/components/Dashboard';
 import { Requests } from 'src/utilities/Requests';
 
@@ -23,24 +23,25 @@ export class OrderCard extends React.Component {
         clearInterval(this.timeElapsed);
     }
 
-    tick = () => {
-        this.setState({ currentTime: Date.now() });
-    }
-
     truncateId = (id) => {
         return id.slice(0, 10) + '...';
-    }
+    }    
 
-    getTotal = (order) => {
+    getTotal = () => {
         let total = 0;
-        order.order_items.forEach(orderItem => {
+        this.props.order.order_items.forEach(orderItem => {
             total += orderItem.quantity * orderItem.menu_item.price;
         });
         return total;
     }
 
-    getTimeElapsed = (order) => {
-        let orderStart = new Date(order.timestamp);
+    // #region Time Elapsed Functions
+    tick = () => {
+        this.setState({ currentTime: Date.now() });
+    }
+
+    getTimeElapsed = () => {
+        let orderStart = new Date(this.props.order.timestamp);
         let secondsElapsed = Math.floor((this.state.currentTime - orderStart.getTime()) / 1000);
         let minutes = Math.floor(secondsElapsed / 60);
         let hours = Math.floor(secondsElapsed / 3600);
@@ -54,18 +55,25 @@ export class OrderCard extends React.Component {
 
         return time;
     }
+    // #endregion
 
-    orderStatusButtons = (order) => {
-        const { changeOrderStatus, orderNumber } = this.props;
+    // #region Order Status Functions
+    isActive = () => {
+        const { order } = this.props;
+        return order.status === orderStatus.ORDERED || order.status === orderStatus.PROGRESS;
+    }
+
+    orderStatusButtons = () => {
+        const { changeOrderStatus, order } = this.props;
 
         const statusButtonVariantMap = new Map([
             [orderStatus.ORDERED, 'warning'],
-            [orderStatus.PROGRESS, 'primary'],
+            [orderStatus.PROGRESS, 'info'],
             [orderStatus.COMPLETED, 'success'],
             [orderStatus.CANCELLED, 'danger'],
         ]);
     
-        return (<div>
+        return (<ButtonGroup>
             {[...statusButtonVariantMap.entries()].map(([status, variant], i) => {
                 let buttonVariant = variant;
                 if (status !== order.status) {
@@ -73,15 +81,16 @@ export class OrderCard extends React.Component {
                 }
                 return <Button 
                     key={i}
-                    style={{ margin: '10px' }}
+                    className="order-status-btn"
                     variant={buttonVariant}
                     onClick={() => changeOrderStatus(status, order._id)}
                 >
                     {status}
                 </Button>;
             })}
-        </div>);
+        </ButtonGroup>);
     }
+    // #endregion
 
     render() {
         const { order } = this.props;
@@ -91,9 +100,13 @@ export class OrderCard extends React.Component {
                 <Card.Header>
                     <Card.Title>Order #{this.truncateId(order._id)}</Card.Title>
                     <Card.Subtitle>Table: <strong>{this.state.tableName}</strong></Card.Subtitle>
-                    {this.orderStatusButtons(order)}
-                    <Card.Subtitle>Time Elapsed:</Card.Subtitle>
-                    <Card.Text>{this.getTimeElapsed(order)}</Card.Text>
+                    {this.orderStatusButtons()}
+                    {this.isActive() &&
+                        <div>
+                            <Card.Subtitle>Time Elapsed:</Card.Subtitle>
+                            <Card.Text>{this.getTimeElapsed()}</Card.Text>
+                        </div>
+                    }
                 </Card.Header>
                 <Card.Body>
                     <Table>
@@ -121,7 +134,7 @@ export class OrderCard extends React.Component {
                             })}
                         </tbody>
                     </Table>
-                    <Card.Title>Total: ${this.getTotal(order)}</Card.Title>
+                    <Card.Title>Total: ${this.getTotal()}</Card.Title>
                 </Card.Body>
             </Card>
         );
