@@ -49,6 +49,18 @@ export class Requests {
         }
     }
 
+    static async getUser(userId) {
+        try {
+            const user = await axios({
+                method: 'get',
+                url: BASE_URL + '/auth/user/' + userId
+            });
+            return user.data;
+        } catch(err) {
+            console.error(err);
+        }
+    }
+
     static async getOrders () {
         try {
             const orders = await axios({

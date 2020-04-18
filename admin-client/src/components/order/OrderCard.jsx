@@ -8,15 +8,21 @@ export class OrderCard extends React.Component {
         super(props);
         this.state = {
             currentTime: Date.now(),
-            tableName: ''
+            tableName: '',
+            userName: ''
         }
     }
 
     componentDidMount = async () => {
+        const { order } = this.props;
+
         this.timeElapsed = setInterval(() => this.tick(), 1000);
 
-        const table = await Requests.getTable(this.props.order.table_id);
+        const table = await Requests.getTable(order.table_id);
         this.setState({ tableName: table.name });
+
+        const user = await Requests.getUser(order.user_id);
+        this.setState({ userName: user.name });
     }
 
     componentWillUnmount() {
@@ -99,7 +105,12 @@ export class OrderCard extends React.Component {
             <Card style={{ width: '30vw', margin: '10px' }}>
                 <Card.Header>
                     <Card.Title>Order #{this.truncateId(order._id)}</Card.Title>
-                    <Card.Subtitle>Table: <strong>{this.state.tableName}</strong></Card.Subtitle>
+                    <div style={{ marginBottom: '10px' }}>
+                        <Card.Subtitle>Table: <strong>{this.state.tableName}</strong></Card.Subtitle>
+                    </div>
+                    <div style={{ marginBottom: '10px' }}>
+                        <Card.Subtitle>Customer: <strong>{this.state.userName}</strong></Card.Subtitle>
+                    </div>
                     {this.orderStatusButtons()}
                     {this.isActive() &&
                         <div>
