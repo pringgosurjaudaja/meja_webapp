@@ -135,7 +135,7 @@ class MenuItemRoute(Resource):
     @menu.doc(description='Deleting a Menu Item')
     def delete(self, item_id):
         menu_db.update(
-            {},
+            {'menu_items._id': item_id},
             {'$pull': {'menu_items': {'_id': item_id}}}
         )
         return {
