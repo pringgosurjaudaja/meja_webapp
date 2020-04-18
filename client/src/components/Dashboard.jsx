@@ -13,6 +13,7 @@ import { Orders } from 'src/components/order/Orders';
 import { Reservation } from 'src/components/reservation/Reservation';
 import { LoginDialog } from 'src/components/reservation/LoginDialog';
 import { NavOverlay } from 'src/components/NavOverlay';
+import { Profile } from 'src/components/profile/Profile';
 import { Requests } from 'src/utilities/Requests';
 import 'src/styles/styles.css';
 import 'react-tiny-fab/dist/styles.css';
@@ -32,7 +33,8 @@ const tabs = {
     ORDERS: 'orders',
     CHECKOUT: 'checkout',
     RESERVATION: 'reservation',
-    PAYMENT: 'payment'
+    PAYMENT: 'payment',
+    PROFILE: 'profile'
 }
 
 export const orderStatus = {
@@ -317,6 +319,9 @@ export class Dashboard extends React.Component {
                 {this.state.activeTab === tabs.RESERVATION ? <Reservation {...reservationProps} /> : null}
                 {this.state.activeTab === tabs.PAYMENT ? <Payment 
                     orderList={this.state.orderList}
+                /> : null}
+                {this.state.activeTab === tabs.PROFILE ? <Profile 
+                
                 /> : null}
 
                 <LoginDialog show={this.state.showLoginDialog}

@@ -28,7 +28,7 @@ export class OrderCard extends React.Component {
     render() {
         const { order } = this.props;
 
-        return (<Card style={{ width: '95%' }}>
+        return (<Card className="order-card" style={{ width: '95%' }}>
             <Card.Header>
                 <Card.Title>Order</Card.Title>
                 <Card.Subtitle>#{order._id}</Card.Subtitle>
