@@ -40,7 +40,7 @@ export class CustomerReview extends React.Component {
         try {
             const reviews = await Requests.getReviews();
             const reviewCards = reviews.map((item, index) =>  this.reviewCard(item, index));
-            this.setState({ review: reviewCards });
+            this.setState({ review: reviewCards.reverse() });
         } catch(err) {
             console.error(err);
         }

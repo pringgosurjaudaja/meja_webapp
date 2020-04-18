@@ -81,6 +81,7 @@ export class ReviewForm extends React.Component {
                                     numberOfStars={5}
                                     name='rating'
                                 />
+                                <br/>
                                 <Button variant="primary" type="submit">Submit Feedback</Button>
                             </Form>
                         </Card.Body>

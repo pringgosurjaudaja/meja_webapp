@@ -19,7 +19,7 @@ export class ReservationForm extends React.Component {
                 date: 0,
             },
             ready: false, // shows when the date and diner is input
-            diner: 0,
+            diner: 1,
             timeAvailability: [],
             notes: "",
             time: "",
@@ -156,7 +156,6 @@ export class ReservationForm extends React.Component {
                         <Form.Group>
                             <Form.Label>Number of Diners</Form.Label>
                             <Form.Control as="select" onChange={this.handleChangeSelect}>
-                                <option value="0">0</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
