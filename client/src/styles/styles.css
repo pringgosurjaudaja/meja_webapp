@@ -141,6 +141,15 @@ body {
     text-align: center;
     margin: auto;
 }
+.l-landing {
+    vertical-align: middle;
+    text-align: center;
+    margin: auto;
+    position: absolute;
+    top: 35%;
+    font-size: 28px;
+}
+
 
 .l-home--title {
     font-size: 100px;

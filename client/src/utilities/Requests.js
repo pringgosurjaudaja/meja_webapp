@@ -82,7 +82,7 @@ export class Requests {
         } catch(err) {
             console.error(err);
             localStorage.removeItem('sessionId');
-            navigate('/');
+            navigate('/home');
         }
     }
 
@@ -103,7 +103,7 @@ export class Requests {
         } catch(err) {
             console.error(err);
             localStorage.removeItem('sessionId');
-            navigate('/');
+            navigate('/home');
         }
     }
 
@@ -118,7 +118,7 @@ export class Requests {
         } catch(err) {
             console.error(err)
             localStorage.removeItem('sessionId');
-            navigate('/');
+            navigate('/home');
         }
     }
 
@@ -263,5 +263,8 @@ export class Requests {
         } catch (err) {
             console.error(err);
         }
+    }
+    static goHome() {
+        navigate('/home');
     }
 }

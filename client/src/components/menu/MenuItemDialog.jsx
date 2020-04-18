@@ -36,7 +36,7 @@ export class MenuItemDialog extends React.Component {
 
 
     componentDidMount = () => {
-        this.setState({ review_list: this.props.item.review_list });
+        this.setState({ review_list: this.props.item.review_list.reverse() });
         this.getEmail();
     }
 
@@ -66,8 +66,9 @@ export class MenuItemDialog extends React.Component {
                 review_list: review_list,
             })
         } else {
+            let current_list = [review];
             this.setState({
-                review_list: this.state.review_list.concat(review)
+                review_list: current_list.concat(this.state.review_list)
             })
         }
     }
@@ -76,15 +77,17 @@ export class MenuItemDialog extends React.Component {
         await Requests.deleteFoodReview(menuItemId, reviewId);
         let reviews = [...this.state.review_list];
         let idx = -1;
-        reviews.filter((item, index) => {
+        let r = reviews.filter((item, index) => {
             idx = index;
             return item._id === reviewId;
         });
-        // let index = reviews.indexOf(r);
-
-        if (idx !== -1) {
-            reviews.splice(idx, 1);
+        let index = reviews.indexOf(r[0]);
+        console.log(idx);
+        if (index !== -1) {
+            reviews.splice(index, 1);
             this.setState({ review_list: reviews });
+        } else {
+            console.log("not found");
         }
     }
 
@@ -96,7 +99,7 @@ export class MenuItemDialog extends React.Component {
                     <Card style={{ width: '100%' }}>
                         <Card.Body>
                             <Card.Title>{item.user}</Card.Title>
-                            <Card.Subtitle><StarRatings
+                            <Card.Subtitle onClick={()=>console.log(index)}><StarRatings
                                 rating={item.rating}
                                 starRatedColor="yellow"
                                 starDimension="25px"
@@ -104,7 +107,10 @@ export class MenuItemDialog extends React.Component {
                                 name='rating'
                                 /></Card.Subtitle>
                             <Card.Text>{item.comment}</Card.Text>
-                            { item.user === this.state.email ? <Button className="review-footer-button" onClick={()=>this.handleDeleteFoodReview(item.menu_item_id, item._id)}>delete</Button>:''}
+                            { item.user === this.state.email ? <Button className="review-footer-button" onClick={()=>{
+                                this.handleDeleteFoodReview(item.menu_item_id, item._id)
+                                console.log(item.menu_item_id+" and "+ item._id);
+                                }}>delete</Button>:''}
 
                         </Card.Body>
                     </Card>

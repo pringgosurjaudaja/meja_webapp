@@ -12,25 +12,11 @@ export class Review extends React.Component {
         super(props);
         this.state = {
             zomato: [],
-            email: "",
         }
     }
         
     componentDidMount = async () => {
-        await this.getEmail();
         await this.getReviewsZomato();
-    }
-
-    getEmail = async () => {
-        const sessionId = localStorage.getItem('sessionId');
-        const session = await Requests.getSession(sessionId);
-        const allSession = await Requests.getAuth(sessionId);
-        allSession && allSession.forEach(async (sess) => {
-            if (sess._id === session.user_id) {
-                this.setState({ email: sess.email });
-                return;
-            }
-        })
     }
 
     getReviewsZomato = async () => {
@@ -42,9 +28,6 @@ export class Review extends React.Component {
             console.error(err);
         }
     }
-
-
-
 
     reviewCardZomato = (item, index) => {
         return (

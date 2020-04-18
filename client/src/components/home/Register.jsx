@@ -60,7 +60,7 @@ export class Register extends React.Component {
                     <Row>
                         <FontAwesomeIcon
                             icon={faChevronLeft}
-                            onClick={() => navigate("/")}
+                            onClick={() => navigate("/home")}
                         />
                     </Row>
                     <Row>
