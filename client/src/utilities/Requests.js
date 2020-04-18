@@ -267,4 +267,16 @@ export class Requests {
     static goHome() {
         navigate('/home');
     }
+
+    static async getPastOrders(userId) {
+        try {
+            const result = await axios({
+                method: 'get',
+                url: BASE_URL + '/auth/user/' + userId + '/past-orders',
+            });
+            return result.data;
+        } catch (err) {
+            console.error(err);
+        }
+    }
 }

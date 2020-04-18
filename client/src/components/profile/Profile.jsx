@@ -1,7 +1,7 @@
 import React from 'react';
 import 'rc-input-number/assets/index.css';
 import 'src/styles/styles.css';
-import { Container, Tab, Tabs } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import { UserProfile } from 'src/components/profile/UserProfile';
 import { PastOrders } from 'src/components/profile/PastOrders';
 

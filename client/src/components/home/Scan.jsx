@@ -1,8 +1,7 @@
 import React from 'react';
-import { Button, Container, Row, Col } from 'react-bootstrap';
-import { navigate, Redirect } from "@reach/router";
+import {  Container, Row, Col } from 'react-bootstrap';
+import { Redirect } from "@reach/router";
 import 'src/styles/styles.css';
-import logo from "src/styles/assets/logo.png";
 import { Requests } from 'src/utilities/Requests';
 
 export class Scan extends React.Component {
@@ -20,7 +19,6 @@ export class Scan extends React.Component {
     }
 
     render() {
-        const imageAlt = "Meja Logo"
 
         const sessionId = localStorage.getItem('sessionId');
         if (sessionId && Requests.getSession(sessionId)) {

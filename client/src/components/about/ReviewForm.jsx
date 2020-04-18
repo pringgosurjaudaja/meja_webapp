@@ -38,7 +38,6 @@ export class ReviewForm extends React.Component {
     submitFeedback = async (e) => {
         e.preventDefault();
         const res = await Requests.postReview(this.state.email, this.state.review, this.state.rating);
-        console.log(res);
         const data = {
             "user": this.state.email,
             "review": this.state.review,

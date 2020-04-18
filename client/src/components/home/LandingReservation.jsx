@@ -8,6 +8,7 @@ import {
 import 'src/styles/styles.css';
 import { DateTime, moment, axios } from 'src/utilities/helper';
 import { Requests } from 'src/utilities/Requests';
+import { navigate } from '@reach/router';
 export class LandingReservation extends React.Component {
 
     constructor(props) {
@@ -113,7 +114,7 @@ export class LandingReservation extends React.Component {
             this.setState({
                 showNotif: false,
             });
-            window.location.reload();
+            navigate("/");
           }, 4000);
     }
 

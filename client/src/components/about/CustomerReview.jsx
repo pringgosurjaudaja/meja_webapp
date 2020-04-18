@@ -72,9 +72,9 @@ export class CustomerReview extends React.Component {
 
     removeReview = (reviewId) => {
         let reviews = [...this.state.review];
-        let idx = -1;
+        // let idx = -1;
         let r = reviews.filter((item, index) => {
-            idx = index;
+            // idx = index;
             return item._id === reviewId;
         });
         let index = reviews.indexOf(r[0]);

@@ -54,7 +54,7 @@ export class ReviewCard extends React.Component {
             return (
                 <span>
                     <Button type="button" className="review-footer-text" onClick={()=>this.openDialog()}>reply</Button>
-                    
+                    {/* to be changed to username */}
                     { this.props.email === this.props.item.user ? <Button className="review-footer-text" onClick={()=>this.deleteComment()}>delete</Button>:''}
                 </span>
             );

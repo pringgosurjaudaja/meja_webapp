@@ -48,8 +48,8 @@ export class Info extends React.Component {
     
     render () {
 
-        const phone = _.get(this.state, "phone", '0000000000');
-        const message = encodeURI(_.get(this.state, "message", ''));
+        // const phone = _.get(this.state, "phone", '0000000000');
+        // const message = encodeURI(_.get(this.state, "message", ''));
         const url = 'https://api.whatsapp.com/send';//?phone='+phone+'&text='+encodeURI(message);
 
         return (
