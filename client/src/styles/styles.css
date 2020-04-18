@@ -156,6 +156,9 @@ body {
 .l-reserve {
     margin-top: 3vh;
 }
+.l-reserve-title {
+    margin-bottom: 5vh;
+}
 
 .l-home__row {
     height: 75px;
@@ -335,6 +338,10 @@ body {
 .icon-whatsapp {
     font-size: 34px;
     color: #25D366;
+}
+.icon-share {
+    font-size: 34px;
+    color: gray;
 }
 
 /* #notif {
