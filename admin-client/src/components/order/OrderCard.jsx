@@ -99,44 +99,6 @@ export class OrderCard extends React.Component {
         return (
             <Card className="order-card" style={{ width: '30vw', margin: '10px' }}>
                 <Card.Header>
-<<<<<<< HEAD
-                    <Card.Title>Order</Card.Title>
-                    <Card.Subtitle>#{order._id}</Card.Subtitle>
-                    {this.orderStatusButtons(order)}
-                    <div class="order-time">
-                        <Card.Subtitle>Time Elapsed:</Card.Subtitle>
-                        <Card.Text>{this.getTimeElapsed(order)}</Card.Text>
-                    </div>
-                </Card.Header>
-                <Card.Body>
-                    <Table>
-                        <thead>
-                            <tr>
-                                <th>Quantity</th>
-                                <th>Name</th>
-                                <th>Price</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {order.order_items.map((orderItem, j) => {
-                                return (<tr key={j}>
-                                    <th>{orderItem.quantity}</th>
-                                    <th>
-                                        <Card.Title>
-                                            {orderItem.menu_item.name}
-                                        </Card.Title>
-                                        <Card.Text className="order-notes">
-                                            {orderItem.notes}
-                                        </Card.Text>
-                                    </th>
-                                    <th>${orderItem.menu_item.price}</th>
-                                </tr>)
-                            })}
-                        </tbody>
-                    </Table>
-                    <Card.Title>Total: ${this.getTotal(order)}</Card.Title>
-                </Card.Body>
-=======
                     <Card.Title>Order #{this.truncateId(order._id)}</Card.Title>
                     {this.state.tableName && this.state.userName && (
                         <div>
@@ -150,14 +112,13 @@ export class OrderCard extends React.Component {
                     )}
                     {this.orderStatusButtons()}
                     {this.isActive() &&
-                        <div>
+                        <div class="order-time">
                             <Card.Subtitle>Time Elapsed:</Card.Subtitle>
                             <Card.Text>{this.getTimeElapsed()}</Card.Text>
                         </div>
                     }
                 </Card.Header>
                 <OrderTable order={order} />
->>>>>>> 3859c49388cf2fa42c1a99f93cbadd3f857ce9ce
             </Card>
         );
     }

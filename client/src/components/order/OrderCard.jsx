@@ -22,13 +22,13 @@ export class OrderCard extends React.Component {
             default:
                 break;
             }
-        return (<Button variant={variant}>{currOrderStatus}</Button>)
+        return (<Button variant={variant} size="sm">{currOrderStatus}</Button>)
     }
 
     render() {
         const { order } = this.props;
 
-        return (<Card className="order-card" style={{ width: '95%' }}>
+        return (<Card className="order-card" style={{ width: '100%' }}>
             <Card.Header>
                 <Card.Title>Order</Card.Title>
                 <Card.Subtitle>#{order._id}</Card.Subtitle>

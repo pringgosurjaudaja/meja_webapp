@@ -503,6 +503,7 @@ df-messenger {
 
 .orders {
     padding: 20px;
+    padding-bottom: 100px;
 }
 
 .orders .btn-primary {
