@@ -279,4 +279,64 @@ export class Requests {
             console.error(err);
         }
     }
+
+    static async register(name, email, password) {
+        try {
+            const result = await axios({
+                method: 'post',
+                url: BASE_URL + '/auth/signup',
+                data: {
+                    name: name,
+                    email: email,
+                    password: password
+                }
+            });
+            return result.data;
+        } catch (err) {
+            console.error(err);
+            alert('Invalid Input');
+            navigate('/register');
+        }
+    }
+
+    static async makeReservation(data) {
+        try {
+            const result = await axios({
+                method: 'post',
+                url: BASE_URL + '/reservation',
+                data: {
+                    "email": data.email,
+                    "datetime": data.datetime.toString(),
+                    "number_diner": data.diner,
+                    "reservation_notes": data.notes
+                },
+                header: {
+                    "x-api-key": localStorage.getItem('sessionId'),
+                    "Content-Type": "application/json"
+                }
+            });
+            return result; 
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    static async sendReservationEmail(reservationId) {
+        try {
+            const result = await axios({
+                method: 'post',
+                url: BASE_URL + '/reservation/email',
+                data: {
+                    reservation_id: reservationId,
+                },
+                header: {
+                    "x-api-key": localStorage.getItem('sessionId'),
+                    "Content-Type": "application/json"
+                }
+            });
+            return result; 
+        } catch (err) {
+            console.error(err);
+        }
+    }
 }

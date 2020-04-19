@@ -7,9 +7,9 @@ import {
 } from 'react-bootstrap';
 import { navigate } from "@reach/router";
 import 'src/styles/styles.css';
-import { axios } from 'src/utilities/helper';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { Requests } from 'src/utilities/Requests';
 
 export class Register extends React.Component {
     constructor(props) {
@@ -19,11 +19,9 @@ export class Register extends React.Component {
             password: '',
             email: '',
         }
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleChange(event) {
+    handleChange = (event) => {
 
         if (event.target.name === "name") {
             this.setState({ name: event.target.value });
@@ -34,24 +32,11 @@ export class Register extends React.Component {
         }
     }
 
-    handleSubmit(event) {
+    handleSubmit = async (event) => {
         event.preventDefault();
-        axios({
-            method: 'post',
-            url: 'http://127.0.0.1:5000/auth/signup',
-            data: {
-                name: this.state.name,
-                email: this.state.email,
-                password: this.state.password
-            }
-        }).then(function (response) {
-            console.log(response);
-            navigate('/login')
-        }).catch(function (error) {
-            console.log(error);
-            alert('Invalid input');
-            this.setState({ name: '', email: '', password: '' });
-        });
+        await Requests.register(this.state.name, this.state.email, this.state.password);
+        navigate('/login');
+        
     }
     render() {
         return (

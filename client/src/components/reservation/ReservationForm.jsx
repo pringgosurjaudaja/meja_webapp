@@ -127,30 +127,45 @@ export class ReservationForm extends React.Component {
         const time = this.state.time;
         const datetime = year+"-"+month+"-"+date+"T"+time;
 
-        let url = 'http://127.0.0.1:5000/reservation';
+        // let url = 'http://127.0.0.1:5000/reservation';
 
-        axios({
-            method: 'post',
-            url: url,
-            timeout: 2000,
-            data: {
-                "email": this.props.email,
-                "datetime": datetime.toString(),
-                "number_diner": this.state.diner,
-                "reservation_notes": this.state.notes
-            },
-            header: {
-                "x-api-key": localStorage.getItem('sessionId'),
-                "Content-Type": "application/json"
-            }
-        })
-        .then((response) => {
-            console.log(response);
-            this.showNotification();
-        })
-        .catch((error)=>{
-            alert(error)
-        });
+        const data = {
+            email: this.props.email,
+            datetime: datetime.toString(),
+            diner: this.state.diner,
+            notes: this.state.notes
+        }
+
+        let result = await Requests.makeReservation(data);
+        console.log(result);
+        if (result.status === 201) {
+            await Requests.sendReservationEmail(result.data.inserted);
+            // this.showNotification();
+        }
+        
+        // this.showNotification();
+        // axios({
+        //     method: 'post',
+        //     url: url,
+        //     timeout: 2000,
+        //     data: {
+                // "email": this.props.email,
+                // "datetime": datetime.toString(),
+                // "number_diner": this.state.diner,
+                // "reservation_notes": this.state.notes
+        //     },
+        //     header: {
+        //         "x-api-key": localStorage.getItem('sessionId'),
+        //         "Content-Type": "application/json"
+        //     }
+        // })
+        // .then((response) => {
+        //     console.log(response);
+        //     this.showNotification();
+        // })
+        // .catch((error)=>{
+        //     alert(error)
+        // });
     }
 
 
