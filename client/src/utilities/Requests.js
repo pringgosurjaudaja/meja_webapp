@@ -327,7 +327,7 @@ export class Requests {
                 method: 'post',
                 url: BASE_URL + '/reservation/email',
                 data: {
-                    reservation_id: reservationId,
+                    "reservation_id": reservationId,
                 },
                 header: {
                     "x-api-key": localStorage.getItem('sessionId'),
