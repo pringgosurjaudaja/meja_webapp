@@ -11,7 +11,7 @@ export class OrderCard extends React.Component {
                 variant = 'warning';
                 break;
             case orderStatus.PROGRESS:
-                variant = 'primary';
+                variant = 'info';
                 break;
             case orderStatus.COMPLETED:
                 variant = 'success';
