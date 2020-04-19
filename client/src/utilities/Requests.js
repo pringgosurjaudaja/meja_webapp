@@ -82,7 +82,7 @@ export class Requests {
         } catch(err) {
             console.error(err);
             localStorage.removeItem('sessionId');
-            navigate('/');
+            navigate('/home');
         }
     }
 
@@ -103,7 +103,7 @@ export class Requests {
         } catch(err) {
             console.error(err);
             localStorage.removeItem('sessionId');
-            navigate('/');
+            navigate('/home');
         }
     }
 
@@ -118,7 +118,7 @@ export class Requests {
         } catch(err) {
             console.error(err)
             localStorage.removeItem('sessionId');
-            navigate('/');
+            navigate('/home');
         }
     }
 
@@ -260,6 +260,117 @@ export class Requests {
                 }
             });
             return result.data;
+        } catch (err) {
+            console.error(err);
+        }
+    }
+    static goHome() {
+        navigate('/home');
+    }
+
+    static async getPastOrders(userId) {
+        try {
+            const result = await axios({
+                method: 'get',
+                url: BASE_URL + '/auth/user/' + userId + '/past-orders',
+            });
+            return result.data;
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    static async register(name, email, password) {
+        try {
+            const result = await axios({
+                method: 'post',
+                url: BASE_URL + '/auth/signup',
+                data: {
+                    name: name,
+                    email: email,
+                    password: password
+                }
+            });
+            return result.data;
+        } catch (err) {
+            console.error(err);
+            alert('Invalid Input');
+            navigate('/register');
+        }
+    }
+
+    static async makeReservation(data) {
+        try {
+            const result = await axios({
+                method: 'post',
+                url: BASE_URL + '/reservation',
+                data: {
+                    "email": data.email,
+                    "datetime": data.datetime.toString(),
+                    "number_diner": data.diner,
+                    "reservation_notes": data.notes
+                },
+                header: {
+                    "x-api-key": localStorage.getItem('sessionId'),
+                    "Content-Type": "application/json"
+                }
+            });
+            return result; 
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    static async sendReservationEmail(reservationId) {
+        try {
+            const result = await axios({
+                method: 'post',
+                url: BASE_URL + '/reservation/email',
+                data: {
+                    "reservation_id": reservationId,
+                },
+                header: {
+                    "x-api-key": localStorage.getItem('sessionId'),
+                    "Content-Type": "application/json"
+                }
+            });
+            return result; 
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    static async getAvailability(year, month, date, number_diner) {
+        try {
+            const result = await axios({
+                method: 'post',
+                url: BASE_URL + '/reservation/availability',
+                data: {
+                    date: year+"-"+month+"-"+date,
+                    number_diner: number_diner,
+                },
+                header: {
+                    "x-api-key": localStorage.getItem('sessionId'),
+                    "Content-Type": "application/json"
+                }
+            });
+            return result; 
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    static async cancelReservation(reservationId) {
+        try {
+            const result = await axios({
+                method: 'delete',
+                url: BASE_URL + '/reservation/' + reservationId,
+                header: {
+                    "x-api-key": localStorage.getItem('sessionId'),
+                    "Content-Type": "application/json"
+                }
+            });
+            return result; 
         } catch (err) {
             console.error(err);
         }

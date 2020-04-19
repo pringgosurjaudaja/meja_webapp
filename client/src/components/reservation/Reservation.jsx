@@ -1,6 +1,6 @@
 import React from 'react';
 import 'src/styles/styles.css';
-import { axios, _ } from 'src/utilities/helper';
+import { _ } from 'src/utilities/helper';
 import 'src/styles/react-datetime.css';
 import { ReservationConfirmation } from 'src/components/reservation/ReservationConfirmation';
 import { ReservationForm } from 'src/components/reservation/ReservationForm';
@@ -55,26 +55,10 @@ export class Reservation extends React.Component {
         
     }
 
-    handleCancel = () => {
-        let url = 'http://127.0.0.1:5000/reservation/';
+    handleCancel = async () => {
         let id = _.get(this.state.reservation, "_id", "");
-        axios({
-            method: 'delete',
-            url: url+id,
-            timeout: 1000,
-            header: {
-                "x-api-key": localStorage.getItem('sessionId'),
-                "Content-Type": "application/json"
-            }
-        })
-        .then((response) => {
-            console.log(response);
-            window.location.reload();
-        })
-        .catch((error)=>{
-            alert(error)
-        });
-        
+        await Requests.cancelReservation(id);
+        window.location.reload();
     }
 
     switchToConfirmation = () => {
@@ -92,7 +76,6 @@ export class Reservation extends React.Component {
             const reservationFormProps = {
                 email: this.state.email,
                 showLogin: this.props.showLogin,
-                switchToConfirmation: ()=>this.switchToConfirmation()
             }
             return (
                 <ReservationForm {...reservationFormProps}/>
@@ -112,7 +95,6 @@ export class Reservation extends React.Component {
                 dialogProps : {
                     cancelReservation: this.handleCancel,
                 },
-                switchToForm: () => this.switchToForm(),
             }
             return (
                 <ReservationConfirmation {...reservationConfirmationProps}/>

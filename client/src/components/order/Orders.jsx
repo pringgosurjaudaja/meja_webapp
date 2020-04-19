@@ -11,7 +11,7 @@ export class Orders extends React.Component {
 
         return (<div className='orders'>
             <h1>Orders</h1>
-            {orderCards.length == 0 && <div className="orders-empty" align="center">No orders yet! Go place one :)</div>}
+            {orderCards.length === 0 && <div className="orders-empty" align="center">No orders yet! Go place one :)</div>}
             {orderCards}
             <div style={{ display: 'flex' }}>
                 <div style={{ flex: 1 }}>

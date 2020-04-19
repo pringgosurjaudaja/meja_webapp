@@ -26,16 +26,24 @@ that requires the task to be delayed
 The team also added new task such as about page
 
 Week 6
-I finished the front end of reservation for client however admin part is still in progress due to design changes. By this time the team realises that the mock up created was not enough to cover all aspect of the app, so the team has to change the front end design. Also I finished the About page in the client side
+I finished the front end of reservation for client however admin part is still in progress due to design changes.
+By this time the team realises that the mock up created was not enough to cover all aspect of the app,
+so the team has to change the front end design. Also I finished the About page in the client side
 also conected zomato and whatsapp API to the fronend. Overall the team is doing fine in terms of schedule, we managed
 to get the minimum viable product working
 
 Week 7
-This week i will be working on adding user reviews on the front end. Alsho finished the design change
+This week i will be working on adding user reviews on the front end. Also finished the design change
 where reservation is moved from home page to dashboard. Also incoorperated reservation update in the 
 admin client. Now the team has all the basic and some unique functionalities working well.
-Next week will be about focusing more on the unique functionalities as well as the rebustness of the software
+Next week will be about focusing more on the unique functionalities as well as the robustness of the software
 
 Week 8
-This week I was give nthe task to add reactivity to the reviewing system in the client,
-as well as changing the design of the admin client
+This week I was given the task to add reactivity to the reviewing system in the client,
+as well as changing the design of the admin client, I also went on and fixed some bugs that I found on frontend
+such as date not displaying, css for review doesnt look
+
+Week 9
+This week is about making sure the workflow of the application is good, making sure that the user can intuitively
+use the application and did not get stuck. Also I was given the task to fix some front end bugs
+such as displaying date, adding past orders to user profile, creating a new landing page

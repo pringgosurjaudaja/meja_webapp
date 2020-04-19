@@ -33,7 +33,7 @@ export class LoginDialog extends React.Component {
             const loginRequest = await Requests.login(this.state.email, this.state.password);
             
             if (_.isNil(loginRequest)) {
-                navigate('/');
+                navigate('/home');
             } else {
                 await Requests.makeSession('5e8347e01c9d440000231cb3', loginRequest.token);
                 window.location.reload();

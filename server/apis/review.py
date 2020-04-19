@@ -39,7 +39,15 @@ class Review(Resource):
             review['date_time'] = now
             print(review)
             operation = review_db.insert_one(schema.dump(review))
-            return{ 'result': str(operation.inserted_id)}, status.HTTP_201_CREATED
+            review['date_time'] = str(review['date_time'])
+            review_return = {
+                '_id': str(operation.inserted_id),
+                "user": review['user'],
+                "review": review['review'],
+                "rating": review['rating'],
+                "date_time": str(review['date_time'])
+            }
+            return review_return, status.HTTP_201_CREATED
         except ValidationError as err:
             print(err)
             return{

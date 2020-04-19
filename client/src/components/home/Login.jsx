@@ -36,7 +36,7 @@ export class Login extends React.Component {
         // Login with user entered details
         const loginRequest = await Requests.login(this.state.email, this.state.password);
         if (_.isNil(loginRequest)) {
-            navigate('/');
+            navigate('/home');
         } else {
             await Requests.makeSession('5e94221a196b3c2735e94860', loginRequest.token);
             navigate('/dashboard');
@@ -55,7 +55,7 @@ export class Login extends React.Component {
                     <Row>
                         <FontAwesomeIcon
                             icon={faChevronLeft}
-                            onClick={() => navigate("/")}
+                            onClick={() => navigate("/home")}
                         />
                     </Row>
                     <Row>

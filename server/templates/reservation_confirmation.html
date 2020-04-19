@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=no;">
+    <meta name="x-apple-disable-message-reformatting" />
+    <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" />
+    <style type="text/css">
+        /* Web Fonts */
+        @import url('https://fonts.googleapis.com/css?family=DM+Sans&display=swap');
+
+        /* Some resets and issue fixes */
+        #outlook a {
+            padding: 0; 
+        }
+
+        body {
+            width: 100% !important;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'DM Sans', 'Arial';
+        }
+
+        .ReadMsgBody { 
+            width: 100%; 
+        }
+
+        .ExternalClass {
+            width: 100%;
+        }
+
+        .backgroundTable {
+            margin: 0 auto;
+            padding:0;
+            width: 100% !important;
+        } 
+
+        table td {
+            border-collapse: collapse;
+        }
+
+        .ExternalClass * {
+            line-height: 115%;
+        } 
+        /* End reset */
+
+        /* Removing Blue Links in Email */
+        /* Apple Mail */
+        a[x-apple-data-detectors] {
+            color: inherit !important;
+            text-decoration: none !important;
+            font-size: inherit !important;
+            font-family: inherit !important;
+            font-weight: inherit !important;
+            line-height: inherit !important;
+        }
+
+        /* Gmail */
+        u + #body a {
+            color: inherit !important;
+            text-decoration: none !important;
+            font-size: inherit !important;
+            font-family: inherit !important;
+            font-weight: inherit !important;
+            line-height: inherit !important;
+        }
+
+        /* Samsung Mail */
+        #MessageViewBody a {
+            color: inherit !important;
+            text-decoration: none !important;
+            font-size: inherit !important;
+            font-family: inherit !important;
+            font-weight: inherit !important;
+            line-height: inherit !important;
+        }
+        /* End Removing Blue Links */
+
+        @media screen and (max-width: 630px) {
+            /* This sets elements to 100% width and fixes the height issues too, a god send */
+            *[class="100p"] {
+                width: 100% !important;
+                height: auto !important;
+            }
+
+            /* Centers content on mobile */
+            *[class="center"] {
+                text-align: center !important;
+                width: 100% !important;
+                height: auto !important;
+            }
+        }
+    </style>
+</head>
+
+<body id="body" style="padding:0; margin:0; background-color: #5f6263">
+    <table border="0" cellpadding="0" cellspacing="0" style="margin: 0; padding: 0" width="100%">
+        <tr>
+            <td align="center" valign="top">
+
+                <table width="640" cellspacing="0" cellpadding="0" class="100p"> 
+                    <tr>
+                        <td bgcolor="#E8DCC8" valign="top" class="100p">
+                            <!-- Logo Section -->
+                            <table width="640" border="0" cellspacing="0" class="100p" style="padding:5px 0 0 15px">
+                                <tr>
+                                    <td valign="top">
+                                        <table border="0" cellspacing="0" cellpadding="10" width="600" class="100p">
+                                            <tr>
+                                                <td align="center" class="100p">
+                                                    <h1 style="font-size: 32px;">Méja</h1>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <table width="640" height="380" cellspacing="0" cellpadding="0" bgcolor="#FFFFFF" class="100p">
+                                <tr>
+                                    <td align="left">
+                                        <div style="font-size: 16px; color:#000000; margin-left: 10%; margin-top: 5%">
+                                            <font face="'DM Sans', Arial, sans-serif">
+                                                <h3>Thanks for reserving with us, <strong>{{ context['name'] }}</strong>!</h3>
+                                            </font>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td align="left">
+                                        <div style="font-size: 16px; color:#000000; margin-left: 10%;">
+                                            <font face="'DM Sans', Arial, sans-serif">
+                                                <p>Here is your reservation details:</p>
+                                            </font>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                 <!-- start receipt table -->
+                                <tr>
+                                    <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
+                                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                        <tr>
+                                            <td colspan="2" align="left" bgcolor="#AE956D" width="35%" style="padding: 12px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
+                                               
+                                            </td>
+                                            <td align="right" bgcolor="#AE956D" width="65%" style="padding: 12px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
+                                               
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" align="left" width="30%" style="padding: 6px 12px; border-bottom: 1px solid #D2C7BA;">Number of Diners:</td>
+                                            <td align="right" width="80%" style="padding: 6px 12px; border-bottom: 1px solid #D2C7BA; font-weight: bold;">{{context['number_diner']}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" align="left" width="30%" style="padding: 6px 12px; border-bottom: 1px solid #D2C7BA;">Date and Time:</td>
+                                            <td align="right" width="80%" style="padding: 6px 12px; border-bottom: 1px solid #D2C7BA; font-weight: bold;">{{context['date_time']}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" align="left" width="30%" style="padding: 6px 12px; border-bottom: 1px solid #D2C7BA;">Reservation Notes:</td>
+                                            <td align="right" width="80%" style="padding: 6px 12px; border-bottom: 1px solid #D2C7BA; font-weight: bold;">{{context['notes']}}</td>
+                                        </tr>
+                                    </table>
+                                    </td>
+                                </tr>
+                                <!-- end reeipt table -->
+
+                                <tr>
+                                    <td align="center">
+                                        <div style="font-size: 16px; color:#000000; margin-left: 10%; margin-bottom: 5%;">
+                                            <font face="'DM Sans', Arial, sans-serif">
+                                                <p>See you soon!</p>
+                                            </font>
+                                        </div>
+                                        <div style="font-size: 16px; color:#000000; margin-left: 10%; margin-bottom: 5%;">
+                                            <font face="'DM Sans', Arial, sans-serif">
+                                                <p>Visit your <a href="#">account</a> page for more details.</p>
+                                            </font>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- <bottom area> -->
+                <table width="640" cellspacing="0" cellpadding="5" bgcolor="#E8DCC8" class="100p">                    
+                    <tr align="center">
+                        <td style="margin-bottom: 5%;">
+                            <div style="margin-bottom: 3%;">
+                                <font face="'DM Sans', Arial, sans-serif">
+                                    <p style="color: #000000; font-size: 12px;">© Meja App 2020</p>
+                                </font>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

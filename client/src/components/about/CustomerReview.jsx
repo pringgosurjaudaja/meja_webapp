@@ -39,39 +39,47 @@ export class CustomerReview extends React.Component {
     getReviews = async () => {
         try {
             const reviews = await Requests.getReviews();
-            const reviewCards = reviews.map((item, index) =>  this.reviewCard(item, index));
-            this.setState({ review: reviewCards.reverse() });
+            // const reviewCards = reviews.map((item, index) =>  this.reviewCard(item, index));
+            this.setState({ review: reviews.reverse() });
         } catch(err) {
             console.error(err);
         }
     }
 
-    reviewCard = (item, index) => {
-        const reviewCardProps = {
-            item: item,
-            email: this.state.email,
-            removeReview: (reviewId) => this.removeReview(reviewId),
-        }
-        return (
-            <ReviewCard key={index} {...reviewCardProps}/>
-        )
+    getReviewCard = () => {
+        
+        let res = [];
+        this.state.review && this.state.review.forEach((item, index) =>  {
+            console.log(item);
+            const reviewCardProps = {
+                item: item,
+                email: this.state.email,
+                removeReview: (reviewId) => this.removeReview(reviewId),
+            }
+            res.push(<ReviewCard key={index} {...reviewCardProps}/>);
+    
+        });
+        return res;
     }
 
     addReview = (review) => {
+        let review_list = [];
+        review_list.push(review);
         this.setState({
-            review: this.state.review.concat(this.reviewCard(review, 100))
+            review: review_list.concat(this.state.review),
         })
     }
 
     removeReview = (reviewId) => {
         let reviews = [...this.state.review];
-        let idx = -1;
-        reviews.filter((item, index) => {
-            idx = index;
+        // let idx = -1;
+        let r = reviews.filter((item, index) => {
+            // idx = index;
             return item._id === reviewId;
         });
-        if (idx !== -1) {
-            reviews.splice(idx, 1);
+        let index = reviews.indexOf(r[0]);
+        if (index !== -1) {
+            reviews.splice(index, 1);
             this.setState({ review: reviews });
         }
     }
@@ -87,7 +95,7 @@ export class CustomerReview extends React.Component {
                     <Col> <h3> Customer Feedback</h3></Col>
                 </Row>
                 <ReviewForm email={this.state.email} {...reviewFormProps}/>
-                {this.state.review}
+                {this.getReviewCard()}
                 <br/>
             </div>
         )

@@ -6,7 +6,6 @@ import { Order } from 'src/components/order/Order';
 import { navigate } from "@reach/router";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
-import { axios } from 'src/utilities/helper';
 import io from 'socket.io-client';
 import { Reservation } from 'src/components/reservation/Reservation';
 import { Requests } from 'src/utilities/Requests';
@@ -73,7 +72,7 @@ export class Dashboard extends React.Component {
         this.socket.emit('orderUpdated', orderId);
     }
 
-    toggleWaiterCall = async (tableId) => {
+    handleWaiterCall = async (tableId) => {
         console.log(tableId);
         const newTables = [...this.state.tables];
         for (let table of newTables) {
@@ -115,7 +114,7 @@ export class Dashboard extends React.Component {
                     <Tab eventKey="table" title="Tables">
                         <Reservation 
                             tables={this.state.tables}
-                            toggleWaiterCall ={this.toggleWaiterCall}
+                            handleWaiterCall={this.handleWaiterCall}
                         />
                     </Tab>
                     <Tab eventKey="menu" title="Menu">

@@ -27,12 +27,12 @@ export class Payment extends React.Component {
 
     handleMinusTip = () => {
         let oldTip = this.state.tip;
-        this.setState({ tip: Math.max(0, oldTip -= 5) });
+        this.setState({ tip: Math.max(0, oldTip -= 1) });
     }
 
     handlePlusTip = () => {
         let oldTip = this.state.tip;
-        this.setState({ tip: oldTip += 5 });
+        this.setState({ tip: oldTip += 1 });
     }
 
     handleMinusSplit = () => {

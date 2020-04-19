@@ -433,6 +433,7 @@ body {
 
 .order-status-btn {
     font-size: 14px !important;
+<<<<<<< HEAD
 }
 
 .order-card {
@@ -464,3 +465,8 @@ body {
 .order-time {
     margin-top: 16px;
 }
+=======
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+>>>>>>> 3859c49388cf2fa42c1a99f93cbadd3f857ce9ce

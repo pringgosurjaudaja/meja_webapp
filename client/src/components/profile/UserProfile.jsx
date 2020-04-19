@@ -2,7 +2,7 @@ import React from 'react';
 import 'rc-input-number/assets/index.css';
 import 'src/styles/styles.css';
 import example from 'src/styles/assets/profile.png';
-import { Container, Badge, Tab, Tabs } from 'react-bootstrap';
+import { Badge, Row, Col } from 'react-bootstrap';
 import { Requests } from 'src/utilities/Requests';
 
 export class UserProfile extends React.Component {
@@ -38,18 +38,21 @@ export class UserProfile extends React.Component {
 
     render() {
         return (
-            <Container>
-                <h1 >Profile</h1>
-                <div align="center">
-                    <img className="profile-img" alt="user profile" src={example} />
-                    <div align="center" className="profile-name">
-                        <h3>{this.state.name}{this.state.admin && <Badge className="profile-badge" variant="secondary">admin</Badge>}</h3>
+            <Row>
+                <Col>
+                    <h1 >Profile</h1>
+                    <div align="center">
+                        <img className="profile-img" alt="user profile" src={example} />
+                        <div align="center" className="profile-name">
+                            <h3>{this.state.name}{this.state.admin && <Badge className="profile-badge" variant="secondary">admin</Badge>}</h3>
+                        </div>
+                        <div align="center" className="profile-email">
+                            {this.state.email}
+                        </div>
                     </div>
-                    <div align="center" className="profile-email">
-                        {this.state.email}
-                    </div>
-                </div>
-            </Container>
+                </Col>
+                
+            </Row>
         );
     }
 }

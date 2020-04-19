@@ -19,12 +19,14 @@ export class ReplyForm extends React.Component {
     submitReply = async (e) => {
         e.preventDefault();
         console.log(this.props);
-        await Requests.postReply(this.props.email, this.state.review, this.props.id);
+        let res = await Requests.postReply(this.props.email, this.state.review, this.props.id);
+        console.log(res);
         this.props.closeDialog();
         this.props.addReply({
             "user": this.props.email,
             "reply": this.state.review,
-            "_id": this.props.id
+            "_id": this.props.id,
+            "date_time": res.inserted.date_time,
         })
     }
 

@@ -25,19 +25,19 @@ export class About extends React.Component {
     }
 
     render() {
+        const sessionId = localStorage.getItem('sessionId');
         return (
             <Container className="layout--padding--menu">
                 <Tabs activeKey={this.state.activeTab} onSelect={(tab => this.setState({ activeTab: tab }))}>
                     <Tab eventKey={aboutTabs.INFO} title={"Our History"}>
                         <Info/>
                     </Tab>
-                    <Tab eventKey={aboutTabs.CUSTOMER} title={"Customer Reviews"}>
+                    {sessionId && <Tab eventKey={aboutTabs.CUSTOMER} title={"Customer Reviews"}>
                         <CustomerReview/>
-                    </Tab>
+                    </Tab>}
                     <Tab eventKey={aboutTabs.REVIEW} title={"Community Reviews"}>
                         <Review/>
                     </Tab>
-                       
                 </Tabs>
             </Container>
         );
