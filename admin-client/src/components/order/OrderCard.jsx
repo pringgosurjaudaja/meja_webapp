@@ -57,7 +57,7 @@ export class OrderCard extends React.Component {
             [orderStatus.CANCELLED, 'danger'],
         ]);
     
-        return (<ButtonGroup>
+        return (<ButtonGroup className="flex-wrap">
             {[...statusButtonVariantMap.entries()].map(([status, variant], i) => {
                 let buttonVariant = variant;
                 if (status !== order.status) {
@@ -79,13 +79,15 @@ export class OrderCard extends React.Component {
         const { order } = this.props;
 
         return (
-            <Card style={{ width: '30vw', margin: '10px' }}>
+            <Card className="order-card" style={{ width: '30vw', margin: '10px' }}>
                 <Card.Header>
                     <Card.Title>Order</Card.Title>
                     <Card.Subtitle>#{order._id}</Card.Subtitle>
                     {this.orderStatusButtons(order)}
-                    <Card.Subtitle>Time Elapsed:</Card.Subtitle>
-                    <Card.Text>{this.getTimeElapsed(order)}</Card.Text>
+                    <div class="order-time">
+                        <Card.Subtitle>Time Elapsed:</Card.Subtitle>
+                        <Card.Text>{this.getTimeElapsed(order)}</Card.Text>
+                    </div>
                 </Card.Header>
                 <Card.Body>
                     <Table>
@@ -104,7 +106,7 @@ export class OrderCard extends React.Component {
                                         <Card.Title>
                                             {orderItem.menu_item.name}
                                         </Card.Title>
-                                        <Card.Text>
+                                        <Card.Text className="order-notes">
                                             {orderItem.notes}
                                         </Card.Text>
                                     </th>

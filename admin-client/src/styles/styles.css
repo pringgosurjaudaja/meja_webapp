@@ -165,12 +165,9 @@ body {
 
 .container-home {
     margin-top: 50px;
-    margin-left: 50px;
-    margin-right: 50px;
 }
 
 .layout--padding {
-    padding-left: 5%;
     padding-right: 5%;
     padding-top: 3%;
 }
@@ -436,6 +433,34 @@ body {
 
 .order-status-btn {
     font-size: 14px !important;
-    margin-top: 5px;
-    margin-bottom: 10px;
+}
+
+.order-card {
+    min-width: 100vw;
+}
+
+.order-card .card-title {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.order-card .card-body {
+    padding-bottom: 10px;
+    padding-top: 5px;
+}
+
+.order-card .card-subtitle {
+    font-size: 14px;
+    font-weight: medium;
+    font-style: italic;
+    padding-bottom: 10px;
+}
+
+.order-notes {
+    font-weight: normal;
+    font-style: italic;
+}
+
+.order-time {
+    margin-top: 16px;
 }
