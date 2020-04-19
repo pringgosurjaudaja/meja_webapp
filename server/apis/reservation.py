@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, render_template
 from flask_api import status
 from flask_restplus import Namespace, Resource, fields
 from marshmallow import ValidationError
@@ -168,12 +168,18 @@ class ReservationEmail(Resource):
     @reservation.expect(MODEL_reservation_email)
     def post(self):
         reservation = reservation_db.find_one({'_id': ObjectId(request.data['reservation_id'])})
+        email_context ={
+            'name': reservation['email'],
+            'number_diner': reservation['number_diner'],
+            'date_time': reservation['datetime'],
+            'notes': reservation['reservation_notes']
+        }
         email={
             'subject': f"Reservation Confirmation for {reservation['datetime']}",
-            'text': f"Your reservation at {reservation['datetime']} for {reservation['number_diner']} people are confirmed."
-
+            'text': f"Your reservation at {reservation['datetime']} for {reservation['number_diner']} people are confirmed.",
+            'html': render_template('reservation_confirmation.html', context=email_context)
         }
-        EmailSender().send_email_text('artemisproject28@gmail.com',email)
+        EmailSender().send_email('artemisproject28@gmail.com',email)
         return {
             'result': 'Email sent to ' + 'artemisproj' + ' successfully'
         }, status.HTTP_200_OK
