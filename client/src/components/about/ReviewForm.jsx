@@ -38,11 +38,17 @@ export class ReviewForm extends React.Component {
     submitFeedback = async (e) => {
         e.preventDefault();
         const res = await Requests.postReview(this.state.email, this.state.review, this.state.rating);
+        console.log(res);
+        let datetime = res.date_time.split(" ");
+        let date = datetime[0];
+        let time = datetime[1].split('.');
+        const newDateTime = date+"T"+time[0];
         const data = {
             "user": this.state.email,
             "review": this.state.review,
             "rating": this.state.rating,
-            "_id": res.result,
+            "_id": res._id,
+            "date_time": newDateTime,
         }
         this.props.addReview(data);
         this.setState({

@@ -63,13 +63,21 @@ export class ReviewCard extends React.Component {
 
     getReplies = () => {
         let res = [];
+
+
+
         if(!_.isNil(this.props.item.replies)) {
             this.props.item.replies.forEach((item, index) => {
+                const datetime = item.date_time.split("T");
+                const date = datetime[0];
+                const time = datetime[1];
+                const dateMessage = date + " at " + time;
+
                 const comment = (
                     <Card style={{ width: '100%' }}>
                         <Card.Body>
                             <Card.Title>{item.user}</Card.Title>
-                            <Card.Subtitle>{item.date_time}</Card.Subtitle>
+                            <Card.Subtitle>{dateMessage}</Card.Subtitle>
                             <Card.Text>{item.reply}</Card.Text>
                         </Card.Body>
                     </Card>
@@ -94,11 +102,16 @@ export class ReviewCard extends React.Component {
     }
 
     addReply = (item) => {
+        console.log(item);
+        const datetime = item.date_time.split("T");
+        const date = datetime[0];
+        const time = datetime[1];
+        const dateMessage = date + " at " + time;
         const comment = (
             <Card style={{ width: '100%' }}>
                 <Card.Body>
                     <Card.Title>{item.user}</Card.Title>
-                    <Card.Subtitle>{item.date_time}</Card.Subtitle>
+                    <Card.Subtitle>{dateMessage}</Card.Subtitle>
                     <Card.Text>{item.reply}</Card.Text>
                 </Card.Body>
             </Card>
@@ -115,15 +128,19 @@ export class ReviewCard extends React.Component {
     }
 
     render () {
-        console.log(this.props);
+        // console.log(this.props);
         // this.getReplies();
+        const datetime = this.props.item.date_time.split("T");
+        const date = datetime[0];
+        const time = datetime[1];
+        const dateMessage = date + " at " + time;
         return (
             <Row key={this.props.index}>
                 <Col>
                     <Card style={{ width: '100%' }}>
                         <Card.Body>
                             <Card.Title>{this.props.item.user}</Card.Title>
-                            <Card.Subtitle>{this.props.item.date_time}</Card.Subtitle>
+                            <Card.Subtitle>{dateMessage}</Card.Subtitle>
                             <Card.Text>
                                 {this.props.item.review}
                             </Card.Text>
