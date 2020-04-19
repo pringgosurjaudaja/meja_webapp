@@ -339,4 +339,40 @@ export class Requests {
             console.error(err);
         }
     }
+
+    static async getAvailability(year, month, date, number_diner) {
+        try {
+            const result = await axios({
+                method: 'post',
+                url: BASE_URL + '/reservation/availability',
+                data: {
+                    date: year+"-"+month+"-"+date,
+                    number_diner: number_diner,
+                },
+                header: {
+                    "x-api-key": localStorage.getItem('sessionId'),
+                    "Content-Type": "application/json"
+                }
+            });
+            return result; 
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    static async cancelReservation(reservationId) {
+        try {
+            const result = await axios({
+                method: 'delete',
+                url: BASE_URL + '/reservation/' + reservationId,
+                header: {
+                    "x-api-key": localStorage.getItem('sessionId'),
+                    "Content-Type": "application/json"
+                }
+            });
+            return result; 
+        } catch (err) {
+            console.error(err);
+        }
+    }
 }
