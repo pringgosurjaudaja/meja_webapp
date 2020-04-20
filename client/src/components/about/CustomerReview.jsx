@@ -6,6 +6,7 @@ import {
 import { Requests } from 'src/utilities/Requests'; 
 import { ReviewForm } from 'src/components/about/ReviewForm';
 import { ReviewCard } from 'src/components/about/ReviewCard';
+import { _ } from 'src/utilities/helper';
 
 export const BASE_INDEX_NUM = 1000;
 export class CustomerReview extends React.Component {
@@ -34,7 +35,6 @@ export class CustomerReview extends React.Component {
     getReviews = async () => {
         try {
             const reviews = await Requests.getReviews();
-            // const reviewCards = reviews.map((item, index) =>  this.reviewCard(item, index));
             this.setState({ review: reviews.reverse() });
         } catch(err) {
             console.error(err);
@@ -50,6 +50,7 @@ export class CustomerReview extends React.Component {
                 item: item,
                 email: this.state.email,
                 removeReview: (reviewId) => this.removeReview(reviewId),
+                addReview : () => this.addReview(),
             }
             res.push(<ReviewCard key={index} {...reviewCardProps}/>);
     
@@ -57,26 +58,15 @@ export class CustomerReview extends React.Component {
         return res;
     }
 
-    addReview = (review) => {
-        let review_list = [];
-        review_list.push(review);
-        this.setState({
-            review: review_list.concat(this.state.review),
-        })
+    addReview = async () => {
+        this.setState({ review: [] })
+        await this.getReviews();
+        
     }
 
-    removeReview = (reviewId) => {
-        let reviews = [...this.state.review];
-        // let idx = -1;
-        let r = reviews.filter((item, index) => {
-            // idx = index;
-            return item._id === reviewId;
-        });
-        let index = reviews.indexOf(r[0]);
-        if (index !== -1) {
-            reviews.splice(index, 1);
-            this.setState({ review: reviews });
-        }
+    removeReview = async () => {
+        this.setState({ review: [] })
+        await this.getReviews();
     }
 
     render () {

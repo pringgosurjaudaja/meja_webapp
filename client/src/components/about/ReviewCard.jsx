@@ -37,7 +37,7 @@ export class ReviewCard extends React.Component {
 
     deleteComment = async () => {
         await Requests.deleteReview(this.props.item._id);
-        this.props.removeReview(this.props.item._id);
+        this.props.removeReview();
     }
 
     getFooter = (show) => {
@@ -101,30 +101,9 @@ export class ReviewCard extends React.Component {
         return res;
     }
 
-    addReply = (item) => {
-        console.log(item);
-        const datetime = item.date_time.split("T");
-        const date = datetime[0];
-        const time = datetime[1];
-        const dateMessage = date + " at " + time;
-        const comment = (
-            <Card style={{ width: '100%' }}>
-                <Card.Body>
-                    <Card.Title>{item.user ? item.user : "Anonymous"}</Card.Title>
-                    <Card.Subtitle>{dateMessage}</Card.Subtitle>
-                    <Card.Text>{item.reply}</Card.Text>
-                </Card.Body>
-            </Card>
-        );
-
-        const row = (
-            <Row key={100}>
-                <Col>
-                    {comment}
-                </Col>
-            </Row>
-        );
-        this.setState({ replies: this.state.replies.concat(row) });
+    addReply = () => {
+        this.props.addReview();
+        this.getReplies();
     }
 
     render () {

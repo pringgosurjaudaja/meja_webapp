@@ -8,6 +8,7 @@ import {
 } from 'react-bootstrap';
 import { Requests } from 'src/utilities/Requests'; 
 import StarRatings from 'react-star-ratings';
+import { _ } from 'src/utilities/helper';
 export const ARBITRARY_INDEX = 999999;
 export class ReviewForm extends React.Component {
     
@@ -22,13 +23,13 @@ export class ReviewForm extends React.Component {
     }
 
     componentDidMount = async () =>  {
-        await this.getName();
+        await this.getEmail();
     }
-    getName = async () => {
+    getEmail = async () => {
         const sessionId = localStorage.getItem('sessionId');
         const session = await Requests.getSession(sessionId);
         const user = await Requests.getUser(session.user_id);
-        user && this.setState({ email: user.name });
+        user && this.setState({ email: user.email });
     }
 
     submitFeedback = async (e) => {
@@ -39,8 +40,14 @@ export class ReviewForm extends React.Component {
             return;
         }
         this.setState({ validated: true });
-        const res = await Requests.postReview(this.state.email, this.state.review, this.state.rating);
-        console.log(res);
+        let res;
+        if(_.isNil(this.state.email)){
+            res = await Requests.postReview("Anonymous", this.state.review, this.state.rating);
+        } else {
+            res = await Requests.postReview(this.state.email, this.state.review, this.state.rating);
+        }
+        
+        
         let datetime = res.date_time.split(" ");
         let date = datetime[0];
         let time = datetime[1].split('.');
