@@ -85,6 +85,9 @@ export class Requests {
             const result = await axios({
                 method: 'get',
                 url: BASE_URL + '/table/' + tableId,
+                header: {
+                    "x-api-key": sessionStorage.getItem('AUTH_KEY'),
+                }
             });
             return result.data;
         } catch(err) {
@@ -355,7 +358,8 @@ export class Requests {
                     "reservation_notes": data.notes
                 },
                 header: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "x-api-key": sessionStorage.getItem('AUTH_KEY'),
                 }
             });
             return result; 
