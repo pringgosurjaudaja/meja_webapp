@@ -26,8 +26,7 @@ export class CustomerReview extends React.Component {
         const sessionId = localStorage.getItem('sessionId');
         const session = await Requests.getSession(sessionId);
         const user = await Requests.getUser(session.user_id);
-        user && this.setState({ email: user.email });
-                
+        user && this.setState({ email: user.email });    
     }
 
 
