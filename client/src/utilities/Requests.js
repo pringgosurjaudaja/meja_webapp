@@ -26,13 +26,12 @@ export class Requests {
             const allSession = await axios ({
                 method: 'get',
                 url: BASE_URL + '/auth',
-                headers: {
-                    'X-API-KEY': apiKey
-                }
             });
             return allSession.data;
         } catch (err) {
             console.error(err);
+            localStorage.removeItem('sessionId');
+            navigate('/home');
         }
     }
 
@@ -45,6 +44,8 @@ export class Requests {
             return menu.data;
         } catch (err) {
             console.error(err);
+            localStorage.removeItem('sessionId');
+            navigate('/home');
         }
     }
 
@@ -57,6 +58,8 @@ export class Requests {
             return menu.data;
         } catch (err) {
             console.error(err);
+            localStorage.removeItem('sessionId');
+            navigate('/home');
         }
     }
 
@@ -69,6 +72,8 @@ export class Requests {
             return userRequest.data;
         } catch(err) {
             console.error(err);
+            localStorage.removeItem('sessionId');
+            navigate('/home');
         }
     }
 
@@ -77,13 +82,12 @@ export class Requests {
             const result = await axios({
                 method: 'get',
                 url: BASE_URL + '/table/' + tableId,
-                header: {
-                    "x-api-key": sessionStorage.getItem('AUTH_KEY'),
-                }
             });
             return result.data;
         } catch(err) {
             console.error(err);
+            localStorage.removeItem('sessionId');
+            navigate('/home');
         }
     }
 
@@ -147,6 +151,8 @@ export class Requests {
 
         } catch(err) {
             console.error(err);
+            localStorage.removeItem('sessionId');
+            navigate('/home');
         }
     }
 
@@ -159,6 +165,8 @@ export class Requests {
             return reservation.data;
         } catch(err) {
             console.error(err);
+            localStorage.removeItem('sessionId');
+            navigate('/home');
         }
     }
 
@@ -171,6 +179,8 @@ export class Requests {
             return reviews.data;
         } catch (err) {
             console.error(err);
+            localStorage.removeItem('sessionId');
+            navigate('/home');
         }
     }
 
@@ -188,6 +198,8 @@ export class Requests {
             return reviews.data;
         } catch(err) {
             console.error(err);
+            localStorage.removeItem('sessionId');
+            navigate('/home');
         }
     }
 
@@ -204,6 +216,8 @@ export class Requests {
             return reviews.data;
         } catch(err) {
             console.error(err);
+            localStorage.removeItem('sessionId');
+            navigate('/home');
         }
     }
 
@@ -216,6 +230,8 @@ export class Requests {
             return reviews.data;
         } catch(err) {
             console.error(err);
+            localStorage.removeItem('sessionId');
+            navigate('/home');
         }
     }
 
@@ -232,6 +248,8 @@ export class Requests {
             return receiptRequest.data;
         } catch(err) {
             console.error(err);
+            localStorage.removeItem('sessionId');
+            navigate('/home');
         }
     }
 
@@ -245,6 +263,8 @@ export class Requests {
             return waiterReq.data;
         } catch(err) {
             console.error(err);
+            localStorage.removeItem('sessionId');
+            navigate('/home');
         }
     }
 
@@ -262,7 +282,9 @@ export class Requests {
             console.log(result.data.inserted);
             return result.data.inserted;
         } catch (err) {
-            console.leerror(err);
+            console.error(err);
+            localStorage.removeItem('sessionId');
+            navigate('/home');
         }
     }
     static async deleteFoodReview(menuItemId, reviewId) {
@@ -277,6 +299,8 @@ export class Requests {
             return result.data;
         } catch (err) {
             console.error(err);
+            localStorage.removeItem('sessionId');
+            navigate('/home');
         }
     }
     static goHome() {
@@ -292,6 +316,8 @@ export class Requests {
             return result.data;
         } catch (err) {
             console.error(err);
+            localStorage.removeItem('sessionId');
+            navigate('/home');
         }
     }
 
@@ -309,7 +335,7 @@ export class Requests {
             return result.data;
         } catch (err) {
             console.error(err);
-            alert('Invalid Input');
+            alert('Missing required fields');
             navigate('/register');
         }
     }
@@ -326,13 +352,14 @@ export class Requests {
                     "reservation_notes": data.notes
                 },
                 header: {
-                    "x-api-key": localStorage.getItem('sessionId'),
                     "Content-Type": "application/json"
                 }
             });
             return result; 
         } catch (err) {
             console.error(err);
+            localStorage.removeItem('sessionId');
+            navigate('/home');
         }
     }
 
@@ -345,13 +372,14 @@ export class Requests {
                     "reservation_id": reservationId,
                 },
                 header: {
-                    "x-api-key": localStorage.getItem('sessionId'),
                     "Content-Type": "application/json"
                 }
             });
             return result; 
         } catch (err) {
             console.error(err);
+            localStorage.removeItem('sessionId');
+            navigate('/home');
         }
     }
 
@@ -365,13 +393,14 @@ export class Requests {
                     number_diner: number_diner,
                 },
                 header: {
-                    "x-api-key": localStorage.getItem('sessionId'),
                     "Content-Type": "application/json"
                 }
             });
             return result; 
         } catch (err) {
             console.error(err);
+            localStorage.removeItem('sessionId');
+            navigate('/home');
         }
     }
 
@@ -388,6 +417,8 @@ export class Requests {
             return result; 
         } catch (err) {
             console.error(err);
+            localStorage.removeItem('sessionId');
+            navigate('/home');
         }
     }
 }
