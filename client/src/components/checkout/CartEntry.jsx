@@ -6,7 +6,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 export class CartEntry extends React.Component {
 
     render() {
-        const { item, handleQuantityChange } = this.props;
+        const { item, handleQuantityChange, handleDeleteItem } = this.props;
 
         return (
             <Card className='checkout-cartentry'>
@@ -14,7 +14,7 @@ export class CartEntry extends React.Component {
                     <div className='checkout-cartentry-trash'>
                         <FontAwesomeIcon 
                             icon={faTrash} 
-                            onClick={() => this.handleDeleteItem(item)} 
+                            onClick={() => handleDeleteItem(item)} 
                         />
                     </div>
                     <Card.Title>{item.menu_item.name}</Card.Title>

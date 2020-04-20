@@ -38,7 +38,7 @@ export class Checkout extends React.Component {
     render() {
         const { cart, handleOrderCart, show, onHide } = this.props;
         let entries = cart.size > 0 && 
-                      [...cart.values()].map((item, i) => <CartEntry handleQuantityChange={this.handleQuantityChange} key={i} item={item} />);
+                      [...cart.values()].map((item, i) => <CartEntry handleDeleteItem={this.handleDeleteItem} handleQuantityChange={this.handleQuantityChange} key={i} item={item} />);
 
         return (
             <Modal
