@@ -186,20 +186,20 @@ export class Dashboard extends React.Component {
         }
     }
 
-    handlePayment = () => {
+    handlePayment = async () => {
+        Requests.closeOrder(localStorage.getItem('sessionId'));
+
+        this.socket.emit('customer_paying', localStorage.getItem('tableId'))
+
         this.setState({ 
+            orderList: await this.getOrderList(),
             showCompleteOrderWarning: false,
             activeTab: tabs.PAYMENT 
         });
     }
 
     handleCloseOrder = () => {
-        console.log('Closing Order and Paying');
-        console.log(this.state.orderList);
-
         this.setState({ showCompleteOrderWarning: true });
-
-        // Send entire session info to the backend to be stored in db
     }
     // #endregion
 

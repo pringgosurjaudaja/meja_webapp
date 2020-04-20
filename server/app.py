@@ -65,6 +65,13 @@ def on_call_waiter_toggle(table_id):
     emit('callWaiterToggled', room=table_id)
 # endregion
 
+# region Customer paying
+@socketio.on('customer_paying')
+def on_customer_paying(table_id):
+    emit('customerPaying', table_id, room=ADMIN_ROOM)
+
+# endregion
+
 
 
 
