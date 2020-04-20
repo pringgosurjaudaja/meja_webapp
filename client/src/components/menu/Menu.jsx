@@ -144,7 +144,7 @@ export class Menu extends React.Component {
             <Container className="layout--padding--menu">
                 <h1 className="menu-h1">Menu</h1>
                 <Nav class="tabbable">
-                    <Tabs className="nav-tabs" fixed="top" defaultActiveKey={DEFAULT_TAB}>
+                    <Tabs className="nav-tabs" defaultActiveKey={DEFAULT_TAB}>
                         {this.getRecommendationTab()}
                         {this.getSearchTab()}
                         {this.getMenuTabs()}

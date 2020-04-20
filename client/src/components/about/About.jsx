@@ -29,6 +29,7 @@ export class About extends React.Component {
         const sessionId = localStorage.getItem('sessionId');
         return (
             <Container className="layout--padding--menu">
+                <h1 className="menu-h1">⠀</h1>
                 <Nav class="tabbable">
                     <Tabs className="nav-tabs" activeKey={this.state.activeTab} onSelect={(tab => this.setState({ activeTab: tab }))}>
                         <Tab eventKey={aboutTabs.INFO} title={"Our History"}>
