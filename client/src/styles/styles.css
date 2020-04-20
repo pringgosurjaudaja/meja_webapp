@@ -100,6 +100,11 @@ body {
     background-size: auto 100%;;
 }
 
+.layout--landbackground {
+    background: url(../styles/assets/bg-app1.jpg) no-repeat center center fixed;
+    background-size: auto 100%;;
+}
+
 .container-home {
     margin-top: 50px;
     margin-left: 50px;
@@ -250,10 +255,10 @@ body {
     right: 0% !important;
     top: 0% !important;
     bottom: 0% !important;
-    background: #CDCCC8 !important;
+    background: #000000 !important;
     color: #FFFFFF !important;
     border-radius: 12px !important;
-    border-color: #CDCCC8 !important;
+    border-color: #000000 !important;
 }
 
 .divider {

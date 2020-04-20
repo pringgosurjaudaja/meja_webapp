@@ -8,7 +8,7 @@ import { Requests } from 'src/utilities/Requests';
 export class Landing extends React.Component {
     componentDidMount() {
         let tmp = document.getElementsByTagName('body')[0];
-        tmp.setAttribute('class', 'layout--background');
+        tmp.setAttribute('class', 'layout--landbackground');
     }
 
 
