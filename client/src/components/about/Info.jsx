@@ -28,12 +28,12 @@ export class Info extends React.Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        const phone = _.get(this.state, 'phone', '');
-        const message = _.get(this.state, 'message', '');
+        // const phone = _.get(this.state, 'phone', '');
+        // const message = _.get(this.state, 'message', '');
          
         axios({
             method: 'get',
-            url: 'https://api.whatsapp.com/send?phone='+phone+'&text='+encodeURI(message)+'</insert>',
+            url: 'https://api.whatsapp.com/send?text=%27Please%20use%20Meja%20cause%20its%20amazing%27',
             timeout: 1000,
         })
         .then((response) => {

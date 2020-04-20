@@ -34,7 +34,7 @@ export class ReviewForm extends React.Component {
         //     }
         // })
         const user = await Requests.getUser(session.user_id);
-        user.email && this.setState({ email: user.email });
+        user && this.setState({ email: user.email });
     }
 
     submitFeedback = async (e) => {
