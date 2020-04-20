@@ -47,11 +47,7 @@ export class Info extends React.Component {
 
     
     render () {
-
-        // const phone = _.get(this.state, "phone", '0000000000');
-        // const message = encodeURI(_.get(this.state, "message", ''));
-        const url = 'https://api.whatsapp.com/send';//?phone='+phone+'&text='+encodeURI(message);
-
+        const url = 'https://api.whatsapp.com/send?text=%27Check%20out%20Meja%20at%20www.Meja.com%27';
         return (
             <div>
                 <Row>
@@ -80,7 +76,7 @@ export class Info extends React.Component {
                     
                 </Row>
                 <Row>
-                    <Col><h3>Share <FontAwesomeIcon className="icon-whatsapp" icon={faWhatsapp}/> <FontAwesomeIcon className="icon-share" onClick={()=>{window.open(url)}} icon={faShare}/></h3></Col>
+                    <Col><h3>Share <a href={url}><FontAwesomeIcon className="icon-whatsapp" icon={faWhatsapp}/></a></h3></Col>
                     
                     
                     {/* https://api.whatsapp.com/send?phone=<insert phone>&text=<insert message></insert> */}
