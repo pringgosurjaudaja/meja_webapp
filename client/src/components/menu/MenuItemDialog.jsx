@@ -25,13 +25,8 @@ export class MenuItemDialog extends React.Component {
     getEmail = async () => {
         const sessionId = localStorage.getItem('sessionId');
         const session = await Requests.getSession(sessionId);
-        const allSession = await Requests.getAuth(sessionId);
-        allSession && allSession.forEach(async (sess) => {
-            if (sess._id === session.user_id) {
-                this.setState({ email: sess.email });
-                return;
-            }
-        })
+        const user = await Requests.getUser(session.user_id);
+        user && this.setState({ email: user.email });
     }
 
 
@@ -171,12 +166,12 @@ export class MenuItemDialog extends React.Component {
                                         </div>
                                         
                                         {/* Notes for Menu Item */}
-                                        <FormLabel>Add notes</FormLabel>
+                                        <FormLabel>Add notes (optional)</FormLabel>
                                         <InputGroup>
                                             <FormControl 
                                                 onChange={this.handleNotesChange} 
                                                 as="textarea" 
-                                                aria-label="With textarea" 
+                                                aria-label="With textarea"
                                             />
                                         </InputGroup>
                                         <br></br>

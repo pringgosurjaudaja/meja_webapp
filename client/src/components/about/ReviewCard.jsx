@@ -76,7 +76,7 @@ export class ReviewCard extends React.Component {
                 const comment = (
                     <Card style={{ width: '100%' }}>
                         <Card.Body>
-                            <Card.Title>{item.user}</Card.Title>
+                            <Card.Title>{item.user ? item.user : "Anonymous"}</Card.Title>
                             <Card.Subtitle>{dateMessage}</Card.Subtitle>
                             <Card.Text>{item.reply}</Card.Text>
                         </Card.Body>
@@ -110,7 +110,7 @@ export class ReviewCard extends React.Component {
         const comment = (
             <Card style={{ width: '100%' }}>
                 <Card.Body>
-                    <Card.Title>{item.user}</Card.Title>
+                    <Card.Title>{item.user ? item.user : "Anonymous"}</Card.Title>
                     <Card.Subtitle>{dateMessage}</Card.Subtitle>
                     <Card.Text>{item.reply}</Card.Text>
                 </Card.Body>
@@ -139,7 +139,7 @@ export class ReviewCard extends React.Component {
                 <Col>
                     <Card style={{ width: '100%' }}>
                         <Card.Body>
-                            <Card.Title>{this.props.item.user}</Card.Title>
+                            <Card.Title>{this.props.item.user ? this.props.item.user : "Anonymous"}</Card.Title>
                             <Card.Subtitle>{dateMessage}</Card.Subtitle>
                             <Card.Text>
                                 {this.props.item.review}

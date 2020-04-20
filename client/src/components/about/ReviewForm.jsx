@@ -17,21 +17,28 @@ export class ReviewForm extends React.Component {
             email: "",
             review: "",
             rating: 0,
+            validated: false,
         };
     }
 
     componentDidMount = async () =>  {
-        await this.getEmail();
+        await this.getName();
     }
-    getEmail = async () => {
+    getName = async () => {
         const sessionId = localStorage.getItem('sessionId');
         const session = await Requests.getSession(sessionId);
         const user = await Requests.getUser(session.user_id);
-        user && this.setState({ email: user.email });
+        user && this.setState({ email: user.name });
     }
 
     submitFeedback = async (e) => {
         e.preventDefault();
+        const form = e.currentTarget;
+        if (form.checkValidity() === false) {
+            e.stopPropagation();
+            return;
+        }
+        this.setState({ validated: true });
         const res = await Requests.postReview(this.state.email, this.state.review, this.state.rating);
         console.log(res);
         let datetime = res.date_time.split(" ");
@@ -67,10 +74,10 @@ export class ReviewForm extends React.Component {
                 <Col>
                     <Card style={{ width: '100%' }}>
                         <Card.Body>
-                            <Form onSubmit={this.submitFeedback}>
+                            <Form noValidate validated={this.state.validated} onSubmit={this.submitFeedback}>
                                 <Form.Group controlId="exampleForm.ControlTextarea1">
                                     <Form.Label>Share a feedback with us</Form.Label>
-                                    <Form.Control as="textarea" rows="3" onChange={this.changeReview} value={this.state.review}/>
+                                    <Form.Control required as="textarea" rows="3" onChange={this.changeReview} value={this.state.review}/>
                                 </Form.Group>
                                 <StarRatings
                                     className="star-ratings"

@@ -19,6 +19,7 @@ export class Login extends React.Component {
             email: '',
             password: '',
             showNotif: false,
+            validated: false,
         }
     }
 
@@ -33,7 +34,11 @@ export class Login extends React.Component {
 
     handleSubmit = async (event) => {
         event.preventDefault();
-
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+            event.stopPropagation();
+        }
+        this.setState({ validated: true });
         // Login with user entered details
         const loginRequest = await Requests.login(this.state.email, this.state.password);
         if (_.isNil(loginRequest)) {
@@ -78,13 +83,13 @@ export class Login extends React.Component {
                         </h1>
                     </Row>
                     <Row>
-                        <Form size="lg" className="layout--padding" onSubmit={this.handleSubmit}>
+                        <Form noValidate validated={this.state.validated} size="lg" className="layout--padding" onSubmit={this.handleSubmit}>
                             <Form.Group controlId="formBasicEmail">
-                                <Form.Control value={this.state.email} onChange={this.handleChange} name="email" type="email" placeholder="Enter email" />
+                                <Form.Control required value={this.state.email} onChange={this.handleChange} name="email" type="email" placeholder="Enter email" />
                             </Form.Group>
 
                             <Form.Group controlId="formBasicPassword">
-                                <Form.Control value={this.state.password} onChange={this.handleChange} name="password" type="password" placeholder="Password" />
+                                <Form.Control required value={this.state.password} onChange={this.handleChange} name="password" type="password" placeholder="Password" />
                             </Form.Group>
 
                             <Button style={{ backgroundColor: "black", color: "white" }} variant="primary" onClick={this.handleSubmit}>

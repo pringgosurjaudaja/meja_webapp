@@ -18,6 +18,7 @@ export class Login extends React.Component {
             email: '',
             password: '',
             showNotif: false,
+            validated: false,
         }
     }
 
@@ -41,6 +42,12 @@ export class Login extends React.Component {
 
     handleSubmit = async (event) => {
         event.preventDefault();
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+            event.stopPropagation();
+        }
+        this.setState({ validated: true });
+
         const result = await Requests.login(this.state.email, this.state.password);
 
         if(_.isNil(result)) {
@@ -85,14 +92,14 @@ export class Login extends React.Component {
                     <Row className="l-home__row">
                         <Col></Col>
                         <Col xs={3} md={3}>
-                            <Form className="layout--padding" onSubmit={this.handleSubmit}>
+                            <Form noValidate validated={this.state.validated} className="layout--padding" onSubmit={this.handleSubmit}>
                                 <Form.Group controlId="formBasicEmail">
-                                    <Form.Control value={this.state.email} onChange={this.handleChange}
+                                    <Form.Control required value={this.state.email} onChange={this.handleChange}
                                     name="email" type="text" placeholder="Enter Email" />
                                 </Form.Group>
 
                                 <Form.Group controlId="formBasicPassword">
-                                    <Form.Control value={this.state.password} onChange={this.handleChange}
+                                    <Form.Control required value={this.state.password} onChange={this.handleChange}
                                     name="password" type="password" placeholder="Password" />
                                 </Form.Group>
 
