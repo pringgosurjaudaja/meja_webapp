@@ -5,7 +5,7 @@ import { Login } from 'src/components/home/Login';
 import { Register } from 'src/components/home/Register';
 import { Dashboard } from 'src/components/Dashboard';
 import { LandingReservation } from 'src/components/home/LandingReservation';
-import { About } from 'src/components/about/About';
+import { LandingAbout } from 'src/components/home/LandingAbout';
 import { Landing } from 'src/components/home/Landing';
 import { Scan } from 'src/components/home/Scan';
 
@@ -19,7 +19,7 @@ class App extends React.Component {
 			<Register path="/register" />      
 			<Dashboard path="/dashboard" />
 			<LandingReservation path="/reservation" />
-			<About path="/about" />
+			<LandingAbout path="/about" />
 			<Scan path="/scan" />
 		</Router>
 		)

@@ -1,8 +1,10 @@
 import React from 'react';
 import {  Container, Row, Col } from 'react-bootstrap';
-import { Redirect } from "@reach/router";
+import { navigate, Redirect } from "@reach/router";
 import 'src/styles/styles.css';
 import { Requests } from 'src/utilities/Requests';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
 export class Scan extends React.Component {
 
@@ -27,6 +29,12 @@ export class Scan extends React.Component {
 
         return (
             <Container fluid className="l-landing">
+                <Row>
+                    <FontAwesomeIcon className="l-button-back"
+                        icon={faChevronLeft}
+                        onClick={() => navigate("/")}
+                    />
+                </Row>
                 <Row className="l-home__row">
 
                     <Col>

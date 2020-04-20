@@ -9,6 +9,8 @@ import 'src/styles/styles.css';
 import { DateTime, moment, axios } from 'src/utilities/helper';
 import { Requests } from 'src/utilities/Requests';
 import { navigate } from '@reach/router';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 export class LandingReservation extends React.Component {
 
     constructor(props) {
@@ -162,6 +164,12 @@ export class LandingReservation extends React.Component {
         };
         return (
             <Container className="l-reserve">
+                <Row>
+                    <FontAwesomeIcon className="l-button-back"
+                        icon={faChevronLeft}
+                        onClick={() => navigate("/")}
+                    />
+                </Row>
                 <Row className="l-reserve__row l-reserve-title">
                     <h1>Make Reservation</h1>
                 </Row>
