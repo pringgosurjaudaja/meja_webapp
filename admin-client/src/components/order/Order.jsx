@@ -66,7 +66,6 @@ export class Order extends React.Component {
                             return <OrderCard 
                                         key={i} 
                                         order={order}
-                                        orderNumber={i}
                                         changeOrderStatus={changeOrderStatus} 
                                     />;
                         }
