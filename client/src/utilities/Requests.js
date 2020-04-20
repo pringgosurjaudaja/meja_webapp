@@ -20,6 +20,23 @@ export class Requests {
             alert('Login Failed');
         }
     }
+
+    static async logout(sessionId) {
+        try {
+            localStorage.clear();
+            const logoutRequest = await axios({
+                method: 'patch',
+                url: BASE_URL + '/auth/logout',
+                data: {
+                    session_id: sessionId
+                }
+            });
+            navigate('/');
+            return logoutRequest.data;
+        } catch(err) {
+            console.error(err);
+        }
+    }
     
     static async getAuth(apiKey) {
         try {
