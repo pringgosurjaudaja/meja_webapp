@@ -464,3 +464,22 @@ body {
 .order-time {
     margin-top: 16px;
 }
+
+
+.alert-shown {
+    opacity: 1;
+    transition: all 250ms linear;
+}
+
+.alert-hidden {
+    display: none;
+    opacity: 0;
+    transition: all 250ms linear;
+}
+
+.login-alert {
+    margin-top: 100px;
+    width: 267px;
+    margin-left: auto;
+    margin-right: auto;
+}

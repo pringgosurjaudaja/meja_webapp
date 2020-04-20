@@ -17,7 +17,6 @@ export class Requests {
             return loginRequest.data;
         } catch(err) {
             console.error(err);
-            alert('Login Failed');
         }
     }
     

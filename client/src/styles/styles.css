@@ -377,13 +377,13 @@ body {
 .alert-shown {
     opacity: 1;
     transition: all 250ms linear;
-  }
-  
-  .alert-hidden {
+}
+
+.alert-hidden {
     display: none;
     opacity: 0;
     transition: all 250ms linear;
-  }
+}
 
 .zomato-review--title {
     margin-top: 5%;

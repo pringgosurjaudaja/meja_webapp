@@ -18,6 +18,7 @@ export class Login extends React.Component {
         this.state = {
             email: '',
             password: '',
+            showNotif: false,
         }
     }
 
@@ -36,7 +37,7 @@ export class Login extends React.Component {
         // Login with user entered details
         const loginRequest = await Requests.login(this.state.email, this.state.password);
         if (_.isNil(loginRequest)) {
-            navigate('/home');
+            this.showNotification();
         } else {
             await Requests.makeSession(localStorage.getItem('tableId'), loginRequest.token);
             navigate('/dashboard');
@@ -48,6 +49,19 @@ export class Login extends React.Component {
         this.setState({ email: '', password: '' });
     }
 
+    showNotification = () => {
+        console.log(this.state);
+        this.setState({
+            showNotif: true,
+            email: "",
+            password: "",
+          });
+          setTimeout(() => {
+            this.setState({
+                showNotif: false,
+            });
+          }, 2000);
+    }
     render() {
         return (
             <div className="container-home">
@@ -76,7 +90,15 @@ export class Login extends React.Component {
                             <Button style={{ backgroundColor: "black", color: "white" }} variant="primary" onClick={this.handleSubmit}>
                                 SIGN IN
                             </Button>
+                            
+                        
                         </Form>
+                    </Row>
+                    <br/>
+                    <Row>
+                        <div style={{ width: "90%" }}className={`alert alert-warning ${this.state.showNotif ? 'alert-shown' : 'alert-hidden'}`}>
+                            Invalid email or password
+                        </div>
                     </Row>
                 </Container>
             </div>

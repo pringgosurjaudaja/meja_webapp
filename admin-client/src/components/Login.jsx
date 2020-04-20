@@ -10,13 +10,14 @@ import { navigate } from "@reach/router";
 import 'src/styles/styles.css';
 import { Requests } from 'src/utilities/Requests';
 import logo from "src/styles/assets/logo.png";
-
+import { _ } from "src/utilities/helper";
 export class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             email: '',
             password: '',
+            showNotif: false,
         }
     }
 
@@ -42,16 +43,30 @@ export class Login extends React.Component {
         event.preventDefault();
         const result = await Requests.login(this.state.email, this.state.password);
 
-        if(result) {
-            sessionStorage.setItem("AUTH_KEY", result.token);
-            navigate("/dashboard");
-        } else {
+        if(_.isNil(result)) {
             this.setState({
                 email: '',
                 password: '',
             })
-        }
+            this.showNotification();
+        } else {sessionStorage.setItem("AUTH_KEY", result.token);
+            navigate("/dashboard");
+        } 
         
+    }
+    
+    showNotification = () => {
+        console.log(this.state);
+        this.setState({
+            showNotif: true,
+            email: "",
+            password: "",
+          });
+          setTimeout(() => {
+            this.setState({
+                showNotif: false,
+            });
+          }, 2000);
     }
 
     render() {
@@ -88,9 +103,13 @@ export class Login extends React.Component {
 
                         </Col>
                         <Col></Col>
-
                     </Row>
-            </Container>
+                    <Row>
+                        <div className={`login-alert alert alert-warning ${this.state.showNotif ? 'alert-shown' : 'alert-hidden'}`}>
+                            Invalid email or password
+                        </div>
+                    </Row>
+                </Container>
             </div>
         );
     }
