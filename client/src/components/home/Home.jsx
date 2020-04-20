@@ -43,9 +43,9 @@ export class Home extends React.Component {
         const tableId = urlParams.get('table_id');
         if (!(tableId && Requests.getTable(tableId))) {
             return (<Redirect to='/scan' noThrow />);
+        } else {
+            localStorage.setItem('tableId', tableId);
         }
-
-        localStorage.setItem('tableId', tableId);
         
         return (
             <Container fluid className="l-home">
