@@ -179,7 +179,7 @@ class ReservationEmail(Resource):
             'text': f"Your reservation at {reservation['datetime']} for {reservation['number_diner']} people are confirmed.",
             'html': render_template('reservation_confirmation.html', context=email_context)
         }
-        EmailSender().send_email('artemisproject28@gmail.com',email)
+        EmailSender().send_email(reservation['email'],email)
         return {
             'result': 'Email sent to ' + 'artemisproj' + ' successfully'
         }, status.HTTP_200_OK
