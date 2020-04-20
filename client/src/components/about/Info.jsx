@@ -77,27 +77,7 @@ export class Info extends React.Component {
                 </Row>
                 <Row>
                     <Col><h3>Share <a href={url}><FontAwesomeIcon className="icon-whatsapp" icon={faWhatsapp}/></a></h3></Col>
-                    
-                    
-                    {/* https://api.whatsapp.com/send?phone=<insert phone>&text=<insert message></insert> */}
                 </Row>
-                {/* <Row>
-                    <Col>
-                        <Form onSubmit={this.handleSubmit}>
-                            <Form.Group controlId="exampleForm.ControlTextarea1">
-                                <Form.Label>Send your message</Form.Label>
-                                <Form.Control name="phone" type="text" placeholder="Enter Phone Number" onChange={this.handleChange}/>
-                            </Form.Group>
-                            <Form.Group controlId="exampleForm.ControlTextarea1">
-                                <Form.Control name="message" as="textarea" rows="3" placeholder="Enter Your Messaage" onChange={this.handleChange}/>
-                            </Form.Group>
-                            <Button 
-                            href={url}
-                            onClick={this.showNotification} type="submit" 
-                            style={{ backgroundColor: "#25D366", borderColor: "#25D366"}} >Share</Button>
-                        </Form>
-                    </Col>
-                </Row> */}
             </div>
         )
     }
