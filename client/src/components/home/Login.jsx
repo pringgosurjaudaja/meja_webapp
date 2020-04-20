@@ -38,7 +38,7 @@ export class Login extends React.Component {
         if (_.isNil(loginRequest)) {
             navigate('/home');
         } else {
-            await Requests.makeSession('5e94221a196b3c2735e94860', loginRequest.token);
+            await Requests.makeSession(localStorage.getItem('tableId'), loginRequest.token);
             navigate('/dashboard');
         }
         
