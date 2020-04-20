@@ -7,7 +7,7 @@ export class Requests {
         try {
             const loginRequest = await axios({
                 method: 'post',
-                url: BASE_URL + '/auth/login',
+                url: BASE_URL + '/auth/loginAdmin',
                 data: {
                     email: email,
                     password: password

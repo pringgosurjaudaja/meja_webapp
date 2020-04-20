@@ -41,8 +41,17 @@ export class Login extends React.Component {
     handleSubmit = async (event) => {
         event.preventDefault();
         const result = await Requests.login(this.state.email, this.state.password);
-        sessionStorage.setItem("AUTH_KEY", result.token);
-        navigate("/dashboard");
+
+        if(result) {
+            sessionStorage.setItem("AUTH_KEY", result.token);
+            navigate("/dashboard");
+        } else {
+            this.setState({
+                email: '',
+                password: '',
+            })
+        }
+        
     }
 
     render() {
