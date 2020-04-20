@@ -63,7 +63,7 @@ def token_required(f):
 # For debugging only
 @auth.doc(description='Endpoint for whole Auth Operations')
 @auth.route('')
-class Auth(Resource):
+class Authorisation(Resource):
     @auth.doc(security='apikey')
     @token_required
     @auth.doc(description='Get all users on the database')
