@@ -183,6 +183,9 @@ class UserRoute(Resource):
 class UserOrdersRoute(Resource):
     @auth.doc(description='Get User\'s Past Orders')
     def get(self, user_id):
+        if user_id == 'Guest':
+            return status.HTTP_204_NO_CONTENT
+
         orders = []
         for session in session_db.find({'user_id': user_id}):
             for order in session['order_list']:
