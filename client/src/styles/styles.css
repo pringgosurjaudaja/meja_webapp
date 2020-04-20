@@ -213,7 +213,6 @@ body {
 }
 
 .h1, h1 {
-    margin-top: 30px !important;
     margin-bottom: 20px !important;
 }
 
@@ -268,7 +267,7 @@ body {
 }
 
 .menu-h1 {
-    top: 65px !important;
+    top: 60px !important;
     position: sticky !important;
     background-color: #ffffff !important;
     background-size: 100%;
@@ -284,7 +283,7 @@ body {
     overflow-x: auto;
     overflow-y:hidden;
     flex-wrap: nowrap;
-    top: 110px !important;
+    top: 100px !important;
     background-color: #ffffff !important;
     z-index: 1;
     position: sticky !important;
