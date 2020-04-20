@@ -119,7 +119,7 @@ export class OrderCard extends React.Component {
                     )}
                     {this.orderStatusButtons()}
                     {this.isActive() &&
-                        <div class="order-time">
+                        <div className="order-time">
                             <Card.Subtitle>Time Elapsed:</Card.Subtitle>
                             <Card.Text>{this.getTimeElapsed()}</Card.Text>
                         </div>

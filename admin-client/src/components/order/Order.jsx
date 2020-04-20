@@ -45,7 +45,7 @@ export class Order extends React.Component {
     }
 
     render() {
-        const { changeOrderStatus, order } = this.props;
+        const { changeOrderStatus } = this.props;
 
         const ordersToDisplay = this.filterOrders(this.state.tabFilter);
 
