@@ -44,6 +44,10 @@ MODEL_auth_login = auth.model('Auth Login', {
     'password' : fields.String()
 })
 
+MODEL_auth_logout = auth.model('Auth Logout',{
+    'session_id' : fields.String()
+} )
+
 def token_required(f):
     @wraps(f)
     def decorated(*args,**kwargs):
@@ -125,7 +129,25 @@ class LoginRoute(Resource):
                 'admin': auth['admin'],
             }, status.HTTP_200_OK
 
-        return {'result': 'Could not verify'}, 401  
+        return {'result': 'Could not verify'}, 401
+    
+    @auth.doc(description='Logout user')
+    @auth.expect(MODEL_auth_logout)
+    def patch(self):
+        id = request.data.get('session_id')
+        try:
+            session_db.find_one_and_update(
+                {'_id': ObjectId(id)},
+                {'$set':
+                    {'active': False}
+                }
+            )
+            return {'updated': id}, status.HTTP_200_OK
+        except ValidationError as err:
+            print(err)
+            return{
+                'result': 'Missing required fields'
+            }, status.HTTP_400_BAD_REQUEST
 
 @auth.route('/user/<string:user_id>')
 class UserRoute(Resource):
