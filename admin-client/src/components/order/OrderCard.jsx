@@ -21,10 +21,10 @@ export class OrderCard extends React.Component {
 
         if (order.table_id && order.user_id) {
             const table = await Requests.getTable(order.table_id);
-            this.setState({ tableName: table.name });
+            table && this.setState({ tableName: table.name });
     
             const user = await Requests.getUser(order.user_id);
-            this.setState({ userName: user.name });
+            user && this.setState({ userName: user.name });
         }
     }
 
