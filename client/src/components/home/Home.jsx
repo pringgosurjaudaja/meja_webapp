@@ -21,7 +21,7 @@ export class Home extends React.Component {
     }
 
     handleContinueAsGuest = async () => {
-        await Requests.makeSession('5e8347e01c9d440000231cb3', '');
+        await Requests.makeSession(localStorage.getItem('tableId'), '');
         navigate('/dashboard');
     }
 
@@ -43,6 +43,8 @@ export class Home extends React.Component {
         const tableId = urlParams.get('table_id');
         if (!(tableId && Requests.getTable(tableId))) {
             return (<Redirect to='/scan' noThrow />);
+        } else {
+            localStorage.setItem('tableId', tableId);
         }
         
         return (
