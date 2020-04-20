@@ -1,16 +1,17 @@
 from flask_api import FlaskAPI
 from flask_cors import CORS
 from flask_socketio import SocketIO, Namespace, emit, send, join_room, leave_room
-from apis import api
 from flask import render_template, jsonify, request, make_response
-import dialogflow_v2 as dialogflow
-import requests
-from bson import ObjectId
-import json
-from db import db_client
 import os
-from dotenv import load_dotenv
 import re
+import pprint
+import requests
+import json
+import dialogflow_v2 as dialogflow
+from apis import api
+from bson import ObjectId
+from db import db_client
+from dotenv import load_dotenv
 from apis.chatbot import handle_chats
 load_dotenv()
 
@@ -18,9 +19,6 @@ menu_db = db_client.menu
 review_db = db_client.review
 session_db = db_client.session
 table_db = db_client.table
-import pprint
-# from hooks.admin_hooks import AdminNamespace
-# from hooks.customer_hooks import CustomerNamespace
 
 app = FlaskAPI(__name__)
 CORS(app)

@@ -115,6 +115,7 @@ export class Dashboard extends React.Component {
                         <Reservation 
                             tables={this.state.tables}
                             handleWaiterCall={this.handleWaiterCall}
+                            changeOrderStatus={this.handleChangeOrderStatus}
                         />
                     </Tab>
                     <Tab eventKey="menu" title="Menu">

@@ -65,14 +65,21 @@ export class OrderCard extends React.Component {
     }
 
     orderStatusButtons = () => {
-        const { changeOrderStatus, order } = this.props;
-
+        const { changeOrderStatus, order, disabled } = this.props;
         const statusButtonVariantMap = new Map([
             [orderStatus.ORDERED, 'warning'],
             [orderStatus.PROGRESS, 'info'],
             [orderStatus.COMPLETED, 'success'],
             [orderStatus.CANCELLED, 'danger'],
         ]);
+        
+        if (disabled) {
+            return <Button
+                        className='order-status-btn'
+                        variant={statusButtonVariantMap.get(order.status)}>
+                {order.status}
+            </Button>;
+        }
     
         return (<ButtonGroup className="flex-wrap">
             {[...statusButtonVariantMap.entries()].map(([status, variant], i) => {

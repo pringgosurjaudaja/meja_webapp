@@ -37,7 +37,7 @@ export class ReservationDialog extends React.Component {
 
 
     render () {
-        const { table, show, onHide, handleWaiterCall } = this.props;
+        const { table, show, onHide, handleWaiterCall, changeOrderStatus } = this.props;
 
         let events = this.state.data ? this.state.data.map(reservation => {
             let datetime = reservation.datetime.split("T");
@@ -94,7 +94,10 @@ export class ReservationDialog extends React.Component {
                         <Tab eventKey='tableOrder' title='Current Order'>
                             {this.state.currentOrderList ? 
                              this.state.currentOrderList.map((order, i) => {
-                                return <OrderCard key={i} order={order} />
+                                return <OrderCard 
+                                            key={i} 
+                                            order={order}
+                                            disabled />
                              }):
                              <h5>No active orders on this table.</h5> 
                             }

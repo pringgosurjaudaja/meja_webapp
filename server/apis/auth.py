@@ -166,6 +166,9 @@ class LoginAdminRoute(Resource):
 class UserRoute(Resource):
     @auth.doc(description='Get User Details')
     def get(self, user_id):
+        if user_id == 'Guest':
+            return status.HTTP_204_NO_CONTENT
+
         schema = UserSchema()
         user = auth_db.find_one({ '_id': ObjectId(user_id) })
 
@@ -180,6 +183,9 @@ class UserRoute(Resource):
 class UserOrdersRoute(Resource):
     @auth.doc(description='Get User\'s Past Orders')
     def get(self, user_id):
+        if user_id == 'Guest':
+            return status.HTTP_204_NO_CONTENT
+
         orders = []
         for session in session_db.find({'user_id': user_id}):
             for order in session['order_list']:
