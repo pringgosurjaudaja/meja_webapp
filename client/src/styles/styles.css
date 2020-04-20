@@ -103,6 +103,7 @@ body {
 .layout--landbackground {
     background: url(../styles/assets/bg-app1.jpg) no-repeat center center fixed;
     background-size: auto 100%;;
+    background-color: #cdccc8;
 }
 
 .container-home {
