@@ -21,10 +21,10 @@ export class OrderCard extends React.Component {
 
         if (order.table_id && order.user_id) {
             const table = await Requests.getTable(order.table_id);
-            this.setState({ tableName: table.name });
+            table && this.setState({ tableName: table.name });
     
             const user = await Requests.getUser(order.user_id);
-            this.setState({ userName: user.name });
+            user && this.setState({ userName: user.name });
         }
     }
 
@@ -74,7 +74,7 @@ export class OrderCard extends React.Component {
             [orderStatus.CANCELLED, 'danger'],
         ]);
     
-        return (<ButtonGroup>
+        return (<ButtonGroup className="flex-wrap">
             {[...statusButtonVariantMap.entries()].map(([status, variant], i) => {
                 let buttonVariant = variant;
                 if (status !== order.status) {
@@ -97,7 +97,7 @@ export class OrderCard extends React.Component {
         const { order } = this.props;
 
         return (
-            <Card style={{ width: '30vw', margin: '10px' }}>
+            <Card className="order-card" style={{ width: '30vw', margin: '10px' }}>
                 <Card.Header>
                     <Card.Title>Order #{this.truncateId(order._id)}</Card.Title>
                     {this.state.tableName && this.state.userName && (
@@ -112,7 +112,7 @@ export class OrderCard extends React.Component {
                     )}
                     {this.orderStatusButtons()}
                     {this.isActive() &&
-                        <div>
+                        <div class="order-time">
                             <Card.Subtitle>Time Elapsed:</Card.Subtitle>
                             <Card.Text>{this.getTimeElapsed()}</Card.Text>
                         </div>

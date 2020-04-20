@@ -11,24 +11,27 @@ export class Orders extends React.Component {
 
         return (<div className='orders'>
             <h1>Orders</h1>
-            {orderCards.length === 0 && <div className="orders-empty" align="center">No orders yet! Go place one :)</div>}
-            {orderCards}
-            <div style={{ display: 'flex' }}>
-                <div style={{ flex: 1 }}>
-                    <h4>Net Total:</h4>
-                </div>
-                <div style={{ flex: 1, textAlign: 'right' }}>
-                    <h4>${OrderHelper.getGrandTotal(orderList)}</h4>
-                </div>
-            </div>
+                {orderCards.length === 0 && <div className="orders-empty" align="center">No orders yet! Go place one :)</div>}
+                <div style={{ flex: 1 }}>{orderCards}</div>
+
             <div align="center">
-                <Button
-                    align='center'
-                    onClick={this.props.handleCloseOrder}
-                    disabled={orderList.length === 0}
-                >
-                    Complete Order
-                </Button>
+                <div className="orders-total" style={{ display: 'flex' }}>
+                    <div style={{ flex: 1 ,  textAlign: 'left'}}>
+                        <h4>Net Total:</h4>
+                    </div>
+                    <div style={{ flex: 1 , textAlign: 'right'}}>
+                        <h4>${OrderHelper.getGrandTotal(orderList)}</h4>
+                    </div>
+                </div>
+                <div align="center">
+                    <Button
+                        align='center'
+                        onClick={this.props.handleCloseOrder}
+                        disabled={orderList.length === 0}
+                    >
+                        Complete Order
+                    </Button>
+                </div>
             </div>
         </div>);
     }

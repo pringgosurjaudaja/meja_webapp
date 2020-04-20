@@ -508,10 +508,12 @@ df-messenger {
 
 .orders {
     padding: 20px;
+    padding-bottom: 100px;
 }
 
 .orders .btn-primary {
-    width: 100% !important;
+    width: 100%;
+    max-width: 375px !important;
     height: 45px !important;
     margin-top: 20px !important;
 }
@@ -525,11 +527,14 @@ df-messenger {
     padding-top: 20px;
 }
 
+.order-card {
+    width: 100%;
+}
+
 .order-card .card-title {
     font-size: 16px;
     font-weight: bold;
 }
-
 
 .order-card .card-body {
     padding-bottom: 10px;
@@ -582,6 +587,27 @@ df-messenger {
     margin-bottom: 5% !important;
 }
 
+.payment {
+    padding: 10px;
+}
+
+.payment-div {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.payment-label {
+    font-weight: bold !important;
+    border-bottom: 1px solid #727272;
+    width: 100%;
+}
+
+.payment-complete-btn {
+    width: 100%;
+    max-width: 375px !important;
+    height: 45px !important;
+    margin-top: 20px !important;
+}
 
 .review-timestamp {
     margin-bottom: 5px !important;

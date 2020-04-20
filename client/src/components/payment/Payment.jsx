@@ -27,12 +27,12 @@ export class Payment extends React.Component {
 
     handleMinusTip = () => {
         let oldTip = this.state.tip;
-        this.setState({ tip: Math.max(0, oldTip -= 5) });
+        this.setState({ tip: Math.max(0, oldTip -= 1) });
     }
 
     handlePlusTip = () => {
         let oldTip = this.state.tip;
-        this.setState({ tip: oldTip += 5 });
+        this.setState({ tip: oldTip += 1 });
     }
 
     handleMinusSplit = () => {
@@ -58,24 +58,24 @@ export class Payment extends React.Component {
         const { total, splitCounter, tip, user, paymentCompleted } = this.state;
 
         return !paymentCompleted ?
-            (<Container>
+            (<Container className="payment">
                 <h1>Payment</h1>
-                <div>
-                    <h3>Add a tip</h3>
+                <div className="payment-div">
+                    <h5 className="payment-label">Add a tip</h5>
 
                     <div style={{display: 'flex', justifyContent: 'space-evenly', alignItems: 'center'}}>
                         <Button variant='primary' onClick={this.handleMinusTip}>-</Button>
-                        <h1>${tip}</h1>
+                        <h5>${tip}</h5>
                         <Button variant='primary' onClick={this.handlePlusTip}>+</Button>
                     </div>
                 </div>
 
-                <div>
-                    <h3>Total</h3>
-                    <h1>${(total + tip).toFixed(2)}</h1>
+                <div className="payment-div">
+                    <h4 className="payment-label">Total</h4>
+                    <h4 align="center">${(total + tip).toFixed(2)}</h4>
                 </div>
 
-                <div>
+                <div className="payment-div">
                     <OverlayTrigger 
                         placement='right' 
                         overlay={
@@ -87,18 +87,18 @@ export class Payment extends React.Component {
                             </Tooltip>
                         }
                     >
-                        <h3>Split Bill Calculator</h3>
+                        <h5 className="payment-label">Split Bill Calculator</h5>
                     </OverlayTrigger>
 
-                    <h1>${((total + tip) / splitCounter).toFixed(2)} <span style={{fontSize: '20px'}}>per person</span></h1>
+                    <h4 align="center">${((total + tip) / splitCounter).toFixed(2)} <span style={{fontSize: '20px'}}>per person</span></h4>
                     
                     <div style={{display: 'flex', justifyContent: 'space-evenly', alignItems: 'center'}}>
                         <Button variant='primary' onClick={this.handleMinusSplit}>-</Button>
-                        <h1>{splitCounter}</h1>
+                        <h5>{splitCounter}</h5>
                         <Button variant='primary' onClick={this.handlePlusSplit}>+</Button>
                     </div>
                 </div>
-                <Button onClick={this.completePayment}>Complete Payment</Button>
+                <Button className="payment-complete-btn" onClick={this.completePayment}>Complete Payment</Button>
             </Container>) :
             user && (<Container>
                 <h1>Thank you for your payment, <strong>{user.name}</strong>!</h1>
