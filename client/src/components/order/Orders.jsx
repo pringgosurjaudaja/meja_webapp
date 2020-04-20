@@ -20,7 +20,7 @@ export class Orders extends React.Component {
                         <h4>Net Total:</h4>
                     </div>
                     <div style={{ flex: 1 , textAlign: 'right'}}>
-                        <h4>${OrderHelper.getGrandTotal(orderList)}</h4>
+                        <h4>${OrderHelper.getGrandTotal(orderList).toFixed(2)}</h4>
                     </div>
                 </div>
                 <div align="center">

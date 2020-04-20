@@ -56,7 +56,7 @@ export class Reservation extends React.Component {
     }
 
     render () {
-        const { tables, handleWaiterCall } = this.props;
+        const { tables, handleWaiterCall, changeOrderStatus } = this.props;
         
         let tableComps = tables && tables.map((table, i) => {
             return (
@@ -119,6 +119,7 @@ export class Reservation extends React.Component {
                     onHide={this.handleClose} 
                     table={this.state.activeTable}
                     handleWaiterCall={handleWaiterCall}
+                    changeOrderStatus={changeOrderStatus}
                 />}
             </div>
         );
