@@ -31,11 +31,18 @@ export class Home extends React.Component {
     render() {
         const imageAlt = "Meja Logo"
 
+        // Validate both session and table id before rendering page
         const sessionId = localStorage.getItem('sessionId');
         if (sessionId && Requests.getSession(sessionId)) {
-            return (<Redirect to='/dashboard' noThrow />)
+            return (<Redirect to='/dashboard' noThrow />);
         }
 
+        const urlParams = new URLSearchParams(window.location.search);
+        const tableId = urlParams.get('table_id');
+        if (!(tableId && Requests.getTable(tableId))) {
+            return (<Redirect to='/scan' noThrow />);
+        }
+        
         return (
             <Container fluid className="l-home">
                 <Row className="l-home__row">

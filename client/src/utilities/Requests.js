@@ -72,6 +72,21 @@ export class Requests {
         }
     }
 
+    static async getTable(tableId) {
+        try {
+            const result = await axios({
+                method: 'get',
+                url: BASE_URL + '/table/' + tableId,
+                header: {
+                    "x-api-key": sessionStorage.getItem('AUTH_KEY'),
+                }
+            });
+            return result.data;
+        } catch(err) {
+            console.error(err);
+        }
+    }
+
     static async getSession(sessionId) {
         try {
             const sessionRequest = await axios({

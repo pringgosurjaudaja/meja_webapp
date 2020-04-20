@@ -18,9 +18,6 @@ import { Requests } from 'src/utilities/Requests';
 import 'src/styles/styles.css';
 import 'react-tiny-fab/dist/styles.css';
 
-console.log('React version');
-console.log(React.version);
-
 export const cartOps = {
     ADD: 'add',
     DELETE: 'delete',

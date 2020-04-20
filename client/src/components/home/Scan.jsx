@@ -2,6 +2,7 @@ import React from 'react';
 import {  Container, Row, Col } from 'react-bootstrap';
 import { Redirect } from "@reach/router";
 import 'src/styles/styles.css';
+import qrSample from './qrsample.png';
 import { Requests } from 'src/utilities/Requests';
 
 export class Scan extends React.Component {
@@ -30,8 +31,10 @@ export class Scan extends React.Component {
                 <Row className="l-home__row">
 
                     <Col>
-                        Please open your device camera and scan the QR code provided on the table or by the staffs.<br/>
-                        The link will take you to the login page
+                        <h4>
+                            Scan the QR code on the table to begin your order. 
+                        </h4>
+                        <img style={{height: '100px', marginTop: '50px'}} src={qrSample} alt='QR Sample' />
                     </Col>
                 </Row>
             </Container>
