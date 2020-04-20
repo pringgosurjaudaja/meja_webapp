@@ -14,7 +14,7 @@ export class Order extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            tabFilter: ORDER_TABS.active
+            tabFilter: ORDER_TABS.active,
         }
     }
 
@@ -45,7 +45,9 @@ export class Order extends React.Component {
     }
 
     render() {
-        const { changeOrderStatus } = this.props;
+        const { changeOrderStatus, order } = this.props;
+
+        const ordersToDisplay = this.filterOrders(this.state.tabFilter);
 
         return (
             <Container fluid>
@@ -61,15 +63,14 @@ export class Order extends React.Component {
                 </Tabs>
 
                 <div style={{ display: 'flex', flexFlow: 'row wrap', maxWidth: '100vw' }}>
-                    {this.filterOrders(this.state.tabFilter).map(
-                        (order, i) => {
+                    {ordersToDisplay.length ? 
+                     ordersToDisplay.map((order, i) => {
                             return <OrderCard 
-                                        key={i} 
-                                        order={order}
-                                        changeOrderStatus={changeOrderStatus} 
-                                    />;
-                        }
-                    )}
+                                        key={i} order={order}
+                                        changeOrderStatus={changeOrderStatus} />;
+                     }) :
+                     <h3 style={{ margin: '20px' }}>No {this.state.tabFilter} Orders.</h3>
+                    }
                 </div>
             </Container>
         )
