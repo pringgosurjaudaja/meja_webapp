@@ -49,7 +49,7 @@ export class Info extends React.Component {
     render () {
         const url = 'https://api.whatsapp.com/send?text=%27Check%20out%20Meja%20at%20www.Meja.com%27';
         return (
-            <div>
+            <div className="bottom-up">
                 <Row>
                     <Col>
                         <h2>About</h2>
@@ -75,7 +75,7 @@ export class Info extends React.Component {
                     </Col>
                     
                 </Row>
-                <Row>
+                <Row className="bottom-up">
                     <Col><h3>Share <a href={url}><FontAwesomeIcon className="icon-whatsapp" icon={faWhatsapp}/></a></h3></Col>
                 </Row>
             </div>

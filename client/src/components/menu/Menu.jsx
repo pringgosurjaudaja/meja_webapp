@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col, Tabs, Tab, Form } from 'react-bootstrap';
+import { Container, Row, Col, Nav, Tabs, Tab, Form } from 'react-bootstrap';
 import { MenuItem } from 'src/components/menu/MenuItem';
 import { Requests } from 'src/utilities/Requests';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -37,8 +37,8 @@ export class Menu extends React.Component {
             let entries = [];
             category.menu_items && category.menu_items.forEach((menuItem, i) => {
                 entries.push(
-                    <Row key={i} className="layout--menu">
-                        <Col className="menu-container">
+                    <Row key={i}>
+                        <Col>
                             <MenuItem 
                                 item={menuItem}
                                 itemInCart={this.props.itemInCart}
@@ -52,7 +52,7 @@ export class Menu extends React.Component {
 
             tabs.push(
                 <Tab key={category.name} eventKey={category.name} title={category.name}>
-                    {entries}
+                    <div className="menu-container">{entries}</div>
                 </Tab>
             );
         });
@@ -64,8 +64,8 @@ export class Menu extends React.Component {
         const recommendationEntries = [];
         recommendation && recommendation.forEach((menuItem, i) => {
             recommendationEntries.push(
-                <Row key={i} className="layout--menu">
-                    <Col className="menu-container">
+                <Row key={i}>
+                    <Col>
                         <MenuItem 
                             item={menuItem}
                             itemInCart={this.props.itemInCart}
@@ -76,8 +76,7 @@ export class Menu extends React.Component {
                 </Row>
             )
         })
-        const recommendationTab = <Tab key="Recommendation" eventKey={DEFAULT_TAB} title="Recommendations
-        ">{recommendationEntries}</Tab>
+        const recommendationTab = <Tab key="Recommendation" eventKey={DEFAULT_TAB} title="Recommendation"><div className="menu-container">{recommendationEntries}</div></Tab>
         return recommendationTab;
     }
 
@@ -92,8 +91,8 @@ export class Menu extends React.Component {
 
                 category.menu_items && category.menu_items.forEach((menuItem, i) => {
                     this.checkSimilarity(menuItem, foodName) && result.push(
-                        <Row className="layout--menu">
-                            <Col className="menu-container">
+                        <Row>
+                            <Col>
                                 <MenuItem 
                                     item={menuItem}
                                     itemInCart={this.props.itemInCart}
@@ -109,7 +108,7 @@ export class Menu extends React.Component {
         return (
             <Tab eventKey={SEARCH_TAB}  title={<div>Search <FontAwesomeIcon icon={faSearch}/></div> }>
                 <Row className="layout--menu">
-                    <Col className="menu-container">
+                    <Col>
                         <Form onSubmit={this.cancelSubmit}>
                             <Form.Group>
                                 <Form.Label>Search Menu</Form.Label>
@@ -119,7 +118,7 @@ export class Menu extends React.Component {
                         </Form>
                     </Col>
                 </Row>
-                {result}
+                <div className="menu-container">{result}</div>
             </Tab>
             
         )
@@ -144,12 +143,13 @@ export class Menu extends React.Component {
         return (
             <Container className="layout--padding--menu">
                 <h1 className="menu-h1">Menu</h1>
-                <Tabs className="menu-nav-tabs" fixed="top" defaultActiveKey={DEFAULT_TAB}>
-
-                    {this.getRecommendationTab()}
-                    {this.getMenuTabs()}
-                    {this.getSearchTab()}
-                </Tabs>
+                <Nav class="tabbable">
+                    <Tabs className="nav-tabs" fixed="top" defaultActiveKey={DEFAULT_TAB}>
+                        {this.getRecommendationTab()}
+                        {this.getMenuTabs()}
+                        {this.getSearchTab()}
+                    </Tabs>
+                </Nav>
             </Container>
         );
     }

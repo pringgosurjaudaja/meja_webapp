@@ -58,7 +58,7 @@ export class Review extends React.Component {
     
     render () {
         return (
-            <div>
+            <div className="bottom-up">
                 <Row className="zomato-review--title">
                     <Col> <h3><img className="br3" src="https://b.zmtcdn.com/images/logo/zomato_flat_bg_logo.svg" alt="Find the best restaurants, cafés, and bars in Sydney" width="60px"/> Zomato Reviews</h3></Col>
                 </Row>

@@ -75,7 +75,7 @@ export class CustomerReview extends React.Component {
             
         }
         return (
-            <div>
+            <div className="bottom-up">
                 <Row className="zomato-review--title">
                     <Col> <h3> Customer Feedback</h3></Col>
                 </Row>
