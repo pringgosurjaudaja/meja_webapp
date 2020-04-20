@@ -166,6 +166,9 @@ class LoginAdminRoute(Resource):
 class UserRoute(Resource):
     @auth.doc(description='Get User Details')
     def get(self, user_id):
+        if user_id == 'Guest':
+            return status.HTTP_204_NO_CONTENT
+
         schema = UserSchema()
         user = auth_db.find_one({ '_id': ObjectId(user_id) })
 
