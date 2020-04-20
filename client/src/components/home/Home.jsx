@@ -21,7 +21,7 @@ export class Home extends React.Component {
     }
 
     handleContinueAsGuest = async () => {
-        await Requests.makeSession('5e8347e01c9d440000231cb3', '');
+        await Requests.makeSession(localStorage.getItem('tableId'), '');
         navigate('/dashboard');
     }
 
@@ -44,6 +44,8 @@ export class Home extends React.Component {
         if (!(tableId && Requests.getTable(tableId))) {
             return (<Redirect to='/scan' noThrow />);
         }
+
+        localStorage.setItem('tableId', tableId);
         
         return (
             <Container fluid className="l-home">
