@@ -112,6 +112,16 @@ class SessionInfo(Resource):
                 'result': 'Error in given order data'
             }, status.HTTP_400_BAD_REQUEST
 
+    @session.doc(description='Closing all orders for a session.')
+    def patch(self, session_id):
+        session_db.update_one(
+            {'_id': ObjectId(session_id)},
+            {'$set': {'order_list.$[].status': 'Completed'}}
+        )
+        return {
+            'updated': session_id
+        }, status.HTTP_200_OK
+
 
 @session.route('/order')
 class ActiveOrders(Resource):

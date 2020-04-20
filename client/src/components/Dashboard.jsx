@@ -60,6 +60,32 @@ export class Dashboard extends React.Component {
         this.socket = io.connect('http://127.0.0.1:5000/');
     }
 
+    componentDidMount() {
+        this.getCurrentUser();
+        this.getOrderList().then(orderList => {
+            this.setState({ orderList: orderList })
+        });
+        this.setupSockets();
+    }
+
+    setupSockets = () => {
+        this.socket.emit('customer_join', localStorage.getItem('tableId'));
+
+        this.socket.on('updateOrders', async () => {
+            // Update the status of the order that has been changed
+            try {
+                console.log('Order has been updated');
+                this.setState({ orderList: await this.getOrderList() });
+            } catch (err) {
+                console.error(err);
+            }
+        });
+
+        this.socket.on('callWaiterToggled', () => {
+            this.handleCallWaiter(false);
+        })
+    }
+
     getCurrentUser = async () => {
         const sessionId = localStorage.getItem('sessionId');
         const session = await Requests.getSession(sessionId);
@@ -75,16 +101,6 @@ export class Dashboard extends React.Component {
         })
     }
 
-
-    componentDidMount() {
-        this.getCurrentUser();
-        this.getOrderList().then(orderList => {
-            this.setState({ orderList: orderList })
-        });
-
-        this.setupSockets();
-    }
-
     getOrderList = async () => {
         const sessionId = localStorage.getItem('sessionId');
         if (!sessionId) {
@@ -92,26 +108,6 @@ export class Dashboard extends React.Component {
         }
         const session = await Requests.getSession(localStorage.getItem('sessionId'));
         return session ? session.order_list : [];
-    }
-
-
-    setupSockets = () => {
-        this.socket.on('updateOrders', async (order) => {
-            // Update the status of the order that has been changed
-            try {
-                console.log('Order has been updated');
-                console.log(await this.getOrderList());
-                this.setState({
-                    orderList: await this.getOrderList()
-                });
-            } catch (err) {
-                console.error(err);
-            }
-        });
-
-        this.socket.on('callWaiterToggled', () => {
-            this.handleCallWaiter(false);
-        })
     }
 
     // #region Cart Operations
@@ -190,20 +186,20 @@ export class Dashboard extends React.Component {
         }
     }
 
-    handlePayment = () => {
+    handlePayment = async () => {
+        Requests.closeOrder(localStorage.getItem('sessionId'));
+
+        this.socket.emit('customer_paying', localStorage.getItem('tableId'))
+
         this.setState({ 
+            orderList: await this.getOrderList(),
             showCompleteOrderWarning: false,
             activeTab: tabs.PAYMENT 
         });
     }
 
     handleCloseOrder = () => {
-        console.log('Closing Order and Paying');
-        console.log(this.state.orderList);
-
         this.setState({ showCompleteOrderWarning: true });
-
-        // Send entire session info to the backend to be stored in db
     }
     // #endregion
 
@@ -224,15 +220,13 @@ export class Dashboard extends React.Component {
     handleCallWaiter = async (confirmedCallWaiter) => {
         let calling = this.state.callingWaiter;
         if (calling || confirmedCallWaiter) {
+            // Toggle the calling waiter status
             const session = await Requests.getSession(localStorage.getItem('sessionId'));
             const tableId = session.table_id;
-            
-            if (confirmedCallWaiter) {
-                // Call a waiter
-                this.socket.emit('call_waiter', tableId);
-            }
-            // Toggle the calling waiter status
             await Requests.toggleCallWaiter(tableId);
+
+            // Inform waiting staff of toggled waiter
+            this.socket.emit('call_waiter', tableId, !calling);
             this.setState({ callingWaiter: !calling, showConfirmCallWaiter: false });
         } else {
             // Open modal to make user confirm waiter call

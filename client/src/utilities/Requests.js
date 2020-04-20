@@ -4,6 +4,7 @@ import { navigate } from '@reach/router';
 const BASE_URL = 'http://127.0.0.1:5000';
 
 export class Requests {
+    // #region Auth Requests
     static async login(email, password) {
         try {
             const loginRequest = await axios({
@@ -36,6 +37,25 @@ export class Requests {
             console.error(err);
         }
     }
+
+    static async register(name, email, password) {
+        try {
+            const result = await axios({
+                method: 'post',
+                url: BASE_URL + '/auth/signup',
+                data: {
+                    name: name,
+                    email: email,
+                    password: password
+                }
+            });
+            return result.data;
+        } catch (err) {
+            console.error(err);
+            alert('Missing required fields');
+            navigate('/register');
+        }
+    }
     
     static async getAuth(apiKey) {
         try {
@@ -53,7 +73,9 @@ export class Requests {
             navigate('/home');
         }
     }
+    // #endregion
 
+    // #region Menu Requests
     static async getMenu() {
         try {
             const menu = await axios ({
@@ -81,7 +103,9 @@ export class Requests {
             navigate('/home');
         }
     }
+    // #endregion
 
+    // #region Profile Requests
     static async getUser(userId) {
         try {
             const userRequest = await axios({
@@ -96,6 +120,22 @@ export class Requests {
         }
     }
 
+    static async getPastOrders(userId) {
+        try {
+            const result = await axios({
+                method: 'get',
+                url: BASE_URL + '/auth/user/' + userId + '/past-orders',
+            });
+            return result.data;
+        } catch (err) {
+            console.error(err);
+            localStorage.removeItem('sessionId');
+            navigate('/home');
+        }
+    }
+    // #endregion
+
+    // #region Table and Order Requests
     static async getTable(tableId) {
         try {
             const result = await axios({
@@ -113,6 +153,70 @@ export class Requests {
         }
     }
 
+    static async addOrder(sessionId, order) {
+        try {
+            const request = await axios({
+                method: 'post',
+                url: BASE_URL + '/session/' + sessionId,
+                data: order
+            });
+            return request.data.inserted._id;
+        } catch(err) {
+            console.error(err)
+            localStorage.removeItem('sessionId');
+            navigate('/home');
+        }
+    }
+
+    static async closeOrder(sessionId) {
+        try {
+            const request = await axios({
+                method: 'patch',
+                url: BASE_URL + '/session/' + sessionId
+            });
+            return request.data;
+        } catch(err) {
+            console.error(err)
+            localStorage.removeItem('sessionId');
+            navigate('/home');
+        }
+    }
+
+    static async sendReceipt(sessionId) {
+        // Close session and send receipt to user
+        try {
+            const receiptRequest = await axios({
+                method: 'post',
+                url: BASE_URL + '/session/receipt',
+                data: { 
+                    'session_id': sessionId
+                }
+            });
+            return receiptRequest.data;
+        } catch(err) {
+            console.error(err);
+            localStorage.removeItem('sessionId');
+            navigate('/home');
+        }
+    }
+
+    static async toggleCallWaiter(tableId) {
+        try {
+            // Toggle the call waiter in the backend
+            const waiterReq = await axios({
+                method: 'patch',
+                url: BASE_URL + '/table/waiter/' + tableId,
+            });
+            return waiterReq.data;
+        } catch(err) {
+            console.error(err);
+            localStorage.removeItem('sessionId');
+            navigate('/home');
+        }
+    }
+    // #endregion
+
+    // #region Session Requests
     static async getSession(sessionId) {
         try {
             const sessionRequest = await axios({
@@ -147,22 +251,9 @@ export class Requests {
             navigate('/home');
         }
     }
+    // #endregion
 
-    static async addOrder(sessionId, order) {
-        try {
-            const request = await axios({
-                method: 'post',
-                url: BASE_URL + '/session/' + sessionId,
-                data: order
-            });
-            return request.data.inserted._id;
-        } catch(err) {
-            console.error(err)
-            localStorage.removeItem('sessionId');
-            navigate('/home');
-        }
-    }
-
+    // #region Reviews Requests
     static async getReviewsZomato() {
         try {
             const reviews = await axios({
@@ -171,20 +262,6 @@ export class Requests {
             });
             return reviews.data;
 
-        } catch(err) {
-            console.error(err);
-            localStorage.removeItem('sessionId');
-            navigate('/home');
-        }
-    }
-
-    static async getReservation() {
-        try {
-            const reservation = await axios({
-                method: 'get',
-                url: BASE_URL + '/reservation',
-            });
-            return reservation.data;
         } catch(err) {
             console.error(err);
             localStorage.removeItem('sessionId');
@@ -257,39 +334,6 @@ export class Requests {
         }
     }
 
-    static async sendReceipt(sessionId) {
-        // Close session and send receipt to user
-        try {
-            const receiptRequest = await axios({
-                method: 'post',
-                url: BASE_URL + '/session/receipt',
-                data: { 
-                    'session_id': sessionId
-                }
-            });
-            return receiptRequest.data;
-        } catch(err) {
-            console.error(err);
-            localStorage.removeItem('sessionId');
-            navigate('/home');
-        }
-    }
-
-    static async toggleCallWaiter(tableId) {
-        try {
-            // Toggle the call waiter in the backend
-            const waiterReq = await axios({
-                method: 'patch',
-                url: BASE_URL + '/table/waiter/' + tableId,
-            });
-            return waiterReq.data;
-        } catch(err) {
-            console.error(err);
-            localStorage.removeItem('sessionId');
-            navigate('/home');
-        }
-    }
-
     static async addFoodReview(menuItemId, user, rating, comment) {
         try {
             const result = await axios({
@@ -309,6 +353,7 @@ export class Requests {
             navigate('/home');
         }
     }
+
     static async deleteFoodReview(menuItemId, reviewId) {
         try {
             const result = await axios({
@@ -325,40 +370,20 @@ export class Requests {
             navigate('/home');
         }
     }
-    static goHome() {
-        navigate('/home');
-    }
-
-    static async getPastOrders(userId) {
+    // #endregion
+    
+    // #region Reservation Requests
+    static async getReservation() {
         try {
-            const result = await axios({
+            const reservation = await axios({
                 method: 'get',
-                url: BASE_URL + '/auth/user/' + userId + '/past-orders',
+                url: BASE_URL + '/reservation',
             });
-            return result.data;
-        } catch (err) {
+            return reservation.data;
+        } catch(err) {
             console.error(err);
             localStorage.removeItem('sessionId');
             navigate('/home');
-        }
-    }
-
-    static async register(name, email, password) {
-        try {
-            const result = await axios({
-                method: 'post',
-                url: BASE_URL + '/auth/signup',
-                data: {
-                    name: name,
-                    email: email,
-                    password: password
-                }
-            });
-            return result.data;
-        } catch (err) {
-            console.error(err);
-            alert('Missing required fields');
-            navigate('/register');
         }
     }
 
@@ -444,4 +469,5 @@ export class Requests {
             navigate('/home');
         }
     }
+    // #endregion
 }

@@ -28,37 +28,47 @@ socketio = SocketIO(app, cors_allowed_origins='*')
 ADMIN_ROOM = 'admins'
 
 # region Customer Orders
-@socketio.on('customer_order')
-def on_customer_order(order):
-    pprint.pprint(order)
-    room = order['_id']
-    join_room(room)
-    print('Received customer order')
-    # Inform order room that order has been received
-    emit('orderReceived', order, room=room)
-    emit('newCustomerOrder', order, room=ADMIN_ROOM)
-
 @socketio.on('admin_join')
 def on_admin_join():
     print('Admin Joined')
     join_room(ADMIN_ROOM)
 
+@socketio.on('customer_join')
+def on_customer_join(table_id):
+    # Treat table as a room to receive updates on new orders and 
+    # waiter calls
+    join_room(table_id)
+
+@socketio.on('customer_order')
+def on_customer_order(order):
+    print('Received customer order')
+    pprint.pprint(order)
+    # Inform order room that a new order has been received
+    emit('newCustomerOrder', room=ADMIN_ROOM)
+
 @socketio.on('orderUpdated')
-def handle_order_update(order):
-    emit('updateOrders', order, room=order['_id'])
+def handle_order_update(table_id):
+    emit('updateOrders', table_id, room=table_id)
 # endregion
 
 # region Handle Calling Waiter
 @socketio.on('call_waiter')
-def on_call_waiter(table_id):
-    join_room(table_id)
+def on_call_waiter(table_id, calling):
     # Inform admins to update their tables
-    emit('customerCallingWaiter', room=ADMIN_ROOM)
+    print('Customer calling a Waiter')
+    print('{} {}'.format(table_id, str(calling)))
+    emit('customerCallingWaiter', (table_id, calling), room=ADMIN_ROOM)
 
 @socketio.on('call_waiter_toggled')
 def on_call_waiter_toggle(table_id):
     # Inform customer that their call waiter status has been handled
     emit('callWaiterToggled', room=table_id)
+# endregion
+
+# region Customer paying
+@socketio.on('customer_paying')
+def on_customer_paying(table_id):
+    emit('customerPaying', table_id, room=ADMIN_ROOM)
 
 # endregion
 
