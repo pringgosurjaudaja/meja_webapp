@@ -4,6 +4,8 @@ import { navigate, Redirect } from "@reach/router";
 import 'src/styles/styles.css';
 import logo from "src/styles/assets/logo.png";
 import { Requests } from 'src/utilities/Requests';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
 export class Home extends React.Component {
     constructor(props) {
@@ -45,6 +47,12 @@ export class Home extends React.Component {
         
         return (
             <Container fluid className="l-home">
+                <Row>
+                    <FontAwesomeIcon className="l-button-back"
+                        icon={faChevronLeft}
+                        onClick={() => navigate("/")}
+                    />
+                </Row>
                 <Row className="l-home__row">
                     <Col></Col>
                     <Col className="l-center">
