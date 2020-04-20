@@ -146,8 +146,9 @@ export class Menu extends React.Component {
                 <Nav class="tabbable">
                     <Tabs className="nav-tabs" fixed="top" defaultActiveKey={DEFAULT_TAB}>
                         {this.getRecommendationTab()}
-                        {this.getMenuTabs()}
                         {this.getSearchTab()}
+                        {this.getMenuTabs()}
+                        
                     </Tabs>
                 </Nav>
             </Container>
