@@ -82,6 +82,10 @@ class SignupRoute(Resource):
         schema = AuthSchema()
         try:
             auth = schema.load(request.data)
+            if auth.email == '' or auth.password == '' or auth.name == '':
+                return { 
+                    'result': 'Missing required fields'
+                }, status.HTTP_400_BAD_REQUEST
             test = auth_db.find_one({'email': auth.email})
             if test:
                 return { 
