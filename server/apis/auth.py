@@ -130,24 +130,6 @@ class LoginRoute(Resource):
             }, status.HTTP_200_OK
 
         return {'result': 'Could not verify'}, 401
-    
-    @auth.doc(description='Logout user')
-    @auth.expect(MODEL_auth_logout)
-    def patch(self):
-        id = request.data.get('session_id')
-        try:
-            session_db.find_one_and_update(
-                {'_id': ObjectId(id)},
-                {'$set':
-                    {'active': False}
-                }
-            )
-            return {'updated': id}, status.HTTP_200_OK
-        except ValidationError as err:
-            print(err)
-            return{
-                'result': 'Missing required fields'
-            }, status.HTTP_400_BAD_REQUEST
 
 # Login Admin Endpoint
 @auth.route('/loginAdmin')
@@ -205,3 +187,27 @@ class UserOrdersRoute(Resource):
                     orders.append(order)
 
         return sorted(orders, key=lambda k: k['timestamp'], reverse=True), status.HTTP_200_OK
+
+
+@auth.route('/logout')
+class Logout(Resource):
+    @auth.doc(description='Logout user')
+    @auth.expect(MODEL_auth_logout)
+    def patch(self):
+        id = request.data.get('session_id')
+        if id is None:
+            return status.HTTP_400_BAD_REQUEST
+
+        try:
+            session_db.find_one_and_update(
+                {'_id': ObjectId(id)},
+                {'$set':
+                    {'active': False}
+                }
+            )
+            return {'updated': id}, status.HTTP_200_OK
+        except ValidationError as err:
+            print(err)
+            return{
+                'result': 'Missing required fields'
+            }, status.HTTP_400_BAD_REQUEST

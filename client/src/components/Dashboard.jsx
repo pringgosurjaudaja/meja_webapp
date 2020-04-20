@@ -156,8 +156,7 @@ export class Dashboard extends React.Component {
     // #region Event Handlers
     handleNavSelect = (event) => {
         if (event === 'logout') {
-            localStorage.clear();
-            navigate('/');
+            Requests.logout(localStorage.getItem('sessionId'));
         } else {
             this.setState({ activeTab: event });
         }

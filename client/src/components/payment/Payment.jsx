@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { OrderHelper } from 'src/components/order/OrderHelper';
 import { Requests } from '../../utilities/Requests';
+import { navigate } from '@reach/router';
 
 export class Payment extends React.Component {
     constructor(props) {
@@ -45,12 +46,16 @@ export class Payment extends React.Component {
         this.setState({ splitCounter: ++oldCounter });
     }
 
-    completePayment = () => {
-        // TODO: Insert request here to the backend to send receipt and close the order
+    completePayment = async () => {
         Requests
             .sendReceipt(localStorage.getItem('sessionId'))
             .then(() => {
                 this.setState({ paymentCompleted: true });
+            })
+            .then(() => {
+                setTimeout(() => {
+                    Requests.logout(localStorage.getItem('sessionId'))
+                }, 10000);
             });
     }
 
