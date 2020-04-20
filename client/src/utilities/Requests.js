@@ -26,6 +26,9 @@ export class Requests {
             const allSession = await axios ({
                 method: 'get',
                 url: BASE_URL + '/auth',
+                headers: {
+                    'X-API-KEY': apiKey
+                }
             });
             return allSession.data;
         } catch (err) {
