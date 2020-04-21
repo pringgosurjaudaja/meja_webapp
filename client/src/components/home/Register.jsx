@@ -35,16 +35,19 @@ export class Register extends React.Component {
 
     handleSubmit = async (event) => {
         event.preventDefault();
+
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
             event.preventDefault();
             event.stopPropagation();
         }
         this.setState({ validated: true });
-        await Requests.register(this.state.name, this.state.email, this.state.password);
-        navigate('/login');
-        
+
+        if (await Requests.register(this.state.name, this.state.email, this.state.password)) {
+            navigate('/login');
+        }
     }
+
     render() {
         return (
             <div className="container-home">
