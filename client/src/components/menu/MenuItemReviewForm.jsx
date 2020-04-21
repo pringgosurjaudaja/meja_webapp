@@ -15,7 +15,6 @@ export class MenuItemReviewForm extends React.Component {
         this.state = {
             review: "",
             rating: 0,
-            validated: false,
         };
     }
     
@@ -25,7 +24,6 @@ export class MenuItemReviewForm extends React.Component {
         if (this.state.review === "") {
             return;
         }
-        this.setState({ validated: true });
         const res = await Requests.addFoodReview(this.props.menuItemId, this.props.email,this.state.rating, this.state.review);
         this.props.handleAddFoodReview(res);
         this.setState({
@@ -49,10 +47,10 @@ export class MenuItemReviewForm extends React.Component {
                 <Col>
                     <Card style={{ width: '100%' }}>
                         <Card.Body>
-                            <Form noValidate validated={this.state.validated} onSubmit={this.submitReply}>
+                            <Form onSubmit={this.submitReply}>
                                 <Form.Group controlId="exampleForm.ControlTextarea1">
                                     <Form.Label>Share your feedback</Form.Label>
-                                    <Form.Control required as="textarea" rows="3" onChange={this.changeReview} value={this.state.review}/>
+                                    <Form.Control as="textarea" rows="3" onChange={this.changeReview} value={this.state.review}/>
                                 </Form.Group>
 
                                 <StarRatings

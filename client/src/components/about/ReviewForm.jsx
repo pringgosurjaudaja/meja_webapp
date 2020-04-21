@@ -18,7 +18,6 @@ export class ReviewForm extends React.Component {
             email: "",
             review: "",
             rating: 0,
-            validated: false,
         };
     }
 
@@ -39,7 +38,6 @@ export class ReviewForm extends React.Component {
             e.stopPropagation();
             return;
         }
-        this.setState({ validated: true });
         let res;
         if(_.isNil(this.state.email)){
             res = await Requests.postReview("Anonymous", this.state.review, this.state.rating);
@@ -81,10 +79,10 @@ export class ReviewForm extends React.Component {
                 <Col>
                     <Card style={{ width: '100%' }}>
                         <Card.Body>
-                            <Form noValidate validated={this.state.validated} onSubmit={this.submitFeedback}>
+                            <Form onSubmit={this.submitFeedback}>
                                 <Form.Group controlId="exampleForm.ControlTextarea1">
                                     <Form.Label>Share a feedback with us</Form.Label>
-                                    <Form.Control required as="textarea" rows="3" onChange={this.changeReview} value={this.state.review}/>
+                                    <Form.Control as="textarea" rows="3" onChange={this.changeReview} value={this.state.review}/>
                                 </Form.Group>
                                 <StarRatings
                                     className="star-ratings"
