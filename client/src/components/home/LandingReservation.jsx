@@ -6,7 +6,7 @@ import {
     Button,
 } from 'react-bootstrap';
 import 'src/styles/styles.css';
-import { DateTime, moment, axios } from 'src/utilities/helper';
+import { DateTime, moment, _ } from 'src/utilities/helper';
 import { Requests } from 'src/utilities/Requests';
 import { navigate } from '@reach/router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -57,11 +57,11 @@ export class LandingReservation extends React.Component {
     /*
     *   Select Date
     */
-    handleChange = (event) => {
+    handleChange = async (event) => {
+        if (_.isNil(event)) return;
         const year = event.year();
         const month = event.month()+1;
         const date = event.date();
-        let url = 'http://127.0.0.1:5000/reservation/availability';
         this.setState({
             date: {
                 year: year,
@@ -69,35 +69,17 @@ export class LandingReservation extends React.Component {
                 date: date,
             }, 
             ready: true,
-        }, ()=>{
-            axios({
-                method: 'post',
-                url: url,
-                timeout: 2000,
-                data: {
-                    "date": year+"-"+month+"-"+date,
-                    "number_diner": this.state.diner,
-                },
-                header: {
-                    "x-api-key": localStorage.getItem('sessionId'),
-                    "Content-Type": "application/json"
-                }
-            })
-            .then((response) => {
-                console.log(response.data);
-                let res = [];
-                for(let i in response.data) {
-                    let tmp = (<option key={i} value={response.data[i]}>{response.data[i]}</option>)
-                    res.push(tmp);
-                }
-                this.setState({ time: response.data[0] });
-                this.setState({ timeAvailability :res });
-            })
-            .catch((error)=>{
-                console.log(error);
-                console.log(error.response)
-            });
-        })
+        });
+
+        const response = await Requests.getAvailability(year, month, date, this.state.diner);
+        let res = [];
+        for(let i in response.data) {
+            let tmp = (<option key={i} value={response.data[i]}>{response.data[i]}</option>)
+            res.push(tmp);
+        }
+        this.setState({ time: response.data[0] });
+        this.setState({ timeAvailability :res });
+        
     }
 
     getSession = async () => {
@@ -129,30 +111,19 @@ export class LandingReservation extends React.Component {
         const time = this.state.time;
         const datetime = year+"-"+month+"-"+date+"T"+time;
 
-        let url = 'http://127.0.0.1:5000/reservation';
+        const data = {
+            email: this.state.email,
+            datetime: datetime.toString(),
+            diner: this.state.diner,
+            notes: this.state.notes
+        }
 
-        axios({
-            method: 'post',
-            url: url,
-            timeout: 2000,
-            data: {
-                "email": this.state.email,
-                "datetime": datetime.toString(),
-                "number_diner": this.state.diner,
-                "reservation_notes": this.state.notes
-            },
-            header: {
-                "x-api-key": localStorage.getItem('sessionId'),
-                "Content-Type": "application/json"
-            }
-        })
-        .then((response) => {
-            console.log(response);
+        let result = await Requests.makeReservation(data);
+        console.log(result);
+        if (result.status === 201) {
+            await Requests.sendReservationEmail(result.data.inserted);
             this.showNotification();
-        })
-        .catch((error)=>{
-            alert(error)
-        });
+        }
     }
 
 
