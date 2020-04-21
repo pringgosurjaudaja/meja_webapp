@@ -37,7 +37,8 @@ export class MenuItemCard extends React.Component {
 
     handleRemove = async () => {
         await Requests.removeMenuItem(this.props._id);
-        window.location.reload();
+        // window.location.reload();
+        this.props.reloadMenu();
     }
 
     render() {

@@ -58,6 +58,7 @@ export class EditDialog extends React.Component {
 
     handleEditMenu = async (e) => {
         await Requests.editMenuItem(this.state.id, this.state.name, this.state.description, parseFloat(this.state.price), this.state.media_url);
+        this.props.reloadMenu();
     }
 
     render () {

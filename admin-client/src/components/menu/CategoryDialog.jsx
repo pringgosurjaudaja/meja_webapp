@@ -17,6 +17,7 @@ export class CategoryDialog extends React.Component {
     }
     handleSubmit = async () => {
         await Requests.addCategory(this.state.name);
+        this.props.reloadMenu();
     }
 
     handleChange = (event) => {

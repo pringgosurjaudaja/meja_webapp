@@ -42,7 +42,8 @@ export class Menu extends React.Component {
             return menu.name === this.state.activeTab;
         })
         await Requests.deleteCategory(category[0]._id);
-        window.location.reload();
+        // window.location.reload();
+        this.props.reloadMenu();
     }
 
     handleEditMenuItem = () => {
@@ -50,6 +51,8 @@ export class Menu extends React.Component {
             showEditMenuDialog: true,
         });
     }
+
+    
 
 
     // Get the details of the specific item from each individual Menu Item Card
@@ -93,6 +96,7 @@ export class Menu extends React.Component {
                     handleeditmenuitem: this.handleEditMenuItem,
                     geteditmenuitem: this.getEditMenuItem,
                     recommended: item.chefs_pick,
+                    reloadMenu: () => this.props.reloadMenu(),
                 }
                 let entry = (
                     <Row key={i} className="layout--menu">
@@ -117,10 +121,16 @@ export class Menu extends React.Component {
             categories: categories,
             currentcategory : this.state.activeTab,
             menuitemlist: this.props.menuItemList,
+            reloadMenu: () => this.props.reloadMenu(),
         }
 
         let editDialogProps={
             item: this.state.activeItem,
+            reloadMenu: () => this.props.reloadMenu(),
+        }
+
+        let categoryDialogProps = {
+            reloadMenu: () => this.props.reloadMenu(),
         }
 
         return (
@@ -147,7 +157,7 @@ export class Menu extends React.Component {
 
                 <Dialog show={this.state.showAddMenuDialog} onHide={this.handleClose} {...dialogProps}/>
                 <EditDialog show={this.state.showEditMenuDialog} onHide={this.handleClose} {...editDialogProps}/>
-                <CategoryDialog show={this.state.showCategoryDialog} onHide={this.handleClose} />
+                <CategoryDialog show={this.state.showCategoryDialog} onHide={this.handleClose} {...categoryDialogProps}/>
             </Container>
         );
     }

@@ -44,6 +44,14 @@ export class Dashboard extends React.Component {
         this.setupSockets();
     }
 
+
+    reloadMenu = async () => {
+        const menu = await Requests.getMenu();
+        this.setState({
+            menuItemList: menu,
+        });
+    }
+
     setupSockets = () => {
         this.socket.emit('admin_join');
 
@@ -113,7 +121,8 @@ export class Dashboard extends React.Component {
 
     render () {
         const menuProps = {
-            menuItemList: this.state.menuItemList
+            menuItemList: this.state.menuItemList,
+            reloadMenu: () => this.reloadMenu(),
         };
         return (
             <div>

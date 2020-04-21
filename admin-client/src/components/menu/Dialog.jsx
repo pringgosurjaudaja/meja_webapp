@@ -32,7 +32,7 @@ export class Dialog extends React.Component {
         });
 
         await Requests.addMenuItem(category_id, this.state.name, this.state.description, parseFloat(this.state.price), this.state.media_url);
-        
+        this.props.reloadMenu();
     }
 
 
