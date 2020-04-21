@@ -2,6 +2,7 @@ import React from 'react';
 import {
     Row,
     Col,
+    Button,
 } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShare } from '@fortawesome/free-solid-svg-icons';
@@ -76,7 +77,7 @@ export class Info extends React.Component {
                     
                 </Row>
                 <Row className="bottom-up">
-                    <Col><h3>Share <a href={url}><FontAwesomeIcon className="icon-whatsapp" icon={faWhatsapp}/></a></h3></Col>
+                    <Col><Button href={url}><FontAwesomeIcon className="icon-whatsapp" icon={faWhatsapp}/></Button></Col>
                 </Row>
             </div>
         )
