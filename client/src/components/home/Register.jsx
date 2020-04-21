@@ -34,10 +34,11 @@ export class Register extends React.Component {
 
     handleSubmit = async (event) => {
         event.preventDefault();
-        await Requests.register(this.state.name, this.state.email, this.state.password);
-        navigate('/login');
-        
+        if (await Requests.register(this.state.name, this.state.email, this.state.password)) {
+            navigate('/login');
+        }
     }
+
     render() {
         return (
             <div className="container-home">
