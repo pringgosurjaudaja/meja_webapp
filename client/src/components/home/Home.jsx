@@ -40,7 +40,12 @@ export class Home extends React.Component {
         }
 
         const urlParams = new URLSearchParams(window.location.search);
-        const tableId = urlParams.get('table_id');
+        let tableId = urlParams.get('table_id');
+
+        if (localStorage.getItem('tableId')) {
+            tableId = localStorage.getItem('tableId');
+        }
+
         if (!(tableId && Requests.getTable(tableId))) {
             return (<Redirect to='/scan' noThrow />);
         } else {
