@@ -538,6 +538,7 @@ df-messenger {
 
 .order-card {
     width: 100%;
+    padding-right: 0px !important;
 }
 
 .order-card .card-title {
@@ -625,4 +626,9 @@ df-messenger {
 
 .bottom-up {
     padding-bottom: 47px !important;
+}
+
+.past-orders {
+    padding-top: 10px;
+    border-bottom: 1px solid #727272;
 }
