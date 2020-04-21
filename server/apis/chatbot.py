@@ -81,11 +81,14 @@ def construct_custom_intent(type, items, text_message, found):
                     message['richContent'][0].append({'type':'divider'})
     elif(type == 'menu_review'):
         count = 0
+        
         for z in items['review_list']:
             if(count == 3):break
+            if('user' not in z): user = 'Anonymous'
+            else: user = z['user']
             menu_review = {
                 "type": "list",
-                "title": f"{z['user']}'s review of {items['name']}",
+                "title": f"{user}'s review of {items['name']}",
                 "subtitle": f"Comment: {z['comment']}\nRating: {z['rating']}/5.0"
             }
             message['richContent'][0].append(menu_review)
