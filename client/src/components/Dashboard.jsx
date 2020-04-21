@@ -89,16 +89,15 @@ export class Dashboard extends React.Component {
     getCurrentUser = async () => {
         const sessionId = localStorage.getItem('sessionId');
         const session = await Requests.getSession(sessionId);
-        const allSession = await Requests.getAuth(sessionId);
-        allSession && allSession.forEach(async (sess) => {
-            if (sess._id === session.user_id) {
-                console.log('USER logged in');
-                this.setState({ 
-                    loggedIn: true
-                });
-                return;
-            }
-        })
+        const user = await Requests.getUser(session.user_id);
+        if (user) {
+            console.log('USER logged in');
+            this.setState({ 
+                loggedIn: true
+            });
+            return;
+        }
+        
     }
 
     getOrderList = async () => {

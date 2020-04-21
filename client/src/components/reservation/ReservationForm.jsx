@@ -6,8 +6,9 @@ import {
     Button,
 } from 'react-bootstrap';
 import 'src/styles/styles.css';
-import { DateTime, moment } from 'src/utilities/helper';
+import { DateTime, moment, _ } from 'src/utilities/helper';
 import { Requests } from 'src/utilities/Requests';
+
 export class ReservationForm extends React.Component {
 
     constructor(props) {
@@ -50,6 +51,7 @@ export class ReservationForm extends React.Component {
     *   Select Date
     */
     handleChange = async (event) => {
+        if (_.isNil(event)) return;
         const year = event.year();
         const month = event.month()+1;
         const date = event.date();
@@ -96,11 +98,13 @@ export class ReservationForm extends React.Component {
 
     handleSubmit = async (e) => {
         e.preventDefault();
+        
         const user_id = await this.getSession();
         if (user_id === 'Guest') {
             this.props.showLogin();
             return;
         }
+
         const year = this.state.date.year;
         const month = this.state.date.month;
         const date = this.state.date.date;
@@ -181,7 +185,7 @@ export class ReservationForm extends React.Component {
                         <Button type="submit">Confirm Reservation</Button>
                         <br/>
                         <Row>
-                            <div style={{ width: "90%" }}className={`alert alert-success ${this.state.showNotif ? 'alert-shown' : 'alert-hidden'}`}>
+                            <div style={{ width: "90%" }} className={`alert alert-success ${this.state.showNotif ? 'alert-shown' : 'alert-hidden'}`}>
                                 Reservation succesful, the page will be refreshed
                             </div>
                         </Row>

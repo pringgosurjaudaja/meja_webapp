@@ -34,7 +34,7 @@ export class ReviewForm extends React.Component {
     submitFeedback = async (e) => {
         e.preventDefault();
         const form = e.currentTarget;
-        if (form.checkValidity() === false) {
+        if (form.checkValidity() === false || this.state.review === "") {
             e.stopPropagation();
             return;
         }
