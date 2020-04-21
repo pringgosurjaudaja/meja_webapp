@@ -359,6 +359,7 @@ body {
 .icon-whatsapp {
     font-size: 34px;
     color: #25D366;
+    padding-left: 10px;
 }
 .icon-share {
     font-size: 34px;
@@ -631,4 +632,8 @@ df-messenger {
 .past-orders {
     padding-top: 10px;
     border-bottom: 1px solid #727272;
+}
+
+#share-wa {
+    font-size: 20px;
 }

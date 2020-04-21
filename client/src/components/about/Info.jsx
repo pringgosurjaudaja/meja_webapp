@@ -77,7 +77,11 @@ export class Info extends React.Component {
                     
                 </Row>
                 <Row className="bottom-up">
-                    <Col><Button href={url}><FontAwesomeIcon className="icon-whatsapp" icon={faWhatsapp}/></Button></Col>
+                    <Col>
+                        <Button href={url}>
+                            Share<FontAwesomeIcon className="icon-whatsapp" icon={faWhatsapp}/>
+                        </Button>
+                    </Col>
                 </Row>
             </div>
         )
