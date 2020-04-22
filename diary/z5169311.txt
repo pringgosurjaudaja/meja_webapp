@@ -38,4 +38,11 @@ menus, review, abouts, etc.
 Week 8
 This week, cleaned up the code, deleted some unused code and added some
 error exception catching to make it easier for debug
+
 Week 9
+This week fixed the chatbot and used the dialogflow messenger in the react app and made more functionality
+with the bot (ask for recommendation, show the reviews, show images). Implemented the food review,
+email reservation, and some bug fixes before the presentation.
+
+Week 10
+Presentation Demo week. Fixed minor bugs, started on the report for the final submission
