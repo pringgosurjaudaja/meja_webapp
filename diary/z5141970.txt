@@ -47,3 +47,8 @@ Week 9
 This week is about making sure the workflow of the application is good, making sure that the user can intuitively
 use the application and did not get stuck. Also I was given the task to fix some front end bugs
 such as displaying date, adding past orders to user profile, creating a new landing page
+
+Week 10
+This week consist of no ticket in the sprint but rather more into bug fixing all the
+existing the bugs and making sure everything is working.
+I fixed bugs related to the review system which is undetected during the development
