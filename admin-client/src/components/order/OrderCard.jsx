@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, ButtonGroup, Card, Table } from 'react-bootstrap';
+import { Button, ButtonGroup, Card } from 'react-bootstrap';
 import { OrderTable } from 'src/components/order/OrderTable';
 import { orderStatus } from 'src/components/Dashboard';
 import { Requests } from 'src/utilities/Requests';

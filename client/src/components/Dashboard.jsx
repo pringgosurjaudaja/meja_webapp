@@ -7,7 +7,6 @@ import { faReceipt, faBars, faConciergeBell } from '@fortawesome/free-solid-svg-
 import { Menu } from 'src/components/menu/Menu';
 import { Payment } from 'src/components/payment/Payment';
 import { Checkout } from 'src/components/checkout/Checkout';
-import { navigate } from "@reach/router";
 import { About } from 'src/components/about/About';
 import { Orders } from 'src/components/order/Orders';
 import { Reservation } from 'src/components/reservation/Reservation';
@@ -276,10 +275,45 @@ export class Dashboard extends React.Component {
         </Modal>
     )
 
-    render() {
+    getActiveTab = () => {
         const reservationProps = {
             showLogin: this.showLogin,
         }
+        let result;
+        switch (this.state.activeTab) {
+            case tabs.ABOUT:
+                result = (<About/>);
+                break;
+            case tabs.ALL:
+                result = (<Menu
+                            itemInCart={this.itemInCart}
+                            updateCart={this.updateCart}
+                            display="all"/>);
+                break;
+            case tabs.ORDERS:
+                result = <Orders
+                            orderList={this.state.orderList}
+                            handleCloseOrder={this.handleCloseOrder}/>
+                break;
+            case tabs.RESERVATION:
+                result = (<Reservation {...reservationProps}/>);
+                break;
+            case tabs.PAYMENT:
+                result = (<Payment orderList={this.state.orderList}/>);
+                break;
+            case tabs.PROFILE:
+                result = (<Profile/>);
+                break;
+            default:
+                result = null;
+            
+        }
+
+        return result;
+    }
+
+    render() {
+        
         return (
             <div>
                 <NavOverlay tabs={tabs} show={this.state.showOverlay} onHide={this.handleCloseNav} handleNavSelect={this.handleNavSelect} activeTab={this.state.activeTab} loggedIn={this.state.loggedIn} />
@@ -312,23 +346,8 @@ export class Dashboard extends React.Component {
                     </Nav>
                 </Navbar>
 
-                {this.state.activeTab === tabs.ABOUT ? <About /> : null}
-                {this.state.activeTab === tabs.ALL ? <Menu
-                    itemInCart={this.itemInCart}
-                    updateCart={this.updateCart}
-                    display="all"
-                /> : null}
-                {this.state.activeTab === tabs.ORDERS ? <Orders
-                    orderList={this.state.orderList}
-                    handleCloseOrder={this.handleCloseOrder}
-                /> : null}
-                {this.state.activeTab === tabs.RESERVATION ? <Reservation {...reservationProps} /> : null}
-                {this.state.activeTab === tabs.PAYMENT ? <Payment 
-                    orderList={this.state.orderList}
-                /> : null}
-                {this.state.activeTab === tabs.PROFILE ? <Profile 
-
-                /> : null}
+                
+                {this.getActiveTab()}
 
                 <LoginDialog show={this.state.showLoginDialog}
                     setSessionId={this.props.setSessionId}

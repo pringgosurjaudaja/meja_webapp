@@ -6,7 +6,6 @@ import {
 } from 'react-bootstrap';
 import 'src/styles/styles.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Select from 'react-select';
 import { Requests } from 'src/utilities/Requests';
 
 export class Dialog extends React.Component {

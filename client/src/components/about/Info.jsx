@@ -5,9 +5,7 @@ import {
     Button,
 } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShare } from '@fortawesome/free-solid-svg-icons';
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
-import { axios, _ } from 'src/utilities/helper';
 
 export class Info extends React.Component {
     constructor(props) {
@@ -27,23 +25,6 @@ export class Info extends React.Component {
         }
     }
 
-    handleSubmit = (event) => {
-        event.preventDefault();
-        // const phone = _.get(this.state, 'phone', '');
-        // const message = _.get(this.state, 'message', '');
-         
-        axios({
-            method: 'get',
-            url: 'https://api.whatsapp.com/send?text=%27Please%20use%20Meja%20cause%20its%20amazing%27',
-            timeout: 1000,
-        })
-        .then((response) => {
-            console.log(response);
-        })
-        .catch((error)=>{
-            console.log(error);
-        })
-    }
 
 
     

@@ -3,7 +3,6 @@ import { Modal, Button, OverlayTrigger, Tooltip, Tabs, Tab } from 'react-bootstr
 import { OrderCard } from 'src/components/order/OrderCard';
 import { ScheduleTable } from 'src/components/reservation/ScheduleTable';
 import { Requests } from 'src/utilities/Requests';
-import { _ } from 'src/utilities/helper';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faConciergeBell } from '@fortawesome/free-solid-svg-icons';
 import { TableQR } from './TableQR';
@@ -37,7 +36,7 @@ export class ReservationDialog extends React.Component {
 
 
     render () {
-        const { table, show, onHide, handleWaiterCall, changeOrderStatus } = this.props;
+        const { table, show, onHide, handleWaiterCall } = this.props;
 
         let events = this.state.data ? this.state.data.map(reservation => {
             let datetime = reservation.datetime.split("T");

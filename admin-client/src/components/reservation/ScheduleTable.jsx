@@ -3,7 +3,6 @@ import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
-import { Card } from 'react-bootstrap';
 import React from 'react';
 import { Requests } from 'src/utilities/Requests';
 

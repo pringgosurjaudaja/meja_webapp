@@ -2,7 +2,6 @@ import React from 'react';
 import { Container, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { OrderHelper } from 'src/components/order/OrderHelper';
 import { Requests } from '../../utilities/Requests';
-import { navigate } from '@reach/router';
 
 export class Payment extends React.Component {
     constructor(props) {

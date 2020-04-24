@@ -6,7 +6,6 @@ import {
 import { Requests } from 'src/utilities/Requests'; 
 import { ReviewForm } from 'src/components/about/ReviewForm';
 import { ReviewCard } from 'src/components/about/ReviewCard';
-import { _ } from 'src/utilities/helper';
 
 export const BASE_INDEX_NUM = 1000;
 export class CustomerReview extends React.Component {

@@ -47,7 +47,5 @@
       "last 1 safari version"
     ]
   },
-  "peerDependencies": {
-    "moment": "^2.24.0"
-  }
+  "peerDependencies": {}
 }

@@ -17,7 +17,7 @@ export class MenuItemCard extends React.Component {
     }
 
     componentWillMount() {
-        if(this.props.recommended == true) {
+        if(this.props.recommended === true) {
             this.setState({ recommended: true });
         }
     }

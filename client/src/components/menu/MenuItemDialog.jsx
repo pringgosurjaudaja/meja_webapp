@@ -71,9 +71,8 @@ export class MenuItemDialog extends React.Component {
     handleDeleteFoodReview = async (menuItemId, reviewId) => {
         await Requests.deleteFoodReview(menuItemId, reviewId);
         let reviews = [...this.state.review_list];
-        let idx = -1;
-        let r = reviews.filter((item, index) => {
-            idx = index;
+
+        let r = reviews.filter((item) => {
             return item._id === reviewId;
         });
         let index = reviews.indexOf(r[0]);

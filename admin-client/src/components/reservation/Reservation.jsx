@@ -10,7 +10,6 @@ import { Requests } from 'src/utilities/Requests';
 import { ReservationDialog } from 'src/components/reservation/ReservationDialog';
 import { TableDialog } from 'src/components/reservation/TableDialog';
 
-const BASE_NUM = 100;
 export class Reservation extends React.Component {
 
     constructor(props) {
@@ -58,7 +57,7 @@ export class Reservation extends React.Component {
     render () {
         const { tables, handleWaiterCall, changeOrderStatus } = this.props;
         
-        let tableComps = tables && tables.map((table, i) => {
+        tables && tables.map((table, i) => {
             return (
                 <Col key={i}>
                     <Button

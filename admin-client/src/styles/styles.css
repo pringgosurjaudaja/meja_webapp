@@ -7,7 +7,7 @@ body {
 
 .layout--background {
     background: url(../styles/assets/bg-app2.jpg) no-repeat center center fixed;
-    background-size: auto 100%;;
+    background-size: auto 100%;
 }
 
 .container-home {
@@ -33,19 +33,23 @@ body {
     padding-left: 0 !important;
     padding-right: 0 !important;
 }
+
 .layout--no-padding {
     padding-left: 0 !important;
     padding-right: 0 !important;
 }
+
 /* Spacing between menu item in client*/
 .layout--menu {
     margin-bottom: 0%;
 }
+
 .title {
     padding-left: 5% !important;
     padding-right: 5% !important;
     margin-top: 5vh !important;
 }
+
 .l-center {
     vertical-align: middle;
     text-align: center;
@@ -63,9 +67,11 @@ body {
     position: absolute;
     top: 25%;
 }
+
 .l-reserve {
     margin-top: 3vh;
 }
+
 .l-reserve-title {
     margin-bottom: 5vh;
 }
@@ -87,6 +93,7 @@ body {
     padding-right: 50px;
     word-wrap: normal;
 }
+
 .l-reserve__row--small {
     padding-left: 50px;
     padding-right: 50px;
@@ -101,7 +108,8 @@ body {
     border: 0px !important;
 }
 
-.h1, h1 {
+.h1,
+h1 {
     margin-top: 30px !important;
     margin-bottom: 20px !important;
 }
@@ -136,7 +144,7 @@ body {
     background: #AE956D !important;
     color: #FFFFFF !important;
     border-radius: 12px !important;
-    border-color:  #AE956D !important;
+    border-color: #AE956D !important;
 }
 
 
@@ -186,6 +194,7 @@ body {
     margin-left: 5% !important;
     margin-right: 5% !important;
 }
+
 .layout--margin--admin-menu__button-list {
     margin-top: 40px;
 }
@@ -199,6 +208,7 @@ body {
     width: inherit;
     height: 70px;
 }
+
 .layout--margin--admin-menu__button:hover {
     background-color: black;
     color: white;
@@ -222,6 +232,7 @@ body {
     padding-left: 0 !important;
     padding-right: 0 !important;
 }
+
 /* Spacing between menu item in client*/
 .layout--menu {
     margin-bottom: 5%;
@@ -242,8 +253,9 @@ body {
 .title {
     padding-left: 5%;
     padding-right: 5%;
-    margin-top: 10px;   
+    margin-top: 10px;
 }
+
 .l-center {
     vertical-align: middle;
     text-align: center;
@@ -269,6 +281,7 @@ body {
     height: 200px;
     width: inherit;
 }
+
 .big-button--text {
     font-size: 40px !important;
     /* font-family: "OpenSans"; */
@@ -288,6 +301,7 @@ body {
     float: left;
     flex-direction: column;
 }
+
 .menu-item-card--body {
     border-top-right-radius: 20px !important;
     border-bottom-right-radius: 20px !important;
@@ -301,7 +315,6 @@ body {
 .menu-item-card--title {
     font-weight: bold !important;
     font-size: 18px !important;
-
     margin-top: 5px !important;
     margin-bottom: 5px !important;
 }
@@ -318,6 +331,7 @@ body {
 .menu-item-card--icon-group {
     font-weight: 400;
 }
+
 .menu-item-card--icon-delete {
     position: absolute;
     right: 4%;
@@ -344,11 +358,6 @@ body {
     top: 5%;
 }
 
-@import '~@fullcalendar/core/main.css';
-@import '~@fullcalendar/daygrid/main.css';
-@import '~@fullcalendar/timegrid/main.css';
-
-
 .fc-axis {
     width: 70px !important;
 }
@@ -358,8 +367,9 @@ body {
 }
 
 .modal-body {
-    overflow:scroll !important;
+    overflow: scroll !important;
 }
+
 .modal-calendar {
     overflow: scroll !important;
 }
@@ -388,14 +398,6 @@ body {
     box-sizing: border-box !important;
 }
 
-/* .navbar {
-  -webkit-transition: all 0.6s ease-out;
-  -moz-transition: all 0.6s ease-out;
-  -o-transition: all 0.6s ease-out;
-  -ms-transition: all 0.6s ease-out;
-  transition: all 0.6s ease-out;
-  border-radius: 0px;
-} */
 
 .navbar-toggler {
     color: #ffffff !important;

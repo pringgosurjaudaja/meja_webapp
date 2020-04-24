@@ -75,7 +75,7 @@ export class Requests {
     static async updateOrderStatus (newStatus, orderId) {
         try {
             // Update status of the order in the database
-            const result = await axios({
+            await axios({
                 method: 'patch',
                 url: BASE_URL + '/session/order/' + orderId,
                 data: { status: newStatus }
