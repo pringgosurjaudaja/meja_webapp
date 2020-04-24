@@ -31,3 +31,23 @@ class EmailSender:
         with smtplib.SMTP_SSL('smtp.gmail.com', port, context=context) as server:
             server.login(self.config['sender'], password)    
             server.sendmail(self.config['sender'], recipient_email, message.as_string())
+
+    def prepare_receipt(self, session, user):
+        receipt = {
+            'name': user['name'],
+            'restaurant': 'Cho Cho San',
+            'order_id': session['_id'],
+            'order_items': [],
+            'total_price': 0
+        }
+
+        for orders in session['order_list']:
+            for item in orders['order_items']:
+                receipt['order_items'].append({
+                    'name': item['menu_item']['name'],
+                    'quantity': item['quantity'],
+                    'unit_price': item['menu_item']['price']
+                })
+                receipt['total_price'] += item['quantity'] * item['menu_item']['price']
+
+        return receipt

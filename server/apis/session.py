@@ -51,17 +51,32 @@ MODEL_session_id = session.model('Session ID', {
 
 @session.route('')
 class SessionRoute(Resource):
-    @session.doc(description='Get all active sessions')
+    @session.doc(
+        description='Get all active sessions', 
+        responses={
+            200: 'Success',
+            204: 'No active sessions'
+        })
     def get(self):
         sessions = []
+        active_sessions = session_db.find({'active': True})
 
-        for session in session_db.find({'active': True}):
+        if not active_sessions:
+            return status.HTTP_204_NO_CONTENT
+
+        for session in active_sessions:
             session['_id'] = str(session['_id'])
             sessions.append(session)
         
         return sessions, status.HTTP_200_OK
 
-    @session.doc(description='Storing New Session')
+
+    @session.doc(
+        description='Storing New Session',
+        responses={
+            201: 'Session created',
+            400: 'Validation Error' 
+        })
     @session.expect(MODEL_session)
     def post(self):
         schema = SessionSchema()
@@ -80,17 +95,28 @@ class SessionRoute(Resource):
 
 @session.route('/<string:session_id>')
 class SessionInfo(Resource):
-    @session.doc(description='Obtain Session Information')
+    @session.doc(
+        description='Obtain Session Information',
+        responses={
+            200: 'Session found',
+            404: 'Session not found'
+        })
     def get(self, session_id):
         session = session_db.find_one({'_id': ObjectId(session_id)})
         
         if session is None:
-            return {'result': 'Session not found.'}, status.HTTP_404_NOT_FOUND
+            return status.HTTP_404_NOT_FOUND
 
         session['_id'] = str(session['_id'])
         return session, status.HTTP_200_OK
     
-    @session.doc(description='Adding a New Order to a Session')
+
+    @session.doc(
+        description='Adding a New Order to a Session',
+        responses={
+            201: 'New order added to session',
+            400: 'Validation error'
+        })
     @session.expect(MODEL_order)
     def post(self, session_id):
         print('Adding a new order')
@@ -108,9 +134,8 @@ class SessionInfo(Resource):
             }, status.HTTP_201_CREATED
         except ValidationError as err:
             print(err)
-            return {
-                'result': 'Error in given order data'
-            }, status.HTTP_400_BAD_REQUEST
+            return status.HTTP_400_BAD_REQUEST
+
 
     @session.doc(description='Closing all orders for a session.')
     def patch(self, session_id):
@@ -143,6 +168,7 @@ class ActiveOrders(Resource):
 
         return sorted(orders, key=lambda k: k['timestamp'], reverse=True), status.HTTP_200_OK
 
+
 @session.route('/table/<string:table_id>')
 class ActiveTableSession(Resource):
     @session.doc(description='Get active session for a table')
@@ -160,6 +186,7 @@ class ActiveTableSession(Resource):
 
         active_session['_id'] = str(active_session['_id'])
         return active_session
+
 
 @session.route('/order/<string:order_id>')
 class OrderInfo(Resource):
@@ -180,17 +207,14 @@ class OrderInfo(Resource):
     @session.doc(description="Updating an Order")
     @session.expect(MODEL_order_status)
     def patch(self, order_id):
-        new_status = request.data['status']
-
-        # pprint.pprint(session_db.find_one({'order_list._id': order_id}))
-        
-        session_db.find_one_and_update(
+        new_status = request.data['status']        
+        session_db.update_one(
             {'order_list._id': order_id},
             {'$set': {'order_list.$.status': new_status}}
         )
-
         return { 'updated': order_id }, status.HTTP_200_OK
     
+
     @session.doc(description='Deleting an Order')
     def delete(self, order_id):
         session_db.update(
@@ -205,7 +229,7 @@ class SessionReceiptRoute(Resource):
     @session.doc(description='Sending a Customer Receipt for their Session at Restaurant')
     @session.expect(MODEL_session_id)
     def post(self):
-        # Set order active status to non-active
+        # Deactivate session as it is complete
         session_db.find_one_and_update(
             {'_id': ObjectId(request.data['session_id'])},
             {'$set': {'active': False}}
@@ -215,32 +239,14 @@ class SessionReceiptRoute(Resource):
         session = session_db.find_one({'_id': ObjectId(request.data['session_id'])})
         user = auth_db.find_one({'_id': ObjectId(session['user_id'])})
 
-        # Populate Email Context using Order Details
-        email_context = {
-            'name': user['name'],
-            'restaurant': 'Cho Cho San',
-            'order_id': session['_id'],
-            'order_items': [],
-            'total_price': 0
-        }
-
-        for orders in session['order_list']:
-            for item in orders['order_items']:
-                email_context['order_items'].append({
-                    'name': item['menu_item']['name'],
-                    'quantity': item['quantity'],
-                    'unit_price': item['menu_item']['price']
-                })
-
-        subtotals = [order_item['quantity'] * order_item['unit_price'] for order_item in email_context['order_items']]
-        email_context['total_price'] = sum(subtotals)
-
+        # Prepare receipt context based on order details
+        email_helper = EmailSender()
+        receipt_context = email_helper.prepare_receipt(session, user)
         email = {
-            'subject': 'Receipt for your time at ' + email_context['restaurant'],
-            'text': 'Please go to Meja app for your receipt.', # Insert the text version of the receipt we want to send
-            'html': render_template('receipt.html', context=email_context)
+            'subject': 'Receipt for your time at ' + receipt_context['restaurant'],
+            'text': 'Please go to Meja app for your receipt.',
+            'html': render_template('receipt.html', context=receipt_context)
         }
-
         EmailSender().send_email(user['email'], email)
 
         return {
