@@ -1,11 +1,13 @@
-import React from 'react';
-import { 
-    Button,
-    Modal,
-    Form,
-} from 'react-bootstrap';
 import 'src/styles/styles.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+import {
+    Button,
+    Form,
+    Modal,
+} from 'react-bootstrap';
+
+import React from 'react';
 import { Requests } from 'src/utilities/Requests';
 
 export class Dialog extends React.Component {

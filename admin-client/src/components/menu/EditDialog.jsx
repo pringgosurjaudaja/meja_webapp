@@ -1,13 +1,14 @@
-import React from 'react';
-import { 
-    Button,
-    Modal,
-    Form,
-} from 'react-bootstrap';
 import 'src/styles/styles.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Requests } from '../../utilities/Requests';
 
+import {
+    Button,
+    Form,
+    Modal,
+} from 'react-bootstrap';
+
+import React from 'react';
+import { Requests } from '../../utilities/Requests';
 
 export class EditDialog extends React.Component {
     constructor(props) {

@@ -1,10 +1,10 @@
-import React from 'react';
-import { 
+import {
     Button,
-    Modal,
     Form,
+    Modal,
 } from 'react-bootstrap';
 
+import React from 'react';
 import { Requests } from 'src/utilities/Requests';
 
 export class CategoryDialog extends React.Component {

@@ -1,7 +1,7 @@
+import { Dashboard } from 'src/components/Dashboard'
+import { Login } from 'src/components/Login'
 import React from 'react';
 import { Router } from "@reach/router"
-import { Login } from 'src/components/Login'
-import { Dashboard } from 'src/components/Dashboard'
 
 function App() {
   return (

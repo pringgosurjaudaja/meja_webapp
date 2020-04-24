@@ -1,12 +1,13 @@
 import 'src/styles/styles.css';
+import 'rc-input-number/assets/index.css';
 
 import {
-    Modal,
+    Button,
     Form,
-    Button
+    Modal
 } from 'react-bootstrap';
+
 import InputNumber from 'rc-input-number';
-import 'rc-input-number/assets/index.css';
 import React from 'react';
 import { Requests } from 'src/utilities/Requests';
 

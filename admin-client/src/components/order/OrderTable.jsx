@@ -1,5 +1,6 @@
+import { Card, Table } from 'react-bootstrap';
+
 import React from 'react';
-import { Table, Card } from 'react-bootstrap';
 
 export class OrderTable extends React.Component {
     getTotal = () => {

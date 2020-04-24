@@ -1,6 +1,7 @@
-import React from 'react';
 import { Container, Tab, Tabs } from 'react-bootstrap';
+
 import { OrderCard } from 'src/components/order/OrderCard';
+import React from 'react';
 import { orderStatus } from 'src/components/Dashboard';
 
 const ORDER_TABS = {

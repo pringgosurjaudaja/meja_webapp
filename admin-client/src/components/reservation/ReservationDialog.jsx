@@ -1,12 +1,14 @@
-import React from 'react';
-import { Modal, Button, OverlayTrigger, Tooltip, Tabs, Tab } from 'react-bootstrap';
-import { OrderCard } from 'src/components/order/OrderCard';
-import { ScheduleTable } from 'src/components/reservation/ScheduleTable';
-import { Requests } from 'src/utilities/Requests';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faConciergeBell } from '@fortawesome/free-solid-svg-icons';
-import { TableQR } from './TableQR';
 import 'src/styles/styles.css';
+
+import { Button, Modal, OverlayTrigger, Tab, Tabs, Tooltip } from 'react-bootstrap';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { OrderCard } from 'src/components/order/OrderCard';
+import React from 'react';
+import { Requests } from 'src/utilities/Requests';
+import { ScheduleTable } from 'src/components/reservation/ScheduleTable';
+import { TableQR } from './TableQR';
+import { faConciergeBell } from '@fortawesome/free-solid-svg-icons';
 
 export class ReservationDialog extends React.Component {
     constructor(props) {

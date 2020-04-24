@@ -4,8 +4,8 @@ import React from 'react';
 import { Requests } from 'src/utilities/Requests';
 import example from 'src/components/assets/test.jpg';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
-import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 export class MenuItemCard extends React.Component {
     

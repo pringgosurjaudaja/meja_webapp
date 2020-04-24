@@ -1,16 +1,18 @@
-import React from 'react';
-import { 
-    Button,
-    Container,
-    Row,
-    Col,
-    Form,
-} from 'react-bootstrap';
-import { navigate } from "@reach/router";
 import 'src/styles/styles.css';
+
+import {
+    Button,
+    Col,
+    Container,
+    Form,
+    Row,
+} from 'react-bootstrap';
+
+import React from 'react';
 import { Requests } from 'src/utilities/Requests';
-import logo from "src/styles/assets/logo.png";
 import { _ } from "src/utilities/helper";
+import logo from "src/styles/assets/logo.png";
+import { navigate } from "@reach/router";
 export class Login extends React.Component {
     constructor(props) {
         super(props);

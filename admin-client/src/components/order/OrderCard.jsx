@@ -1,8 +1,9 @@
-import React from 'react';
 import { Button, ButtonGroup, Card } from 'react-bootstrap';
+
 import { OrderTable } from 'src/components/order/OrderTable';
-import { orderStatus } from 'src/components/Dashboard';
+import React from 'react';
 import { Requests } from 'src/utilities/Requests';
+import { orderStatus } from 'src/components/Dashboard';
 
 export class OrderCard extends React.Component {
     constructor(props) {
