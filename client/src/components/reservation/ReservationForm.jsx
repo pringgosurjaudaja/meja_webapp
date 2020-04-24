@@ -1,12 +1,14 @@
-import React from 'react';
-import { 
+import 'src/styles/styles.css';
+
+import {
+    Button,
     Container,
     Form,
     Row,
-    Button,
 } from 'react-bootstrap';
-import 'src/styles/styles.css';
-import { DateTime, moment, _ } from 'src/utilities/helper';
+import { DateTime, _, moment } from 'src/utilities/helper';
+
+import React from 'react';
 import { Requests } from 'src/utilities/Requests';
 
 export class ReservationForm extends React.Component {

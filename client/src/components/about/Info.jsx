@@ -1,10 +1,11 @@
-import React from 'react';
 import {
-    Row,
-    Col,
     Button,
+    Col,
+    Row,
 } from 'react-bootstrap';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 
 export class Info extends React.Component {

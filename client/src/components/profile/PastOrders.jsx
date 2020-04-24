@@ -1,9 +1,11 @@
-import React from 'react';
 import 'rc-input-number/assets/index.css';
 import 'src/styles/styles.css';
-import { Requests } from 'src/utilities/Requests';
-import { Row, Card, Table, Col } from 'react-bootstrap';
+
+import { Card, Col, Row, Table } from 'react-bootstrap';
+
 import { OrderHelper } from 'src/components/order/OrderHelper';
+import React from 'react';
+import { Requests } from 'src/utilities/Requests';
 
 export class PastOrders extends React.Component {
     constructor(props) {

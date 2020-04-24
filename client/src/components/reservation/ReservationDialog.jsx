@@ -1,11 +1,13 @@
-import React from 'react';
-import { 
+import 'src/styles/styles.css';
+
+import {
     Button,
     Form,
     Modal,
 } from 'react-bootstrap';
-import 'src/styles/styles.css';
+
 import PropTypes from 'prop-types';
+import React from 'react';
 
 export class ReservationDialog extends React.Component {
 

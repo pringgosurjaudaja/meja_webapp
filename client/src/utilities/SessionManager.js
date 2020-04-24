@@ -1,5 +1,5 @@
-import { axios } from './helper';
 import { Requests } from './Requests';
+import { axios } from './helper';
 
 export class SessionManager {
     static async validSession() {

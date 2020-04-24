@@ -1,11 +1,13 @@
-import React from 'react';
-import { Button, Container, Row, Col } from 'react-bootstrap';
-import { navigate, Redirect } from "@reach/router";
 import 'src/styles/styles.css';
-import logo from "src/styles/assets/logo.png";
-import { Requests } from 'src/utilities/Requests';
+
+import { Button, Col, Container, Row } from 'react-bootstrap';
+import { Redirect, navigate } from "@reach/router";
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
+import { Requests } from 'src/utilities/Requests';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import logo from "src/styles/assets/logo.png";
 
 export class Home extends React.Component {
     constructor(props) {

@@ -1,12 +1,14 @@
-import React from 'react';
-import { 
+import 'src/styles/styles.css';
+
+import {
+    Button,
+    Col,
     Container,
     Row,
-    Col,
-    Button,
 } from 'react-bootstrap';
+
+import React from 'react';
 import { ReservationDialog } from 'src/components/reservation/ReservationDialog';
-import 'src/styles/styles.css';
 
 export class ReservationConfirmation extends React.Component {
     constructor(props) {

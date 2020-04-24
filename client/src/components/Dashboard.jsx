@@ -1,21 +1,23 @@
-import React from 'react';
-import { Nav, Navbar, Modal, Button, Badge } from 'react-bootstrap';
-import { Fab } from 'react-tiny-fab';
-import io from 'socket.io-client';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faReceipt, faBars, faConciergeBell } from '@fortawesome/free-solid-svg-icons'
-import { Menu } from 'src/components/menu/Menu';
-import { Payment } from 'src/components/payment/Payment';
-import { Checkout } from 'src/components/checkout/Checkout';
-import { About } from 'src/components/about/About';
-import { Orders } from 'src/components/order/Orders';
-import { Reservation } from 'src/components/reservation/Reservation';
-import { LoginDialog } from 'src/components/reservation/LoginDialog';
-import { NavOverlay } from 'src/components/NavOverlay';
-import { Profile } from 'src/components/profile/Profile';
-import { Requests } from 'src/utilities/Requests';
 import 'src/styles/styles.css';
 import 'react-tiny-fab/dist/styles.css';
+
+import { Badge, Button, Modal, Nav, Navbar } from 'react-bootstrap';
+import { faBars, faConciergeBell, faReceipt } from '@fortawesome/free-solid-svg-icons'
+
+import { About } from 'src/components/about/About';
+import { Checkout } from 'src/components/checkout/Checkout';
+import { Fab } from 'react-tiny-fab';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { LoginDialog } from 'src/components/reservation/LoginDialog';
+import { Menu } from 'src/components/menu/Menu';
+import { NavOverlay } from 'src/components/NavOverlay';
+import { Orders } from 'src/components/order/Orders';
+import { Payment } from 'src/components/payment/Payment';
+import { Profile } from 'src/components/profile/Profile';
+import React from 'react';
+import { Requests } from 'src/utilities/Requests';
+import { Reservation } from 'src/components/reservation/Reservation';
+import io from 'socket.io-client';
 
 export const cartOps = {
     ADD: 'add',

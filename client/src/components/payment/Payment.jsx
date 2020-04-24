@@ -1,7 +1,8 @@
-import React from 'react';
-import { Container, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Button, Container, OverlayTrigger, Tooltip } from 'react-bootstrap';
+
 import { OrderHelper } from 'src/components/order/OrderHelper';
-import { Requests } from '../../utilities/Requests';
+import React from 'react';
+import { Requests } from 'src/utilities/Requests';
 
 export class Payment extends React.Component {
     constructor(props) {

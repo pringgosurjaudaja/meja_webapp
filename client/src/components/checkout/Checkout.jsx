@@ -1,9 +1,11 @@
-import React from 'react';
-import { Button, Modal } from 'react-bootstrap';
-import { cartOps } from 'src/components/Dashboard';
-import { CartEntry } from 'src/components/checkout/CartEntry';
-import io from 'socket.io-client';
 import 'rc-input-number/assets/index.css';
+
+import { Button, Modal } from 'react-bootstrap';
+
+import { CartEntry } from 'src/components/checkout/CartEntry';
+import React from 'react';
+import { cartOps } from 'src/components/Dashboard';
+import io from 'socket.io-client';
 
 export class Checkout extends React.Component {
     constructor(props) {

@@ -1,9 +1,11 @@
-import React from 'react';
-import { Button, Container, Row, Col } from 'react-bootstrap';
-import { navigate, Redirect } from "@reach/router";
 import 'src/styles/styles.css';
-import logo from "src/styles/assets/logo.png";
+
+import { Button, Col, Container, Row } from 'react-bootstrap';
+import { Redirect, navigate } from "@reach/router";
+
+import React from 'react';
 import { Requests } from 'src/utilities/Requests';
+import logo from "src/styles/assets/logo.png";
 
 export class Landing extends React.Component {
     componentDidMount() {

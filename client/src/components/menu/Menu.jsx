@@ -1,8 +1,9 @@
-import React from 'react';
-import { Container, Row, Col, Nav, Tabs, Tab, Form } from 'react-bootstrap';
-import { MenuItem } from 'src/components/menu/MenuItem';
-import { Requests } from 'src/utilities/Requests';
+import { Col, Container, Form, Nav, Row, Tab, Tabs } from 'react-bootstrap';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { MenuItem } from 'src/components/menu/MenuItem';
+import React from 'react';
+import { Requests } from 'src/utilities/Requests';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 const DEFAULT_TAB = "Recommendation";

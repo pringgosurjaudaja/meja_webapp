@@ -1,10 +1,11 @@
-import React from 'react';
 import 'src/styles/styles.css';
-import { _ } from 'src/utilities/helper';
 import 'src/styles/react-datetime.css';
+
+import React from 'react';
+import { Requests } from 'src/utilities/Requests';
 import { ReservationConfirmation } from 'src/components/reservation/ReservationConfirmation';
 import { ReservationForm } from 'src/components/reservation/ReservationForm';
-import { Requests } from 'src/utilities/Requests';
+import { _ } from 'src/utilities/helper';
 export class Reservation extends React.Component {
     constructor(props) {
         super(props);

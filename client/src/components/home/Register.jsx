@@ -1,15 +1,17 @@
-import React from 'react';
+import 'src/styles/styles.css';
+
 import {
     Button,
     Container,
-    Row,
     Form,
+    Row,
 } from 'react-bootstrap';
-import { navigate } from "@reach/router";
-import 'src/styles/styles.css';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import React from 'react';
 import { Requests } from 'src/utilities/Requests';
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { navigate } from "@reach/router";
 
 export class Register extends React.Component {
     constructor(props) {

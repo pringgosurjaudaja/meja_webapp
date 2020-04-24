@@ -1,11 +1,12 @@
-import React from 'react';
 import {
-    Row,
-    Col
+    Col,
+    Row
 } from 'react-bootstrap';
-import { Requests } from 'src/utilities/Requests'; 
-import { ReviewForm } from 'src/components/about/ReviewForm';
+
+import React from 'react';
+import { Requests } from 'src/utilities/Requests';
 import { ReviewCard } from 'src/components/about/ReviewCard';
+import { ReviewForm } from 'src/components/about/ReviewForm';
 
 export const BASE_INDEX_NUM = 1000;
 export class CustomerReview extends React.Component {

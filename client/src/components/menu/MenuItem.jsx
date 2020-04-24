@@ -1,6 +1,6 @@
-import React from 'react';
-import { MenuItemDialog } from 'src/components/menu/MenuItemDialog';
 import { Card } from 'react-bootstrap';
+import { MenuItemDialog } from 'src/components/menu/MenuItemDialog';
+import React from 'react';
 
 export class MenuItem extends React.Component {
     constructor(props) {

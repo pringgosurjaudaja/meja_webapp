@@ -1,13 +1,14 @@
-import React from 'react';
-import { 
+import {
+    Button,
     Card,
-    Row,
     Col,
-    Button
+    Row
 } from 'react-bootstrap';
-import { Requests } from 'src/utilities/Requests'; 
-import StarRatings from 'react-star-ratings';
+
+import React from 'react';
 import { ReplyForm } from 'src/components/about/ReplyForm';
+import { Requests } from 'src/utilities/Requests';
+import StarRatings from 'react-star-ratings';
 import { _ } from 'src/utilities/helper';
 
 export class ReviewCard extends React.Component {

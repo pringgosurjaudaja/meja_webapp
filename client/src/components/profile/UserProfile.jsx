@@ -1,9 +1,11 @@
-import React from 'react';
 import 'rc-input-number/assets/index.css';
 import 'src/styles/styles.css';
-import example from 'src/styles/assets/profile.png';
-import { Badge, Row, Col } from 'react-bootstrap';
+
+import { Badge, Col, Row } from 'react-bootstrap';
+
+import React from 'react';
 import { Requests } from 'src/utilities/Requests';
+import example from 'src/styles/assets/profile.png';
 
 export class UserProfile extends React.Component {
     constructor(props) {

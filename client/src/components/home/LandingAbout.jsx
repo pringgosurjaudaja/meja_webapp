@@ -1,13 +1,15 @@
-import React from 'react';
-import { 
+import 'src/styles/styles.css';
+
+import {
     Container,
     Row,
 } from 'react-bootstrap';
-import 'src/styles/styles.css';
-import { navigate } from '@reach/router';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+
 import { About } from 'src/components/about/About';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { navigate } from '@reach/router';
 
 export class LandingAbout extends React.Component {
 

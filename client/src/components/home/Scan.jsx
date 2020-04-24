@@ -1,11 +1,13 @@
-import React from 'react';
-import {  Container, Row, Col } from 'react-bootstrap';
-import { navigate, Redirect } from "@reach/router";
 import 'src/styles/styles.css';
-import qrSample from './qrsample.png';
-import { Requests } from 'src/utilities/Requests';
+
+import { Col, Container, Row } from 'react-bootstrap';
+import { Redirect, navigate } from "@reach/router";
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
+import { Requests } from 'src/utilities/Requests';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import qrSample from './qrsample.png';
 
 export class Scan extends React.Component {
 

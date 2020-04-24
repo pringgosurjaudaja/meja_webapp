@@ -1,16 +1,18 @@
-import React from 'react';
-import { 
+import 'src/styles/styles.css';
+
+import {
+    Button,
     Container,
     Form,
     Row,
-    Button,
 } from 'react-bootstrap';
-import 'src/styles/styles.css';
-import { DateTime, moment, _ } from 'src/utilities/helper';
-import { Requests } from 'src/utilities/Requests';
-import { navigate } from '@reach/router';
+import { DateTime, _, moment } from 'src/utilities/helper';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
+import { Requests } from 'src/utilities/Requests';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { navigate } from '@reach/router';
 export class LandingReservation extends React.Component {
 
     constructor(props) {

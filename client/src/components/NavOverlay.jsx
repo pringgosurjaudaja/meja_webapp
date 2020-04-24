@@ -1,7 +1,9 @@
-import React from 'react';
-import { Modal, Nav } from 'react-bootstrap';
 import 'rc-input-number/assets/index.css';
 import 'src/styles/styles.css';
+
+import { Modal, Nav } from 'react-bootstrap';
+
+import React from 'react';
 
 export class NavOverlay extends React.Component {
 

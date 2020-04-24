@@ -1,7 +1,8 @@
-import React from 'react';
-import { Card, Button, Table } from 'react-bootstrap';
-import { orderStatus } from 'src/components/Dashboard';
+import { Button, Card, Table } from 'react-bootstrap';
+
 import { OrderHelper } from 'src/components/order/OrderHelper';
+import React from 'react';
+import { orderStatus } from 'src/components/Dashboard';
 
 export class OrderCard extends React.Component {
     orderStatusIndicator = (currOrderStatus) => {

@@ -1,11 +1,13 @@
-import React from 'react';
-import { 
+import {
     Card,
-    Row,
-    Col
+    Col,
+    Row
 } from 'react-bootstrap';
-import { Requests } from 'src/utilities/Requests'; 
+
+import React from 'react';
+import { Requests } from 'src/utilities/Requests';
 import StarRatings from 'react-star-ratings';
+
 export const BASE_INDEX_NUM = 100;
 export class Review extends React.Component {
     constructor(props) {

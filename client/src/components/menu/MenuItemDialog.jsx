@@ -1,13 +1,15 @@
-import React from 'react';
-import { Modal, Button, Card, Alert, InputGroup, FormControl, FormLabel, Tab, Tabs, Row, Col } from 'react-bootstrap';
 import 'rc-input-number/assets/index.css';
 import 'src/styles/styles.css';
-import example from 'src/styles/assets/test.jpg';
-import { cartOps } from 'src/components/Dashboard';
-import { _ } from 'src/utilities/helper';
-import StarRatings from 'react-star-ratings';
+
+import { Alert, Button, Card, Col, FormControl, FormLabel, InputGroup, Modal, Row, Tab, Tabs } from 'react-bootstrap';
+
 import { MenuItemReviewForm } from 'src/components/menu/MenuItemReviewForm';
+import React from 'react';
 import { Requests } from 'src/utilities/Requests';
+import StarRatings from 'react-star-ratings';
+import { _ } from 'src/utilities/helper';
+import { cartOps } from 'src/components/Dashboard';
+import example from 'src/styles/assets/test.jpg';
 
 export class MenuItemDialog extends React.Component {
     constructor(props) {

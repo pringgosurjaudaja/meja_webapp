@@ -1,10 +1,12 @@
-import React from 'react';
-import { 
+import 'src/styles/styles.css';
+
+import {
     Button,
     Form,
     Modal,
 } from 'react-bootstrap';
-import 'src/styles/styles.css';
+
+import React from 'react';
 import { Requests } from 'src/utilities/Requests';
 import { _ } from 'src/utilities/helper';
 import { navigate } from "@reach/router";

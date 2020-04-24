@@ -1,7 +1,7 @@
-import React from 'react';
 import { Button } from 'react-bootstrap';
 import { OrderCard } from 'src/components/order/OrderCard';
 import { OrderHelper } from 'src/components/order/OrderHelper';
+import React from 'react';
 
 export class Orders extends React.Component {
     render() {
