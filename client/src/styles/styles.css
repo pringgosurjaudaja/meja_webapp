@@ -92,17 +92,20 @@ body {
 }
 
 .bg-transparent {
-    background-color: transparent !important; /* Black w/opacity */
+    background-color: transparent !important;
+    /* Black w/opacity */
 }
 
 .layout--background {
     background: url(../styles/assets/bg-app2.jpg) no-repeat center center fixed;
-    background-size: auto 100%;;
+    background-size: auto 100%;
+    ;
 }
 
 .layout--landbackground {
     background: url(../styles/assets/bg-app1.jpg) no-repeat center center fixed;
-    background-size: auto 100%;;
+    background-size: auto 100%;
+    ;
     background-color: #cdccc8;
 }
 
@@ -129,24 +132,29 @@ body {
     padding-left: 0 !important;
     padding-right: 0 !important;
 }
+
 .layout--no-padding {
     padding-left: 0 !important;
     padding-right: 0 !important;
 }
+
 /* Spacing between menu item in client*/
 .layout--menu {
     margin-bottom: 0%;
 }
+
 .title {
     padding-left: 5% !important;
     padding-right: 5% !important;
     margin-top: 5vh !important;
 }
+
 .l-center {
     vertical-align: middle;
     text-align: center;
     margin: auto;
 }
+
 .l-landing {
     vertical-align: middle;
     text-align: center;
@@ -159,7 +167,7 @@ body {
 .l-button-back {
     position: fixed;
     top: 20px;
-    left: 20px ;
+    left: 20px;
 }
 
 .l-home--title {
@@ -173,9 +181,11 @@ body {
     position: absolute;
     top: 25%;
 }
+
 .l-reserve {
     margin-top: 3vh;
 }
+
 .l-reserve-title {
     margin-bottom: 5vh;
 }
@@ -198,6 +208,7 @@ body {
     padding-right: 50px;
     word-wrap: normal;
 }
+
 .l-reserve__row--small {
     padding-left: 50px;
     padding-right: 50px;
@@ -212,7 +223,8 @@ body {
     border: 0px !important;
 }
 
-.h1, h1 {
+.h1,
+h1 {
     margin-bottom: 20px !important;
 }
 
@@ -246,7 +258,7 @@ body {
     background: #AE956D !important;
     color: #FFFFFF !important;
     border-radius: 12px !important;
-    border-color:  #AE956D !important;
+    border-color: #AE956D !important;
 }
 
 
@@ -281,17 +293,17 @@ body {
 
 .tabbable .nav-tabs {
     overflow-x: auto;
-    overflow-y:hidden;
+    overflow-y: hidden;
     flex-wrap: nowrap;
     top: 100px !important;
     background-color: #ffffff !important;
     z-index: 1;
     position: sticky !important;
- }
+}
 
- .tabbable .nav-tabs .nav-link {
-   white-space: nowrap;
- }
+.tabbable .nav-tabs .nav-link {
+    white-space: nowrap;
+}
 
 .menu-nav-tabs li {
     display: inline-block;
@@ -336,13 +348,12 @@ body {
     font-size: 1.5em !important;
 }
 
-.margin-center
-{
-    margin-left:5% !important;
+.margin-center {
+    margin-left: 5% !important;
 }
 
 .boldText {
-    font-weight : bold;
+    font-weight: bold;
 }
 
 .small-button-row {
@@ -355,26 +366,17 @@ body {
     height: 60px;
 }
 
-
 .icon-whatsapp {
     font-size: 34px;
     color: #25D366;
     padding-left: 10px;
 }
+
 .icon-share {
     font-size: 34px;
     color: gray;
 }
 
-/* #notif {
-    transition: 900ms all ease;
-    opacity: 0;
-    will-change: opacity;
-}
-
-.show-notif {
-    opacity: 1;
-} */
 
 .alert-shown {
     opacity: 1;
@@ -405,7 +407,7 @@ body {
 
 df-messenger {
     --df-messenger-bot-message: #121212;
-    --df-messenger-button-titlebar-color:#080808;
+    --df-messenger-button-titlebar-color: #080808;
     --df-messenger-chat-background-color: #ffffff;
     --df-messenger-font-color: white;
     --df-messenger-send-icon: #878fac;
@@ -413,18 +415,24 @@ df-messenger {
 }
 
 .overlay {
-    /* Height & width depends on how you want to reveal the overlay (see JS below) */   
+    /* Height & width depends on how you want to reveal the overlay (see JS below) */
     height: 100% !important;
     width: 100% !important;
-    position: fixed important; /* Stay in place */
-    z-index: 99999 !important; /* Sit on top */
+    position: fixed important;
+    /* Stay in place */
+    z-index: 99999 !important;
+    /* Sit on top */
     left: 0;
     top: 0;
     padding: 0px !important;
-    background-color: rgb(0,0,0); /* Black fallback color */
-    background-color: rgba(0,0,0, 0.9); /* Black w/opacity */
-    overflow-x: hidden; /* Disable horizontal scroll */
-    transition: 0.5s; /* 0.5 second transition effect to slide in or slide down the overlay (height or width, depending on reveal) */
+    background-color: rgb(0, 0, 0);
+    /* Black fallback color */
+    background-color: rgba(0, 0, 0, 0.9);
+    /* Black w/opacity */
+    overflow-x: hidden;
+    /* Disable horizontal scroll */
+    transition: 0.5s;
+    /* 0.5 second transition effect to slide in or slide down the overlay (height or width, depending on reveal) */
 }
 
 .overlay .modal-content {
@@ -433,29 +441,37 @@ df-messenger {
 
 .overlay-content {
     position: relative;
-    width: 100%; /* 100% width */
-    text-align: center; /* Centered text/links */
-    margin-top: 20px; /* 20px top margin to avoid conflict with the close button on smaller screens */
-    background-color: transparent; /* Black fallback color */
+    width: 100%;
+    /* 100% width */
+    text-align: center;
+    /* Centered text/links */
+    margin-top: 20px;
+    /* 20px top margin to avoid conflict with the close button on smaller screens */
+    background-color: transparent;
+    /* Black fallback color */
     margin-right: 0px;
     margin-left: 0px;
 }
 
 .overlay-cart {
-    /* Height & width depends on how you want to reveal the overlay (see JS below) */   
+    /* Height & width depends on how you want to reveal the overlay (see JS below) */
     height: 100% !important;
     width: 100% !important;
-    z-index: 99999 !important; /* Sit on top */
-    background-color: rgb(0,0,0); /* Black fallback color */
-    background-color: rgba(0,0,0, 0.9); /* Black w/opacity */
+    z-index: 99999 !important;
+    /* Sit on top */
+    background-color: rgb(0, 0, 0);
+    /* Black fallback color */
+    background-color: rgba(0, 0, 0, 0.9);
+    /* Black w/opacity */
     color: white;
-    overflow-x: hidden; /* Disable horizontal scroll */
+    overflow-x: hidden;
+    /* Disable horizontal scroll */
     top: 63px !important;
 }
 
 .overlay-cart .modal-content {
     background-color: transparent !important;
-    border: 0px solid !important;  
+    border: 0px solid !important;
     overflow-y: auto;
     /* color: white; */
     height: 80% !important;
@@ -481,12 +497,15 @@ df-messenger {
     font-size: 30px;
     float: center !important;
     color: #818181;
-    display: block; /* Display block instead of inline */
-    transition: 0.3s; /* Transition effects on hover (color) */
+    display: block;
+    /* Display block instead of inline */
+    transition: 0.3s;
+    /* Transition effects on hover (color) */
 }
 
 /* When you mouse over the navigation links, change their color */
-.overlay a:hover, .overlay a:focus {
+.overlay a:hover,
+.overlay a:focus {
     color: #f1f1f1;
     opacity: 1 !important;
 }
@@ -499,7 +518,8 @@ df-messenger {
     opacity: .5;
 }
 
-.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+.nav-pills .nav-link.active,
+.nav-pills .show>.nav-link {
     color: #fff;
     background-color: transparent !important;
 }
@@ -575,19 +595,7 @@ df-messenger {
     font-size: 22px;
     font-style: italic;
 }
-/* .chat-wrapper {
-    display: flex !important;
-    flex-flow: column nowrap !important;
-    justify-content: flex-end !important;
-}
 
-.chat-wrapper df-message-list {
-    height: calc(100vh - 250px) !important;
-}
-
-#messageList {
-    height: calc(100vh - 350px) !important;
-} */
 
 .profile-badge {
     margin-left: 5px;
