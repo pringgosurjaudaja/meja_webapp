@@ -18,3 +18,9 @@ After working on some parts of the css, we decided to remodel our navigation sys
 
 Week 8
 Continuing with CSS and design of the app. Client app is mostly done, but now has bugs with the new chatbot and call waiter feature. Still figuring out how to resolve these issues.
+
+Week 9
+We went through the application as a whole to make sure it gives maximises user experience. We also got feedback to add some new features that should be present in the app and I was tasked with making a Profile page for logged in users. Also did more css and frontend side changes.
+
+Week 10
+Final refinement of the app, we fixed the bugs and did final polishings to make sure the app runs as smoothly as possible.
