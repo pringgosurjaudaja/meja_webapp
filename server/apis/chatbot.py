@@ -24,18 +24,13 @@ def construct_custom_intent(type, items, text_message, found):
             }
         },
         {
-            "payload": {
-
-            }
+            "payload": {}
         }
     ]
         }
     message = {
-        "richContent": [
-            [
-            ]
-        ]
-        }
+        "richContent": [[]]
+              }
     if(found == False): return jsonify(message1)
     if(type == 'menu_category'):
         for x in items['menu_items']:
@@ -46,6 +41,18 @@ def construct_custom_intent(type, items, text_message, found):
             }
             message['richContent'][0].append(menu_item_rich)
             message['richContent'][0].append({'type':'divider'})
+    elif(type == 'menu_item'):
+        menu_item_rich = {
+            "type": "image",
+            "rawUrl": items['image'],
+        }
+        menu_item_rich2 = {
+           "type": "info",
+           "title": items['name'],
+           "subtitle": f"Menu-category: {items['category']}\nPrice: {items['price']}\nRating: {items['rating']}/5.0",
+        }
+        message['richContent'][0].append(menu_item_rich)
+        message['richContent'][0].append(menu_item_rich2)
     elif(type == 'menu_category_general'):
         for x in items:
             # print(x['name']i)
@@ -110,43 +117,18 @@ def handle_chats():
                             'name': '$menu_items.name',
                             'price': '$menu_items.price',
                             'rating': '$menu_items.rating',
-                            'image': '$menu_items.media_urls'
+                            'image': '$menu_items.media_urls',
+                            'category': category['name']
                 }}
         ])
         item = menu_item_queried.next()
-        message = {
-            "fulfillmentText": "Your text response",
-            "fulfillmentMessages": [
-                {
-                    "text": {
-                        "text": [
-                            f"Here is the detail of {item['name']}"
-                        ]
-                    }
-                },
-                {
-                    "payload": {
-                        
-                        "richContent": [
-                            [
-                            {
-                                "type": "image",
-                                "rawUrl": item['image'],
-                            },
-                            {
-                                "type": "info",
-                                "title": item['name'],
-                                "subtitle": f"Menu-category: {category['name']}\nPrice: {item['price']}\nRating: {item['rating']}/5.0",
-                                
-                            }
-                            ]
-                        ]
-                        
-                    }
-                }
-            ]
-        }
-        return jsonify(message)
+        if not item:
+            text_message = f"I'm sorry there are no {menu_item_raw} found"
+            found = False
+        else:
+            found = True
+            text_message = f"Here is the detail of {item['name']}"
+        return construct_custom_intent('menu_item', item, text_message, found)
     elif('menu_category' in data['queryResult']['parameters']):
         menu_category = data['queryResult']['parameters']['menu_category']
         category = menu_db.find_one({'name': re.compile(menu_category, re.IGNORECASE)})
