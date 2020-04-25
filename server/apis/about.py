@@ -35,22 +35,3 @@ class RestaurantRoute(Resource):
         return {
             'error': 'Invalid Restaurant ID'
         }, status.HTTP_400_BAD_REQUEST
-
-
-@about.route('/reviews')
-class RestaurantReviewsRoute(Resource):
-    @about.doc(description='Get Latst 5 Reviews for the Restaurant')
-    def get(self):
-        # Fetch from Zomato API
-        response = requests.get(
-            url=zomato_config['url'] + '/reviews', 
-            params=zomato_config['params'], 
-            headers=zomato_config['headers']
-        )
-
-        if response.status_code == status.HTTP_200_OK:
-            return response.json()['user_reviews'], status.HTTP_200_OK
-
-        return {
-            'error': 'Invalid Restaurant ID'
-        }, status.HTTP_400_BAD_REQUEST

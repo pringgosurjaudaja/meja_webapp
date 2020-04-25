@@ -22,7 +22,6 @@ reviews and ratings for the menu items.
 
 
 menu_db = db_client.menu
-menu_review_db = db_client.menu_review
 menu = Namespace('menu', description='Menu Backend Service')
 
 MODEL_menu_category = menu.model('Menu Category', {
@@ -43,16 +42,6 @@ MODEL_menu_uuid = menu.model('Menu Item ID', {
 
 MODEL_menu_recommendation = menu.model('Menu Item Recommendation', {
     'chefs_pick': fields.Boolean(default=True)
-})
-
-MODEL_menu_review_id = menu.model('Menu review id',{
-    '_id': fields.String()
-})
-
-MODEL_menu_review = menu.model('Menu Item Review',{
-    'user': fields.String(),
-    'rating': fields.Integer(),
-    'comment': fields.String()
 })
 
 @menu.route('')
@@ -233,58 +222,3 @@ class MenuRecommendationRoute(Resource):
             return {
                 'result': 'Missing required fields'
             }, status.HTTP_400_BAD_REQUEST
-
-
-@menu.route('/review/<string:menu_item_id>')
-class MenuReviewRoute(Resource):
-    @menu.expect(MODEL_menu_review)
-    @menu.doc(description='Adding new menu_item review on an item')
-    def post(self, menu_item_id):
-        schema = MenuReviewSchema()
-        try:
-            # Setting up the menu review request data
-            menu_review = schema.load(request.data)
-            menu_review['_id'] = str(ObjectId())
-            menu_review['menu_item_id'] = menu_item_id
-            menu_review['date_time'] = datetime.now()
-
-            # Insert review into database
-            menu_db.update(
-                {'menu_items._id': menu_item_id},
-                {'$push': {'menu_items.$.review_list': schema.dump(menu_review)}}
-            )
-            menu_review_db.insert_one(schema.dump(menu_review))
-
-            # Update average rating of the menu item
-            review_list = list(menu_review_db.find({'menu_item_id': menu_item_id}))
-            total_rating = 0
-            for x in range(len(review_list)):
-                total_rating += review_list[x]['rating']
-            avg_rating = total_rating / len(review_list)
-
-            menu_db.update_one(
-                {'menu_items._id': menu_item_id},
-                {'$set': {'menu_items.$.rating': round(avg_rating, 2)}}
-            )
-            return{
-                'inserted': schema.dump(menu_review)
-            }, status.HTTP_201_CREATED
-        except ValidationError as err:
-            print(err)
-            return{
-                'result': 'Missing required fields'
-            },status.HTTP_400_BAD_REQUEST
-    
-
-    @menu.doc(description="Delete a review of a menu item")        
-    @menu.expect(MODEL_menu_review_id)
-    def delete(self, menu_item_id):
-        id = request.data['_id']
-        menu_db.update(
-            {'menu_items._id': menu_item_id},
-            {'$pull':{'menu_items.$.review_list':{'_id': id}}}
-        )
-        menu_review_db.delete_one({'_id': id})
-        return {
-            'deleted':'success'
-        }, status.HTTP_200_OK
