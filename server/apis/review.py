@@ -104,7 +104,7 @@ class ReviewAction(Resource):
             print(err)
             return{'result': 'Missing required fields'}, status.HTTP_400_BAD_REQUEST
 
-@review.route('/<string:menu_item_id>')
+@review.route('/menu_items/<string:menu_item_id>')
 class MenuReviewRoute(Resource):
     @review.expect(MODEL_menu_review)
     @review.doc(description='Adding new menu_item review on an item')
