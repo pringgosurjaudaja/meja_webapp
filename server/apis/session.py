@@ -240,13 +240,7 @@ class SessionReceiptRoute(Resource):
         user = auth_db.find_one({'_id': ObjectId(session['user_id'])})
 
         # Prepare receipt context based on order details
-        email_helper = EmailSender()
-        receipt_context = email_helper.prepare_receipt(session, user)
-        email = {
-            'subject': 'Receipt for your time at ' + receipt_context['restaurant'],
-            'text': 'Please go to Meja app for your receipt.',
-            'html': render_template('receipt.html', context=receipt_context)
-        }
+        email = EmailSender().prepare_receipt_email(session, user)
         EmailSender().send_email(user['email'], email)
 
         return {

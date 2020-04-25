@@ -26,6 +26,7 @@ class Table(Resource):
             table['_id'] = str(table['_id'])
         return tables, status.HTTP_200_OK
 
+
     @table.doc(description='Adding new table')
     @table.expect(MODEL_table)
     def post(self):
@@ -43,6 +44,7 @@ class Table(Resource):
                 'result': 'Missing required fields'
             }, status.HTTP_400_BAD_REQUEST
 
+
 @table.route('/<string:table_id>')
 class TableSpecificRoute(Resource):
     @table.doc(description='Get details of a table')
@@ -54,6 +56,7 @@ class TableSpecificRoute(Resource):
         
         table['_id'] = str(table['_id'])
         return table
+
 
     @table.doc(description='Updating a table\'s details')
     @table.expect(MODEL_table)
@@ -90,7 +93,7 @@ class CallWaiterRoute(Resource):
         table = table_db.find_one({'_id': ObjectId(table_id)})
         current_status = table['calling_waiter']
 
-        table_db.find_one_and_update(
+        table_db.update_one(
             {'_id': ObjectId(table_id)},
             {'$set': {'calling_waiter': not current_status}}
         )

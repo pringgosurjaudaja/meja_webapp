@@ -3,12 +3,11 @@ from flask_api import status
 from flask_restplus import Namespace, Resource, fields
 from marshmallow import ValidationError
 from bson.objectid import ObjectId
+from datetime import datetime
 from db import db_client
 from apis.menu_schema import MenuItemSchema, MenuCategorySchema, MenuReviewSchema
 import json
-from bson import json_util
 import pprint
-from datetime import datetime
 
 menu_db = db_client.menu
 menu_review_db = db_client.menu_review
@@ -53,6 +52,7 @@ class MenuRoute(Resource):
             menu_item['_id'] = str(menu_item['_id'])
         return menu_items, status.HTTP_200_OK
 
+
     @menu.doc(description='Inserting a new Menu category')
     @menu.expect(MODEL_menu_category)
     def post(self):
@@ -60,7 +60,9 @@ class MenuRoute(Resource):
         try:
             menu_category = schema.load(request.data)
             operation = menu_db.insert_one(schema.dump(menu_category))
-            return {'inserted': str(operation.inserted_id)}, status.HTTP_201_CREATED
+            return {
+                'inserted': str(operation.inserted_id)
+            }, status.HTTP_201_CREATED
         except ValidationError as err:
             print(err)
             return {
@@ -76,13 +78,14 @@ class MenuCategoryRoute(Resource):
         menu_category['_id'] = str(menu_category['_id'])
         return menu_category, status.HTTP_200_OK
 
+
     @menu.doc(description='Edit Menu Category Details')
     @menu.expect(MODEL_menu_category)
     def patch(self, category_id):
         schema = MenuCategorySchema()
         try:
             new_category = schema.load(request.data)
-            menu_db.find_one_and_update(
+            menu_db.update_one(
                 {'_id': ObjectId(category_id)},
                 {'$set':
                     {'name': new_category['name']}
@@ -94,6 +97,7 @@ class MenuCategoryRoute(Resource):
             return {
                 'result': 'Missing required fields'
             }, status.HTTP_400_BAD_REQUEST
+
 
     @menu.doc(description='Add Menu Item to Menu Category')
     @menu.expect(MODEL_menu_item)
@@ -116,12 +120,12 @@ class MenuCategoryRoute(Resource):
                 'result': 'Missing required fields'
             }, status.HTTP_400_BAD_REQUEST
 
+
     @menu.doc(description='Deleting a Menu Category')
     def delete(self, category_id):
         menu_db.delete_one({'_id': ObjectId(category_id)})
-        
         return {
-            'deleted': 'success'
+            'deleted': category_id
         }, status.HTTP_200_OK
 
 
@@ -132,6 +136,7 @@ class MenuItemRoute(Resource):
         menu_item = menu_db.find_one({'menu_items._id': item_id})
         menu_item['_id'] = str(menu_item['_id'])
         return menu_item, status.HTTP_200_OK
+
 
     @menu.doc(description='Deleting a Menu Item')
     def delete(self, item_id):
@@ -146,6 +151,7 @@ class MenuItemRoute(Resource):
         return {
             'deleted': 'success'
         }, status.HTTP_200_OK
+
 
     @menu.doc(description='Updating a Menu Item')
     @menu.expect(MODEL_menu_item)
@@ -186,7 +192,7 @@ class MenuRecommendationRoute(Resource):
     @menu.doc(description='Adding a Menu Item to Recommendations')
     def patch(self, item_id):
         try:
-            menu_db.find_one_and_update(
+            menu_db.update_one(
                 {'menu_items._id': item_id},
                 {'$set':
                     {'menu_items.$.chefs_pick': True}
@@ -203,7 +209,7 @@ class MenuRecommendationRoute(Resource):
     @menu.doc(description='Removing a Menu Item from Recommendations')
     def delete(self, item_id):
         try:
-            menu_db.find_one_and_update(
+            menu_db.update_one(
                 {'menu_items._id': item_id},
                 {'$set':
                     {'menu_items.$.chefs_pick': False}
@@ -216,6 +222,7 @@ class MenuRecommendationRoute(Resource):
                 'result': 'Missing required fields'
             }, status.HTTP_400_BAD_REQUEST
 
+
 @menu.route('/review/<string:menu_item_id>')
 class MenuReviewRoute(Resource):
     @menu.expect(MODEL_menu_review)
@@ -223,27 +230,29 @@ class MenuReviewRoute(Resource):
     def post(self, menu_item_id):
         schema = MenuReviewSchema()
         try:
+            # Setting up the menu review request data
             menu_review = schema.load(request.data)
-            menu_review['menu_item_id'] = menu_item_id
             menu_review['_id'] = str(ObjectId())
-            now = datetime.now()
-            menu_review['date_time'] = now
+            menu_review['menu_item_id'] = menu_item_id
+            menu_review['date_time'] = datetime.now()
+
+            # Insert review into database
             menu_db.update(
                 {'menu_items._id': menu_item_id},
-                {'$push':{'menu_items.$.review_list': schema.dump(menu_review)}}
+                {'$push': {'menu_items.$.review_list': schema.dump(menu_review)}}
             )
             menu_review_db.insert_one(schema.dump(menu_review))
+
+            # Update average rating of the menu item
             review_list = list(menu_review_db.find({'menu_item_id': menu_item_id}))
-            print(review_list)
-            sum = 0
+            total_rating = 0
             for x in range(len(review_list)):
-                sum = sum+ review_list[x]['rating']
-            
-            sum = sum/(x+1)
-            menu_db.find_one_and_update(
+                total_rating += review_list[x]['rating']
+            avg_rating = total_rating / len(review_list)
+
+            menu_db.update_one(
                 {'menu_items._id': menu_item_id},
-                {'$set':
-                    {'menu_items.$.rating': round(sum, 2)}}
+                {'$set': {'menu_items.$.rating': round(avg_rating, 2)}}
             )
             return{
                 'inserted': schema.dump(menu_review)
@@ -253,6 +262,8 @@ class MenuReviewRoute(Resource):
             return{
                 'result': 'Missing required fields'
             },status.HTTP_400_BAD_REQUEST
+    
+
     @menu.doc(description="Delete a review of a menu item")        
     @menu.expect(MODEL_menu_review_id)
     def delete(self, menu_item_id):
@@ -261,10 +272,7 @@ class MenuReviewRoute(Resource):
             {'menu_items._id': menu_item_id},
             {'$pull':{'menu_items.$.review_list':{'_id': id}}}
         )
-        menu_review_db.delete_one({
-            '_id': id
-        })
-        return{
+        menu_review_db.delete_one({'_id': id})
+        return {
             'deleted':'success'
-        },status.HTTP_200_OK
-
+        }, status.HTTP_200_OK

@@ -11,16 +11,17 @@ from datetime import datetime
 review = Namespace('review', description='Review Backend Service')
 review_db = db_client.review
 
-
 MODEL_review = review.model('Review', {
     'review': fields.String(),
     'rating': fields.Integer(),
     'user': fields.String()  
 })
+
 MODEL_reply = review.model('Review Reply',{
     'reply': fields.String(),
     'user' : fields.String()
 })
+
 @review.route('')
 class Review(Resource):
     @review.doc(description='Get all review')
@@ -29,6 +30,8 @@ class Review(Resource):
         for review in reviews:
             review['_id'] = str(review['_id'])
         return reviews, status.HTTP_200_OK
+
+
     @review.expect(MODEL_review)
     @review.doc(description='Create new Review')
     def post(self):
@@ -54,6 +57,7 @@ class Review(Resource):
                 'result': 'Missing required fields'
             }, status.HTTP_400_BAD_REQUEST
 
+
 @review.route('/<string:review_id>')
 class ReviewAction(Resource):
     @review.doc(description='Delete a review')
@@ -66,6 +70,8 @@ class ReviewAction(Resource):
             return{
                 'result': 'Missing required fields'
             }, status.HTTP_400_BAD_REQUEST
+
+
     @review.doc(description='Reply to a review')
     @review.expect(MODEL_reply)
     def post(self, review_id):

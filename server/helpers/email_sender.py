@@ -1,6 +1,7 @@
 import smtplib, ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from flask import render_template
 
 class EmailSender:
     def __init__(self):
@@ -32,7 +33,7 @@ class EmailSender:
             server.login(self.config['sender'], password)    
             server.sendmail(self.config['sender'], recipient_email, message.as_string())
 
-    def prepare_receipt(self, session, user):
+    def prepare_receipt_email(self, session, user):
         receipt = {
             'name': user['name'],
             'restaurant': 'Cho Cho San',
@@ -50,4 +51,22 @@ class EmailSender:
                 })
                 receipt['total_price'] += item['quantity'] * item['menu_item']['price']
 
-        return receipt
+        return {
+            'subject': 'Receipt for your time at ' + receipt['restaurant'],
+            'text': 'Please go to Meja app for your receipt.',
+            'html': render_template('receipt.html', context=receipt)
+        }
+
+    def prepare_reservation_email(self, reservation):
+        reservation_context = {
+            'name': reservation['email'],
+            'number_diner': reservation['number_diner'],
+            'date_time': reservation['datetime'],
+            'notes': reservation['reservation_notes']
+        }
+
+        return {
+            'subject': f"Reservation Confirmation for {reservation['datetime']}",
+            'text': f"Your reservation at {reservation['datetime']} for {reservation['number_diner']} people are confirmed.",
+            'html': render_template('reservation_confirmation.html', context=reservation_context)
+        }
