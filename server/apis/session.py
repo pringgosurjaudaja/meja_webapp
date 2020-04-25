@@ -11,6 +11,18 @@ from helpers.email_sender import EmailSender
 import pprint
 
 
+'''
+*******************************************************************
+Session Backend Service
+
+API endpoints relating to handling user sessions when they use the
+app. Sessions are used to mainly keep track of what the user has
+ordered and provides context to admins regarding each order (who
+ordered the items, which table an order belongs to,  etc.).
+*******************************************************************
+'''
+
+
 session = Namespace('session', description='Session Backend Service')
 session_db = db_client.session
 auth_db = db_client.auth

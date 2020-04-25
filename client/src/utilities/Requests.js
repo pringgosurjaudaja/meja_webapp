@@ -258,7 +258,7 @@ export class Requests {
         try {
             const reviews = await axios({
                 method: 'get',
-                url: BASE_URL + '/about/reviews'
+                url: BASE_URL + '/review/zomato'
             });
             return reviews.data;
 

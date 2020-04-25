@@ -8,6 +8,17 @@ from apis.reservation_schema import ReservationSchema
 from datetime import datetime, date
 from helpers.email_sender import EmailSender
 
+
+'''
+*******************************************************************
+Reservations Backend Service
+
+API endpoints relating to handling reservations for the restaurants.
+Involves finding availabilities and table allocation for reservations.
+*******************************************************************
+'''
+
+
 reservation = Namespace('reservation', description="Reservation Backend Service")
 reservation_db = db_client.reservation
 table_db = db_client.table

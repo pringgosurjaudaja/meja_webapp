@@ -11,6 +11,17 @@ from datetime import datetime
 from apis.menu_schema import MenuReviewSchema
 from config.zomato import config as zomato_config
 
+
+'''
+*******************************************************************
+Reviews Backend Service
+
+API endpoints to obtain reviews on the restaurant and menu items.
+Contacts Zomato API as well to obtain additional community reviews.
+*******************************************************************
+'''
+
+
 review = Namespace('review', description='Review Backend Service')
 review_db = db_client.review
 menu_db = db_client.menu
@@ -36,9 +47,10 @@ MODEL_menu_review = review.model('Menu Item Review',{
     'rating': fields.Integer(),
     'comment': fields.String()
 })
+
 @review.route('')
 class Review(Resource):
-    @review.doc(description='Get all review')
+    @review.doc(description='Get all reviews')
     def get(self):
         reviews = list(review_db.find({}))
         for review in reviews:
@@ -47,7 +59,7 @@ class Review(Resource):
 
 
     @review.expect(MODEL_review)
-    @review.doc(description='Create new Review')
+    @review.doc(description='Create new review')
     def post(self):
         schema = ReviewSchema()
         try:
@@ -160,7 +172,7 @@ class MenuReviewRoute(Resource):
 
 @review.route('/zomato')
 class RestaurantReviewsRoute(Resource):
-    @review.doc(description='Get Latst 5 Reviews for the Restaurant')
+    @review.doc(description='Get Latest 5 Reviews for the Restaurant')
     def get(self):
         # Fetch from Zomato API
         response = requests.get(
