@@ -16,6 +16,17 @@ MODEL_table = table.model('Table', {
     'seat' : fields.Integer(),
 })
 
+
+'''
+*******************************************************************
+Table Backend Service
+
+API endpoints relating to tables and table management (e.g. calling
+waiter).
+*******************************************************************
+'''
+
+
 @table.doc(description='Endpoint for whole Table Operations')
 @table.route('')
 class Table(Resource):

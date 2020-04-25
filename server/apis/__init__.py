@@ -4,8 +4,16 @@ from apis.session import session
 from apis.table import table 
 from apis.about import about
 from apis.reservation import reservation
-from apis.auth import auth, authorizations
+from apis.auth import auth
 from apis.review import review
+
+authorizations = {
+    'apikey' : {
+        'type' : 'apiKey',
+        'in' : 'header',
+        'name' : 'X-API-KEY'
+    }
+}
 
 api = Api(
     title= 'Meja Backend Service',

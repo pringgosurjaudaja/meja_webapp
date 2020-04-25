@@ -1,7 +1,7 @@
 from db import db_client
 from flask import request, jsonify
 from flask_api import status
-from flask_restplus import Namespace, Resource, fields, marshal_with, reqparse
+from flask_restplus import Namespace, Resource, fields
 from bson.objectid import ObjectId
 import json
 from apis.auth_schema import Auth, AuthSchema, UserSchema
@@ -12,18 +12,22 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 from datetime import datetime
 
-auth = Namespace('auth', description='Authentication Backend Service')
-parser = reqparse.RequestParser()
+
+'''
+*******************************************************************
+Authorisation and User Backend Service
+
+API endpoints relating to user information and authentication. 
+Handles sign in, registation and logout. Also contains endpoints to
+obtain user details and past orders.
+*******************************************************************
+'''
+
+
 auth_db = db_client.auth
 table_db = db_client.table
 session_db = db_client.session
-authorizations = {
-    'apikey' : {
-        'type' : 'apiKey',
-        'in' : 'header',
-        'name' : 'X-API-KEY'
-    }
-}
+auth = Namespace('auth', description='Authentication Backend Service')
 
 MODEL_auth = auth.model('Auth', {
     'id' : fields.String(),

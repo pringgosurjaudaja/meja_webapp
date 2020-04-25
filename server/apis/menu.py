@@ -9,6 +9,18 @@ from apis.menu_schema import MenuItemSchema, MenuCategorySchema, MenuReviewSchem
 import json
 import pprint
 
+
+'''
+*******************************************************************
+Menu Backend Service
+
+API endpoints relating to handling the restaurant's menu. Features
+CRUD operations for menu categories and menu items. Also handles 
+reviews and ratings for the menu items.
+*******************************************************************
+'''
+
+
 menu_db = db_client.menu
 menu_review_db = db_client.menu_review
 menu = Namespace('menu', description='Menu Backend Service')

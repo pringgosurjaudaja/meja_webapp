@@ -4,6 +4,18 @@ from flask_api import status
 from flask_restplus import Namespace, Resource, fields
 from config.zomato import config as zomato_config
 
+
+'''
+*******************************************************************
+About Details Backend Service
+
+API endpoints to obtain details regarding the restaurant as a whole,
+primarily reviews for the restaurant. Contacts Zomato API as well
+for additional community reviews on the restaurant.
+*******************************************************************
+'''
+
+
 about = Namespace('about', description='Restaurant Details Backend Service')
 
 @about.route('')
