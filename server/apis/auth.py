@@ -23,7 +23,6 @@ obtain user details and past orders.
 *******************************************************************
 '''
 
-
 auth_db = db_client.auth
 table_db = db_client.table
 session_db = db_client.session

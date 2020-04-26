@@ -22,7 +22,6 @@ ordered the items, which table an order belongs to,  etc.).
 *******************************************************************
 '''
 
-
 session = Namespace('session', description='Session Backend Service')
 session_db = db_client.session
 auth_db = db_client.auth
