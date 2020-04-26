@@ -177,4 +177,10 @@ def handle_chats():
             found = True
         print(item)
         return construct_custom_intent('menu_review', item, text_message, found)
-    return jsonify(reply)
+    else:
+        text_message = "I'm sorry I couldn't understand what you said"
+        message1 = {
+            "fulfillmentMessages": [
+                {"text": {"text": [text_message
+                        ]}},{"payload": {}}]}
+        return jsonify(message1)
