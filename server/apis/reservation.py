@@ -84,22 +84,20 @@ class Reservation(Resource):
 
             if not tables:
                 return status.HTTP_404_NOT_FOUND
-
             for table in sorted(tables, key=lambda table: table['seat']):
                 reservation = reservation_db.find({
                     'datetime': '%sT%s'%(date,time), 
                     'table_id': str(table['_id'])
                 })
-
                 # Table is available for the reservation
-                if not reservation:
+                if (len(list(reservation)) == 0):
                     res['table_id'] = str(table['_id'])
                     break
             
             # No free tables
             if not res['table_id']:
                 return status.HTTP_404_NOT_FOUND
-
+            
             operation = reservation_db.insert_one(schema.dump(res))
             return {
                 'inserted': str(operation.inserted_id),
