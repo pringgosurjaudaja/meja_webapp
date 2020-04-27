@@ -1,5 +1,3 @@
-Sebastian Chua
-
 Week 1
 
 Mainly focused on group formation and discussing each team members' skillset. Explored the offered 
@@ -61,20 +59,32 @@ Week 7
 After careful evealuation of our current progress, we noticed our current architecture made it inconvenient to track
 which user has made which order, which table this order was for etc. This led our team to have further discussions and
 we eventually decided upon using sessions to model our system - a session will keep track of the user's id and the
-table they are sitting on. It will also keep track of the multiple orders the user has made in the one sitting. Most of 
 the time this week is transferring the functionality implemented in the order service to incorporate sessions instead. I 
+table they are sitting on. It will also keep track of the multiple orders the user has made in the one sitting. Most of 
 also spent time refactoring code to centralise how requests were being called in a Requests class in the frontend.
 
 Week 8
 
-Finished handle order and emailing receipt
-Refactored table database to work better with reservations.
-Added Call Waiter button in the frontend
+This week was spent figuring out how to transition the user after they've completed their order. I implemented a payments
+page that allowed users to add a tip for the restaurant as well as implemented a mini split bill calculator in the frontend.
+After this was done, I moved on to start implementing the call waiter feature. I noticed that our current table implementation
+was still a bit messy, so some time was spent rethinking it with the team, as well as preparing table ids to be included in the 
+table database as well in preparation for table QR codes. After the existing table implementation was refactored, only have time
+to complete the floating button component for the call waiter functionality in the frontend. Will continue the actual implementation
+next week.
 
 Week 9
 
-Finish call waiter + refactoring code
+After finishing the frontend component for waiter calling last week, this week was spent hooking up the socket code on both
+backend and frontend. While working on the admin client side, I added in some code in the table dialog to generate QR codes
+as well. A quick Google search led me to the QR code API which allowed me to easily generate QR codes dynamically for the 
+tables. The rest of the week was spent finalising the full user flow, from scanning the QR code to completing their payment.
+This required us to implement an additional page that came before our current home page.
 
-Added QR Codes for tables
+Week 10
 
-Properly finish entire workflow from scanning qr to completing an order
+Being demo week, this week was focused on cleaning up code and ironing out any bugs prior to our demonstration. I spent 
+some time cleaning up the code implementation for sockets, changing it to use session ids instead of order ids for the 
+customer's rooms. This allowed me to reuse the same room logic for waiter calling. Most of the rest of the time was spent
+preparing the flow for the demo with which features we were going to show and which order we were going to show it in. 
+This exercises also helped us identify the parts of code that still needed to be cleaned up before final submission.
