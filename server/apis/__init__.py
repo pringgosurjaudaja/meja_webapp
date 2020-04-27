@@ -6,18 +6,9 @@ from apis.reservation import reservation
 from apis.auth import auth
 from apis.review import review
 
-authorizations = {
-    'apikey' : {
-        'type' : 'apiKey',
-        'in' : 'header',
-        'name' : 'X-API-KEY'
-    }
-}
-
 api = Api(
     title= 'Meja Backend Service',
     description= 'Backend server for Meja App',
-    authorizations= authorizations
 )
 
 api.add_namespace(menu)

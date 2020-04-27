@@ -49,30 +49,12 @@ MODEL_auth_login = auth.model('Auth Login', {
 
 MODEL_auth_logout = auth.model('Auth Logout',{
     'session_id' : fields.String()
-} )
-
-def token_required(f):
-    @wraps(f)
-    def decorated(*args,**kwargs):
-        token = None
-
-        if 'X-API-KEY' in request.headers:
-            token = request.headers['X-API-KEY']
-
-        if not token:
-            return {'message' : 'Token is missing.'}, 401
-
-        print('TOKEN: {}'.format(token))  
-        return f(*args, **kwargs)
-
-    return decorated      
+} )     
 
 # For debugging only
 @auth.doc(description='Endpoint for whole Auth Operations')
 @auth.route('')
 class Authorisation(Resource):
-    @auth.doc(security='apikey')
-    @token_required
     @auth.doc(description='Get all users on the database')
     def get(self):
         auths = list(auth_db.find({}))
