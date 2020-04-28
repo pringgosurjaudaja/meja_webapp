@@ -1,10 +1,10 @@
 from flask_restplus import Api
-from apis.menu import menu 
-from apis.session import session
-from apis.table import table 
-from apis.reservation import reservation
-from apis.auth import auth
-from apis.review import review
+from apis.Menu.menu import menu 
+from apis.Session.session import session
+from apis.Table.table import table 
+from apis.Reservation.reservation import reservation
+from apis.Authentication.auth import auth
+from apis.Review.review import review
 
 api = Api(
     title= 'Meja Backend Service',

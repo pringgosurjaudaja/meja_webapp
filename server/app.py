@@ -12,7 +12,7 @@ from apis import api
 from bson import ObjectId
 from db import db_client
 from dotenv import load_dotenv
-from apis.chatbot import handle_chats
+from apis.Chatbot.chatbot import handle_chats
 load_dotenv()
 
 menu_db = db_client.menu
